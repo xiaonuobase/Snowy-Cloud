@@ -1,0 +1,44 @@
+# Mysql数据库
+spring:
+  boot:
+    admin:
+      client:
+        url: http://localhost:9002
+        instance:
+          # 默认使用的是主机名注册，改为使用ip注册
+          prefer-ip: true
+  cloud:
+    config:
+      fail-fast: true
+      name: ${spring.application.name}
+      # 指定配置文件的环境
+      profile: ${spring.profiles.active}
+      discovery:
+        enabled: true
+        # 注册中心的服务名
+        service-id: xiaonuo-config-app
+
+
+# 开放所有endpoint，实际生产根据自身需要开放，出于安全考虑不建议全部开放
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: "ALWAYS"
+
+
+eureka:
+  instance:
+    #   hostname不配置的话，会根据操作系统的主机名来获取
+    hostname: localhost
+    instance-id: ${spring.application.name}:${server.port}
+    # 访问路径可以显示IP地址
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    serviceUrl:
+      # 注册中心地址
+      defaultZone: http://${eureka.instance.hostname}:9001/eureka/

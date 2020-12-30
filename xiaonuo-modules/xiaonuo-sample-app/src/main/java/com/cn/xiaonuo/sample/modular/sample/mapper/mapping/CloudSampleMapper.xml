@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.xiaonuo.sys.modular.user.mapper.SysUserMapper">
+
+    <resultMap id="sysUserResult" type="com.cn.xiaonuo.sample.modular.sample.result.CloudSampleResult">
+        <id column="id" property="id" />
+        <result column="example_name" property="exampleName" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+</mapper>

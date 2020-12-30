@@ -1,37 +1,109 @@
-# xiaonuo-cloud
+### 框架介绍
 
-#### 介绍
-后台权限管理框架，微服务架构模式，代码简洁，开箱即用。 前端使用AntDesign-Vue-Pro2.0开发，紧跟潮流。 后端使用SpringBoot2.3.1+MybatisPlus3.3.2。
+<p align="center">     
+    <p align="center">
+        xiaonuo-cloud为XiaoNuo生态技术框架环境中的cloud微服务版本<br/>
+        前后端分离架构，开箱即用，紧随前沿技术<br/>
+        <br>
+        <a href="https://www.antdv.com/docs/vue/introduce-cn/">
+            <img src="https://img.shields.io/badge/vue--ant--design-2.1.0-blue.svg" alt="bootstrap">
+        </a> 
+        +
+        <a href="https://spring.io/projects/spring-cloud">
+            <img src="https://img.shields.io/badge/spring--cloud-Hoxton-orange.svg" alt="spring-cloud">
+        </a>
+        <a href="http://spring.io/projects/spring-boot">
+            <img src="https://img.shields.io/badge/spring--boot-2.3.1-green.svg" alt="spring-boot">
+        </a>
+        <a href="http://mp.baomidou.com">
+            <img src="https://img.shields.io/badge/mybatis--plus-3.3.2-blue.svg" alt="mybatis-plus">
+        </a>  
+    </p>
+</p>
 
-#### 软件架构
-软件架构说明
+### 其他版本
 
+* 如果Cloud版本不适用您当前的开发模式，可以了解我们XiaoNuo生态系列框架中分离版本与不分离版本，开发更激进！
+* 快速前往：https://gitee.com/xiaonuobase
+* PS：我们的其他产品线同样开源，如需关注最新动态可加入QQ群聊探讨：732230670
 
-#### 安装教程
+### 快速启动
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+您的开发电脑需要安装：NodeJs（最新版）、npm或yarn（最新版）建议使用yarn、Mysql5.7、Jdk1.8
 
-#### 使用说明
+* 启动前端：打开_web文件夹，进行依赖下载，运行npm install或yarn命令，再运行npm run serve或 yarn run serve
+* 启动后端：
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+        1.按顺序启动：
+          com.cn.xiaonuo.eureka.XiaoNuoEurekaApp
+          com.cn.xiaonuo.actuator.XiaoNuoActuatorApp
+          com.cn.xiaonuo.config.XiaoNuoConfigApp
+          com.cn.xiaonuo.gateway.XiaoNuoGatewayApp
+          
+        2.打开application-local中配置数据库信息，运行 XiaoNuoMainApp 类即可启动
 
-#### 参与贡献
+        3.打开application-local中配置数据库信息，运行 XiaoNuoSampleApp 类即可启动
+        
+* 浏览器访问：http://localhost:9000 （默认前端端口为：9000，后端端口为：9004）
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+### 框架说明及后续补充
 
+* 纯手研发搭建框架脚手架，在自己用的时候，也为各位小伙伴打下坚固的接私活利器。
+* 后续我们会行发多个版本，将适配多个数据库环境，国产化环境，并且根据多年经验会出相关系统中用到的案例，提供给大家使用！
+* 如需了解我们更多，请移步官网：https://xiaonuo.vip
+* 当然，有问题讨论的小伙伴还可以加入我们的QQ技术群：732230670，一起学习讨论。
 
-#### 特技
+### 在线演示
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+* 账号密码：superAdmin/123456，地址：https://cloud.xiaonuo.vip
+
+### 框架优势
+
+1. 模块化架构设计，层次清晰，业务层推荐写到单独模块，方便升级。
+2. 前后端分离架构，分离开发，分离部署，前后端互不影响。
+3. 前端技术采用vue + antdvPro + axios。
+3. 后端采用spring cloud + spring boot + mybatis-plus + hutool等，开源可靠。
+4. 基于spring security(jwt) + 用户UUID双重认证。
+5. 基于AOP实现的接口粒度的鉴权，最细粒度过滤权限资源。
+6. 基于hibernate validator实现的校验框架，支持自定义校验注解。
+7. 提供Request-No的响应header快速定位线上异常问题。
+8. 在线用户可查，可在线踢人，同账号登录可同时在线，可单独在线（通过系统参数配置）。
+9. 支持前端 + 后端在线代码生成（开发中）。
+10. 文件，短信，缓存，邮件等，利用接口封装，方便拓展。
+11. 文件默认使用本地文件，短信默认使用阿里云sms，缓存默认使用内存缓存。
+
+### 详细功能
+
+1. 主控面板、控制台页面，可进行工作台，分析页，统计等功能的展示。
+2. 用户管理、对企业用户和系统管理员用户的维护，可绑定用户职务，机构，角色，数据权限等。
+3. 应用管理、通过应用来控制不同维度的菜单展示。
+4. 机构管理、公司组织架构维护，支持多层级结构的树形结构。
+5. 职位管理、用户职务管理，职务可作为用户的一个标签，职务目前没有和权限等其他功能挂钩。
+6. 菜单管理、菜单目录，菜单，和按钮的维护是权限控制的基本单位。
+7. 角色管理、角色绑定菜单后，可限制相关角色的人员登录系统的功能范围。角色也可以绑定数据授权范围。
+8. 字典管理、系统内各种枚举类型的维护。
+9. 访问日志、用户的登录和退出日志的查看和管理。
+10. 操作日志、用户的操作业务的日志的查看和管理。
+11. 服务监控、服务器的运行状态，Java虚拟机信息，jvm等数据的查看。
+12. 在线用户、当前系统在线用户的查看。
+13. 数据监控、druid控制台功能，可查看sql的运行信息。
+14. 公告管理、系统的公告的管理。
+15. 文件管理、文件的上传下载查看等操作，文件可使用本地存储，阿里云oss，腾讯cos接入，支持拓展。
+16. 定时任务、定时任务的维护，通过cron表达式控制任务的执行频率。
+17. 系统配置、系统运行的参数的维护，参数的配置与系统运行机制息息相关。
+18. 邮件发送、发送邮件功能。
+19. 短信发送、短信发送功能，可使用阿里云sms，腾讯云sms，支持拓展。
+
+### 版权说明
+
+XiaoNuo生态技术框架全系版本采用 Apache License2.0协议
+请务必尊重原著产品，如果目前开源学习源码不能满足您的商业需求，可联系客服进行授权
+
+### XiaoNuo技术团队荣誉作品
+
+| 成员组成 | 负责内容 |
+| :---: | :---: |
+| 俞宝山 | 全栈 |
+| 徐玉祥 | 全栈 |
+| 董夏雨 | 全栈 |
+

@@ -1,0 +1,3 @@
+org.springframework.context.ApplicationListener=\
+com.cn.xiaonuo.sys.core.listener.ConstantsInitListener,\
+com.cn.xiaonuo.sys.core.listener.RemoveRequestParamListener

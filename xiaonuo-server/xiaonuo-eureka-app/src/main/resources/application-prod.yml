@@ -1,0 +1,53 @@
+spring:
+  boot:
+    admin:
+      client:
+        url: http://localhost:9002
+        instance:
+          # 默认使用的是主机名注册，改为使用ip注册
+          prefer-ip: true
+
+# 开放所有endpoint，实际生产根据自身需要开放，出于安全考虑不建议全部开放
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: "ALWAYS"
+
+#eureka相关配置
+#  eureka server 启动时会创建一个定时任务，每隔一段时间(默认60s)将当前清单中超时(默认90s)没有续约的服务剔除出去
+#  自我保护 ：
+#  在信息面板中可能会出现这样的红色警告 EMERGENCY! EUREKA MAY BE INCORRECTLY CLAIMING INSTANCES ARE UP WHEN THEY'RE NOT. RENEWALS ARE LESSER THAN THRESHOLD AND HENCE THE INSTANCES ARE NOT BEING EXPIRED JUST TO BE SAFE.
+#  该警告就是触发了eureka的自我保护机制，服务注册到eureka server后会维护一个心跳连接.eureka server在运行期间，会统计心跳失败的比例在15分钟内是否低于85%.
+#  如果低于,会将当前的实例注册信息保护起来,让这些实例不会过期.可以配置 eureka.server.enable-self-preservation=false 来关闭保护机制
+#  关闭保护机制，信息面板中会显示 THE SELF PRESERVATION MODE IS TURNED OFF.THIS MAY NOT PROTECT INSTANCE EXPIRY IN CASE OF NETWORK/OTHER PROBLEMS.
+eureka:
+  instance:
+    #   hostname不配置的话，会根据操作系统的主机名来获取
+    hostname: localhost
+    #    注册服务之后，服务提供者会维护一个心跳用来持续告诉eureka server服务正常，以防止eureka server的剔除任务将该服务实例从服务列表中排除出去，该操作称为服务续约
+    #    lease-renewal-interval-in-seconds: 30     定义服务续约任务的调用间隔时间(默认30s,官方不推荐修改)
+    #    lease-expiration-duration-in-seconds: 90  定义服务失效的时间(默认90s,官方不推荐修改)
+    instance-id: ${spring.application.name}:${server.port}
+    # 访问路径可以显示IP地址
+    prefer-ip-address: true
+  client:
+    #  在默认设置下，该服务注册中心也会将自己作为客户端来尝试注册它自己，所以我们需要禁用它的客户端注册行为
+    #  配置register-with-eureka: false 和 fetch-registry: false 来表明自己是一个eureka server
+    #是否向注册中心注册自己，缺省：true
+    register-with-eureka: true
+    #是否从Eureka获取注册信息
+    fetch-registry: false
+    #  为了性能考虑，eureka server 会维护一份只读的服务清单返回给客户端，同时该缓存清单会每隔30s更新一次(可通过registry-fetch-interval-seconds进行修改)
+    #    registry-fetch-interval-seconds: 30
+    serviceUrl:
+      #Eureka服务器的地址，类型为HashMap，缺省的Key为 defaultZone；缺省的Value为 http://localhost:8761/eureka
+      #如果服务注册中心为高可用集群时，多个注册中心地址以逗号分隔。
+      defaultZone: http://@${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    # 默认是true，调整为false，关闭eureka的自我保护
+    enable-self-preservation: false
+    # 每隔 5 秒清理服务列表 （默认值 60*1000 是1分钟）
+    eviction-interval-timer-in-ms: 5000

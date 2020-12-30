@@ -1,0 +1,72 @@
+#spring相关配置
+spring:
+  profiles:
+    active: native
+  cloud:
+    inetutils:
+      timeout-seconds: 10
+    config:
+      server:
+        native:
+          #属性文件地址，只要指定文件夹的路径
+          search-locations: classpath:/config-repo
+        bootstrap: true
+        ############GIT为配置中心####################
+        #        git:
+        #          # 仓库地址
+        #          uri: https://github.com/xiaonuobase/xiaonuo-cloud-config
+        #          # 对应 {label} 部分，即 Git 的分支
+        #          label: master
+        #          # 仓库文件夹名称，多个以逗号分隔
+        #          search-paths: xiaonuo-cloud-config/config-repo
+        #          # git 仓库用户名（公开库可以不用填写）
+        #          username:
+        #          # git 仓库密码（公开库可以不用填写）
+        #          password:
+        ############SVN为配置中心####################
+  #        default-label: trunk
+  #        svn:
+  #          uri: http://xxx:8022/svn/repositories/configfile
+  #          username:
+  #          password:
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss.SSS
+    locale: zh_CN
+    serialization:
+      # 格式化输出
+      indent_output: false
+  boot:
+    admin:
+      client:
+        url: http://localhost:9002
+        instance:
+          # 默认使用的是主机名注册，改为使用ip注册
+          prefer-ip: true
+
+# 开放所有endpoint，实际生产根据自身需要开放，出于安全考虑不建议全部开放
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: "ALWAYS"
+
+eureka:
+  instance:
+    #   hostname不配置的话，会根据操作系统的主机名来获取
+    hostname: localhost
+    instance-id: ${spring.application.name}:${server.port}
+    # 访问路径可以显示IP地址
+    prefer-ip-address: true
+  client:
+    fetch-registry: false
+    register-with-eureka: true
+    serviceUrl:
+      # 注册中心地址
+      defaultZone: http://${eureka.instance.hostname}:9001/eureka/

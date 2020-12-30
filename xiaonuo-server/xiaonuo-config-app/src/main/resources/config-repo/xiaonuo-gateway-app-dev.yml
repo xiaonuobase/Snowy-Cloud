@@ -1,0 +1,14 @@
+spring:
+  boot:
+    admin:
+      client:
+        url: http://localhost:9002
+
+# 开放所有endpoint，实际生产根据自身需要开放，出于安全考虑不建议全部开放
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: "ALWAYS"
