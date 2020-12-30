@@ -57,6 +57,19 @@
 
 * 账号密码：superAdmin/123456，地址：https://cloud.xiaonuo.vip
 
+### 效果图
+
+<table>
+    <tr>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-62d4b535dadbfa8ff343cb290d58be43ef0.png"/></td>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-98b3e79f8008b6319ce6394d80172ff02a3.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://images.gitee.com/uploads/images/2020/1208/133142_37420daa_1980003.jpeg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2020/1208/133250_3749a395_1980003.jpeg"/></td>
+    </tr>
+</table>
+
 ### 框架优势
 
 1. 模块化架构设计，层次清晰，业务层推荐写到单独模块，方便升级。
@@ -93,6 +106,14 @@
 17. 系统配置、系统运行的参数的维护，参数的配置与系统运行机制息息相关。
 18. 邮件发送、发送邮件功能。
 19. 短信发送、短信发送功能，可使用阿里云sms，腾讯云sms，支持拓展。
+
+### 参与贡献
+
+- 欢迎各路英雄好汉参与xiaonuo全系版本代码贡献，期待您的加入！
+- 1.  Fork 本仓库
+- 2.  新建 Feat_xxx 分支
+- 3.  提交代码
+- 4.  新建 Pull Request
 
 ### 版权说明
 
