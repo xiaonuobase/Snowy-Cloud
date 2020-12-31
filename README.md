@@ -23,9 +23,9 @@
 
 ### 其他版本
 
-* 如果Cloud版本不适用您当前的开发模式，可以了解我们XiaoNuo生态系列框架中分离版本与不分离版本，开发更激进！
-* 快速前往：https://gitee.com/xiaonuobase
-* PS：我们的其他产品线同样开源，如需关注最新动态可加入QQ群聊探讨：732230670
+* layui单体版本：https://gitee.com/xiaonuobase/xiaonuo-layui
+* vue前后分离版本：https://gitee.com/xiaonuobase/xiaonuo-vue
+* cloud微服务前后分离版本：https://gitee.com/xiaonuobase/xiaonuo-cloud
 
 ### 快速启动
 
@@ -56,6 +56,10 @@
 ### 在线演示
 
 * 账号密码：superAdmin/123456，地址：https://cloud.xiaonuo.vip
+
+### 架构原理图
+
+![输入图片说明](https://images.gitee.com/uploads/images/2020/1231/124319_60ca9563_1980003.png "微信图片_20201231124243.png")
 
 ### 效果图
 
