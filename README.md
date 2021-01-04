@@ -23,9 +23,10 @@
 
 ### 其他版本
 
-* layui单体版本：https://gitee.com/xiaonuobase/xiaonuo-layui
-* vue前后分离版本：https://gitee.com/xiaonuobase/xiaonuo-vue
-* cloud微服务前后分离版本：https://gitee.com/xiaonuobase/xiaonuo-cloud
+* layui单体版本：[https://gitee.com/xiaonuobase/xiaonuo-layui](https://gitee.com/xiaonuobase/xiaonuo-layui)
+* vue前后分离版本：[https://gitee.com/xiaonuobase/xiaonuo-vue](https://gitee.com/xiaonuobase/xiaonuo-vue)
+* cloud微服务前后分离版本：[https://gitee.com/xiaonuobase/xiaonuo-cloud](https://gitee.com/xiaonuobase/xiaonuo-cloud)
+* PS：我们的其他产品线同样开源，如需关注最新动态可加入QQ群聊探讨：[732230670](https://wpa.qq.com/msgrd?v=3&uin=732230670)
 
 ### 快速启动
 
@@ -44,7 +45,7 @@
 
         3.打开application-local中配置数据库信息，运行 XiaoNuoSampleApp 类即可启动
         
-* 浏览器访问：http://localhost:9000 （默认前端端口为：9000，后端端口为：9004）
+* 浏览器访问：<http://localhost:9000> （默认前端端口为：9000，后端端口为：9004）
 
 ### 框架说明及后续补充
 
@@ -55,7 +56,7 @@
 
 ### 在线演示
 
-* 账号密码：superAdmin/123456，地址：https://cloud.xiaonuo.vip
+* 账号密码：`superAdmin/123456`，地址：[https://cloud.xiaonuo.vip](https://cloud.xiaonuo.vip)
 
 ### 架构原理图
 
