@@ -8,7 +8,6 @@
         <a href="https://www.antdv.com/docs/vue/introduce-cn/">
             <img src="https://img.shields.io/badge/vue--ant--design-2.1.0-blue.svg" alt="bootstrap">
         </a> 
-        +
         <a href="https://spring.io/projects/spring-cloud">
             <img src="https://img.shields.io/badge/spring--cloud-Hoxton-orange.svg" alt="spring-cloud">
         </a>
