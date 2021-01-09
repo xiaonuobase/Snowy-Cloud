@@ -108,6 +108,11 @@ public interface CommonConstant {
     String REQUEST_NO_HEADER_NAME = "Request-No";
 
     /**
+     * 数据库链接URL标识
+     */
+    String DATABASE_URL_NAME = "DATABASE_URL_NAME";
+
+    /**
      * 团队名称
      */
     public static final String TEAM_NAME = "XIAONUO-TEAM";

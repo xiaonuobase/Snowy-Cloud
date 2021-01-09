@@ -30,10 +30,7 @@ import cn.hutool.db.Entity;
 import cn.hutool.db.handler.EntityListHandler;
 import cn.hutool.db.sql.SqlExecutor;
 import cn.hutool.log.Log;
-import com.cn.xiaonuo.core.context.constant.ConstantContext;
-import com.cn.xiaonuo.core.enums.CommonStatusEnum;
-import com.cn.xiaonuo.core.exception.ServiceException;
-import com.cn.xiaonuo.sys.modular.consts.enums.SysConfigExceptionEnum;
+import com.cn.xiaonuo.core.consts.CommonConstant;
 import com.cn.xiaonuo.core.context.constant.ConstantContext;
 import com.cn.xiaonuo.core.enums.CommonStatusEnum;
 import com.cn.xiaonuo.core.exception.ServiceException;
@@ -42,7 +39,6 @@ import org.springframework.boot.context.event.ApplicationContextInitializedEvent
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -76,6 +72,9 @@ public class ConstantsInitListener implements ApplicationListener<ApplicationCon
         String dataSourceUsername = environment.getProperty("spring.datasource.username");
         String dataSourcePassword = environment.getProperty("spring.datasource.password");
 
+        // 缓存中放入datasource链接，代码生成时候使用
+        ConstantContext.putConstant(CommonConstant.DATABASE_URL_NAME, dataSourceUrl);
+
         // 如果有为空的配置，终止执行
         if (ObjectUtil.hasEmpty(dataSourceUrl, dataSourceUsername, dataSourcePassword)) {
             throw new ServiceException(SysConfigExceptionEnum.DATA_SOURCE_NOT_EXIST);
@@ -92,7 +91,12 @@ public class ConstantsInitListener implements ApplicationListener<ApplicationCon
 
             // 将查询到的参数配置添加到缓存
             if (ObjectUtil.isNotEmpty(entityList)) {
-                entityList.forEach(sysConfig -> ConstantContext.putConstant(sysConfig.getStr("code"), sysConfig.getStr("value")));
+                entityList.forEach(sysConfig ->
+                        ConstantContext.putConstant(
+                                sysConfig.getStr("code") == null ? sysConfig.getStr("CODE") : sysConfig.getStr("code"),
+                                sysConfig.getStr("value") == null ? sysConfig.getStr("VALUE") : sysConfig.getStr("value")
+                        )
+                );
             }
         } catch (SQLException | ClassNotFoundException e) {
             log.error(">>> 读取数据库constants配置信息出错：{}", e.getMessage());

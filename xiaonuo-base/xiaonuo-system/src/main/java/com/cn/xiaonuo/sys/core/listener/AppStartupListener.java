@@ -33,16 +33,15 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.Resource;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.util.Date;
 
 /**
+ * 启动日志打印
+ *
  * @author : dongxiayu
- * @classname : AppStartupListener
- * @description : 启动日志打印
  * @date : 2020/12/9 14:29
  */
 @Slf4j
@@ -58,8 +57,8 @@ public class AppStartupListener implements ApplicationRunner, Ordered {
     /**
      * Callback used to run the bean.
      *
-     * @param args incoming application arguments
-     * @throws Exception on error
+     * @author : dongxiayu
+     * @date : 2020/12/9 14:29
      */
     @Override
     public void run(ApplicationArguments args) throws Exception {
