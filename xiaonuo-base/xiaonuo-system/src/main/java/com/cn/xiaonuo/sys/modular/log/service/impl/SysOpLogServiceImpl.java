@@ -56,17 +56,22 @@ public class SysOpLogServiceImpl extends ServiceImpl<SysOpLogMapper, SysOpLog> i
     public PageResult<SysOpLog> page(SysOpLogParam sysOpLogParam) {
         LambdaQueryWrapper<SysOpLog> queryWrapper = new LambdaQueryWrapper<>();
         if (ObjectUtil.isNotNull(sysOpLogParam)) {
-            //根据名称模糊查询
+            // 根据名称模糊查询
             if (ObjectUtil.isNotEmpty(sysOpLogParam.getName())) {
                 queryWrapper.like(SysOpLog::getName, sysOpLogParam.getName());
             }
-            //根据操作类型查询
+            // 根据操作类型查询
             if (ObjectUtil.isNotEmpty(sysOpLogParam.getOpType())) {
                 queryWrapper.eq(SysOpLog::getOpType, sysOpLogParam.getOpType());
             }
-            //根据是否成功查询
+            // 根据是否成功查询
             if (ObjectUtil.isNotEmpty(sysOpLogParam.getSuccess())) {
                 queryWrapper.eq(SysOpLog::getSuccess, sysOpLogParam.getSuccess());
+            }
+            // 根据时间范围查询
+            if (ObjectUtil.isAllNotEmpty(sysOpLogParam.getSearchBeginTime(), sysOpLogParam.getSearchEndTime())) {
+                queryWrapper.apply("date_format (op_time,'%Y-%m-%d') >= date_format('" + sysOpLogParam.getSearchBeginTime() + "','%Y-%m-%d')")
+                        .apply("date_format (op_time,'%Y-%m-%d') <= date_format('" + sysOpLogParam.getSearchEndTime() + "','%Y-%m-%d')");
             }
         }
         Page<SysOpLog> page = this.page(PageFactory.defaultPage(), queryWrapper);

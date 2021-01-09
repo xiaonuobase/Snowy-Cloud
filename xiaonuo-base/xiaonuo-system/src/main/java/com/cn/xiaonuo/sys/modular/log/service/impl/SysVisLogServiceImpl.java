@@ -49,17 +49,22 @@ public class SysVisLogServiceImpl extends ServiceImpl<SysVisLogMapper, SysVisLog
     public PageResult<SysVisLog> page(SysVisLogParam sysVisLogParam) {
         LambdaQueryWrapper<SysVisLog> queryWrapper = new LambdaQueryWrapper<>();
         if (ObjectUtil.isNotNull(sysVisLogParam)) {
-            //根据名称模糊查询
+            // 根据名称模糊查询
             if (ObjectUtil.isNotEmpty(sysVisLogParam.getName())) {
                 queryWrapper.like(SysVisLog::getName, sysVisLogParam.getName());
             }
-            //跟据访问类型（字典 1登入 2登出）查询
+            // 跟据访问类型（字典 1登入 2登出）查询
             if (ObjectUtil.isNotEmpty(sysVisLogParam.getVisType())) {
                 queryWrapper.eq(SysVisLog::getVisType, sysVisLogParam.getVisType());
             }
-            //根据是否成功查询
+            // 根据是否成功查询
             if (ObjectUtil.isNotEmpty(sysVisLogParam.getSuccess())) {
                 queryWrapper.eq(SysVisLog::getSuccess, sysVisLogParam.getSuccess());
+            }
+            // 根据时间范围查询
+            if (ObjectUtil.isAllNotEmpty(sysVisLogParam.getSearchBeginTime(), sysVisLogParam.getSearchEndTime())) {
+                queryWrapper.apply("date_format (vis_time,'%Y-%m-%d') >= date_format('" + sysVisLogParam.getSearchBeginTime() + "','%Y-%m-%d')")
+                        .apply("date_format (vis_time,'%Y-%m-%d') <= date_format('" + sysVisLogParam.getSearchEndTime() + "','%Y-%m-%d')");
             }
         }
         return new PageResult<>(this.page(PageFactory.defaultPage(), queryWrapper));
