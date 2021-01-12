@@ -58,6 +58,10 @@
 
 * 账号密码：`superAdmin/123456`，地址：[https://cloud.xiaonuo.vip](https://cloud.xiaonuo.vip)
 
+### 在线文档
+
+* https://doc.xiaonuo.vip
+
 ### 架构原理图
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/1231/124319_60ca9563_1980003.png "微信图片_20201231124243.png")
