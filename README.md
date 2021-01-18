@@ -1,10 +1,15 @@
+<p align="center">
+    <a href="https://xiaonuo.vip">
+        <img src="./_web/public/logo.png" height="150" alt="logo"/>
+    </a>
+</p>
+
 ### 框架介绍
+<h3 align="center">xiaonuo-cloud为XiaoNuo生态技术框架环境中的cloud微服务版本</h3>
+<h3 align="center">前后端分离架构，开箱即用，紧随前沿技术</h3>
 
 <p align="center">     
     <p align="center">
-        xiaonuo-cloud为XiaoNuo生态技术框架环境中的cloud微服务版本<br/>
-        前后端分离架构，开箱即用，紧随前沿技术<br/>
-        <br>
         <a href="https://www.antdv.com/docs/vue/introduce-cn/">
             <img src="https://img.shields.io/badge/vue--ant--design-2.1.0-blue.svg" alt="bootstrap">
         </a> 
@@ -17,6 +22,24 @@
         <a href="http://mp.baomidou.com">
             <img src="https://img.shields.io/badge/mybatis--plus-3.3.2-blue.svg" alt="mybatis-plus">
         </a>  
+        <a href="./LICENSE">
+            <img src="https://img.shields.io/badge/license-Apache%202-red" alt="license Apache 2.0">
+        </a>
+        <a href="https://gitee.com/xiaonuobase/xiaonuo-cloud">
+            <img src="https://gitee.com/xiaonuobase/xiaonuo-cloud/badge/star.svg?theme=dark" alt="Gitee star">
+        </a>
+        <a href="https://gitee.com/xiaonuobase/xiaonuo-cloud">
+            <img src="https://gitee.com/xiaonuobase/xiaonuo-cloud/badge/fork.svg?theme=dark" alt="Gitee fork">
+        </a>
+        <a href="https://github.com/xiaonuobase/xiaonuo-cloud">
+            <img src="https://img.shields.io/github/stars/xiaonuobase/xiaonuo-cloud?style=social" alt="GitHub stars">
+        </a>
+        <a href="https://github.com/xiaonuobase/xiaonuo-cloud">
+            <img src="https://img.shields.io/github/forks/xiaonuobase/xiaonuo-cloud?style=social" alt="GitHub forks">
+        </a>
+        <a href="https://github.com/xiaonuobase/xiaonuo-cloud">
+            <img src="https://img.shields.io/github/repo-size/xiaonuobase/xiaonuo-cloud" alt="size">
+        </a>
     </p>
 </p>
 
