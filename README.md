@@ -1,7 +1,5 @@
 <p align="center">
-    <a href="https://xiaonuo.vip">
-        <img src="./_web/public/logo.png" height="150" alt="logo"/>
-    </a>
+    <img src="./_web/public/logo.png" height="150" alt="logo"/>
 </p>
 
 ### 框架介绍
