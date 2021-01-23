@@ -75,3 +75,45 @@ export function getSmsCaptcha (parameter) {
     params: parameter
   })
 }
+
+/**
+ * 获取验证码开关
+ *
+ * @author Jax
+ * @date 2021/1/22 00:00
+ */
+export function getCaptchaOpen (parameter) {
+  return axios({
+    url: '/getCaptchaOpen',
+    method: 'get',
+    params: parameter
+  })
+}
+
+/**
+ * 获取验证图片 以及token
+ *
+ * @author Jax
+ * @date 2021/1/22 00:00
+ */
+export function reqGet(data) {
+  return axios({
+    url: '/captcha/get',
+    method: 'post',
+    data
+  })
+}
+
+/**
+ * 滑动或者点选验证
+ *
+ * @author Jax
+ * @date 2021/1/22 00:00
+ */
+export function reqCheck(data) {
+  return axios({
+    url: '/captcha/check',
+    method: 'post',
+    data
+  })
+}

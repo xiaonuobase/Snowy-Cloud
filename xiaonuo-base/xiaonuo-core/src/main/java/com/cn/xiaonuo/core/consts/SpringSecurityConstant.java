@@ -66,6 +66,10 @@ public interface SpringSecurityConstant {
             //actuator
             "/actuator/**",
 
+            //获取验证码
+            "/captcha/**",
+            "/getCaptchaOpen",
+
     };
 
 }

@@ -40,3 +40,11 @@ mybatis-plus:
     prefix:
     blobType: BLOB
     boolValue: TRUE
+
+#验证码相关配置
+aj:
+  captcha:
+    cache-type: local #分布式部署需要 自己实现CaptchaCacheService 使用redis需要配置redis相关配置
+    type: clickword #验证码类型 为点选   blockPuzzle 为滑块验证码
+    font-type: 宋体
+    water-mark: XiaoNuo快速开发平台

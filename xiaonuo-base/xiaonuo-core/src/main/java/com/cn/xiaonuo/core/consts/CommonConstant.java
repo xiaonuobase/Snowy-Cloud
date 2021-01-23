@@ -135,4 +135,9 @@ public interface CommonConstant {
             "\tURLs:\thttp://{}:{}{}\n"+
             "==============================================================";
 
+    /**
+     * 点选验证码
+     */
+    String IMAGE_CODE_TYPE = "clickWord";
+
 }
