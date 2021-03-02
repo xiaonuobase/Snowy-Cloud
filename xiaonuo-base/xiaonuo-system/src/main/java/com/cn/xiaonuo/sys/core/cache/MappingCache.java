@@ -25,7 +25,10 @@ XiaoNuo采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注�
 package com.cn.xiaonuo.sys.core.cache;
 
 import cn.hutool.cache.impl.TimedCache;
+import com.cn.xiaonuo.core.pojo.login.SysLoginUser;
 import com.cn.xiaonuo.sys.core.cache.base.AbstractMemoryCacheOperator;
+import com.cn.xiaonuo.sys.core.cache.base.AbstractRedisCacheOperator;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.Map;
 
@@ -46,15 +49,15 @@ import java.util.Map;
  * @author xuyuxiang
  * @date 2020/7/24 11:59
  */
-public class MappingCache extends AbstractMemoryCacheOperator<Map<String, Object>> {
+public class MappingCache extends AbstractRedisCacheOperator<Map<String, Object>> {
 
     /**
      * 缓存的前缀标识
      */
     public static final String TRANSLATES_CACHE_PREFIX = "MAPPINGS_";
 
-    public MappingCache(TimedCache<String, Map<String, Object>> timedCache) {
-        super(timedCache);
+    public MappingCache(RedisTemplate<String, Map<String, Object>> redisTemplate) {
+        super(redisTemplate);
     }
 
     @Override

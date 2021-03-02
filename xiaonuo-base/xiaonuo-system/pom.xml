@@ -52,7 +52,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-            <optional>true</optional>
+            <!--<optional>true</optional>-->
             <exclusions>
                 <exclusion>
                     <groupId>io.lettuce</groupId>
@@ -63,7 +63,7 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <optional>true</optional>
+            <!--<optional>true</optional>-->
         </dependency>
 
         <!-- jwt token -->

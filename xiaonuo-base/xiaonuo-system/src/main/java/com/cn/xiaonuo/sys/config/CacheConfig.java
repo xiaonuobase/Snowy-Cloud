@@ -36,9 +36,15 @@ import com.cn.xiaonuo.core.pojo.login.SysLoginUser;
 import com.cn.xiaonuo.sys.core.cache.MappingCache;
 import com.cn.xiaonuo.sys.core.cache.ResourceCache;
 import com.cn.xiaonuo.sys.core.cache.UserCache;
+import com.cn.xiaonuo.sys.core.redis.FastJson2JsonRedisSerializer;
+import org.mapstruct.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -67,15 +73,75 @@ public class CacheConfig {
      * @author yubaoshan
      * @date 2020/7/9 11:44
      */
+//    @Bean
+//    public UserCache userCache() {
+//        TimedCache<String, SysLoginUser> timedCache =
+//                CacheUtil.newTimedCache(ConstantContextHolder.getSessionTokenExpireSec() * 1000);
+//
+//        // 定时清理缓存，间隔1秒
+//        timedCache.schedulePrune(1000);
+//
+//        return new UserCache(timedCache);
+//    }
+
+    /**
+     * mapping映射缓存
+     *
+     * @author xuyuxiang
+     * @date 2020/7/24 13:55
+     */
+//    @Bean
+//    public MappingCache mappingCache() {
+//        TimedCache<String, Map<String, Object>> timedCache =
+//                CacheUtil.newTimedCache(2 * 60 * 1000);
+//
+//        // 定时清理缓存，间隔1秒
+//        timedCache.schedulePrune(1000);
+//
+//        return new MappingCache(timedCache);
+//    }
+
+    /**
+     * redisTemplate 配置
+     *
+     * @author dongxiayu
+     * @date 2021/1/23 13:55
+     */
     @Bean
-    public UserCache userCache() {
-        TimedCache<String, SysLoginUser> timedCache =
-                CacheUtil.newTimedCache(ConstantContextHolder.getSessionTokenExpireSec() * 1000);
+    public RedisTemplate<String, SysLoginUser> userRedisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, SysLoginUser> userRedisTemplate = new RedisTemplate<>();
+        userRedisTemplate.setConnectionFactory(factory);
+        userRedisTemplate.setKeySerializer(new StringRedisSerializer());
+        userRedisTemplate.setValueSerializer(new FastJson2JsonRedisSerializer<>(SysLoginUser.class));
+        userRedisTemplate.afterPropertiesSet();
+        return userRedisTemplate;
+    }
 
-        // 定时清理缓存，间隔1秒
-        timedCache.schedulePrune(1000);
+    /**
+     * redisTemplate 配置
+     *
+     * @author dongxiayu
+     * @date 2021/1/23 13:55
+     */
+    @Bean
+    public RedisTemplate<String, Map<String, Object>> mappingRedisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, Map<String, Object>> mappingRedisTemplate = new RedisTemplate<>();
+        mappingRedisTemplate.setConnectionFactory(factory);
+        mappingRedisTemplate.setKeySerializer(new StringRedisSerializer());
+        mappingRedisTemplate.setValueSerializer(new FastJson2JsonRedisSerializer<>(Map.class));
+        mappingRedisTemplate.afterPropertiesSet();
+        return mappingRedisTemplate;
+    }
 
-        return new UserCache(timedCache);
+    /**
+     * 登录用户的缓存，默认过期时间，根据系统sys_config中的常量决定
+     *
+     * @author yubaoshan
+     * @date 2020/7/9 11:44
+     */
+    @Bean
+    public UserCache userCache(RedisTemplate<String, SysLoginUser> userRedisTemplate) {
+        return new UserCache(userRedisTemplate);
     }
 
     /**
@@ -85,14 +151,8 @@ public class CacheConfig {
      * @date 2020/7/24 13:55
      */
     @Bean
-    public MappingCache mappingCache() {
-        TimedCache<String, Map<String, Object>> timedCache =
-                CacheUtil.newTimedCache(2 * 60 * 1000);
-
-        // 定时清理缓存，间隔1秒
-        timedCache.schedulePrune(1000);
-
-        return new MappingCache(timedCache);
+    public MappingCache mappingCache(RedisTemplate<String, Map<String, Object>> mappingRedisTemplate) {
+        return new MappingCache(mappingRedisTemplate);
     }
 
 }

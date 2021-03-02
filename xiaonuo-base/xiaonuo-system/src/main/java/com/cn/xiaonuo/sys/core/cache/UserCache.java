@@ -28,6 +28,8 @@ import cn.hutool.cache.impl.TimedCache;
 import com.cn.xiaonuo.core.pojo.login.SysLoginUser;
 import com.cn.xiaonuo.sys.core.cache.base.AbstractMemoryCacheOperator;
 import com.cn.xiaonuo.core.pojo.login.SysLoginUser;
+import com.cn.xiaonuo.sys.core.cache.base.AbstractRedisCacheOperator;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * 登录用户的缓存，存储了当前登录的用户
@@ -39,15 +41,15 @@ import com.cn.xiaonuo.core.pojo.login.SysLoginUser;
  * @author yubaoshan
  * @date 2020/7/9 11:02
  */
-public class UserCache extends AbstractMemoryCacheOperator<SysLoginUser> {
+public class UserCache extends AbstractRedisCacheOperator<SysLoginUser> {
 
     /**
      * 登录用户缓存前缀
      */
     public static final String LOGIN_USER_CACHE_PREFIX = "LOGIN_USER_";
 
-    public UserCache(TimedCache<String, SysLoginUser> timedCache) {
-        super(timedCache);
+    public UserCache(RedisTemplate<String, SysLoginUser> redisTemplate) {
+        super(redisTemplate);
     }
 
     @Override
