@@ -96,7 +96,7 @@ INSERT INTO `sys_config` VALUES ('1288309751255412737', 'Oauth用户登录的开
 INSERT INTO `sys_config` VALUES ('1288310043346743297', 'Oauth码云登录ClientId', 'XIAONUO_OAUTH_GITEE_CLIENT_ID', '你的clientId', 'Y', 'Oauth码云登录ClientId', '0', 'OAUTH', '2020-07-29 11:07:05', '1265476890672672808', null, null);
 INSERT INTO `sys_config` VALUES ('1288310157876408321', 'Oauth码云登录ClientSecret', 'XIAONUO_OAUTH_GITEE_CLIENT_SECRET', '你的clientSecret', 'Y', 'Oauth码云登录ClientSecret', '0', 'OAUTH', '2020-07-29 11:07:32', '1265476890672672808', null, null);
 INSERT INTO `sys_config` VALUES ('1288310280056483841', 'Oauth码云登录回调地址', 'XIAONUO_OAUTH_GITEE_REDIRECT_URI', 'http://localhost:9005/oauth/callback/gitee', 'Y', 'Oauth码云登录回调地址', '0', 'OAUTH', '2020-07-29 11:08:01', '1265476890672672808', null, null);
-INSERT INTO `sys_config` VALUES ('1288358228593221633', '前端项目地址', 'XIAONUO_WEB_URL', 'http://localhost:9005', 'Y', '前端项目地址', '0', 'DEFAULT', '2020-07-29 14:18:33', '1265476890672672808', null, null);
+INSERT INTO `sys_config` VALUES ('1288358228593221633', '前端项目地址', 'XIAONUO_WEB_URL', 'http://localhost:9000', 'Y', '前端项目地址', '0', 'DEFAULT', '2020-07-29 14:18:33', '1265476890672672808', null, null);
 INSERT INTO `sys_config` VALUES ('1288358228593221634', '支付宝支付跳转地址', 'XIAONUO_ALIPAY_RETURN_URL', 'http://localhost:9005/pay/index', 'Y', '支付宝支付跳转地址', '0', 'DEFAULT', '2020-07-29 14:18:33', '1265476890672672808', null, null);
 INSERT INTO `sys_config` VALUES ('1288358228593221635', '是否开启多租户', 'XIAONUO_TENANT_OPEN', 'false', 'Y', '是否开启多租户', '0', 'DEFAULT', '2020-09-03 17:45:58', '1265476890672672808', '2020-09-23 22:23:38', '1265476890672672808');
 
