@@ -110,6 +110,7 @@
     <profile>
       <id>local</id>
       <properties>
+        <!-- 本地：native 远程：remote -->
         <spring.active.config>native</spring.active.config>
       </properties>
       <activation>

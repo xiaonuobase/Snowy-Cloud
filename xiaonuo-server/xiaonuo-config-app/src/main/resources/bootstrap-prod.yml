@@ -1,7 +1,5 @@
 #spring相关配置
 spring:
-  profiles:
-    active: native
   cloud:
     inetutils:
       timeout-seconds: 10
