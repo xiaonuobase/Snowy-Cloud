@@ -1,4 +1,13 @@
 spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/xiaonuo-cloud?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT&nullCatalogMeansCurrent=true
+    username: root
+    password: root
+    # 连接池大小根据实际情况调整
+    max-active: 20
+    max-pool-prepared-statement-per-connection-size: 20
+
   boot:
     admin:
       client:
@@ -41,7 +50,34 @@ spring:
             - StripPrefix=1 #去掉Path中第一个节点
             - name: Retry
               args:
-                retries: 2 #重试次数
+                retries: 1 #重试次数
+        - id: xiaonuo-flowable-app
+          uri: lb://xiaonuo-flowable-app
+          predicates:
+            - Path=/flowable/**
+          filters:
+            - StripPrefix=1 #去掉Path中第一个节点
+            - name: Retry
+              args:
+                retries: 1 #重试次数
+        - id: xiaonuo-flowable-app
+          uri: lb://xiaonuo-flowable-app
+          predicates:
+            - Path=/designer/**
+          filters:
+#             - StripPrefix=1 #去掉Path中第一个节点
+            - name: Retry
+             args:
+               retries: 1 #重试次数
+        - id: xiaonuo-tenant-app
+          uri: lb://xiaonuo-tenant-app
+          predicates:
+            - Path=/tenant/**
+          filters:
+            - StripPrefix=1 #去掉Path中第一个节点
+            - name: Retry
+              args:
+              retries: 1 #重试次数
 
 # 开放所有endpoint，实际生产根据自身需要开放，出于安全考虑不建议全部开放
 management:
@@ -66,3 +102,9 @@ eureka:
     serviceUrl:
       # 注册中心地址
       defaultZone: http://${eureka.instance.hostname}:9001/eureka/
+
+# redis相关配置
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password:

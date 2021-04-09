@@ -1,7 +1,7 @@
 package com.cn.xiaonuo.core.tenant.exception;
 
-import com.cn.xiaonuo.core.exception.ServiceException;
-import com.cn.xiaonuo.core.exception.enums.abs.AbstractBaseExceptionEnum;
+import com.cn.xiaonuo.common.exception.ServiceException;
+import com.cn.xiaonuo.common.exception.enums.abs.AbstractBaseExceptionEnum;
 
 /**
  * 多租户的异常

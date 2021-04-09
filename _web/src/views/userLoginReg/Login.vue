@@ -22,7 +22,7 @@
               placeholder="账号"
               v-decorator="[
                 'account',
-                {rules: [{ required: true, message: '请输入帐户名' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
+                { initialValue:'superAdmin', rules: [{ required: true, message: '请输入帐户名' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
               ]"
             >
               <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
@@ -37,7 +37,7 @@
               placeholder="密码"
               v-decorator="[
                 'password',
-                {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
+                { initialValue:'123456', rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
               ]"
             >
               <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
@@ -160,6 +160,7 @@ export default {
       captchaOpen: false, // 是否开启验证码
       tenantsList: [],
       loginParams: [] // 登录参数
+
     }
   },
   created () {
@@ -177,7 +178,6 @@ export default {
         }
       })
     },
-
     // handler
     handleUsernameOrEmail (rule, value, callback) {
       const { state } = this
@@ -204,20 +204,19 @@ export default {
       } = this
 
       state.loginBtn = true
-
       const validateFieldsKey = customActiveKey === 'tab1' ? ['account', 'password'] : ['mobile', 'captcha']
       if (this.tenantOpen) {
         validateFieldsKey.push('tenantCode')
       }
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
-          this.loginParams = values
-          if (!err) {
-            // 是否开启验证码
-            if (this.captchaOpen) {
-              this.$refs.verify.show()
-              state.loginBtn = false
-              return
-            }
+        this.loginParams = values
+        if (!err) {
+          // 是否开启验证码
+          if (this.captchaOpen) {
+            this.$refs.verify.show()
+            state.loginBtn = false
+            return
+          }
           const loginParams = { ...values }
           delete loginParams.account
           loginParams[!state.loginType ? 'email' : 'account'] = values.account

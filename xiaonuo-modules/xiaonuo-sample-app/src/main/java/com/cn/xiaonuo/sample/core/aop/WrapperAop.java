@@ -28,13 +28,13 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.log.Log;
-import com.cn.xiaonuo.core.annotion.Wrapper;
-import com.cn.xiaonuo.core.consts.AopSortConstant;
-import com.cn.xiaonuo.core.exception.ServiceException;
-import com.cn.xiaonuo.core.exception.enums.WrapperExceptionEnum;
-import com.cn.xiaonuo.core.pojo.base.wrapper.BaseWrapper;
-import com.cn.xiaonuo.core.pojo.page.PageResult;
-import com.cn.xiaonuo.core.pojo.response.ResponseData;
+import com.cn.xiaonuo.common.annotion.Wrapper;
+import com.cn.xiaonuo.common.consts.AopSortConstant;
+import com.cn.xiaonuo.common.exception.ServiceException;
+import com.cn.xiaonuo.common.exception.enums.WrapperExceptionEnum;
+import com.cn.xiaonuo.common.pojo.base.wrapper.BaseWrapper;
+import com.cn.xiaonuo.common.pojo.page.PageResult;
+import com.cn.xiaonuo.common.pojo.response.ResponseData;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -67,7 +67,7 @@ public class WrapperAop {
      * @author xuyuxiang
      * @date 2020/7/24 17:42
      */
-    @Pointcut("@annotation(com.cn.xiaonuo.core.annotion.Wrapper)")
+    @Pointcut("@annotation(com.cn.xiaonuo.common.annotion.Wrapper)")
     private void wrapperPointcut() {
     }
 

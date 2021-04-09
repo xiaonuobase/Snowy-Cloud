@@ -24,9 +24,9 @@ XiaoNuo采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注�
  */
 package com.cn.xiaonuo.sample.core.aop;
 
-import com.cn.xiaonuo.core.consts.AopSortConstant;
-import com.cn.xiaonuo.core.context.login.LoginContextHolder;
-import com.cn.xiaonuo.core.pojo.base.param.BaseParam;
+import com.cn.xiaonuo.common.consts.AopSortConstant;
+import com.cn.xiaonuo.common.context.login.LoginContextHolder;
+import com.cn.xiaonuo.common.pojo.base.param.BaseParam;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -51,7 +51,7 @@ public class DataScopeAop {
      * @author xuyuxiang
      * @date 2020/4/6 13:32
      */
-    @Pointcut("@annotation(com.cn.xiaonuo.core.annotion.DataScope)")
+    @Pointcut("@annotation(com.cn.xiaonuo.common.annotion.DataScope)")
     private void getDataScopePointCut() {
     }
 

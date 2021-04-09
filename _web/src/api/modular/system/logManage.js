@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function sysVisLogPage (parameter) {
   return axios({
-    url: '/sysVisLog/page',
+    url: '/system/sysVisLog/page',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function sysVisLogPage (parameter) {
  */
 export function sysOpLogPage (parameter) {
   return axios({
-    url: '/sysOpLog/page',
+    url: '/system/sysOpLog/page',
     method: 'get',
     params: parameter
   })
@@ -36,7 +36,7 @@ export function sysOpLogPage (parameter) {
  */
 export function sysVisLogDelete (parameter) {
   return axios({
-    url: '/sysVisLog/delete',
+    url: '/system/sysVisLog/delete',
     method: 'post',
     data: parameter
   })
@@ -50,7 +50,7 @@ export function sysVisLogDelete (parameter) {
  */
 export function sysOpLogDelete (parameter) {
   return axios({
-    url: '/sysOpLog/delete',
+    url: '/system/sysOpLog/delete',
     method: 'post',
     data: parameter
   })

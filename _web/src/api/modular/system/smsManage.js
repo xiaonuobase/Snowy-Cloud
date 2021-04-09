@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function smsPage (parameter) {
   return axios({
-    url: '/sms/page',
+    url: '/system/sms/page',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function smsPage (parameter) {
  */
 export function sysSendLoginMessage (parameter) {
   return axios({
-    url: '/sms/sendLoginMessage',
+    url: '/system/sms/sendLoginMessage',
     method: 'post',
     data: parameter
   })
@@ -36,7 +36,7 @@ export function sysSendLoginMessage (parameter) {
  */
 export function sysValidateMessage (parameter) {
   return axios({
-    url: '/sms/validateMessage',
+    url: '/system/sms/validateMessage',
     method: 'post',
     data: parameter
   })

@@ -25,16 +25,11 @@ XiaoNuo采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注�
 package com.cn.xiaonuo.core.validation.unique;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.cn.xiaonuo.core.context.group.RequestGroupContext;
-import com.cn.xiaonuo.core.context.group.RequestParamIdContext;
-import com.cn.xiaonuo.core.context.system.SystemContextHolder;
-import com.cn.xiaonuo.core.pojo.base.param.BaseParam;
-import com.cn.xiaonuo.core.pojo.base.validate.UniqueValidateParam;
-import com.cn.xiaonuo.core.context.group.RequestGroupContext;
-import com.cn.xiaonuo.core.context.group.RequestParamIdContext;
-import com.cn.xiaonuo.core.context.system.SystemContextHolder;
-import com.cn.xiaonuo.core.pojo.base.param.BaseParam;
-import com.cn.xiaonuo.core.pojo.base.validate.UniqueValidateParam;
+import com.cn.xiaonuo.common.context.group.RequestGroupContext;
+import com.cn.xiaonuo.common.context.group.RequestParamIdContext;
+import com.cn.xiaonuo.common.context.system.SystemContextHolder;
+import com.cn.xiaonuo.common.pojo.base.param.BaseParam;
+import com.cn.xiaonuo.common.pojo.base.validate.UniqueValidateParam;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

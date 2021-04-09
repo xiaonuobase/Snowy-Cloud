@@ -192,6 +192,7 @@
             :wrapperCol="wrapperCol_JG"
           >
             <a-table
+              size="middle"
               :columns="columns"
               :dataSource="data"
               :pagination="false"
@@ -459,7 +460,7 @@
             values.sysEmpParam['extIds'] = this.sysEmpParamExtList
             // eslint-disable-next-line eqeqeq
             if (this.birthdayString == 'Invalid date') {
-              this.birthdayString = ''
+              this.birthdayString = null
             }
             values.birthday = this.birthdayString
             sysUserEdit(values).then((res) => {

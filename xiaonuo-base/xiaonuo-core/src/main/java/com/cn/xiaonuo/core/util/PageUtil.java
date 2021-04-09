@@ -21,9 +21,9 @@ public class PageUtil<T> extends cn.hutool.core.util.PageUtil{
      * @date 2020/9/19 10:36
      **/
     public static <T> List<T> page(Page<T> page, List<T> list) {
-        setFirstPageNo(1);
-        int start = getStart(Convert.toInt(page.getCurrent()), Convert.toInt(page.getSize()));
-        int end = getEnd(Convert.toInt(page.getCurrent()), Convert.toInt(page.getSize()));
+        PageUtil.setFirstPageNo(1);
+        int start = PageUtil.getStart(Convert.toInt(page.getCurrent()), Convert.toInt(page.getSize()));
+        int end = PageUtil.getEnd(Convert.toInt(page.getCurrent()), Convert.toInt(page.getSize()));
         if(start > list.size()) {
             return CollectionUtil.newArrayList();
         }else if(start > end) {

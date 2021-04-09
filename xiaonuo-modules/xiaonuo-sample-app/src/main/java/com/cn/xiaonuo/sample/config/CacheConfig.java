@@ -26,8 +26,8 @@ package com.cn.xiaonuo.sample.config;
 
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.TimedCache;
-import com.cn.xiaonuo.sample.core.cache.MappingCache;
-import com.cn.xiaonuo.sample.core.cache.ResourceCache;
+import com.cn.xiaonuo.sample.cache.MappingCache;
+import com.cn.xiaonuo.sample.cache.ResourceCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

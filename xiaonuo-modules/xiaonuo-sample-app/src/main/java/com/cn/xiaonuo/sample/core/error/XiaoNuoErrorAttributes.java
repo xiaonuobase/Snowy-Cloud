@@ -26,10 +26,10 @@ package com.cn.xiaonuo.sample.core.error;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.http.HttpStatus;
-import com.cn.xiaonuo.core.exception.ServiceException;
-import com.cn.xiaonuo.core.exception.enums.PermissionExceptionEnum;
-import com.cn.xiaonuo.core.exception.enums.ServerExceptionEnum;
-import com.cn.xiaonuo.core.pojo.response.ErrorResponseData;
+import com.cn.xiaonuo.common.exception.ServiceException;
+import com.cn.xiaonuo.common.exception.enums.PermissionExceptionEnum;
+import com.cn.xiaonuo.common.exception.enums.ServerExceptionEnum;
+import com.cn.xiaonuo.common.pojo.response.ErrorResponseData;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.web.context.request.WebRequest;

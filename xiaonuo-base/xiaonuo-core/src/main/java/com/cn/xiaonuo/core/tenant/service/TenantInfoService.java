@@ -1,7 +1,7 @@
 package com.cn.xiaonuo.core.tenant.service;
 
-import com.cn.xiaonuo.core.pojo.page.PageResult;
-import com.cn.xiaonuo.core.tenant.entity.TenantInfo;
+import com.cn.xiaonuo.api.tenant.entity.TenantInfo;
+import com.cn.xiaonuo.common.pojo.page.PageResult;
 import com.cn.xiaonuo.core.tenant.params.TenantInfoParam;
 import com.baomidou.mybatisplus.extension.service.IService;
 

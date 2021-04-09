@@ -15,8 +15,10 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>xiaonuo-common</module>
     <module>xiaonuo-core</module>
-    <module>xiaonuo-system</module>
+    <module>xiaonuo-cache</module>
+    <module>xiaonuo-security</module>
   </modules>
 
 </project>

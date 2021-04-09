@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function getUserPage (parameter) {
   return axios({
-    url: '/sysUser/page',
+    url: '/system/sysUser/page',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function getUserPage (parameter) {
  */
 export function sysUserAdd (parameter) {
   return axios({
-    url: '/sysUser/add',
+    url: '/system/sysUser/add',
     method: 'post',
     data: parameter
   })
@@ -36,7 +36,7 @@ export function sysUserAdd (parameter) {
  */
 export function sysUserEdit (parameter) {
   return axios({
-    url: '/sysUser/edit',
+    url: '/system/sysUser/edit',
     method: 'post',
     data: parameter
   })
@@ -50,7 +50,7 @@ export function sysUserEdit (parameter) {
  */
 export function sysUserDetail (parameter) {
   return axios({
-    url: '/sysUser/detail',
+    url: '/system/sysUser/detail',
     method: 'get',
     params: parameter
   })
@@ -64,7 +64,7 @@ export function sysUserDetail (parameter) {
  */
 export function sysUserDelete (parameter) {
   return axios({
-    url: '/sysUser/delete',
+    url: '/system/sysUser/delete',
     method: 'post',
     data: parameter
   })
@@ -78,7 +78,7 @@ export function sysUserDelete (parameter) {
  */
 export function sysUserOwnRole (parameter) {
   return axios({
-    url: '/sysUser/ownRole',
+    url: '/system/sysUser/ownRole',
     method: 'get',
     params: parameter
   })
@@ -92,7 +92,7 @@ export function sysUserOwnRole (parameter) {
  */
 export function sysUserGrantRole (parameter) {
   return axios({
-    url: '/sysUser/grantRole',
+    url: '/system/sysUser/grantRole',
     method: 'post',
     data: parameter
   })
@@ -106,7 +106,7 @@ export function sysUserGrantRole (parameter) {
  */
 export function sysUserOwnData (parameter) {
   return axios({
-    url: '/sysUser/ownData',
+    url: '/system/sysUser/ownData',
     method: 'get',
     params: parameter
   })
@@ -120,7 +120,7 @@ export function sysUserOwnData (parameter) {
  */
 export function sysUserGrantData (parameter) {
   return axios({
-    url: '/sysUser/grantData',
+    url: '/system/sysUser/grantData',
     method: 'post',
     data: parameter
   })
@@ -134,7 +134,7 @@ export function sysUserGrantData (parameter) {
  */
 export function sysUserChangeStatus (parameter) {
   return axios({
-    url: '/sysUser/changeStatus',
+    url: '/system/sysUser/changeStatus',
     method: 'post',
     data: parameter
   })
@@ -148,7 +148,7 @@ export function sysUserChangeStatus (parameter) {
  */
 export function sysUserResetPwd (parameter) {
   return axios({
-    url: '/sysUser/resetPwd',
+    url: '/system/sysUser/resetPwd',
     method: 'post',
     data: parameter
   })
@@ -162,7 +162,7 @@ export function sysUserResetPwd (parameter) {
  */
 export function sysUserUpdatePwd (parameter) {
   return axios({
-    url: '/sysUser/updatePwd',
+    url: '/system/sysUser/updatePwd',
     method: 'post',
     data: parameter
   })
@@ -176,7 +176,7 @@ export function sysUserUpdatePwd (parameter) {
  */
 export function sysUserSelector (parameter) {
   return axios({
-    url: '/sysUser/selector',
+    url: '/system/sysUser/selector',
     method: 'get',
     params: parameter
   })
@@ -190,7 +190,7 @@ export function sysUserSelector (parameter) {
  */
 export function sysUserUpdateAvatar (parameter) {
   return axios({
-    url: '/sysUser/updateAvatar',
+    url: '/system/sysUser/updateAvatar',
     method: 'post',
     data: parameter
   })
@@ -204,7 +204,7 @@ export function sysUserUpdateAvatar (parameter) {
  */
 export function sysUserUpdateInfo (parameter) {
   return axios({
-    url: '/sysUser/updateInfo',
+    url: '/system/sysUser/updateInfo',
     method: 'post',
     data: parameter
   })

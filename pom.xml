@@ -20,7 +20,9 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>xiaonuo-api</module>
     <module>xiaonuo-base</module>
+    <module>xiaonuo-biz</module>
     <module>xiaonuo-modules</module>
     <module>xiaonuo-server</module>
   </modules>
@@ -33,6 +35,7 @@
     <spring.boot.admin-version>2.3.1</spring.boot.admin-version>
     <mysql-connector-java.version>8.0.17</mysql-connector-java.version>
     <oracle.version>11.2.0.3</oracle.version>
+    <mssql.version>9.3.0.jre8-preview</mssql.version>
     <druid.version>1.1.21</druid.version>
     <mp.version>3.3.2</mp.version>
     <fastjson.version>1.2.70</fastjson.version>
@@ -99,6 +102,20 @@
         <version>${mp.version}</version>
       </dependency>
 
+      <!--mybatis-plus-annotation-->
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-annotation</artifactId>
+        <version>${mp.version}</version>
+      </dependency>
+
+      <!--mybatis-plus-extension-->
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-extension</artifactId>
+        <version>${mp.version}</version>
+      </dependency>
+
       <!--数据库驱动-->
       <dependency>
         <groupId>mysql</groupId>
@@ -107,9 +124,16 @@
       </dependency>
       <!--
       <dependency>
-        <groupId>com.oracle</groupId>
-        <artifactId>ojdbc6</artifactId>
-        <version>${oracle.version}</version>
+          <groupId>com.oracle</groupId>
+          <artifactId>ojdbc6</artifactId>
+          <version>${oracle.version}</version>
+      </dependency>
+      -->
+      <!--
+      <dependency>
+          <groupId>com.microsoft.sqlserver</groupId>
+          <artifactId>mssql-jdbc</artifactId>
+          <version>${mssql.version}</version>
       </dependency>
       -->
 

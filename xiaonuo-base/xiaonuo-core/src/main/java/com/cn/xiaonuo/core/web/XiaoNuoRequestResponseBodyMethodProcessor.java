@@ -1,6 +1,6 @@
 package com.cn.xiaonuo.core.web;
 
-import com.cn.xiaonuo.core.context.param.RequestParamContext;
+import com.cn.xiaonuo.common.context.param.RequestParamContext;
 import org.springframework.core.Conventions;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.converter.HttpMessageConverter;

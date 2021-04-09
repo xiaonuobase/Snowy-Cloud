@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function sysFileInfoPage (parameter) {
   return axios({
-    url: '/sysFileInfo/page',
+    url: '/system/sysFileInfo/page',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function sysFileInfoPage (parameter) {
  */
 export function sysFileInfoList (parameter) {
   return axios({
-    url: '/sysFileInfo/list',
+    url: '/system/sysFileInfo/list',
     method: 'get',
     params: parameter
   })
@@ -36,7 +36,7 @@ export function sysFileInfoList (parameter) {
  */
 export function sysFileInfoUpload (parameter) {
   return axios({
-    url: '/sysFileInfo/upload',
+    url: '/system/sysFileInfo/upload',
     method: 'post',
     data: parameter
   })
@@ -50,7 +50,7 @@ export function sysFileInfoUpload (parameter) {
  */
 export function sysFileInfoDownload (parameter) {
   return axios({
-    url: '/sysFileInfo/download',
+    url: '/system/sysFileInfo/download',
     method: 'get',
     params: parameter,
     responseType: 'blob'
@@ -65,7 +65,7 @@ export function sysFileInfoDownload (parameter) {
  */
 export function sysFileInfoPreview (parameter) {
   return axios({
-    url: '/sysFileInfo/preview',
+    url: '/system/sysFileInfo/preview',
     method: 'get',
     params: parameter,
     responseType: 'arraybuffer'
@@ -80,7 +80,7 @@ export function sysFileInfoPreview (parameter) {
  */
 export function sysFileInfoDetail (parameter) {
   return axios({
-    url: '/sysFileInfo/detail',
+    url: '/system/sysFileInfo/detail',
     method: 'get',
     params: parameter
   })
@@ -94,7 +94,7 @@ export function sysFileInfoDetail (parameter) {
  */
 export function sysFileInfoDelete (parameter) {
   return axios({
-    url: '/sysFileInfo/delete',
+    url: '/system/sysFileInfo/delete',
     method: 'post',
     data: parameter
   })

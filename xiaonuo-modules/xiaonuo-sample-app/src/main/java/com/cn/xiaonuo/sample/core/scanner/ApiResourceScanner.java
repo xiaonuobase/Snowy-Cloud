@@ -26,8 +26,8 @@ package com.cn.xiaonuo.sample.core.scanner;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
-import com.cn.xiaonuo.core.consts.SymbolConstant;
-import com.cn.xiaonuo.core.context.resources.ApiResourceContext;
+import com.cn.xiaonuo.common.consts.SymbolConstant;
+import com.cn.xiaonuo.common.context.resources.ApiResourceContext;
 import com.cn.xiaonuo.core.util.AopTargetUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;

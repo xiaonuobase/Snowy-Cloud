@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function sysDictTypePage (parameter) {
   return axios({
-    url: '/sysDictType/page',
+    url: '/system/sysDictType/page',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function sysDictTypePage (parameter) {
  */
 export function sysDictTypeAdd (parameter) {
   return axios({
-    url: '/sysDictType/add',
+    url: '/system/sysDictType/add',
     method: 'post',
     data: parameter
   })
@@ -36,7 +36,7 @@ export function sysDictTypeAdd (parameter) {
  */
 export function sysDictTypeEdit (parameter) {
   return axios({
-    url: '/sysDictType/edit',
+    url: '/system/sysDictType/edit',
     method: 'post',
     data: parameter
   })
@@ -50,7 +50,7 @@ export function sysDictTypeEdit (parameter) {
  */
 export function sysDictTypeDelete (parameter) {
   return axios({
-    url: '/sysDictType/delete',
+    url: '/system/sysDictType/delete',
     method: 'post',
     data: parameter
   })
@@ -64,7 +64,7 @@ export function sysDictTypeDelete (parameter) {
  */
 export function sysDictTypeDropDown (parameter) {
   return axios({
-    url: '/sysDictType/dropDown',
+    url: '/system/sysDictType/dropDown',
     method: 'get',
     params: parameter
   })
@@ -78,7 +78,7 @@ export function sysDictTypeDropDown (parameter) {
  */
 export function sysDictTypeTree (parameter) {
   return axios({
-    url: '/sysDictType/tree',
+    url: '/system/sysDictType/tree',
     method: 'get',
     params: parameter
   })

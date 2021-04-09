@@ -24,9 +24,9 @@ XiaoNuo采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注�
  */
 package com.cn.xiaonuo.sample.core.mybatis.sqlfilter;
 
-import com.cn.xiaonuo.core.consts.SpringSecurityConstant;
-import com.cn.xiaonuo.core.context.constant.ConstantContextHolder;
-import com.cn.xiaonuo.core.exception.DemoException;
+import com.cn.xiaonuo.common.consts.SpringSecurityConstant;
+import com.cn.xiaonuo.common.context.constant.ConstantContextHolder;
+import com.cn.xiaonuo.common.exception.DemoException;
 import com.cn.xiaonuo.core.util.HttpServletUtil;
 import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
 import org.apache.ibatis.executor.statement.StatementHandler;

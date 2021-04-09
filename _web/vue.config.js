@@ -89,8 +89,10 @@ const vueConfig = {
         target: process.env.VUE_APP_API_BASE_URL,
         ws: false,
         changeOrigin: true,
-        pathRewrite: {
-          '^/api': '/main' // 需要rewrite的,
+        pathRewrite: {// 需要rewrite的path
+          '^/api/system': '/main',
+          '^/api/gen': '/main',
+
         }
       }
     }

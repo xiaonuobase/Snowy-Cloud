@@ -24,8 +24,8 @@ XiaoNuo采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注�
  */
 package com.cn.xiaonuo.core.util;
 
-import com.cn.xiaonuo.core.exception.ServiceException;
-import com.cn.xiaonuo.core.exception.enums.ServerExceptionEnum;
+import com.cn.xiaonuo.common.exception.ServiceException;
+import com.cn.xiaonuo.common.exception.enums.ServerExceptionEnum;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 

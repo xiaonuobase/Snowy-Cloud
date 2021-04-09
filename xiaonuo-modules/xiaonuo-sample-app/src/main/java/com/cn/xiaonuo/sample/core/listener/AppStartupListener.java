@@ -26,7 +26,7 @@ package com.cn.xiaonuo.sample.core.listener;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
-import com.cn.xiaonuo.core.consts.CommonConstant;
+import com.cn.xiaonuo.common.consts.CommonConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

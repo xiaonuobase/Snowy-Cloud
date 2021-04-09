@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function sysDictDataPage (parameter) {
   return axios({
-    url: '/sysDictData/page',
+    url: '/system/sysDictData/page',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function sysDictDataPage (parameter) {
  */
 export function sysDictDataAdd (parameter) {
   return axios({
-    url: '/sysDictData/add',
+    url: '/system/sysDictData/add',
     method: 'post',
     data: parameter
   })
@@ -36,7 +36,7 @@ export function sysDictDataAdd (parameter) {
  */
 export function sysDictDataEdit (parameter) {
   return axios({
-    url: '/sysDictData/edit',
+    url: '/system/sysDictData/edit',
     method: 'post',
     data: parameter
   })
@@ -50,7 +50,7 @@ export function sysDictDataEdit (parameter) {
  */
 export function sysDictDataDelete (parameter) {
   return axios({
-    url: '/sysDictData/delete',
+    url: '/system/sysDictData/delete',
     method: 'post',
     data: parameter
   })

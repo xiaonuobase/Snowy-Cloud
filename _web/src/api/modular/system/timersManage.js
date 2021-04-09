@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function sysTimersPage (parameter) {
   return axios({
-    url: '/sysTimers/page',
+    url: '/system/sysTimers/page',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function sysTimersPage (parameter) {
  */
 export function sysTimersList (parameter) {
   return axios({
-    url: '/sysTimers/list',
+    url: '/system/sysTimers/list',
     method: 'get',
     params: parameter
   })
@@ -36,7 +36,7 @@ export function sysTimersList (parameter) {
  */
 export function sysTimersDetail (parameter) {
   return axios({
-    url: '/sysTimers/detail',
+    url: '/system/sysTimers/detail',
     method: 'get',
     params: parameter
   })
@@ -50,7 +50,7 @@ export function sysTimersDetail (parameter) {
  */
 export function sysTimersAdd (parameter) {
   return axios({
-    url: '/sysTimers/add',
+    url: '/system/sysTimers/add',
     method: 'post',
     data: parameter
   })
@@ -64,7 +64,7 @@ export function sysTimersAdd (parameter) {
  */
 export function sysTimersDelete (parameter) {
   return axios({
-    url: '/sysTimers/delete',
+    url: '/system/sysTimers/delete',
     method: 'post',
     data: parameter
   })
@@ -78,7 +78,7 @@ export function sysTimersDelete (parameter) {
  */
 export function sysTimersEdit (parameter) {
   return axios({
-    url: '/sysTimers/edit',
+    url: '/system/sysTimers/edit',
     method: 'post',
     data: parameter
   })
@@ -92,7 +92,7 @@ export function sysTimersEdit (parameter) {
  */
 export function sysTimersGetActionClasses (parameter) {
   return axios({
-    url: '/sysTimers/getActionClasses',
+    url: '/system/sysTimers/getActionClasses',
     method: 'post',
     data: parameter
   })
@@ -106,7 +106,7 @@ export function sysTimersGetActionClasses (parameter) {
  */
 export function sysTimersStart (parameter) {
   return axios({
-    url: '/sysTimers/start',
+    url: '/system/sysTimers/start',
     method: 'post',
     data: parameter
   })
@@ -120,7 +120,7 @@ export function sysTimersStart (parameter) {
  */
 export function sysTimersStop (parameter) {
   return axios({
-    url: '/sysTimers/stop',
+    url: '/system/sysTimers/stop',
     method: 'post',
     data: parameter
   })

@@ -1,4 +1,3 @@
-
 spring:
   # Mysql数据库
   datasource:
@@ -9,6 +8,27 @@ spring:
     # 连接池大小根据实际情况调整
     max-active: 20
     max-pool-prepared-statement-per-connection-size: 20
+
+# Oracle数据库
+#spring:
+#  datasource:
+#    driver-class-name: oracle.jdbc.OracleDriver
+#    url: jdbc:oracle:thin:@localhost:1521:orcl
+#    username: XIAONUO-CLOUD-ORACLE
+#    password: 123456
+#    # 连接池大小根据实际情况调整
+#    max-active: 20
+#    max-pool-prepared-statement-per-connection-size: 20
+
+# SQLServer配置
+#spring:
+#  datasource:
+#    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#    url: jdbc:sqlserver://localhost:1433;DatabaseName=xiaonuo-cloud-mssql
+#    username: sa
+#    password: 123456
+#    filters: wall,mergeStat
+
   boot:
     admin:
       client:

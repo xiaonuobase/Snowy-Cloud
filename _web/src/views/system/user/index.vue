@@ -1,5 +1,4 @@
 <template>
-
   <a-row :gutter="24" >
     <a-col :md="5" :sm="24">
       <a-card :bordered="false" :loading="treeLoading">
@@ -18,9 +17,8 @@
       </a-card>
     </a-col>
     <a-col :md="19" :sm="24">
-      <a-card :bordered="false">
-
-        <div class="table-page-search-wrapper" v-if="hasPerm('sysUser:page')">
+      <x-card v-if="hasPerm('sysUser:page')">
+        <div slot="content" class="table-page-search-wrapper">
           <a-form layout="inline">
             <a-row :gutter="48">
               <a-col :md="8" :sm="24">
@@ -42,24 +40,22 @@
             </a-row>
           </a-form>
         </div>
-
-        <div class="table-operator" v-if="hasPerm('sysUser:add')" >
-          <a-button type="primary" v-if="hasPerm('sysUser:add')" icon="plus" @click="$refs.addForm.add()">新增用户</a-button>
-        </div>
-
+      </x-card>
+      <a-card :bordered="false">
         <s-table
           ref="table"
-          size="default"
           :columns="columns"
           :data="loadData"
           :alert="true"
           :rowKey="(record) => record.id"
           :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
         >
+          <template slot="operator" v-if="hasPerm('sysUser:add')">
+            <a-button type="primary" v-if="hasPerm('sysUser:add')" icon="plus" @click="$refs.addForm.add()">新增用户</a-button>
+          </template>
           <span slot="sex" slot-scope="text">
             {{ sexFilter(text) }}
           </span>
-
           <span slot="status" slot-scope="text,record" v-if="hasPerm('sysUser:changeStatus')">
             <a-popconfirm placement="top" :title="text===0? '确定停用该用户？':'确定启用该用户？'" @confirm="() => editUserStatus(text,record)">
               <a>{{ statusFilter(text) }}</a>
@@ -68,7 +64,6 @@
           <span slot="status" v-else>
             {{ statusFilter(text) }}
           </span>
-
           <span slot="action" slot-scope="text, record">
             <a v-if="hasPerm('sysUser:edit')" @click="$refs.editForm.edit(record)">编辑</a>
             <a-divider type="vertical" v-if="hasPerm('sysUser:edit')" />
@@ -96,22 +91,17 @@
               </a-menu>
             </a-dropdown>
           </span>
-
         </s-table>
-
         <add-form ref="addForm" @ok="handleOk" />
         <edit-form ref="editForm" @ok="handleOk" />
         <user-role-form ref="userRoleForm" @ok="handleOk"/>
         <user-org-form ref="userOrgForm" @ok="handleOk"/>
-
       </a-card>
     </a-col>
   </a-row>
-
 </template>
-
 <script>
-  import { STable } from '@/components'
+  import { STable, XCard } from '@/components'
   import { Empty } from 'ant-design-vue'
   import { getOrgTree } from '@/api/modular/system/orgManage'
   import { getUserPage, sysUserDelete, sysUserChangeStatus, sysUserResetPwd } from '@/api/modular/system/userManage'
@@ -120,20 +110,17 @@
   import editForm from './editForm'
   import userRoleForm from './userRoleForm'
   import userOrgForm from './userOrgForm'
-
   export default {
     components: {
+      XCard,
       STable,
       addForm,
       editForm,
       userRoleForm,
       userOrgForm
-      // sysDictTypeDropDown,
     },
-
     data () {
       return {
-
         // 高级搜索 展开/关闭
         advanced: false,
         // 查询参数
@@ -179,8 +166,7 @@
         replaceFields: {
           key: 'id'
         }
-
-    }
+      }
     },
     created () {
       /**
@@ -209,9 +195,7 @@
         })
       }
     },
-
     methods: {
-
       sexFilter (sex) {
         // eslint-disable-next-line eqeqeq
         const values = this.sexDictTypeDropDown.filter(item => item.code == sex)
@@ -226,7 +210,6 @@
           return values[0].value
         }
       },
-
       /**
        * 获取字典数据
        */
@@ -238,7 +221,6 @@
           this.statusDictTypeDropDown = res.data
         })
       },
-
       /**
        * 修改用户状态
        */
@@ -261,7 +243,6 @@
           }
         })
       },
-
       /**
        * 重置密码
        */
@@ -275,7 +256,6 @@
           }
         })
       },
-
       /**
        * 删除用户
        * @param record
@@ -292,7 +272,6 @@
           this.$message.error('删除错误：' + err.message)
         })
       },
-
       /**
        * 点击左侧机构树查询列表
        */
@@ -313,10 +292,8 @@
         this.selectedRows = selectedRows
       }
     }
-
   }
 </script>
-
 <style lang="less">
   .table-operator {
     margin-bottom: 18px;
@@ -324,5 +301,4 @@
   button {
     margin-right: 8px;
   }
-
 </style>

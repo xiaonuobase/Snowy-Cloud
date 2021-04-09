@@ -26,9 +26,8 @@ package com.cn.xiaonuo.core.util;
 
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.http.ContentType;
-import com.cn.xiaonuo.core.pojo.response.ErrorResponseData;
+import com.cn.xiaonuo.common.pojo.response.ErrorResponseData;
 import com.alibaba.fastjson.JSON;
-import com.cn.xiaonuo.core.pojo.response.ErrorResponseData;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

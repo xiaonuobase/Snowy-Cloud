@@ -27,7 +27,7 @@ package com.cn.xiaonuo.sample.modular.sample.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.cn.xiaonuo.core.pojo.base.entity.BaseEntity;
+import com.cn.xiaonuo.common.pojo.base.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

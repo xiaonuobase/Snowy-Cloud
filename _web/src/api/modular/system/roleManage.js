@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function getRolePage (parameter) {
   return axios({
-    url: '/sysRole/page',
+    url: '/system/sysRole/page',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function getRolePage (parameter) {
  */
 export function sysRoleAdd (parameter) {
   return axios({
-    url: '/sysRole/add',
+    url: '/system/sysRole/add',
     method: 'post',
     data: parameter
   })
@@ -36,7 +36,7 @@ export function sysRoleAdd (parameter) {
  */
 export function sysRoleEdit (parameter) {
   return axios({
-    url: '/sysRole/edit',
+    url: '/system/sysRole/edit',
     method: 'post',
     data: parameter
   })
@@ -50,7 +50,7 @@ export function sysRoleEdit (parameter) {
  */
 export function sysRoleDelete (parameter) {
   return axios({
-    url: '/sysRole/delete',
+    url: '/system/sysRole/delete',
     method: 'post',
     data: parameter
   })
@@ -64,7 +64,7 @@ export function sysRoleDelete (parameter) {
  */
 export function sysRoleDeteil (parameter) {
   return axios({
-    url: '/sysRole/detail',
+    url: '/system/sysRole/detail',
     method: 'get',
     params: parameter
   })
@@ -78,7 +78,7 @@ export function sysRoleDeteil (parameter) {
  */
 export function sysRoleDropDown (parameter) {
   return axios({
-    url: '/sysRole/dropDown',
+    url: '/system/sysRole/dropDown',
     method: 'get',
     params: parameter
   })
@@ -92,7 +92,7 @@ export function sysRoleDropDown (parameter) {
  */
 export function sysRoleOwnMenu (parameter) {
   return axios({
-    url: '/sysRole/ownMenu',
+    url: '/system/sysRole/ownMenu',
     method: 'get',
     params: parameter
   })
@@ -106,7 +106,7 @@ export function sysRoleOwnMenu (parameter) {
  */
 export function sysRoleGrantMenu (parameter) {
   return axios({
-    url: '/sysRole/grantMenu',
+    url: '/system/sysRole/grantMenu',
     method: 'post',
     data: parameter
   })
@@ -120,7 +120,7 @@ export function sysRoleGrantMenu (parameter) {
  */
 export function sysRoleOwnData (parameter) {
   return axios({
-    url: '/sysRole/ownData',
+    url: '/system/sysRole/ownData',
     method: 'get',
     params: parameter
   })
@@ -134,7 +134,7 @@ export function sysRoleOwnData (parameter) {
  */
 export function sysRoleGrantData (parameter) {
   return axios({
-    url: '/sysRole/grantData',
+    url: '/system/sysRole/grantData',
     method: 'post',
     data: parameter
   })

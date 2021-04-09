@@ -1,8 +1,8 @@
 package com.cn.xiaonuo.core.tenant.exception.enums;
 
-import com.cn.xiaonuo.core.annotion.ExpEnumType;
-import com.cn.xiaonuo.core.exception.enums.abs.AbstractBaseExceptionEnum;
-import com.cn.xiaonuo.core.factory.ExpEnumCodeFactory;
+import com.cn.xiaonuo.common.annotion.ExpEnumType;
+import com.cn.xiaonuo.common.exception.enums.abs.AbstractBaseExceptionEnum;
+import com.cn.xiaonuo.common.factory.ExpEnumCodeFactory;
 import com.cn.xiaonuo.core.tenant.consts.TenantExpEnumConstant;
 
 /**

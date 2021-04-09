@@ -17,6 +17,7 @@
         >
           <a-input placeholder="请输入参数名称" v-decorator="['name', {rules: [{required: true, message: '请输入参数名称！'}]}]" />
         </a-form-item>
+
         <a-form-item
           label="唯一编码"
           :labelCol="labelCol"
@@ -25,6 +26,7 @@
         >
           <a-input placeholder="请输入唯一编码" v-decorator="['code', {rules: [{required: true, message: '请输入唯一编码！'}]}]" />
         </a-form-item>
+
         <a-form-item
           label="系统参数"
           :labelCol="labelCol"
@@ -35,6 +37,7 @@
             <a-radio-button value="N" >  否 </a-radio-button>
           </a-radio-group>
         </a-form-item>
+
         <a-form-item
           label="所属分类"
           :labelCol="labelCol"
@@ -45,6 +48,7 @@
             <a-select-option v-for="(item,index) in groupCodeList" :key="index" :value="item.code" >{{ item.value }}</a-select-option>
           </a-select>
         </a-form-item>
+
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
@@ -52,6 +56,7 @@
         >
           <a-input placeholder="请输入参数值" v-decorator="['value', {rules: [{required: true, message: '请输入参数值！'}]}]" />
         </a-form-item>
+
         <a-form-item
           label="备注"
           :labelCol="labelCol"
@@ -60,10 +65,13 @@
         >
           <a-textarea :rows="4" placeholder="请输入备注" v-decorator="['remark']"></a-textarea>
         </a-form-item>
+
       </a-form>
+
     </a-spin>
   </a-modal>
 </template>
+
 <script>
   import { sysDictTypeDropDown, sysConfigAdd } from '@/api/modular/system/configManage'
   export default {
@@ -90,6 +98,7 @@
         this.visible = true
         this.sysDictTypeDropDown()
       },
+
       /**
        * 获取所属分类
        */
@@ -99,6 +108,7 @@
           this.formLoading = false
         })
       },
+
       handleSubmit () {
         const { form: { validateFields } } = this
         this.confirmLoading = true

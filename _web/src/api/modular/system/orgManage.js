@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function getOrgTree (parameter) {
   return axios({
-    url: '/sysOrg/tree',
+    url: '/system/sysOrg/tree',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function getOrgTree (parameter) {
  */
 export function getOrgList (parameter) {
   return axios({
-    url: '/sysOrg/list',
+    url: '/system/sysOrg/list',
     method: 'get',
     params: parameter
   })
@@ -36,7 +36,7 @@ export function getOrgList (parameter) {
  */
 export function getOrgPage (parameter) {
   return axios({
-    url: '/sysOrg/page',
+    url: '/system/sysOrg/page',
     method: 'get',
     params: parameter
   })
@@ -50,7 +50,7 @@ export function getOrgPage (parameter) {
  */
 export function sysOrgAdd (parameter) {
   return axios({
-    url: '/sysOrg/add',
+    url: '/system/sysOrg/add',
     method: 'post',
     data: parameter
   })
@@ -64,7 +64,7 @@ export function sysOrgAdd (parameter) {
  */
 export function sysOrgEdit (parameter) {
   return axios({
-    url: '/sysOrg/edit',
+    url: '/system/sysOrg/edit',
     method: 'post',
     data: parameter
   })
@@ -78,7 +78,7 @@ export function sysOrgEdit (parameter) {
  */
 export function sysOrgDelete (parameter) {
   return axios({
-    url: '/sysOrg/delete',
+    url: '/system/sysOrg/delete',
     method: 'post',
     data: parameter
   })

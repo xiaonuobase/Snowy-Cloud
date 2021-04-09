@@ -29,8 +29,8 @@ import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.useragent.Browser;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
-import com.cn.xiaonuo.core.consts.CommonConstant;
-import com.cn.xiaonuo.core.consts.SymbolConstant;
+import com.cn.xiaonuo.common.consts.CommonConstant;
+import com.cn.xiaonuo.common.consts.SymbolConstant;
 
 import javax.servlet.http.HttpServletRequest;
 

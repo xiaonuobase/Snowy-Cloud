@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function sysPosPage (parameter) {
   return axios({
-    url: '/sysPos/page',
+    url: '/system/sysPos/page',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function sysPosPage (parameter) {
  */
 export function sysPosList (parameter) {
   return axios({
-    url: '/sysPos/list',
+    url: '/system/sysPos/list',
     method: 'get',
     params: parameter
   })
@@ -36,7 +36,7 @@ export function sysPosList (parameter) {
  */
 export function sysPosAdd (parameter) {
   return axios({
-    url: '/sysPos/add',
+    url: '/system/sysPos/add',
     method: 'post',
     data: parameter
   })
@@ -50,7 +50,7 @@ export function sysPosAdd (parameter) {
  */
 export function sysPosEdit (parameter) {
   return axios({
-    url: '/sysPos/edit',
+    url: '/system/sysPos/edit',
     method: 'post',
     data: parameter
   })
@@ -64,7 +64,7 @@ export function sysPosEdit (parameter) {
  */
 export function sysPosDelete (parameter) {
   return axios({
-    url: '/sysPos/delete',
+    url: '/system/sysPos/delete',
     method: 'post',
     data: parameter
   })

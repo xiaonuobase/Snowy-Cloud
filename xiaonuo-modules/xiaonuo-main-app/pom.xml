@@ -18,7 +18,26 @@
 
         <dependency>
             <groupId>cn.xiaonuo</groupId>
+            <artifactId>xiaonuo-auth-api</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.xiaonuo</groupId>
+            <artifactId>xiaonuo-context-api</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.xiaonuo</groupId>
             <artifactId>xiaonuo-system</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+
+        <!-- 代码生成模块 -->
+        <dependency>
+            <groupId>cn.xiaonuo</groupId>
+            <artifactId>xiaonuo-gen</artifactId>
             <version>1.1.0</version>
         </dependency>
 

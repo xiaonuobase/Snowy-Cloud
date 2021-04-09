@@ -24,7 +24,7 @@ XiaoNuo采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注�
  */
 package com.cn.xiaonuo.core.validation.unique;
 
-import com.cn.xiaonuo.core.consts.CommonConstant;
+import com.cn.xiaonuo.common.consts.CommonConstant;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

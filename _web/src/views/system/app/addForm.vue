@@ -8,6 +8,7 @@
     @cancel="handleCancel"
   >
     <a-spin :spinning="confirmLoading">
+
       <a-form :form="form">
         <a-form-item
           style="display: none;"
@@ -24,6 +25,7 @@
         >
           <a-input placeholder="请输入应用名称" v-decorator="['name', {rules: [{required: true, message: '请输入应用名称！'}]}]" />
         </a-form-item>
+
         <a-form-item
           label="唯一编码"
           :labelCol="labelCol"
@@ -32,12 +34,16 @@
         >
           <a-input placeholder="请输入唯一编码" v-decorator="['code', {rules: [{required: true, message: '请输入唯一编码！'}]}]" />
         </a-form-item>
+
       </a-form>
+
     </a-spin>
   </a-modal>
 </template>
+
 <script>
   import { sysAppAdd } from '@/api/modular/system/appManage'
+
   export default {
     data () {
       return {
@@ -55,11 +61,13 @@
       }
     },
     methods: {
+
       // 初始化方法
       add () {
         this.visible = true
         this.form.getFieldDecorator('active', { initialValue: 'N' })
       },
+
       handleSubmit () {
         const { form: { validateFields } } = this
         this.confirmLoading = true

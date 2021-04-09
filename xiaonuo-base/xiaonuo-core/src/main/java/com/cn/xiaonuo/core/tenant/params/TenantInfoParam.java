@@ -1,6 +1,6 @@
 package com.cn.xiaonuo.core.tenant.params;
 
-import com.cn.xiaonuo.core.pojo.base.param.BaseParam;
+import com.cn.xiaonuo.common.pojo.base.param.BaseParam;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

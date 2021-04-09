@@ -8,3 +8,9 @@ spring:
     name: xiaonuo-gateway-app
   profiles:
     active: '@spring.active@'
+  main:
+    allow-bean-definition-overriding: true
+xiaonuo:
+  gate:
+    ignore:
+      startWith:  /login,/logout,/oauth,/sysFileInfo/upload,/sysFileInfo/download,/sysFileInfo/preview,/druid,/actuator,/captcha,/getCaptchaOpen,/getTenantOpen,/tenantInfo/listTenants,/designer,/app/rest,/aliPay,/aliPayMgr

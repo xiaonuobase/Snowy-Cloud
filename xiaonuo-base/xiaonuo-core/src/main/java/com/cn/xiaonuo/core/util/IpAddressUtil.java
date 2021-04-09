@@ -30,17 +30,17 @@ import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.log.Log;
-import com.cn.xiaonuo.core.consts.CommonConstant;
-import com.cn.xiaonuo.core.consts.SymbolConstant;
-import com.cn.xiaonuo.core.context.constant.ConstantContextHolder;
-import com.cn.xiaonuo.core.context.requestno.RequestNoContext;
+import com.cn.xiaonuo.common.consts.CommonConstant;
+import com.cn.xiaonuo.common.consts.SymbolConstant;
+import com.cn.xiaonuo.common.context.constant.ConstantContextHolder;
+import com.cn.xiaonuo.common.context.requestno.RequestNoContext;
 import com.alibaba.fastjson.JSONPath;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * 根据ip地址定位工具类，使用高德地地图定位api
+ * 根据ip地址定位工具类，使用阿里云定位api
  *
  * @author xuyuxiang
  * @date 2020/3/16 11:25

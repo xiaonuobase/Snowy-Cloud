@@ -24,16 +24,13 @@ XiaoNuo采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注�
  */
 package com.cn.xiaonuo.main.modular.controller;
 
-import com.cn.xiaonuo.core.pojo.response.ResponseData;
-import com.cn.xiaonuo.core.pojo.response.SuccessResponseData;
-import com.cn.xiaonuo.main.modular.restapi.CloudSampleRestApiClient;
-import com.cn.xiaonuo.main.modular.service.DatasourceExampleService;
+import com.cn.xiaonuo.common.pojo.response.ResponseData;
+import com.cn.xiaonuo.common.pojo.response.SuccessResponseData;
+import com.cn.xiaonuo.main.modular.consumer.CloudSampleRestApiConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * sprindcloud-config示例接口
@@ -49,7 +46,7 @@ public class CloudExampleController {
     private String configTest;
 
     @Autowired
-    private CloudSampleRestApiClient cloudSampleRestApiClient;
+    private CloudSampleRestApiConsumer cloudSampleRestApiConsumer;
 
     @RequestMapping("/config/test")
     public ResponseData configTest() {
@@ -58,12 +55,12 @@ public class CloudExampleController {
 
     @RequestMapping("/sample/config/test")
     public ResponseData sampleConfigTest() {
-        return ResponseData.success(cloudSampleRestApiClient.configTest());
+        return ResponseData.success(cloudSampleRestApiConsumer.configTest());
     }
 
     @RequestMapping("/sample/getBySampleName")
     public ResponseData getBySampleName(String sampleName){
-        return ResponseData.success(cloudSampleRestApiClient.getBySampleName(sampleName));
+        return ResponseData.success(cloudSampleRestApiConsumer.getBySampleName(sampleName));
     }
 
 }

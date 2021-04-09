@@ -6,8 +6,8 @@
     :footer="null"
     @cancel="handleCancel"
   >
-    <a-card :bordered="false">
-      <div class="table-page-search-wrapper" v-if="hasPerm('sysDictData:page')">
+    <x-card v-if="hasPerm('sysDictData:page')">
+      <div slot="content" class="table-page-search-wrapper" >
         <a-form layout="inline">
           <a-row :gutter="48">
             <a-col :md="8" :sm="24">
@@ -29,18 +29,19 @@
           </a-row>
         </a-form>
       </div>
-      <div class="table-operator" v-if="hasPerm('sysDictData:add')" >
-        <a-button type="primary" v-if="hasPerm('sysDictData:add')" icon="plus" @click="$refs.addForm.add(typeId)">新增数据</a-button>
-      </div>
+    </x-card>
+    <a-card :bordered="false">
       <s-table
         ref="table"
-        size="default"
         :columns="columns"
         :data="loadData"
         :alert="false"
         :rowKey="(record) => record.code"
         :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
       >
+        <template slot="operator" v-if="hasPerm('sysDictData:add')" >
+          <a-button @click="$refs.addForm.add(typeId)" icon="plus" type="primary" v-if="hasPerm('sysDictData:add')">新增数据</a-button>
+        </template>
         <span slot="status" slot-scope="text">
           {{ statusFilter(text) }}
         </span>
@@ -57,21 +58,19 @@
     </a-card>
   </a-modal>
 </template>
-
 <script>
-  import { STable } from '@/components'
+  import { STable, XCard } from '@/components'
   import { sysDictDataPage, sysDictDataDelete } from '@/api/modular/system/dictDataManage'
   import { sysDictTypeDropDown } from '@/api/modular/system/dictManage'
   import addForm from './addForm'
   import editForm from './editForm'
-
   export default {
     components: {
+      XCard,
       STable,
       addForm,
       editForm
     },
-
     data () {
       return {
         // 高级搜索 展开/关闭
@@ -117,7 +116,6 @@
         statusDict: []
       }
     },
-
     created () {
       this.sysDictTypeDropDown()
       if (this.hasPerm('sysDictData:edit') || this.hasPerm('sysDictData:delete')) {
@@ -129,7 +127,6 @@
         })
       }
     },
-
     methods: {
       // 打开此页面首先加载此方法
       index (record) {
@@ -142,7 +139,6 @@
           // 首次进入界面，因表格加载顺序，会抛异常，我们不予理会
         }
       },
-
       statusFilter (status) {
         // eslint-disable-next-line eqeqeq
         const values = this.statusDict.filter(item => item.code == status)
@@ -150,7 +146,6 @@
           return values[0].value
         }
       },
-
       /**
        * 获取字典数据
        */
@@ -159,7 +154,6 @@
           this.statusDict = res.data
         })
       },
-
       handleCancel () {
         this.queryParam = {}
         this.visible = false
@@ -189,7 +183,6 @@
     }
   }
 </script>
-
 <style lang="less">
   .table-operator {
     margin-bottom: 18px;

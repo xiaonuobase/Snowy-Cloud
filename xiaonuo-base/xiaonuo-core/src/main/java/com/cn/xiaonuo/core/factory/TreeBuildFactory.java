@@ -26,8 +26,7 @@ package com.cn.xiaonuo.core.factory;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.cn.xiaonuo.core.pojo.base.node.BaseTreeNode;
-import com.cn.xiaonuo.core.pojo.base.node.BaseTreeNode;
+import com.cn.xiaonuo.common.pojo.base.node.BaseTreeNode;
 import lombok.Data;
 
 import java.util.ArrayList;
