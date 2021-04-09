@@ -78,7 +78,7 @@ const user = {
             commit('SET_INFO', data)
             commit('SET_NAME', { name: data.name, welcome: welcome() })
             if (data.avatar != null) {
-              commit('SET_AVATAR', process.env.VUE_APP_API_BASE_URL + '/sysFileInfo/preview?id=' + data.avatar)
+              commit('SET_AVATAR', process.env.VUE_APP_API_BASE_URL + '/main/sysFileInfo/preview?id=' + data.avatar)
             }
             resolve(data)
           } else {

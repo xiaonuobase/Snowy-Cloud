@@ -186,7 +186,7 @@
     },
     created () {
       this.user = this.userInfo
-      this.avatar = process.env.VUE_APP_API_BASE_URL + '/sysFileInfo/preview?id=' + this.userInfo.avatar
+      this.avatar = process.env.VUE_APP_API_BASE_URL + '/main/sysFileInfo/preview?id=' + this.userInfo.avatar
     },
     mounted () {
       this.getProjects()
