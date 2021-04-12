@@ -74,7 +74,7 @@ public class ConstantsInitListener implements ApplicationListener<ApplicationCon
         String dataSourcePassword = environment.getProperty("spring.datasource.password");
 
         // 如果有为空的配置，终止执行
-        if (ObjectUtil.hasEmpty(dataSourceUrl, dataSourceUsername, dataSourcePassword)) {
+        if (ObjectUtil.hasEmpty(dataSourceUrl, dataSourceUsername)) {
             throw new ServiceException(ServerExceptionEnum.SERVER_ERROR);
         }
 
