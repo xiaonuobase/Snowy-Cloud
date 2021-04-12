@@ -2599,14 +2599,6 @@ EXEC sp_addextendedproperty
 'TABLE', N'sys_oauth_user'
 GO
 
-
--- ----------------------------
--- Records of sys_oauth_user
--- ----------------------------
-INSERT INTO [dbo].[sys_oauth_user]  VALUES (N'1288324058135449602', N'1564001', N'29b2ce48dc050056503c2cf237648e43', N'就是那个锅', N'https://portrait.gitee.com/uploads/avatars/user/521/1564001_tpot_1590649435.png', N'http://tpot.com.cn', NULL, NULL, N'1633655315@qq.com', N'未知', N'GITEE', N'', N'2020-07-29 12:02:46.0000000', N'-1', NULL, NULL)
-GO
-
-
 -- ----------------------------
 -- Table structure for sys_op_log
 -- ----------------------------

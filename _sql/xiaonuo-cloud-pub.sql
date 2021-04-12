@@ -664,11 +664,6 @@ CREATE TABLE `sys_oauth_user`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '第三方认证用户信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of sys_oauth_user
--- ----------------------------
-INSERT INTO `sys_oauth_user` VALUES (1288324058135449602, '1564001', '29b2ce48dc050056503c2cf237648e43', '就是那个锅', 'https://portrait.gitee.com/uploads/avatars/user/521/1564001_tpot_1590649435.png', 'http://tpot.com.cn', NULL, NULL, '1633655315@qq.com', '未知', 'GITEE', '', '2020-07-29 12:02:46', -1, NULL, NULL);
-
--- ----------------------------
 -- Table structure for sys_op_log
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_op_log`;

@@ -825,12 +825,6 @@ COMMENT ON COLUMN "SYS_OAUTH_USER"."UPDATE_USER" IS '更新用户';
 COMMENT ON TABLE "SYS_OAUTH_USER" IS '第三方认证用户信息表';
 
 -- ----------------------------
--- Records of sys_oauth_user
--- ----------------------------
-INSERT INTO "SYS_OAUTH_USER" VALUES ('1288324058135449602', '1564001', '29b2ce48dc050056503c2cf237648e43', '就是那个锅', 'https://portrait.gitee.com/uploads/avatars/user/521/1564001_tpot_1590649435.png', 'http://tpot.com.cn', NULL, NULL, '1633655315@qq.com', '未知', 'GITEE', '', TO_DATE('2020-07-29 12:02:46', 'SYYYY-MM-DD HH24:MI:SS'), '-1', NULL, NULL);
-COMMIT;
-
--- ----------------------------
 -- Table structure for sys_op_log
 -- ----------------------------
 CREATE TABLE "SYS_OP_LOG" (

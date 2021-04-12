@@ -13,19 +13,26 @@ spring:
 #spring:
 #  datasource:
 #    driver-class-name: oracle.jdbc.OracleDriver
-#    url: jdbc:oracle:thin:@localhost:1521:orcl
-#    username: XIAONUO-CLOUD-ORACLE
+#    url: jdbc:oracle:thin:@localhost:1521:xiaonuo-cloud-pub-oracle
+#    username: xiaonuo-cloud-pub-oracle
 #    password: 123456
-#    # 连接池大小根据实际情况调整
-#    max-active: 20
-#    max-pool-prepared-statement-per-connection-size: 20
+#    filters: wall,mergeStat
 
 # SQLServer配置
 #spring:
 #  datasource:
 #    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-#    url: jdbc:sqlserver://localhost:1433;DatabaseName=xiaonuo-cloud-mssql
-#    username: sa
+#    url: jdbc:sqlserver://localhost:1433;DatabaseName=xiaonuo-pub-cloud-mssql
+#    username: xiaonuo-cloud-pub-mssql
+#    password: 123456
+#    filters: wall,mergeStat
+
+# PostgreSQL配置
+#spring:
+#  datasource:
+#    driverClassName: org.postgresql.Driver
+#    url: jdbc:postgresql://127.0.0.1:5432/xiaonuo-cloud-pub-postgresql
+#    username: xiaonuo-cloud-pub-postgresql
 #    password: 123456
 #    filters: wall,mergeStat
 
