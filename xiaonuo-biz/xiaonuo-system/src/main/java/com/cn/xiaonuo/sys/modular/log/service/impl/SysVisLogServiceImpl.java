@@ -67,6 +67,8 @@ public class SysVisLogServiceImpl extends ServiceImpl<SysVisLogMapper, SysVisLog
                         .apply("date_format (vis_time,'%Y-%m-%d') <= date_format('" + sysVisLogParam.getSearchEndTime() + "','%Y-%m-%d')");
             }
         }
+        //根据访问时间倒序排列
+        queryWrapper.orderByDesc(SysVisLog::getVisTime);
         return new PageResult<>(this.page(PageFactory.defaultPage(), queryWrapper));
     }
 
