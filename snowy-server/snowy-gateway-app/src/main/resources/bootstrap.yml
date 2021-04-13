@@ -1,0 +1,16 @@
+#服务配置
+server:
+  port: 9004
+
+#spring相关配置
+spring:
+  application:
+    name: snowy-gateway-app
+  profiles:
+    active: '@spring.active@'
+  main:
+    allow-bean-definition-overriding: true
+snowy:
+  gate:
+    ignore:
+      startWith:  /login,/logout,/oauth,/sysFileInfo/upload,/sysFileInfo/download,/sysFileInfo/preview,/druid,/actuator,/captcha,/getCaptchaOpen,/getTenantOpen,/tenantInfo/listTenants,/designer,/app/rest,/aliPay,/aliPayMgr

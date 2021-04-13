@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>vip.xiaonuo</groupId>
+    <artifactId>snowy-base</artifactId>
+    <version>1.6.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>snowy-security</artifactId>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+
+    <!-- snowy 通用包 -->
+    <dependency>
+      <groupId>vip.xiaonuo</groupId>
+      <artifactId>snowy-core</artifactId>
+      <version>1.6.0</version>
+    </dependency>
+
+    <!-- snowy 缓存包 -->
+    <dependency>
+      <groupId>vip.xiaonuo</groupId>
+      <artifactId>snowy-cache</artifactId>
+      <version>1.6.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>vip.xiaonuo</groupId>
+      <artifactId>snowy-auth-api</artifactId>
+      <version>1.6.0</version>
+    </dependency>
+
+    <!-- web -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <!-- security -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+  </build>
+</project>

@@ -1,0 +1,5 @@
+
+snowy:
+  main:
+    config:
+      test: snowy-main-test-dev

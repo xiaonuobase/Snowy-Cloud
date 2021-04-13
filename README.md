@@ -5,7 +5,7 @@
 </div>
 
 ### 框架介绍
-<div align="center"><h3 align="center">xiaonuo-cloud为XiaoNuo生态技术框架环境中的cloud微服务版本</h3></div>
+<div align="center"><h3 align="center">Snowy-Cloud为Snowy生态技术框架环境中的cloud微服务版本</h3></div>
 <div align="center"><h3 align="center">前后端分离架构，开箱即用，紧随前沿技术</h3></div>
 
 <p align="center">     
@@ -25,29 +25,20 @@
         <a href="./LICENSE">
             <img src="https://img.shields.io/badge/license-Apache%202-red" alt="license Apache 2.0">
         </a>
-        <a href="https://gitee.com/xiaonuobase/xiaonuo-cloud">
-            <img src="https://gitee.com/xiaonuobase/xiaonuo-cloud/badge/star.svg?theme=dark" alt="Gitee star">
+        <a href="https://gitee.com/xiaonuobase/snowy-cloud">
+            <img src="https://gitee.com/xiaonuobase/snowy-cloud/badge/star.svg?theme=dark" alt="Gitee star">
         </a>
         <a href="https://gitee.com/xiaonuobase/xiaonuo-cloud">
-            <img src="https://gitee.com/xiaonuobase/xiaonuo-cloud/badge/fork.svg?theme=dark" alt="Gitee fork">
-        </a>
-        <a href="https://github.com/xiaonuobase/xiaonuo-cloud">
-            <img src="https://img.shields.io/github/stars/xiaonuobase/xiaonuo-cloud?style=social" alt="GitHub stars">
-        </a>
-        <a href="https://github.com/xiaonuobase/xiaonuo-cloud">
-            <img src="https://img.shields.io/github/forks/xiaonuobase/xiaonuo-cloud?style=social" alt="GitHub forks">
-        </a>
-        <a href="https://github.com/xiaonuobase/xiaonuo-cloud">
-            <img src="https://img.shields.io/github/repo-size/xiaonuobase/xiaonuo-cloud" alt="size">
+            <img src="https://gitee.com/xiaonuobase/snowy-cloud/badge/fork.svg?theme=dark" alt="Gitee fork">
         </a>
     </p>
 </p>
 
 ### 其他版本
 
-* layui单体版本：[https://gitee.com/xiaonuobase/xiaonuo-layui](https://gitee.com/xiaonuobase/xiaonuo-layui)
-* vue前后分离版本：[https://gitee.com/xiaonuobase/xiaonuo-vue](https://gitee.com/xiaonuobase/xiaonuo-vue)
-* cloud微服务前后分离版本：[https://gitee.com/xiaonuobase/xiaonuo-cloud](https://gitee.com/xiaonuobase/xiaonuo-cloud)
+* layui单体版本：[https://gitee.com/xiaonuobase/snowy-layui](https://gitee.com/xiaonuobase/snowy-layui)
+* vue前后分离版本：[https://gitee.com/xiaonuobase/snowy](https://gitee.com/xiaonuobase/snowy)
+* cloud微服务前后分离版本：[https://gitee.com/xiaonuobase/snowy-cloud](https://gitee.com/xiaonuobase/snowy-cloud)
 * 我们的其他产品线同样开源，如需关注最新动态可加入QQ群聊探讨：[732230670](https://wpa.qq.com/msgrd?v=3&uin=732230670&_blank)
 * 如果我们的产品能满足您的需求，很期待您给我们右上角点个 star
 
@@ -59,14 +50,14 @@
 * 启动后端：
 
         1.按顺序启动：
-          com.cn.xiaonuo.eureka.XiaoNuoEurekaApp
-          com.cn.xiaonuo.actuator.XiaoNuoActuatorApp
-          com.cn.xiaonuo.config.XiaoNuoConfigApp
-          com.cn.xiaonuo.gateway.XiaoNuoGatewayApp
+          vip.xiaonuo.eureka.SnowyEurekaApp
+          vip.xiaonuo.actuator.SnowyActuatorApp
+          vip.xiaonuo.config.SnowyConfigApp
+          vip.xiaonuo.gateway.SnowyGatewayApp
           
-        2.打开application-local中配置数据库信息，运行 XiaoNuoMainApp 类即可启动
+        2.打开application-local中配置数据库信息，运行 SnowyMainApp 类即可启动
 
-        3.打开application-local中配置数据库信息，运行 XiaoNuoSampleApp 类即可启动
+        3.打开application-local中配置数据库信息，运行 SnowySampleApp 类即可启动
         
 * 浏览器访问：<http://localhost:9000> （默认前端端口为：9000，后端端口为：9004）
 
@@ -141,7 +132,7 @@
 
 ### 参与贡献
 
-- 欢迎各路英雄好汉参与xiaonuo全系版本代码贡献，期待您的加入！
+- 欢迎各路英雄好汉参与Snowy全系版本代码贡献，期待您的加入！
 - 1.  Fork 本仓库
 - 2.  新建 Feat_xxx 分支
 - 3.  提交代码
@@ -169,7 +160,7 @@
 
 ### 版权说明
 
-XiaoNuo生态技术框架全系版本采用 Apache License2.0协议
+Snowy生态技术框架全系版本采用 Apache License2.0协议
 请务必尊重原著产品，如果目前开源学习源码不能满足您的商业需求，可联系客服进行授权
 
 ### XiaoNuo技术团队荣誉作品

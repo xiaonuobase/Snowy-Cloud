@@ -1,0 +1,80 @@
+# Mysql数据库
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/snowy-cloud-pub?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT&nullCatalogMeansCurrent=true
+    username: root
+    password: root
+    # 连接池大小根据实际情况调整
+    max-active: 20
+    max-pool-prepared-statement-per-connection-size: 20
+
+# Oracle数据库
+#spring:
+#  datasource:
+#    driver-class-name: oracle.jdbc.OracleDriver
+#    url: jdbc:oracle:thin:@localhost:1521:snowy-cloud-pub-oracle
+#    username: snowy-cloud-pub-oracle
+#    password: 123456
+#    filters: wall,mergeStat
+
+# SQLServer配置
+#spring:
+#  datasource:
+#    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#    url: jdbc:sqlserver://localhost:1433;DatabaseName=snowy-pub-cloud-mssql
+#    username: snowy-cloud-pub-mssql
+#    password: 123456
+#    filters: wall,mergeStat
+
+# PostgreSQL配置
+#spring:
+#  datasource:
+#    driverClassName: org.postgresql.Driver
+#    url: jdbc:postgresql://127.0.0.1:5432/snowy-cloud-pub-postgresql
+#    username: snowy-cloud-pub-postgresql
+#    password: 123456
+#    filters: wall,mergeStat
+
+  boot:
+    admin:
+      client:
+        url: http://localhost:9002
+        instance:
+          # 默认使用的是主机名注册，改为使用ip注册
+          prefer-ip: true
+  cloud:
+    config:
+      fail-fast: true
+      name: ${spring.application.name}
+      # 指定配置文件的环境
+      profile: ${spring.profiles.active}
+      discovery:
+        enabled: true
+        # 注册中心的服务名
+        service-id: snowy-config-app
+
+
+# 开放所有endpoint，实际生产根据自身需要开放，出于安全考虑不建议全部开放
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: "ALWAYS"
+
+
+eureka:
+  instance:
+    #   hostname不配置的话，会根据操作系统的主机名来获取
+    hostname: localhost
+    instance-id: ${spring.application.name}:${server.port}
+    # 访问路径可以显示IP地址
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    serviceUrl:
+      # 注册中心地址
+      defaultZone: http://${eureka.instance.hostname}:9001/eureka/

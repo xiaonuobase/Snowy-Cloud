@@ -10,21 +10,21 @@
     <version>2.3.1.RELEASE</version>
   </parent>
 
-  <groupId>cn.xiaonuo</groupId>
-  <artifactId>xiaonuo-cloud</artifactId>
-  <version>1.1.0</version>
+  <groupId>vip.xiaonuo</groupId>
+  <artifactId>snowy-cloud</artifactId>
+  <version>1.6.0</version>
 
-  <name>xiaonuo-cloud</name>
-  <description>xiaonuo-cloud版本</description>
+  <name>snowy-cloud</name>
+  <description>snowy-cloud版本</description>
 
   <packaging>pom</packaging>
 
   <modules>
-    <module>xiaonuo-api</module>
-    <module>xiaonuo-base</module>
-    <module>xiaonuo-biz</module>
-    <module>xiaonuo-modules</module>
-    <module>xiaonuo-server</module>
+    <module>snowy-api</module>
+    <module>snowy-base</module>
+    <module>snowy-biz</module>
+    <module>snowy-modules</module>
+    <module>snowy-server</module>
   </modules>
 
   <properties>
