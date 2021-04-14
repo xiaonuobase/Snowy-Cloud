@@ -611,7 +611,7 @@ GO
 INSERT INTO [dbo].[sys_config]  VALUES (N'1265117443880853504', N'验证码开关', N'SNOWY_CAPTCHA_OPEN', N'true', N'Y', N'登录验证码开关 false关闭 true打开', N'0', N'DEFAULT', N'2020-04-14 23:30:14.0000000', N'1265476890672672808', N'2021-02-18 16:19:01.0000000', N'1265476890672672808')
 GO
 
-INSERT INTO [dbo].[sys_config]  VALUES (N'1265117443880853506', N'jwt密钥', N'SNOWY_JWT_SECRET', N'xiaonuo', N'Y', N'（重要）jwt密钥，默认为空，自行设置', N'0', N'DEFAULT', N'2020-05-26 06:35:19.0000000', N'1265476890672672808', NULL, NULL)
+INSERT INTO [dbo].[sys_config]  VALUES (N'1265117443880853506', N'jwt密钥', N'SNOWY_JWT_SECRET', N'snowy', N'Y', N'（重要）jwt密钥，默认为空，自行设置', N'0', N'DEFAULT', N'2020-05-26 06:35:19.0000000', N'1265476890672672808', NULL, NULL)
 GO
 
 INSERT INTO [dbo].[sys_config]  VALUES (N'1265117443880853507', N'默认密码', N'SNOWY_DEFAULT_PASSWORD', N'123456', N'Y', N'默认密码', N'0', N'DEFAULT', N'2020-05-26 06:37:56.0000000', N'1265476890672672808', NULL, NULL)
@@ -2375,14 +2375,6 @@ EXEC sp_addextendedproperty
 'TABLE', N'sys_notice'
 GO
 
-
--- ----------------------------
--- Records of sys_notice
--- ----------------------------
-INSERT INTO [dbo].[sys_notice]  VALUES (N'1304964964817104898', N'北京的秋天', N'<div style="text-align: center;"><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1599972936240&amp;di=0c65610a70a7f8de26e84f51da77604f&amp;imgtype=0&amp;src=http%3A%2F%2Fimg1.imgtn.bdimg.com%2Fit%2Fu%3D3178869736%2C1430240761%26fm%3D214%26gp%3D0.jpg">&nbsp;&nbsp;<br></div><p></p>', N'1', N'1265476890672672808', N'超级管理员', NULL, NULL, N'2020-09-13 10:07:47.0000000', NULL, N'1', N'2020-09-13 10:07:47.0000000', N'1265476890672672808', NULL, NULL)
-GO
-
-
 -- ----------------------------
 -- Table structure for sys_notice_user
 -- ----------------------------
@@ -2442,14 +2434,6 @@ EXEC sp_addextendedproperty
 'SCHEMA', N'dbo',
 'TABLE', N'sys_notice_user'
 GO
-
-
--- ----------------------------
--- Records of sys_notice_user
--- ----------------------------
-INSERT INTO [dbo].[sys_notice_user]  VALUES (N'1304964964875825153', N'1304964964817104898', N'1280700700074041345', N'0', NULL)
-GO
-
 
 -- ----------------------------
 -- Table structure for sys_oauth_user

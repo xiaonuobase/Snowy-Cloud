@@ -195,7 +195,7 @@ COMMENT ON TABLE "public"."sys_config" IS '系统参数配置表';
 -- Records of sys_config
 -- ----------------------------
 INSERT INTO "public"."sys_config" VALUES (1265117443880853504, '验证码开关', 'SNOWY_CAPTCHA_OPEN', 'true', 'Y', '登录验证码开关 false关闭 true打开', 0, 'DEFAULT', '2020-04-14 23:30:14', 1265476890672672808, '2021-02-18 16:19:01', 1265476890672672808);
-INSERT INTO "public"."sys_config" VALUES (1265117443880853506, 'jwt密钥', 'SNOWY_JWT_SECRET', 'xiaonuo', 'Y', '（重要）jwt密钥，默认为空，自行设置', 0, 'DEFAULT', '2020-05-26 06:35:19', 1265476890672672808, NULL, NULL);
+INSERT INTO "public"."sys_config" VALUES (1265117443880853506, 'jwt密钥', 'SNOWY_JWT_SECRET', 'snowy', 'Y', '（重要）jwt密钥，默认为空，自行设置', 0, 'DEFAULT', '2020-05-26 06:35:19', 1265476890672672808, NULL, NULL);
 INSERT INTO "public"."sys_config" VALUES (1265117443880853507, '默认密码', 'SNOWY_DEFAULT_PASSWORD', '123456', 'Y', '默认密码', 0, 'DEFAULT', '2020-05-26 06:37:56', 1265476890672672808, NULL, NULL);
 INSERT INTO "public"."sys_config" VALUES (1265117443880853508, 'token过期时间', 'SNOWY_TOKEN_EXPIRE', '86400', 'Y', 'token过期时间（单位：秒）', 0, 'DEFAULT', '2020-05-27 11:54:49', 1265476890672672808, NULL, NULL);
 INSERT INTO "public"."sys_config" VALUES (1265117443880853509, 'session会话过期时间', 'SNOWY_SESSION_EXPIRE', '7200', 'Y', 'session会话过期时间（单位：秒）', 0, 'DEFAULT', '2020-05-27 11:54:49', 1265476890672672808, NULL, NULL);
@@ -767,11 +767,6 @@ COMMENT ON COLUMN "public"."sys_notice"."update_user" IS '修改人';
 COMMENT ON TABLE "public"."sys_notice" IS '通知表';
 
 -- ----------------------------
--- Records of sys_notice
--- ----------------------------
-INSERT INTO "public"."sys_notice" VALUES (1304964964817104898, '北京的秋天', '<div style="text-align: center;"><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1599972936240&amp;di=0c65610a70a7f8de26e84f51da77604f&amp;imgtype=0&amp;src=http%3A%2F%2Fimg1.imgtn.bdimg.com%2Fit%2Fu%3D3178869736%2C1430240761%26fm%3D214%26gp%3D0.jpg">&nbsp;&nbsp;<br></div><p></p>', 1, 1265476890672672808, '超级管理员', NULL, NULL, '2020-09-13 10:07:47', NULL, 1, '2020-09-13 10:07:47', 1265476890672672808, NULL, NULL);
-
--- ----------------------------
 -- Table structure for sys_notice_user
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_notice_user";
@@ -789,11 +784,6 @@ COMMENT ON COLUMN "public"."sys_notice_user"."user_id" IS '用户id';
 COMMENT ON COLUMN "public"."sys_notice_user"."status" IS '状态（字典 0未读 1已读）';
 COMMENT ON COLUMN "public"."sys_notice_user"."read_time" IS '阅读时间';
 COMMENT ON TABLE "public"."sys_notice_user" IS '系统用户数据范围表';
-
--- ----------------------------
--- Records of sys_notice_user
--- ----------------------------
-INSERT INTO "public"."sys_notice_user" VALUES (1304964964875825153, 1304964964817104898, 1280700700074041345, 0, NULL);
 
 -- ----------------------------
 -- Table structure for sys_oauth_user
