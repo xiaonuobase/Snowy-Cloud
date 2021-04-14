@@ -28,7 +28,7 @@
         <a href="https://gitee.com/xiaonuobase/snowy-cloud">
             <img src="https://gitee.com/xiaonuobase/snowy-cloud/badge/star.svg?theme=dark" alt="Gitee star">
         </a>
-        <a href="https://gitee.com/xiaonuobase/xiaonuo-cloud">
+        <a href="https://gitee.com/xiaonuobase/snowy-cloud">
             <img src="https://gitee.com/xiaonuobase/snowy-cloud/badge/fork.svg?theme=dark" alt="Gitee fork">
         </a>
     </p>

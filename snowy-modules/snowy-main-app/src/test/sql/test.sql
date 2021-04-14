@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS xiaonuo_test;
-CREATE DATABASE IF NOT EXISTS xiaonuo_test DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+DROP DATABASE IF EXISTS snowy_test;
+CREATE DATABASE IF NOT EXISTS snowy_test DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
-use xiaonuo_test;
+use snowy_test;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;

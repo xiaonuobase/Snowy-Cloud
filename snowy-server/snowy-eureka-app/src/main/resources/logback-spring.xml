@@ -24,7 +24,7 @@
         </root>
 
         <!--各个服务的包在本地执行的时候，打开debug模式-->
-        <logger name="com.cn.xiaonuo" level="info" additivity="false">
+        <logger name="vip.xiaonuo" level="info" additivity="false">
             <appender-ref ref="STDOUT"/>
         </logger>
     </springProfile>
