@@ -53,7 +53,7 @@ aj:
     font-type: 宋体
     water-mark: Snowy快速开发平台
 
-#小诺相关配置
-xiaonuo:
+#Snowy相关配置
+snowy:
   framework:
-    model: microservice #小诺架构模式：单体=single/微服务=microservice
+    model: microservice #Snowy架构模式：单体=single/微服务=microservice

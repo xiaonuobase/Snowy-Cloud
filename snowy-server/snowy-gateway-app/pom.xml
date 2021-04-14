@@ -16,14 +16,14 @@
     <description>网关中心</description>
     <dependencies>
 
-        <!-- 小诺 common -->
+        <!-- snowy common -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-common</artifactId>
             <version>1.6.0</version>
         </dependency>
 
-        <!-- 小诺 cache -->
+        <!-- snowy cache -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-cache</artifactId>
