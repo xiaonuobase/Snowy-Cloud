@@ -39,7 +39,7 @@ import java.util.UUID;
  * @author yubaoshan
  * @date 2020年12月17日02:04:56
  */
-public class SnowyVelocityContext {
+public class XnVelocityContext {
 
     /**
      * 创建上下文用到的参数

@@ -31,7 +31,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import vip.xiaonuo.common.exception.ServiceException;
 import vip.xiaonuo.common.pojo.page.PageResult;
 import vip.xiaonuo.core.factory.PageFactory;
-import vip.xiaonuo.generate.core.context.SnowyVelocityContext;
+import vip.xiaonuo.generate.core.context.XnVelocityContext;
 import vip.xiaonuo.generate.core.param.XnCodeGenParam;
 import vip.xiaonuo.generate.core.tool.StringDateTool;
 import vip.xiaonuo.generate.core.config.Config;
@@ -240,7 +240,7 @@ public class CodeGenerateServiceImpl extends ServiceImpl<CodeGenerateMapper, Cod
      * 本地项目生成
      */
     private void codeGenLocal (XnCodeGenParam xnCodeGenParam) {
-        SnowyVelocityContext context = new SnowyVelocityContext();
+        XnVelocityContext context = new XnVelocityContext();
         //初始化参数
         Properties properties=new Properties();
         //设置velocity资源加载方式为class
@@ -291,7 +291,7 @@ public class CodeGenerateServiceImpl extends ServiceImpl<CodeGenerateMapper, Cod
      */
     private void codeGenDown (XnCodeGenParam xnCodeGenParam,ZipOutputStream zipOutputStream) {
         Util.initVelocity();
-        SnowyVelocityContext context = new SnowyVelocityContext();
+        XnVelocityContext context = new XnVelocityContext();
 
         String[] filePath = Config.xnCodeGenFilePath(xnCodeGenParam.getBusName(), xnCodeGenParam.getPackageName());
         for (int a = 0; a < filePath.length; a++) {
