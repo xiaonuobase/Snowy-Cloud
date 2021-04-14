@@ -30,7 +30,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
- * SpringBoot方式 XiaoNuoActuatorApp 启动类
+ * SpringBoot方式 SnowyActuatorApp 启动类
  *
  * @author dongxiayu
  * @date 2020/12/11 12:06

@@ -31,7 +31,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.config.server.EnableConfigServer;
 
 /**
- * SpringBoot方式 XiaoNuoConfigApp 启动类
+ * SpringBoot方式 SnowyConfigApp 启动类
  *
  * @author dongxiayu
  * @date 2017/5/21 12:06

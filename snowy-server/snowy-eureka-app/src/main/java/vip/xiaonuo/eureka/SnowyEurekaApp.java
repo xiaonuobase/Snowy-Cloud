@@ -29,7 +29,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 /**
- * SpringBoot方式 XiaoNuoEurekaApp 启动类
+ * SpringBoot方式 SnowyEurekaApp 启动类
  *
  * @author dongxiayu
  * @date 2020/12/11 12:06
