@@ -24,8 +24,8 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.api.auth.service;
 
-import vip.xiaonuo.common.consts.FeignConstant;
 import org.springframework.web.bind.annotation.RequestMapping;
+import vip.xiaonuo.common.consts.FeignConstant;
 
 import java.util.List;
 

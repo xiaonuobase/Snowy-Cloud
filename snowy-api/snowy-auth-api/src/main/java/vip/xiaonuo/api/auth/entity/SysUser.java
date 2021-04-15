@@ -26,9 +26,9 @@ package vip.xiaonuo.api.auth.entity;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.baomidou.mybatisplus.annotation.*;
-import vip.xiaonuo.common.pojo.base.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import vip.xiaonuo.common.pojo.base.entity.BaseEntity;
 
 import java.util.Date;
 

@@ -24,10 +24,10 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.api.tenant.service;
 
-import vip.xiaonuo.api.tenant.entity.TenantInfo;
-import vip.xiaonuo.common.consts.FeignConstant;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import vip.xiaonuo.api.tenant.entity.TenantInfo;
+import vip.xiaonuo.common.consts.FeignConstant;
 
 /**
  * TenantInfoService 服务接口

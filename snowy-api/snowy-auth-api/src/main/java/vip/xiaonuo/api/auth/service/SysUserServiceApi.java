@@ -25,14 +25,14 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
 package vip.xiaonuo.api.auth.service;
 
 import cn.hutool.core.lang.Dict;
+import me.zhyd.oauth.model.AuthUser;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.api.auth.entity.SysUser;
 import vip.xiaonuo.api.auth.param.SysUserParam;
 import vip.xiaonuo.api.auth.result.SysUserResult;
 import vip.xiaonuo.common.consts.FeignConstant;
 import vip.xiaonuo.common.pojo.page.PageResult;
-import me.zhyd.oauth.model.AuthUser;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 

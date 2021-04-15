@@ -24,10 +24,10 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.generate.core.context;
 
+import org.apache.velocity.VelocityContext;
 import vip.xiaonuo.common.enums.YesOrNotEnum;
 import vip.xiaonuo.generate.core.param.XnCodeGenParam;
 import vip.xiaonuo.generate.modular.entity.SysCodeGenerateConfig;
-import org.apache.velocity.VelocityContext;
 
 import java.util.ArrayList;
 import java.util.List;
