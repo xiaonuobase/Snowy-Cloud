@@ -12,7 +12,7 @@
  Target Server Version : 130002
  File Encoding         : 65001
 
- Date: 12/04/2021 17:32:10
+ Date: 15/04/2021 17:39:32
 */
 
 
@@ -47,6 +47,7 @@ COMMENT ON TABLE "public"."sys_app" IS '系统应用表';
 -- Records of sys_app
 -- ----------------------------
 INSERT INTO "public"."sys_app" VALUES (1265476890672672821, '系统应用', 'system', 'Y', 0, '2020-03-25 19:07:00', 1265476890672672808, '2020-08-15 15:23:05', 1280709549107552257);
+INSERT INTO "public"."sys_app" VALUES (1265476890672672822, '业务应用', 'business', 'N', 2, '2020-03-26 08:40:33', 1265476890672672808, '2020-09-23 22:00:01', 1265476890672672808);
 INSERT INTO "public"."sys_app" VALUES (1342451550318694401, '系统工具', 'system_tool', 'N', 0, '2020-12-25 20:46:06', 1265476890672672808, NULL, NULL);
 
 -- ----------------------------
@@ -87,7 +88,6 @@ COMMENT ON TABLE "public"."sys_code_generate" IS '代码生成基础配置';
 -- ----------------------------
 -- Records of sys_code_generate
 -- ----------------------------
-INSERT INTO "public"."sys_code_generate" VALUES (1362310959781744641, 'yubaoshan、xuyuxiang、dongxiayu', 'CodeGenTest', 'Y', '2', 'xn_code_gen_test', 'vip.xiaonuo', 'codegentest', '测试', 1265476890672672808, '2021-02-18 16:00:18', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_code_generate_config
@@ -145,18 +145,6 @@ COMMENT ON TABLE "public"."sys_code_generate_config" IS '代码生成详细配�
 -- ----------------------------
 -- Records of sys_code_generate_config
 -- ----------------------------
-INSERT INTO "public"."sys_code_generate_config" VALUES (1362310959903379458, 1362310959781744641, 'id', 'id', 'bigint', '主键', 'Long', 'input', NULL, 'N', 'N', 'N', 'N', 'N', 'eq', 'PRI', 'Id', 'N', '2021-02-18 16:00:18', 1265476890672672808, '2021-02-18 16:02:31', 1265476890672672808);
-INSERT INTO "public"."sys_code_generate_config" VALUES (1362310959941128193, 1362310959781744641, 'name', 'name', 'varchar', '姓名', 'String', 'input', NULL, 'Y', 'Y', 'N', 'Y', 'Y', 'like', '', 'Name', 'N', '2021-02-18 16:00:18', 1265476890672672808, '2021-02-18 16:02:31', 1265476890672672808);
-INSERT INTO "public"."sys_code_generate_config" VALUES (1362310959978876929, 1362310959781744641, 'age', 'age', 'int', '年龄', 'Integer', 'input', NULL, 'Y', 'Y', 'N', 'Y', 'Y', 'eq', '', 'Age', 'N', '2021-02-18 16:00:18', 1265476890672672808, '2021-02-18 16:02:31', 1265476890672672808);
-INSERT INTO "public"."sys_code_generate_config" VALUES (1362310960008237058, 1362310959781744641, 'interest', 'interest', 'varchar', '兴趣', 'String', 'checkbox', 'sex', 'Y', 'Y', 'N', 'Y', 'N', 'eq', '', 'Interest', 'N', '2021-02-18 16:00:18', 1265476890672672808, '2021-02-18 16:02:31', 1265476890672672808);
-INSERT INTO "public"."sys_code_generate_config" VALUES (1362310960033402881, 1362310959781744641, 'switchTest', 'switchtest', 'varchar', '开关', 'String', 'radio', 'yes_or_no', 'Y', 'Y', 'N', 'Y', 'Y', 'eq', '', 'Switchtest', 'N', '2021-02-18 16:00:18', 1265476890672672808, '2021-02-18 16:02:31', 1265476890672672808);
-INSERT INTO "public"."sys_code_generate_config" VALUES (1362310960062763009, 1362310959781744641, 'birthday', 'birthday', 'date', '日期', 'Date', 'datepicker', NULL, 'Y', 'Y', 'N', 'Y', 'Y', 'eq', '', 'Birthday', 'N', '2021-02-18 16:00:18', 1265476890672672808, '2021-02-18 16:02:31', 1265476890672672808);
-INSERT INTO "public"."sys_code_generate_config" VALUES (1362310960096317442, 1362310959781744641, 'whether', 'whether', 'varchar', '是否已婚', 'String', 'select', 'yes_or_no', 'Y', 'Y', 'N', 'Y', 'Y', 'eq', '', 'Whether', 'N', '2021-02-18 16:00:18', 1265476890672672808, '2021-02-18 16:02:31', 1265476890672672808);
-INSERT INTO "public"."sys_code_generate_config" VALUES (1362310960121483266, 1362310959781744641, 'explainTest', 'explaintest', 'varchar', '简介', 'String', 'textarea', NULL, 'N', 'Y', 'N', 'Y', 'Y', 'eq', '', 'Explain', 'N', '2021-02-18 16:00:18', 1265476890672672808, '2021-02-18 16:02:31', 1265476890672672808);
-INSERT INTO "public"."sys_code_generate_config" VALUES (1362310960150843393, 1362310959781744641, 'create_time', 'createTime', 'datetime', '创建时间', 'Date', 'datepicker', NULL, 'N', 'N', 'N', 'N', 'N', 'eq', '', 'CreateTime', 'Y', '2021-02-18 16:00:18', 1265476890672672808, '2021-02-18 16:02:31', 1265476890672672808);
-INSERT INTO "public"."sys_code_generate_config" VALUES (1362310960176009218, 1362310959781744641, 'create_user', 'createUser', 'bigint', '', 'Long', 'input', NULL, 'N', 'N', 'N', 'N', 'N', 'eq', '', 'CreateUser', 'Y', '2021-02-18 16:00:18', 1265476890672672808, '2021-02-18 16:02:31', 1265476890672672808);
-INSERT INTO "public"."sys_code_generate_config" VALUES (1362310960201175041, 1362310959781744641, 'update_time', 'updateTime', 'datetime', '', 'Date', 'datepicker', NULL, 'N', 'N', 'N', 'N', 'N', 'eq', '', 'UpdateTime', 'Y', '2021-02-18 16:00:18', 1265476890672672808, '2021-02-18 16:02:31', 1265476890672672808);
-INSERT INTO "public"."sys_code_generate_config" VALUES (1362310960234729473, 1362310959781744641, 'update_user', 'updateUser', 'bigint', '', 'Long', 'input', NULL, 'N', 'N', 'N', 'N', 'N', 'eq', '', 'UpdateUser', 'Y', '2021-02-18 16:00:18', 1265476890672672808, '2021-02-18 16:02:31', 1265476890672672808);
 
 -- ----------------------------
 -- Table structure for sys_config
@@ -219,8 +207,6 @@ INSERT INTO "public"."sys_config" VALUES (1270380786649972739, 'linux/mac本地�
 INSERT INTO "public"."sys_config" VALUES (1270380786649982740, 'Snowy演示环境', 'SNOWY_DEMO_ENV_FLAG', 'false', 'Y', 'Snowy演示环境的开关，true-打开，false-关闭，如果演示环境开启，则只能读数据不能写数据', 0, 'DEFAULT', '2020-06-09 23:42:37', 1265476890672672808, '2020-09-03 14:38:17', 1265476890672672808);
 INSERT INTO "public"."sys_config" VALUES (1270380786649982741, 'Snowy放开XSS过滤的接口', 'SNOWY_UN_XSS_FILTER_URL', '/demo/xssfilter,/demo/unxss', 'Y', '多个url可以用英文逗号隔开', 0, 'DEFAULT', '2020-06-09 23:42:37', 1265476890672672808, NULL, NULL);
 INSERT INTO "public"."sys_config" VALUES (1270380786649982742, '单用户登陆的开关', 'SNOWY_ENABLE_SINGLE_LOGIN', 'false', 'Y', '单用户登陆的开关，true-打开，false-关闭，如果一个人登录两次，就会将上一次登陆挤下去', 0, 'DEFAULT', '2020-06-09 23:42:37', 1265476890672672808, NULL, NULL);
-INSERT INTO "public"."sys_config" VALUES (1280694183769792514, 'druid监控登录账号', 'SNOWY_DRUID_USERNAME', 'superAdmin', 'Y', 'druid监控登录账号', 0, 'DEFAULT', '2020-07-08 10:44:22', 1265476890672672808, '2021-02-18 16:18:30', 1265476890672672808);
-INSERT INTO "public"."sys_config" VALUES (1280694281648070658, 'druid监控界面登录密码', 'SNOWY_DRUID_PASSWORD', '123456', 'Y', 'druid监控登录密码', 0, 'DEFAULT', '2020-07-08 10:44:46', 1265476890672672808, '2021-02-18 16:18:36', 1265476890672672808);
 INSERT INTO "public"."sys_config" VALUES (1280694281648070659, '阿里云定位api接口地址', 'SNOWY_IP_GEO_API', 'http://api01.aliyun.venuscn.com/ip?ip=%s', 'Y', '阿里云定位api接口地址', 0, 'DEFAULT', '2020-07-20 10:44:46', 1265476890672672808, NULL, NULL);
 INSERT INTO "public"."sys_config" VALUES (1280694281648070660, '阿里云定位appCode', 'SNOWY_IP_GEO_APP_CODE', '461535aabeae4f34861884d392f5d452', 'Y', '阿里云定位appCode', 0, 'DEFAULT', '2020-07-20 10:44:46', 1265476890672672808, NULL, NULL);
 INSERT INTO "public"."sys_config" VALUES (1288309751255412737, 'Oauth用户登录的开关', 'SNOWY_ENABLE_OAUTH_LOGIN', 'true', 'Y', 'Oauth用户登录的开关', 0, 'OAUTH', '2020-07-29 11:05:55', 1265476890672672808, NULL, NULL);
@@ -535,7 +521,7 @@ CREATE TABLE "public"."sys_menu" (
   "pids" text COLLATE "pg_catalog"."default" NOT NULL,
   "name" varchar(100) COLLATE "pg_catalog"."default" NOT NULL,
   "code" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-  "type" int2 NOT NULL,
+  "type" int2 NOT NULL DEFAULT 1,
   "icon" varchar(255) COLLATE "pg_catalog"."default",
   "router" varchar(255) COLLATE "pg_catalog"."default",
   "component" varchar(255) COLLATE "pg_catalog"."default",
@@ -548,7 +534,7 @@ CREATE TABLE "public"."sys_menu" (
   "weight" int2,
   "sort" int4 NOT NULL,
   "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "status" int2 NOT NULL,
+  "status" int2 NOT NULL DEFAULT 0,
   "create_time" timestamp(6),
   "create_user" int8,
   "update_time" timestamp(6),
@@ -693,7 +679,7 @@ INSERT INTO "public"."sys_menu" VALUES (1264622039642256371, 1264622039642256361
 INSERT INTO "public"."sys_menu" VALUES (1264622039642256381, 1264622039642256351, '[0],[1264622039642256351],', '在线用户', 'sys_monitor_mgr_online_user', 1, NULL, '/onlineUser', 'system/onlineUser/index', NULL, 'system', 1, 'Y', NULL, NULL, 1, 17, NULL, 0, '2020-06-05 16:01:55', 1265476890672672808, NULL, NULL);
 INSERT INTO "public"."sys_menu" VALUES (1264622039642256391, 1264622039642256381, '[0],[1264622039642256351],[1264622039642256381],', '在线用户列表', 'sys_monitor_mgr_online_user_list', 2, NULL, NULL, NULL, 'sysOnlineUser:list', 'system', 0, 'Y', NULL, NULL, 1, 100, NULL, 0, '2020-06-05 16:03:46', 1265476890672672808, NULL, NULL);
 INSERT INTO "public"."sys_menu" VALUES (1264622039642256401, 1264622039642256381, '[0],[1264622039642256351],[1264622039642256381],', '在线用户强退', 'sys_monitor_mgr_online_user_force_exist', 2, NULL, NULL, NULL, 'sysOnlineUser:forceExist', 'system', 0, 'Y', NULL, NULL, 1, 100, NULL, 0, '2020-06-05 16:04:16', 1265476890672672808, NULL, NULL);
-INSERT INTO "public"."sys_menu" VALUES (1264622039642256411, 1264622039642256351, '[0],[1264622039642256351],', '数据监控', 'sys_monitor_mgr_druid', 1, NULL, '/druid', 'Iframe', NULL, 'system', 2, 'Y', 'http://localhost:9005/druid/login.html', NULL, 1, 18, NULL, 0, '2020-06-28 16:15:07', 1265476890672672808, '2020-09-13 09:39:10', 1265476890672672808);
+INSERT INTO "public"."sys_menu" VALUES (1264622039642256411, 1264622039642256351, '[0],[1264622039642256351],', '数据监控', 'sys_monitor_mgr_druid', 1, NULL, '/druid', 'Iframe', NULL, 'system', 2, 'Y', 'http://localhost:9005/druid', NULL, 1, 18, NULL, 0, '2020-06-28 16:15:07', 1265476890672672808, '2020-09-13 09:39:10', 1265476890672672808);
 INSERT INTO "public"."sys_menu" VALUES (1264622039642256421, 0, '[0],', '通知公告', 'sys_notice', 0, 'sound', '/notice', 'PageView', NULL, 'system', 1, 'Y', NULL, NULL, 1, 7, NULL, 0, '2020-06-29 15:41:53', 1265476890672672808, NULL, NULL);
 INSERT INTO "public"."sys_menu" VALUES (1264622039642256431, 1264622039642256421, '[0],[1264622039642256421],', '公告管理', 'sys_notice_mgr', 1, NULL, '/notice', 'system/notice/index', NULL, 'system', 1, 'Y', NULL, NULL, 1, 19, NULL, 0, '2020-06-29 15:44:24', 1265476890672672808, NULL, NULL);
 INSERT INTO "public"."sys_menu" VALUES (1264622039642256441, 1264622039642256431, '[0],[1264622039642256421],[1264622039642256431],', '公告查询', 'sys_notice_mgr_page', 2, NULL, NULL, NULL, 'sysNotice:page', 'system', 0, 'Y', NULL, NULL, 1, 100, NULL, 0, '2020-06-29 15:45:30', 1265476890672672808, NULL, NULL);
@@ -767,6 +753,10 @@ COMMENT ON COLUMN "public"."sys_notice"."update_user" IS '修改人';
 COMMENT ON TABLE "public"."sys_notice" IS '通知表';
 
 -- ----------------------------
+-- Records of sys_notice
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_notice_user
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_notice_user";
@@ -784,6 +774,10 @@ COMMENT ON COLUMN "public"."sys_notice_user"."user_id" IS '用户id';
 COMMENT ON COLUMN "public"."sys_notice_user"."status" IS '状态（字典 0未读 1已读）';
 COMMENT ON COLUMN "public"."sys_notice_user"."read_time" IS '阅读时间';
 COMMENT ON TABLE "public"."sys_notice_user" IS '系统用户数据范围表';
+
+-- ----------------------------
+-- Records of sys_notice_user
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_oauth_user
@@ -889,7 +883,7 @@ CREATE TABLE "public"."sys_org" (
   "code" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
   "sort" int4 NOT NULL,
   "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "status" int2 NOT NULL,
+  "status" int2 NOT NULL DEFAULT 0,
   "create_time" timestamp(6),
   "create_user" int8,
   "update_time" timestamp(6),
@@ -932,7 +926,7 @@ CREATE TABLE "public"."sys_pos" (
   "code" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
   "sort" int4 NOT NULL,
   "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "status" int2 NOT NULL,
+  "status" int2 NOT NULL DEFAULT 0,
   "create_time" timestamp(6),
   "create_user" int8,
   "update_time" timestamp(6),
@@ -968,9 +962,9 @@ CREATE TABLE "public"."sys_role" (
   "name" varchar(100) COLLATE "pg_catalog"."default" NOT NULL,
   "code" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
   "sort" int4 NOT NULL,
-  "data_scope_type" int2 NOT NULL,
+  "data_scope_type" int2 NOT NULL DEFAULT 1,
   "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "status" int2 NOT NULL,
+  "status" int2 NOT NULL DEFAULT 0,
   "create_time" timestamp(6),
   "create_user" int8,
   "update_time" timestamp(6),
@@ -1275,8 +1269,8 @@ CREATE TABLE "public"."sys_user" (
   "tel" varchar(50) COLLATE "pg_catalog"."default",
   "last_login_ip" varchar(100) COLLATE "pg_catalog"."default",
   "last_login_time" timestamp(6),
-  "admin_type" int2 NOT NULL,
-  "status" int2 NOT NULL,
+  "admin_type" int2 NOT NULL DEFAULT 0,
+  "status" int2 NOT NULL DEFAULT 0,
   "create_time" timestamp(6),
   "create_user" int8,
   "update_time" timestamp(6),
@@ -1406,43 +1400,6 @@ COMMENT ON TABLE "public"."sys_vis_log" IS '系统访问日志表';
 -- ----------------------------
 -- Records of sys_vis_log
 -- ----------------------------
-
--- ----------------------------
--- Table structure for xn_code_gen_test
--- ----------------------------
-DROP TABLE IF EXISTS "public"."xn_code_gen_test";
-CREATE TABLE "public"."xn_code_gen_test" (
-  "id" int8 NOT NULL,
-  "name" varchar(255) COLLATE "pg_catalog"."default",
-  "age" int4,
-  "interest" varchar(255) COLLATE "pg_catalog"."default",
-  "switchTest" varchar(255) COLLATE "pg_catalog"."default",
-  "birthday" date,
-  "whether" varchar(255) COLLATE "pg_catalog"."default",
-  "explain_test" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "create_user" int8,
-  "update_time" timestamp(6),
-  "update_user" int8
-)
-;
-COMMENT ON COLUMN "public"."xn_code_gen_test"."id" IS '主键';
-COMMENT ON COLUMN "public"."xn_code_gen_test"."name" IS '姓名';
-COMMENT ON COLUMN "public"."xn_code_gen_test"."age" IS '年龄';
-COMMENT ON COLUMN "public"."xn_code_gen_test"."interest" IS '兴趣';
-COMMENT ON COLUMN "public"."xn_code_gen_test"."switchTest" IS '开关';
-COMMENT ON COLUMN "public"."xn_code_gen_test"."birthday" IS '日期';
-COMMENT ON COLUMN "public"."xn_code_gen_test"."whether" IS '是否已婚';
-COMMENT ON COLUMN "public"."xn_code_gen_test"."explain_test" IS '简介';
-COMMENT ON COLUMN "public"."xn_code_gen_test"."create_time" IS '创建时间';
-COMMENT ON TABLE "public"."xn_code_gen_test" IS '测试';
-
--- ----------------------------
--- Records of xn_code_gen_test
--- ----------------------------
-INSERT INTO "public"."xn_code_gen_test" VALUES (1362314704808611841, '俞宝山', 28, '["2","3","1"]', 'Y', '2021-02-18', 'Y', '测试简介', '2021-02-18 16:15:11', 1265476890672672808, NULL, NULL);
-INSERT INTO "public"."xn_code_gen_test" VALUES (1362314845863055361, '徐玉祥', 26, '["3","2"]', 'Y', '2021-02-18', 'Y', '玉祥也测试', '2021-02-18 16:15:44', 1265476890672672808, '2021-02-18 16:16:24', 1265476890672672808);
-INSERT INTO "public"."xn_code_gen_test" VALUES (1362314976637259777, '董夏雨', 27, '["3"]', 'N', '2021-02-18', 'Y', '都测试', '2021-02-18 16:16:16', 1265476890672672808, NULL, NULL);
 
 -- ----------------------------
 -- Primary Key structure for table sys_app
@@ -1580,8 +1537,3 @@ ALTER TABLE "public"."sys_user_role" ADD CONSTRAINT "sys_user_role_pkey" PRIMARY
 -- Primary Key structure for table sys_vis_log
 -- ----------------------------
 ALTER TABLE "public"."sys_vis_log" ADD CONSTRAINT "sys_vis_log_pkey" PRIMARY KEY ("id");
-
--- ----------------------------
--- Primary Key structure for table xn_code_gen_test
--- ----------------------------
-ALTER TABLE "public"."xn_code_gen_test" ADD CONSTRAINT "xn_code_gen_test_pkey" PRIMARY KEY ("id");
