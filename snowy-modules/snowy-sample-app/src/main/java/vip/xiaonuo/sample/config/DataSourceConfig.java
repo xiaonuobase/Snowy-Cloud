@@ -25,11 +25,15 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
 package vip.xiaonuo.sample.config;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.alibaba.druid.pool.DruidDataSource;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import vip.xiaonuo.common.context.constant.ConstantContextHolder;
 import com.alibaba.druid.support.http.StatViewServlet;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import vip.xiaonuo.core.pojo.druid.DruidProperties;
+
 import java.util.HashMap;
 
 /**
@@ -39,8 +43,32 @@ import java.util.HashMap;
  * @date 2017/5/20 21:58
  */
 @Configuration
-// @Import(MultiDataSourceConfig.class)
 public class DataSourceConfig {
+
+    /**
+     * druid属性配置
+     *
+     * @author xuyuxiang
+     * @date 2020/8/25
+     */
+    @Bean
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DruidProperties druidProperties() {
+        return new DruidProperties();
+    }
+
+    /**
+     * druid数据库连接池
+     *
+     * @author xuyuxiang
+     * @date 2020/8/25
+     */
+    @Bean(initMethod = "init")
+    public DruidDataSource dataSource(DruidProperties druidProperties) {
+        DruidDataSource dataSource = new DruidDataSource();
+        druidProperties.config(dataSource);
+        return dataSource;
+    }
 
     /**
      * druid监控，配置StatViewServlet
