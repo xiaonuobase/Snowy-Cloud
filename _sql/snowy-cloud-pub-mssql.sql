@@ -2197,10 +2197,6 @@ GO
 INSERT INTO [dbo].[SYS_MENU] ([ID], [PID], [PIDS], [NAME], [CODE], [TYPE], [ICON], [ROUTER], [COMPONENT], [PERMISSION], [APPLICATION], [OPEN_TYPE], [VISIBLE], [LINK], [REDIRECT], [WEIGHT], [SORT], [REMARK], [STATUS], [CREATE_TIME], [CREATE_USER], [UPDATE_TIME], [UPDATE_USER]) VALUES (N'1342451789402411009', N'0', N'[0],', N'代码生成', N'code_gen', N'1', N'thunderbolt', N'/codeGenerate/index', N'gen/codeGenerate/index', N'', N'system_tool', N'1', N'Y', NULL, N'', N'1', N'100', N'代码生成', N'0', N'2020-12-25 20:47:03', N'1265476890672672808', NULL, NULL)
 GO
 
-INSERT INTO [dbo].[SYS_MENU] ([ID], [PID], [PIDS], [NAME], [CODE], [TYPE], [ICON], [ROUTER], [COMPONENT], [PERMISSION], [APPLICATION], [OPEN_TYPE], [VISIBLE], [LINK], [REDIRECT], [WEIGHT], [SORT], [REMARK], [STATUS], [CREATE_TIME], [CREATE_USER], [UPDATE_TIME], [UPDATE_USER]) VALUES (N'1359406155611545602', N'0', N'[0],', N'测试菜单', N'tests_gen_codes', N'1', N'play-circle', N'/codegentest', N'main/codegentest/index', N'', N'system_tool', N'1', N'Y', NULL, N'', N'1', N'100', NULL, N'0', N'2021-02-10 15:37:39', N'1265476890672672808', N'2021-02-18 16:04:22', N'1265476890672672808')
-GO
-
-
 -- ----------------------------
 -- Table structure for SYS_NOTICE
 -- ----------------------------

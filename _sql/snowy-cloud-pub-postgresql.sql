@@ -711,7 +711,6 @@ INSERT INTO "public"."sys_menu" VALUES (1264622039642256691, 1264622039642256621
 INSERT INTO "public"."sys_menu" VALUES (1264622039642256701, 1264622039642256621, '[0],[1264622039642256611],[1264622039642256621],', '定时任务启动', 'sys_timers_mgr_start', 2, NULL, NULL, NULL, 'sysTimers:start', 'system', 0, 'Y', NULL, NULL, 1, 100, NULL, 0, '2020-07-01 17:22:32', 1265476890672672808, NULL, NULL);
 INSERT INTO "public"."sys_menu" VALUES (1264622039642256711, 1264622039642256621, '[0],[1264622039642256611],[1264622039642256621],', '定时任务关闭', 'sys_timers_mgr_stop', 2, NULL, NULL, NULL, 'sysTimers:stop', 'system', 0, 'Y', NULL, NULL, 1, 100, NULL, 0, '2020-07-01 17:22:43', 1265476890672672808, NULL, NULL);
 INSERT INTO "public"."sys_menu" VALUES (1342451789402411009, 0, '[0],', '代码生成', 'code_gen', 1, 'thunderbolt', '/codeGenerate/index', 'gen/codeGenerate/index', '', 'system_tool', 1, 'Y', NULL, '', 1, 100, '代码生成', 0, '2020-12-25 20:47:03', 1265476890672672808, NULL, NULL);
-INSERT INTO "public"."sys_menu" VALUES (1359406155611545602, 0, '[0],', '测试菜单', 'tests_gen_codes', 1, 'play-circle', '/codegentest', 'main/codegentest/index', '', 'system_tool', 1, 'Y', NULL, '', 1, 100, NULL, 0, '2021-02-10 15:37:39', 1265476890672672808, '2021-02-18 16:04:22', 1265476890672672808);
 
 -- ----------------------------
 -- Table structure for sys_notice
