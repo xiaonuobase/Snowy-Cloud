@@ -124,13 +124,13 @@
        */
       getOrgTree () {
         getOrgTree().then((res) => {
-           if (res.success) {
-             this.orgTreeData = res.data
-             // 默认展开
-             this.orgTreeData.forEach(item => {
-               this.expandedKeys.push(item.id)
-             })
-           }
+          if (res.success) {
+            this.orgTreeData = res.data
+            // 默认展开
+            this.orgTreeData.forEach(item => {
+              this.expandedKeys.push(item.id)
+            })
+          }
         })
       },
 
