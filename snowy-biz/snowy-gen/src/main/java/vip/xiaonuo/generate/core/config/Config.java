@@ -61,9 +61,9 @@ public class Config {
     public static final boolean FLAG = false;
 
     /**
-     * 大模块名称（生成到代码中哪个模块下）
+     * 大模块名称（生成到代码中哪个模块下）,您希望生成的代码在哪个微服务模块下，在此处改之
      */
-    public static String BASE_MODULAR_NAME = "snowy-main";
+    public static String BASE_MODULAR_NAME = "snowy-modules" + FILE_SEP + "snowy-main-app";
 
     /**
      * java文件夹
