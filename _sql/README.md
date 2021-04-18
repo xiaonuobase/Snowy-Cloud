@@ -3,3 +3,4 @@
 2. 【snowy-cloud-pub-oracle.sql】 为oracle版本的sql，如果您的数据库为oracle，可直接运行此sql
 3. 【snowy-cloud-pub-mssql.sql】 为mssql版本的sql，如果您的数据库为mssql，可直接运行此sql
 4. 【snowy-cloud-pub-postgresql.sql】 为postgresql版本的sql，如果您的数据库为postgresql，可直接运行此sql
+5. 【snowy-cloud-pub-kingbase8_r3.sql】 为人大金仓kingbase3R3版本的dmp备份文件，如果您的数据库为kingbase3，可直接备份恢复即可

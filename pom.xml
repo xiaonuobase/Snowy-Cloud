@@ -125,11 +125,11 @@
       </dependency>
 
       <!-- oracle -->
-      <dependency>
+      <!--<dependency>
           <groupId>com.oracle</groupId>
           <artifactId>ojdbc6</artifactId>
           <version>${oracle.version}</version>
-      </dependency>
+      </dependency>-->
 
       <!-- mssql -->
       <dependency>
@@ -144,6 +144,8 @@
           <artifactId>postgresql</artifactId>
           <version>${postgresql.version}</version>
       </dependency>
+
+      <!-- kingbase8 人大金仓maven的方式中央仓库没有，安装之后数据库之后请吧jar推到自己的私服进行拉取 -->
 
       <!--数据库连接池-->
       <dependency>

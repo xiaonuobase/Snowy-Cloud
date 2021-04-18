@@ -55,10 +55,10 @@
         </dependency>
 
         <!-- oracle -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc6</artifactId>
-        </dependency>
+        </dependency>-->
 
         <!-- mssql -->
         <dependency>
@@ -71,6 +71,8 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
+
+        <!-- kingbase8 人大金仓maven的方式中央仓库没有，安装之后数据库之后请吧jar推到自己的私服进行拉取 -->
 
         <!-- druid连接池 -->
         <dependency>
