@@ -43,8 +43,6 @@
     <jwt.version>0.9.1</jwt.version>
     <hutool.version>5.3.7</hutool.version>
     <lombok.versin>1.18.12</lombok.versin>
-    <swagger.version>2.9.2</swagger.version>
-    <swagger.bootstrap.ui.version>1.9.6</swagger.bootstrap.ui.version>
     <easypoi.version>4.2.0</easypoi.version>
     <jodconverter.version>4.2.0</jodconverter.version>
     <libreoffice.version>6.4.3</libreoffice.version>
@@ -55,6 +53,7 @@
     <aliyun.sms.esc.version>4.17.6</aliyun.sms.esc.version>
     <qcloud.sms.sdk.version>3.1.57</qcloud.sms.sdk.version>
     <javax.servlet.version>3.1.0</javax.servlet.version>
+    <knife4j.version>2.0.8</knife4j.version>
   </properties>
 
   <dependencyManagement>
@@ -182,19 +181,9 @@
 
       <!--swagger接口文档-->
       <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-swagger2</artifactId>
-        <version>${swagger.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-swagger-ui</artifactId>
-        <version>${swagger.version}</version>
-      </dependency>
-      <dependency>
         <groupId>com.github.xiaoymin</groupId>
-        <artifactId>swagger-bootstrap-ui</artifactId>
-        <version>${swagger.bootstrap.ui.version}</version>
+        <artifactId>knife4j-spring-boot-starter</artifactId>
+        <version>${knife4j.version}</version>
       </dependency>
 
       <!--easypoi导入导出-->
