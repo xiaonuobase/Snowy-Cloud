@@ -77,8 +77,25 @@
 * https://doc.xiaonuo.vip
 
 ### 架构原理图
+* 业务架构
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/1231/124319_60ca9563_1980003.png "微信图片_20201231124243.png")
+![业务架构](./_images/snowy_cloud_biz.png)
+
+* 应用架构
+
+![应用架构](./_images/snowy_cloud_application.png)
+
+* 数据架构
+
+![数据架构](./_images/snowy_cloud_data.png)
+
+* 技术架构
+
+![技术架构](./_images/snowy_cloud_tech.png)
+
+* 部署架构
+
+![部署架构](./_images/snowy_cloud_deploy.png)
 
 ### 效果图
 
