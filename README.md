@@ -147,6 +147,17 @@
 18. 邮件发送、发送邮件功能。
 19. 短信发送、短信发送功能，可使用阿里云sms，腾讯云sms，支持拓展。
 
+### 官方公众号
+
+##### 微信扫码关注公众号，免费加入微信交流群，公众号不定时分享一路走来的经验！
+
+<table>
+    <tr>
+        <td>官方公众号</td>
+        <td><img src="https://pan.xiaonuo.vip/?explorer/share/file&hash=3841yKGwU0dOU5EARaYCHQAw6aFaB5JptCs-ACRfO_rQw7NdogWFXIQ&name=xiaonuobase.jpg" width="120"/></td>
+    </tr>
+</table>
+
 ### 参与贡献
 
 - 欢迎各路英雄好汉参与Snowy全系版本代码贡献，期待您的加入！
@@ -158,8 +169,8 @@
 ### 更新日志：
 
 更新日志:
-[https://doc.xiaonuo.vip/xiaonuo_cloud/#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97
-](https://doc.xiaonuo.vip/xiaonuo_cloud/#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97
+[https://doc.xiaonuo.vip/snowy_cloud/#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97
+](https://doc.xiaonuo.vip/snowy_cloud/#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97
 )
 
 ### 版权说明
