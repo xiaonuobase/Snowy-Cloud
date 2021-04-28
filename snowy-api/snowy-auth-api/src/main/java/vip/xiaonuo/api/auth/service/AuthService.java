@@ -27,7 +27,6 @@ package vip.xiaonuo.api.auth.service;
 import org.springframework.security.core.Authentication;
 import vip.xiaonuo.api.auth.entity.SysUser;
 import vip.xiaonuo.common.pojo.login.SysLoginUser;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**

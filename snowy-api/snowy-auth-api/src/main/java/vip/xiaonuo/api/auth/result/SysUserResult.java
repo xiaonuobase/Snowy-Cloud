@@ -26,7 +26,6 @@ package vip.xiaonuo.api.auth.result;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-
 import java.util.Date;
 
 /**

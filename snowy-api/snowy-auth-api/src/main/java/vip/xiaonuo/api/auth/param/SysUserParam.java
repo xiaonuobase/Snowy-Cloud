@@ -28,7 +28,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import vip.xiaonuo.common.pojo.base.param.BaseParam;
 import vip.xiaonuo.common.validation.date.DateValue;
-
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
