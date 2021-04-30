@@ -84,6 +84,7 @@ spring:
         locator:
           lowerCaseServiceId: true
           enabled: true
+      # 路由配置
       routes:
         - id: snowy-main-app
           uri: lb://snowy-main-app
