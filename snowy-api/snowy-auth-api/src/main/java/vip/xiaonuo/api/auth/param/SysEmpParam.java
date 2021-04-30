@@ -28,7 +28,6 @@ import cn.hutool.core.lang.Dict;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import vip.xiaonuo.common.pojo.base.param.BaseParam;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;

@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.common.consts.FeignConstant;
 import vip.xiaonuo.common.pojo.base.validate.UniqueValidateParam;
 import vip.xiaonuo.common.pojo.login.SysLoginUser;
-
 import java.util.List;
 
 /**

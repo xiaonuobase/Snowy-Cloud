@@ -26,7 +26,6 @@ package vip.xiaonuo.api.auth.result;
 
 import cn.hutool.core.lang.Dict;
 import lombok.Data;
-
 import java.io.Serializable;
 import java.util.List;
 

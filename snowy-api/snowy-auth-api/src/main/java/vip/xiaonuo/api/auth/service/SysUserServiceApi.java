@@ -33,7 +33,6 @@ import vip.xiaonuo.api.auth.param.SysUserParam;
 import vip.xiaonuo.api.auth.result.SysUserResult;
 import vip.xiaonuo.common.consts.FeignConstant;
 import vip.xiaonuo.common.pojo.page.PageResult;
-
 import java.util.List;
 
 @RequestMapping("/feign/sysUserServiceApi")
