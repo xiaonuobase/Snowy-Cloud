@@ -94,42 +94,6 @@ spring:
             - name: Retry
               args:
                 retries: 1 #重试次数
-        - id: snowy-flowable-app
-          uri: lb://snowy-flowable-app
-          predicates:
-            - Path=/flowable/**
-          filters:
-            - StripPrefix=1 #去掉Path中第一个节点
-            - name: Retry
-              args:
-                retries: 1 #重试次数
-        - id: snowy-flowable-app
-          uri: lb://snowy-flowable-app
-          predicates:
-            - Path=/designer/**
-          filters:
-#             - StripPrefix=1 #去掉Path中第一个节点
-             - name: Retry
-               args:
-                 retries: 1 #重试次数
-        - id: snowy-flowable-app
-          uri: lb://snowy-flowable-app
-          predicates:
-            - Path=/app/rest/**
-          filters:
-#             - StripPrefix=1 #去掉Path中第一个节点
-            - name: Retry
-              args:
-                retries: 1 #重试次数
-        - id: snowy-tenant-app
-          uri: lb://snowy-tenant-app
-          predicates:
-            - Path=/tenant/**
-          filters:
-            - StripPrefix=1 #去掉Path中第一个节点
-            - name: Retry
-              args:
-                retries: 1 #重试次数
 
 # 开放所有endpoint，实际生产根据自身需要开放，出于安全考虑不建议全部开放
 management:
