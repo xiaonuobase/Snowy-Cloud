@@ -78,24 +78,29 @@
 
 ### 架构原理图
 * 业务架构
-
-![业务架构](./_images/snowy_cloud_biz.png)
+<p align="center">
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=68yzjuiA&path=%7BshareItemLink%3A68yzjuiA%7D%2F"/>
+</p>
 
 * 应用架构
-
-![应用架构](./_images/snowy_cloud_application.png)
+<p align="center">
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=68yzy4Aw&path=%7BshareItemLink%3A68yzy4Aw%7D%2F"/>
+</p>
 
 * 数据架构
-
-![数据架构](./_images/snowy_cloud_data.png)
+<p align="center">
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=68y0EfOg&path=%7BshareItemLink%3A68y0EfOg%7D%2F"/>
+</p>
 
 * 技术架构
-
-![技术架构](./_images/snowy_cloud_tech.png)
+<p align="center">
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=68y0Q2EA&path=%7BshareItemLink%3A68y0Q2EA%7D%2F"/>
+</p>
 
 * 部署架构
-
-![部署架构](./_images/snowy_cloud_deploy.png)
+<p align="center">
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=68y0jARw&path=%7BshareItemLink%3A68y0jARw%7D%2F"/>
+</p>
 
 ### 效果图
 
