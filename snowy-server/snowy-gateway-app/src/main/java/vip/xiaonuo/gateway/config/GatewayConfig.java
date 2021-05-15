@@ -84,9 +84,9 @@ public class GatewayConfig {
         }
     }
 
-    @Bean
-    @LoadBalanced
-    public WebClient.Builder loadBalancedWebClientBuilder() {
-        return WebClient.builder();
-    }
+//    @Bean
+//    @LoadBalanced
+//    public WebClient.Builder loadBalancedWebClientBuilder() {
+//        return WebClient.builder();
+//    }
 }
