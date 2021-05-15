@@ -24,14 +24,14 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.sample.core.aop;
 
-import vip.xiaonuo.common.consts.AopSortConstant;
-import vip.xiaonuo.common.context.login.LoginContextHolder;
-import vip.xiaonuo.common.pojo.base.param.BaseParam;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.annotation.Order;
+import vip.xiaonuo.common.consts.AopSortConstant;
+import vip.xiaonuo.common.context.login.LoginContextHolder;
+import vip.xiaonuo.common.pojo.base.param.BaseParam;
 
 import java.util.List;
 

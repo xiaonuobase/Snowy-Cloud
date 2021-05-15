@@ -22,44 +22,65 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
 5.在修改包名，模块名称，项目代码等时，请注明软件出处 https://gitee.com/xiaonuobase/snowy-cloud
 6.若您的项目无法满足以上几点，可申请商业授权，获取Snowy商业授权许可，请在官网购买授权，地址为 https://www.xiaonuo.vip
  */
-package vip.xiaonuo.sample.cache;
+package vip.xiaonuo.sample.config;
 
-import cn.hutool.cache.impl.TimedCache;
-import vip.xiaonuo.sample.cache.base.AbstractMemoryCacheOperator;
-
-import java.util.Map;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import vip.xiaonuo.sample.core.aop.BusinessLogAop;
+import vip.xiaonuo.sample.core.aop.DataScopeAop;
+import vip.xiaonuo.sample.core.aop.PermissionAop;
+import vip.xiaonuo.sample.core.aop.WrapperAop;
 
 /**
- * mapping是映射，指业务id和业务名称的映射，或字典code和字典值的映射
- * <p>
- * mapping的含义：
- * 指对接口响应字段转化（或完善）过程
- * <p>
- * 为什么要映射：
- * 一般在查询类的方法，响应结果如果需要返回详细的一些名称信息
- * 则需要通过left join关联对应明细表或字典表，通过id或者code查到对应的中文名称，这样做效率不高
- * <p>
- * 结论：
- * 利用缓存，将常用的字典或者业务id映射，保存起来
- * 一方面保证了查询速度，一方面简化了代码开发，不用写一些left join之类的sql
+ * 切面配置
  *
  * @author xuyuxiang
- * @date 2020/7/24 11:59
+ * @date 2020/3/18 11:25
  */
-public class MappingCache extends AbstractMemoryCacheOperator<Map<String, Object>> {
+@Configuration
+public class AopConfig {
 
     /**
-     * 缓存的前缀标识
+     * 日志切面
+     *
+     * @author xuyuxiang
+     * @date 2020/3/20 14:10
      */
-    public static final String TRANSLATES_CACHE_PREFIX = "MAPPINGS_";
-
-    public MappingCache(TimedCache<String, Map<String, Object>> timedCache) {
-        super(timedCache);
+    @Bean
+    public BusinessLogAop businessLogAop() {
+        return new BusinessLogAop();
     }
 
-    @Override
-    public String getCommonKeyPrefix() {
-        return TRANSLATES_CACHE_PREFIX;
+    /**
+     * 权限切面
+     *
+     * @author xuyuxiang
+     * @date 2020/3/23 17:36
+     */
+    @Bean
+    public PermissionAop permissionAop() {
+        return new PermissionAop();
     }
 
+    /**
+     * 数据范围切面
+     *
+     * @author xuyuxiang
+     * @date 2020/4/6 13:47
+     */
+    @Bean
+    public DataScopeAop dataScopeAop() {
+        return new DataScopeAop();
+    }
+
+    /**
+     * 结果包装的aop
+     *
+     * @author xuyuxiang
+     * @date 2020/7/24 22:18
+     */
+    @Bean
+    public WrapperAop wrapperAop() {
+        return new WrapperAop();
+    }
 }

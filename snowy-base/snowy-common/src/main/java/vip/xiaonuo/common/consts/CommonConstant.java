@@ -105,7 +105,7 @@ public interface CommonConstant {
     /**
      * 默认JWT密码
      */
-    String DEFAULT_JWT_PASSWORD = "xiaonuo";
+    String DEFAULT_JWT_PASSWORD = "snowy";
 
     /**
      * 请求号在header中的唯一标识
