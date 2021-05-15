@@ -36,6 +36,24 @@
       <version>1.6.0</version>
     </dependency>
 
+    <dependency>
+      <groupId>vip.xiaonuo</groupId>
+      <artifactId>snowy-security</artifactId>
+      <version>1.6.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>vip.xiaonuo</groupId>
+      <artifactId>snowy-auth-api</artifactId>
+      <version>1.6.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>vip.xiaonuo</groupId>
+      <artifactId>snowy-context-api</artifactId>
+      <version>1.6.0</version>
+    </dependency>
+
     <!-- 日志追踪 -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>

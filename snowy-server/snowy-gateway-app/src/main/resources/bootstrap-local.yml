@@ -95,6 +95,15 @@ spring:
             - name: Retry
               args:
                 retries: 1 #重试次数
+        - id: snowy-sample-app
+          uri: lb://snowy-sample-app
+          predicates:
+            - Path=/test/**
+#          filters:
+#            - StripPrefix=1 #去掉Path中第一个节点
+#            - name: Retry
+#              args:
+#                retries: 1 #重试次数
 
 # 开放所有endpoint，实际生产根据自身需要开放，出于安全考虑不建议全部开放
 management:
