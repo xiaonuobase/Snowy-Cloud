@@ -7,7 +7,7 @@
     <parent>
         <groupId>vip.xiaonuo</groupId>
         <artifactId>snowy-base</artifactId>
-        <version>1.6.0</version>
+        <version>1.7.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -21,13 +21,13 @@
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-common</artifactId>
-            <version>1.6.0</version>
+            <version>1.7.0</version>
         </dependency>
 
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-tenant-api</artifactId>
-            <version>1.6.0</version>
+            <version>1.7.0</version>
         </dependency>
 
         <!-- web -->

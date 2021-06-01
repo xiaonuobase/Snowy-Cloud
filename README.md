@@ -17,7 +17,7 @@
             <img src="https://img.shields.io/badge/spring--cloud-Hoxton-orange.svg" alt="spring-cloud">
         </a>
         <a href="http://spring.io/projects/spring-boot">
-            <img src="https://img.shields.io/badge/spring--boot-2.3.1-green.svg" alt="spring-boot">
+            <img src="https://img.shields.io/badge/spring--boot-2.3.2-green.svg" alt="spring-boot">
         </a>
         <a href="http://mp.baomidou.com">
             <img src="https://img.shields.io/badge/mybatis--plus-3.3.2-blue.svg" alt="mybatis-plus">
@@ -50,16 +50,15 @@
 * 启动后端：
 
         1.按顺序启动：
-          vip.xiaonuo.eureka.SnowyEurekaApp
+          com.alibaba.nacos.SnowyNacosApp
           vip.xiaonuo.actuator.SnowyActuatorApp
-          vip.xiaonuo.config.SnowyConfigApp
           vip.xiaonuo.gateway.SnowyGatewayApp
           
         2.打开application-local中配置数据库信息，运行 SnowyMainApp 类即可启动
 
         3.打开application-local中配置数据库信息，运行 SnowySampleApp 类即可启动
         
-* 浏览器访问：<http://localhost:9000> （默认前端端口为：9000，后端端口为：9004）
+* 浏览器访问：<http://localhost:9000> （默认前端端口为：9000，后端端口为：9002）
 
 ### 框架说明及后续补充
 

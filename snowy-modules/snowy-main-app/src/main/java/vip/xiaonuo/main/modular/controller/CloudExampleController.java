@@ -24,6 +24,7 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.main.modular.controller;
 
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import vip.xiaonuo.common.pojo.response.ResponseData;
 import vip.xiaonuo.common.pojo.response.SuccessResponseData;
 import vip.xiaonuo.main.modular.consumer.CloudSampleRestApiConsumer;
@@ -38,11 +39,12 @@ import org.springframework.web.bind.annotation.RestController;
  * @author dongxiayu
  * @date 2020/12/28 19:09
  */
+@RefreshScope
 @RestController
 @RequestMapping("/oauth")
 public class CloudExampleController {
 
-    @Value("${snowy.main.config.test}")
+    @Value("${snowy.main.config.test:snowy-main-test-local}")
     private String configTest;
 
     @Autowired

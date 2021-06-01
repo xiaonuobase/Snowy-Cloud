@@ -7,7 +7,7 @@
     <parent>
         <groupId>vip.xiaonuo</groupId>
         <artifactId>snowy-biz</artifactId>
-        <version>1.6.0</version>
+        <version>1.7.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -21,28 +21,28 @@
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-core</artifactId>
-            <version>1.6.0</version>
+            <version>1.7.0</version>
         </dependency>
 
         <!-- snowy 缓存包 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-cache</artifactId>
-            <version>1.6.0</version>
+            <version>1.7.0</version>
         </dependency>
 
         <!-- snowy security包 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-security</artifactId>
-            <version>1.6.0</version>
+            <version>1.7.0</version>
         </dependency>
 
         <!-- snowy tenant api包 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-tenant-api</artifactId>
-            <version>1.6.0</version>
+            <version>1.7.0</version>
         </dependency>
 
         <!-- test -->

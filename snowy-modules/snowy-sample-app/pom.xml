@@ -5,7 +5,7 @@
   <parent>
     <groupId>vip.xiaonuo</groupId>
     <artifactId>snowy-modules</artifactId>
-    <version>1.6.0</version>
+    <version>1.7.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -20,38 +20,38 @@
     <dependency>
       <groupId>vip.xiaonuo</groupId>
       <artifactId>snowy-common</artifactId>
-      <version>1.6.0</version>
+      <version>1.7.0</version>
     </dependency>
 
     <!-- snowy 核心包 -->
     <dependency>
       <groupId>vip.xiaonuo</groupId>
       <artifactId>snowy-core</artifactId>
-      <version>1.6.0</version>
+      <version>1.7.0</version>
     </dependency>
 
     <dependency>
       <groupId>vip.xiaonuo</groupId>
       <artifactId>snowy-cache</artifactId>
-      <version>1.6.0</version>
+      <version>1.7.0</version>
     </dependency>
 
     <dependency>
       <groupId>vip.xiaonuo</groupId>
       <artifactId>snowy-security</artifactId>
-      <version>1.6.0</version>
+      <version>1.7.0</version>
     </dependency>
 
     <dependency>
       <groupId>vip.xiaonuo</groupId>
       <artifactId>snowy-auth-api</artifactId>
-      <version>1.6.0</version>
+      <version>1.7.0</version>
     </dependency>
 
     <dependency>
       <groupId>vip.xiaonuo</groupId>
       <artifactId>snowy-context-api</artifactId>
-      <version>1.6.0</version>
+      <version>1.7.0</version>
     </dependency>
 
     <!-- 日志追踪 -->
@@ -60,10 +60,16 @@
       <artifactId>spring-cloud-starter-sleuth</artifactId>
     </dependency>
 
-    <!--增加服务提供者的依赖 -->
+    <!-- nacos 注册中心客户端 -->
     <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+      <groupId>com.alibaba.cloud</groupId>
+      <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+    </dependency>
+
+    <!-- nacos 配置中心客户端 -->
+    <dependency>
+      <groupId>com.alibaba.cloud</groupId>
+      <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
     </dependency>
 
     <!-- 暴露各种指标 -->
@@ -76,12 +82,6 @@
     <dependency>
       <groupId>de.codecentric</groupId>
       <artifactId>spring-boot-admin-starter-client</artifactId>
-    </dependency>
-
-    <!-- config -->
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-config</artifactId>
     </dependency>
 
     <!-- openfeign -->

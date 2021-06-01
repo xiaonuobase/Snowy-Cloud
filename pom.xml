@@ -12,7 +12,7 @@
 
   <groupId>vip.xiaonuo</groupId>
   <artifactId>snowy-cloud</artifactId>
-  <version>1.6.0</version>
+  <version>1.7.0</version>
 
   <name>snowy-cloud</name>
   <description>snowy-cloud版本</description>
@@ -30,8 +30,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.boot-version>2.3.1.RELEASE</spring.boot-version>
+    <spring.boot-version>2.3.2.RELEASE</spring.boot-version>
     <spring.cloud-version>Hoxton.SR8</spring.cloud-version>
+    <spring.cloud.alibaba-version>2.2.5.RELEASE</spring.cloud.alibaba-version>
     <spring.boot.admin-version>2.3.1</spring.boot.admin-version>
     <mysql-connector-java.version>8.0.17</mysql-connector-java.version>
     <oracle.version>11.2.0.3</oracle.version>
@@ -54,6 +55,7 @@
     <qcloud.sms.sdk.version>3.1.57</qcloud.sms.sdk.version>
     <javax.servlet.version>3.1.0</javax.servlet.version>
     <knife4j.version>2.0.8</knife4j.version>
+    <jasypt.version>2.1.0</jasypt.version>
   </properties>
 
   <dependencyManagement>
@@ -74,6 +76,15 @@
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
         <version>${spring.cloud-version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- SpringCloud Alibaba -->
+      <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+        <version>${spring.cloud.alibaba-version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -260,6 +271,13 @@
         <groupId>javax.servlet</groupId>
         <artifactId>javax.servlet-api</artifactId>
         <version>${javax.servlet.version}</version>
+      </dependency>
+
+      <!--配置文件加解密-->
+      <dependency>
+        <groupId>com.github.ulisesbocchio</groupId>
+        <artifactId>jasypt-spring-boot-starter</artifactId>
+        <version>${jasypt.version}</version>
       </dependency>
 
     </dependencies>

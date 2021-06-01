@@ -28,6 +28,7 @@ import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * SpringBoot方式 SnowyActuatorApp 启动类
@@ -35,6 +36,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @author dongxiayu
  * @date 2020/12/11 12:06
  */
+@RefreshScope
 @EnableAdminServer
 @EnableDiscoveryClient
 @SpringBootApplication
