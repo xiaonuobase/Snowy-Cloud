@@ -22,7 +22,7 @@
           <a href="_self">条款</a>
         </div>
         <div class="copyright">
-          Copyright © 2020 <a target="_blank" href="https://www.xiaonuo.vip/">Snowy</a> All rights reserved. Snowy-CLoud 1.6.0
+          Copyright © 2020 <a target="_blank" href="https://www.xiaonuo.vip/">Snowy</a> All rights reserved. Snowy-CLoud 1.7.0
         </div>
       </div>
     </div>
