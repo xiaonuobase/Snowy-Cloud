@@ -204,7 +204,13 @@ export default {
           } catch (e) {
             this.localPagination = false
           }
-          this.localDataSource = r.rows // 返回结果中的数组数据
+          // 返回结果中的数组数据
+          if (this.showPagination === false) {
+            // 因为按住小诺的套路，不分页的直接是在data中，我们在界面中直接就是返回了data
+            this.localDataSource = r
+          } else {
+            this.localDataSource = r.rows
+          }
           this.localLoading = false
         })
       }
@@ -250,6 +256,13 @@ export default {
       }
     },
     /**
+     * 刷新并清空已选
+     */
+    clearRefreshSelected (bool = false) {
+      this.refresh(bool)
+      this.clearSelected()
+    },
+    /**
      * 处理交给 table 使用者去处理 clear 事件时，内部选中统计同时调用
      * @param callback
      * @returns {*}
@@ -282,8 +295,7 @@ export default {
 
       // 绘制 alert 组件
       // 统一先去除alert组件
-      return ''
-      /* return (
+       return (
         <a-alert showIcon={true} style="margin-bottom: 16px">
           <template slot="message">
             <span style="margin-right: 12px">已选择: <a style="font-weight: 600">{this.selectedRows.length}</a></span>
@@ -291,7 +303,7 @@ export default {
             {clearItem}
           </template>
         </a-alert>
-      ) */
+      )
     },
     columnChange(val) {
       this.columnsSetting = val
@@ -367,7 +379,8 @@ export default {
           </div>
         </div>
       )
-      /* return (
+      /*
+      return (
         <a-alert showIcon={true} style="margin-bottom: 16px">
           <template slot="message">
             <span style="margin-right: 12px">已选择: <a style="font-weight: 600">{this.selectedRows.length}</a></span>
@@ -375,7 +388,8 @@ export default {
             {clearItem}
           </template>
         </a-alert>
-      ) */
+      )
+      */
     }
   },
 

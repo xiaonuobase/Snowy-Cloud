@@ -25,6 +25,7 @@
 
 <script>
   import draggable from 'vuedraggable'
+
   export default {
     props: {
       columns: {

@@ -120,7 +120,7 @@
         })
         sysFileInfoUpload(formData).then((res) => {
           if (res.success) {
-            insert(process.env.VUE_APP_API_BASE_URL + '/main/sysFileInfo/preview?id=' + res.data)
+            insert(process.env.VUE_APP_API_BASE_URL + '/sysFileInfo/preview?id=' + res.data)
           } else {
             this.$message.error('编辑器上传图片失败：' + res.message)
           }

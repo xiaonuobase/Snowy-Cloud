@@ -14,11 +14,9 @@
                 <a-input v-model="queryParam.code" allow-clear placeholder="请输入唯一编码" />
               </a-form-item>
             </a-col>
-            <a-col :md="!advanced && 8 || 24" :sm="24">
-              <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
-                <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
-                <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-              </span>
+            <a-col :md="8" :sm="24">
+              <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
+              <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
             </a-col>
           </a-row>
         </a-form>
@@ -29,38 +27,42 @@
         ref="table"
         :columns="columns"
         :data="loadData"
-        :alert="true"
-        :rowKey="(record) => record.code"
-        :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
+        :alert="options.alert"
+        :rowKey="(record) => record.id"
+        :rowSelection="options.rowSelection"
       >
         <template slot="operator" v-if="hasPerm('sysPos:add')">
           <a-button @click="$refs.addForm.add()" icon="plus" type="primary" v-if="hasPerm('sysPos:add')">新增职位</a-button>
+          <a-button type="danger" :disabled="selectedRowKeys.length < 1" v-if="hasPerm('sysPos:delete')" @click="batchDelete"><a-icon type="delete"/>批量删除</a-button>
+          <x-down
+            v-if="hasPerm('sysPos:export')"
+            ref="batchExport"
+            @batchExport="batchExport"
+          />
         </template>
         <span slot="action" slot-scope="text, record">
           <a v-if="hasPerm('sysPos:edit')" @click="$refs.editForm.edit(record)">编辑</a>
           <a-divider type="vertical" v-if="hasPerm('sysPos:edit') & hasPerm('sysPos:delete')"/>
-          <a-popconfirm v-if="hasPerm('sysPos:delete')" placement="topRight" title="确认删除？" @confirm="() => sysPosDelete(record)">
+          <a-popconfirm v-if="hasPerm('sysPos:delete')" placement="topRight" title="确认删除？" @confirm="() => singleDelete(record)">
             <a>删除</a>
           </a-popconfirm>
         </span>
-
       </s-table>
-
       <add-form ref="addForm" @ok="handleOk" />
       <edit-form ref="editForm" @ok="handleOk" />
-
     </a-card>
   </div>
 </template>
 
 <script>
-  import { STable, XCard } from '@/components'
-  import { sysPosPage, sysPosDelete } from '@/api/modular/system/posManage'
+  import { STable, XCard, XDown } from '@/components'
+  import { sysPosPage, sysPosDelete, sysPosExport } from '@/api/modular/system/posManage'
   import addForm from './addForm'
   import editForm from './editForm'
 
   export default {
     components: {
+      XDown,
       XCard,
       STable,
       addForm,
@@ -69,9 +71,6 @@
 
     data () {
       return {
-
-        // 高级搜索 展开/关闭
-        advanced: false,
         // 查询参数
         queryParam: {},
         // 表头
@@ -100,7 +99,14 @@
           })
         },
         selectedRowKeys: [],
-        selectedRows: []
+        selectedRows: [],
+        options: {
+          alert: { show: true, clear: () => { this.selectedRowKeys = [] } },
+          rowSelection: {
+            selectedRowKeys: this.selectedRowKeys,
+            onChange: this.onSelectChange
+          }
+        }
     }
     },
 
@@ -116,11 +122,30 @@
     },
 
     methods: {
-      sysPosDelete (record) {
-        sysPosDelete(record).then((res) => {
+      /**
+       * 单个删除
+       */
+      singleDelete (record) {
+        const param = [{ 'id': record.id }]
+        this.sysPosDelete(param)
+      },
+      /**
+       * 批量删除
+       */
+      batchDelete () {
+        const paramIds = this.selectedRowKeys.map((d) => {
+          return { 'id': d }
+        })
+        this.sysPosDelete(paramIds)
+      },
+      /**
+       * 删除
+       */
+      sysPosDelete (param) {
+        sysPosDelete(param).then((res) => {
           if (res.success) {
             this.$message.success('删除成功')
-            this.$refs.table.refresh()
+            this.$refs.table.clearRefreshSelected()
           } else {
             this.$message.error('删除失败：' + res.message)
           }
@@ -128,9 +153,16 @@
           this.$message.error('删除错误：' + err.message)
         })
       },
-
-      toggleAdvanced () {
-        this.advanced = !this.advanced
+      /**
+       * 批量导出
+       */
+      batchExport () {
+        const paramIds = this.selectedRowKeys.map((d) => {
+          return { 'id': d }
+        })
+        sysPosExport(paramIds).then((res) => {
+          this.$refs.batchExport.downloadfile(res)
+        })
       },
       handleOk () {
         this.$refs.table.refresh()
@@ -151,5 +183,4 @@
   button {
     margin-right: 8px;
   }
-
 </style>
