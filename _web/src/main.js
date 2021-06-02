@@ -13,11 +13,6 @@ import './components/global.less'
 import { Dialog } from '@/components'
 import { hasBtnPermission } from './utils/permissions'
 import { sysApplication } from './utils/applocation'
-// 表单设计器 str
-import KFormDesign from './components/k-form-design/packages'
-import './components/k-form-design/static/styles/form-design.less'
-Vue.use(KFormDesign)
-// 表单设计器 end
 
 Vue.use(VueAxios)
 Vue.use(Dialog)
