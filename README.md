@@ -63,7 +63,7 @@
 ### 框架说明及后续补充
 
 * 纯手研发搭建框架脚手架，在自己用的时候，也为各位小伙伴打下坚固的接私活利器。
-* 后续我们会行发多个版本，将适配多个数据库环境，国产化环境，并且根据多年经验会出相关系统中用到的案例，提供给大家使用！
+* 版本的升级除了跟随Snowy主版本升级外，Cloud架构也会一步步增强
 * 如需了解我们更多，请移步官网：[https://xiaonuo.vip](https://xiaonuo.vip)
 * 当然，有问题讨论的小伙伴还可以加入我们的QQ技术群：[732230670](https://wpa.qq.com/msgrd?v=3&uin=732230670&_blank)，一起学习讨论。
 
@@ -119,7 +119,7 @@
 1. 模块化架构设计，层次清晰，业务层推荐写到单独模块，方便升级。
 2. 前后端分离架构，分离开发，分离部署，前后端互不影响。
 3. 前端技术采用vue + antdvPro + axios。
-3. 后端采用spring cloud + spring boot + mybatis-plus + hutool等，开源可靠。
+3. 后端采用spring cloud alibaba + spring boot + mybatis-plus + hutool等，开源可靠。
 4. 基于spring security(jwt) + 用户UUID双重认证。
 5. 基于AOP实现的接口粒度的鉴权，最细粒度过滤权限资源。
 6. 基于hibernate validator实现的校验框架，支持自定义校验注解。
