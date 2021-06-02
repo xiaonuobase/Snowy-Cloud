@@ -30,6 +30,7 @@ import vip.xiaonuo.common.enums.CommonStatusEnum;
 import vip.xiaonuo.common.exception.ServiceException;
 import vip.xiaonuo.core.factory.PageFactory;
 import vip.xiaonuo.common.pojo.page.PageResult;
+import vip.xiaonuo.core.util.PoiUtil;
 import vip.xiaonuo.sys.modular.emp.service.SysEmpExtOrgPosService;
 import vip.xiaonuo.sys.modular.emp.service.SysEmpPosService;
 import vip.xiaonuo.sys.modular.pos.entity.SysPos;
@@ -41,14 +42,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * 系统职位service接口实现类
  *
- * @author xuyuxiang
+ * @author xuyuxiang yubaoshan
  * @date 2020/3/13 16:01
  */
 @Service
@@ -106,23 +106,25 @@ public class SysPosServiceImpl extends ServiceImpl<SysPosMapper, SysPos> impleme
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void delete(SysPosParam sysPosParam) {
-        SysPos sysPos = this.querySysPos(sysPosParam);
-        Long id = sysPos.getId();
-        //该职位下是否有员工
-        boolean hasPosEmp = sysEmpPosService.hasPosEmp(id);
-        //只要还有，则不能删
-        if (hasPosEmp) {
-            throw new ServiceException(SysPosExceptionEnum.POS_CANNOT_DELETE);
-        }
-        //该附属职位下是否有员工
-        boolean hasExtPosEmp = sysEmpExtOrgPosService.hasExtPosEmp(id);
-        //只要还有，则不能删
-        if (hasExtPosEmp) {
-            throw new ServiceException(SysPosExceptionEnum.POS_CANNOT_DELETE);
-        }
-        sysPos.setStatus(CommonStatusEnum.DELETED.getCode());
-        this.updateById(sysPos);
+    public void delete(List<SysPosParam> sysPosParamList) {
+        sysPosParamList.forEach(sysPosParam -> {
+            SysPos sysPos = this.querySysPos(sysPosParam);
+            Long id = sysPos.getId();
+            //该职位下是否有员工
+            boolean hasPosEmp = sysEmpPosService.hasPosEmp(id);
+            //只要还有，则不能删
+            if (hasPosEmp) {
+                throw new ServiceException(SysPosExceptionEnum.POS_CANNOT_DELETE);
+            }
+            //该附属职位下是否有员工
+            boolean hasExtPosEmp = sysEmpExtOrgPosService.hasExtPosEmp(id);
+            //只要还有，则不能删
+            if (hasExtPosEmp) {
+                throw new ServiceException(SysPosExceptionEnum.POS_CANNOT_DELETE);
+            }
+            sysPos.setStatus(CommonStatusEnum.DELETED.getCode());
+            this.updateById(sysPos);
+        });
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -189,5 +191,11 @@ public class SysPosServiceImpl extends ServiceImpl<SysPosMapper, SysPos> impleme
             throw new ServiceException(SysPosExceptionEnum.POS_NOT_EXIST);
         }
         return sysPos;
+    }
+
+    @Override
+    public void export(SysPosParam sysPosParam) {
+        List<SysPos> list = this.list(sysPosParam);
+        PoiUtil.exportExcelWithStream("SnowyPos.xls", SysPos.class, list);
     }
 }

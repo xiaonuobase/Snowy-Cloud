@@ -36,8 +36,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 系统职位控制器
@@ -100,8 +100,8 @@ public class SysPosController {
     @Permission
     @PostMapping("/sysPos/delete")
     @BusinessLog(title = "系统职位_删除", opType = LogAnnotionOpTypeEnum.DELETE)
-    public ResponseData delete(@RequestBody @Validated(SysPosParam.delete.class) SysPosParam sysPosParam) {
-        sysPosService.delete(sysPosParam);
+    public ResponseData delete(@RequestBody @Validated(SysPosParam.delete.class) List<SysPosParam> sysPosParamList) {
+        sysPosService.delete(sysPosParamList);
         return new SuccessResponseData();
     }
 
@@ -130,5 +130,18 @@ public class SysPosController {
     @BusinessLog(title = "系统职位_查看", opType = LogAnnotionOpTypeEnum.DETAIL)
     public ResponseData detail(@Validated(SysPosParam.detail.class) SysPosParam sysPosParam) {
         return new SuccessResponseData(sysPosService.detail(sysPosParam));
+    }
+
+    /**
+     * 导出系统用户
+     *
+     * @author yubaoshan
+     * @date 2020/6/30 16:07
+     */
+    @Permission
+    @GetMapping("/sysPos/export")
+    @BusinessLog(title = "系统职位_导出", opType = LogAnnotionOpTypeEnum.EXPORT)
+    public void export(SysPosParam sysPosParam) {
+        sysPosService.export(sysPosParam);
     }
 }

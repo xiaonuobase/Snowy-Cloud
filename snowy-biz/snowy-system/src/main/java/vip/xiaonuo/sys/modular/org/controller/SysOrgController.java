@@ -38,7 +38,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
 
 /**
@@ -151,5 +150,18 @@ public class SysOrgController {
     @BusinessLog(title = "系统组织机构_树", opType = LogAnnotionOpTypeEnum.TREE)
     public ResponseData tree(SysOrgParam sysOrgParam) {
         return new SuccessResponseData(sysOrgService.tree(sysOrgParam));
+    }
+
+    /**
+     * 导出系统组织机构
+     *
+     * @author yubaoshan
+     * @date 2021/5/30 12:48
+     */
+    @Permission
+    @GetMapping("/sysOrg/export")
+    @BusinessLog(title = "系统组织机构_导出", opType = LogAnnotionOpTypeEnum.EXPORT)
+    public void export(SysOrgParam sysOrgParam) {
+        sysOrgService.export(sysOrgParam);
     }
 }

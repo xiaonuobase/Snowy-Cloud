@@ -39,6 +39,7 @@ import vip.xiaonuo.core.factory.PageFactory;
 import vip.xiaonuo.core.factory.TreeBuildFactory;
 import vip.xiaonuo.common.pojo.node.AntdBaseTreeNode;
 import vip.xiaonuo.common.pojo.page.PageResult;
+import vip.xiaonuo.core.util.PoiUtil;
 import vip.xiaonuo.sys.core.enums.DataScopeTypeEnum;
 import vip.xiaonuo.sys.modular.emp.service.SysEmpExtOrgPosService;
 import vip.xiaonuo.sys.modular.emp.service.SysEmpService;
@@ -55,7 +56,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Set;
@@ -388,8 +388,8 @@ public class SysOrgServiceImpl extends ServiceImpl<SysOrgMapper, SysOrg> impleme
             }
         }
 
+        // 如果是编辑，父id和自己的id不能一致
         if (isExcludeSelf) {
-            // 如果是编辑，父id和自己的id不能一致
             if (sysOrgParam.getId().equals(sysOrgParam.getPid())) {
                 throw new ServiceException(SysOrgExceptionEnum.ID_CANT_EQ_PID);
             }
@@ -525,5 +525,11 @@ public class SysOrgServiceImpl extends ServiceImpl<SysOrgMapper, SysOrg> impleme
         resultSet.addAll(parentIdListById);
         resultSet.addAll(childIdListById);
         return CollectionUtil.newArrayList(resultSet);
+    }
+
+    @Override
+    public void export(SysOrgParam sysOrgParam) {
+        List<SysOrg> list = this.list(sysOrgParam);
+        PoiUtil.exportExcelWithStream("SysOrg.xls", SysOrg.class, list);
     }
 }

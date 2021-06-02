@@ -28,13 +28,12 @@ import vip.xiaonuo.common.pojo.page.PageResult;
 import vip.xiaonuo.sys.modular.pos.entity.SysPos;
 import vip.xiaonuo.sys.modular.pos.param.SysPosParam;
 import com.baomidou.mybatisplus.extension.service.IService;
-
 import java.util.List;
 
 /**
  * 系统职位service接口
  *
- * @author xuyuxiang
+ * @author xuyuxiang yubaoshan
  * @date 2020/3/13 16:00
  */
 public interface SysPosService extends IService<SysPos> {
@@ -71,11 +70,11 @@ public interface SysPosService extends IService<SysPos> {
     /**
      * 删除系统职位
      *
-     * @param sysPosParam 删除参数
+     * @param sysPosParamList 删除参数集合
      * @author xuyuxiang
      * @date 2020/3/25 14:57
      */
-    void delete(SysPosParam sysPosParam);
+    void delete(List<SysPosParam> sysPosParamList);
 
     /**
      * 编辑系统职位
@@ -95,4 +94,11 @@ public interface SysPosService extends IService<SysPos> {
      * @date 2020/3/26 9:50
      */
     SysPos detail(SysPosParam sysPosParam);
+
+    /**
+     * 导出系统职位
+     * @author yubaoshan
+     * @date 2021/5/29 16:12
+     */
+    void export(SysPosParam sysPosParam);
 }
