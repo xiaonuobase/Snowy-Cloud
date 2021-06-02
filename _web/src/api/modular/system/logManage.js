@@ -56,7 +56,6 @@ export function sysOpLogDelete (parameter) {
   })
 }
 
-
 /**
  * 导出登录日志
  *

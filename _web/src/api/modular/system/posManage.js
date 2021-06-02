@@ -84,4 +84,3 @@ export function sysPosExport (parameter) {
     responseType: 'blob'
   })
 }
-
