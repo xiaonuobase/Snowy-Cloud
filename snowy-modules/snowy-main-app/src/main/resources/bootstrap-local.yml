@@ -77,7 +77,7 @@ jodconverter:
     max-tasks-per-process: 100
 
 # redis相关配置
-redis:
-  host: 127.0.0.1
-  port: 6379
-  password:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
