@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 系统组织机构控制器
@@ -105,8 +106,8 @@ public class SysOrgController {
     @DataScope
     @PostMapping("/sysOrg/delete")
     @BusinessLog(title = "系统组织机构_删除", opType = LogAnnotionOpTypeEnum.DELETE)
-    public ResponseData delete(@RequestBody @Validated(BaseParam.delete.class) SysOrgParam sysOrgParam) {
-        sysOrgService.delete(sysOrgParam);
+    public ResponseData delete(@RequestBody @Validated(BaseParam.delete.class) List<SysOrgParam> sysOrgParamList) {
+        sysOrgService.delete(sysOrgParamList);
         return new SuccessResponseData();
     }
 

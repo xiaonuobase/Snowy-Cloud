@@ -154,19 +154,19 @@ export default {
     loadData (pagination, filters, sorter) {
       this.localLoading = true
       const parameter = Object.assign({
-        pageNo: (pagination && pagination.current) ||
-          this.showPagination && this.localPagination.current || this.pageNum,
-        pageSize: (pagination && pagination.pageSize) ||
-          this.showPagination && this.localPagination.pageSize || this.pageSize
-      },
-      (sorter && sorter.field && {
-        sortField: sorter.field
-      }) || {},
-      (sorter && sorter.order && {
-        sortOrder: sorter.order
-      }) || {}, {
-        ...filters
-      }
+          pageNo: (pagination && pagination.current) ||
+            this.showPagination && this.localPagination.current || this.pageNum,
+          pageSize: (pagination && pagination.pageSize) ||
+            this.showPagination && this.localPagination.pageSize || this.pageSize
+        },
+        (sorter && sorter.field && {
+          sortField: sorter.field
+        }) || {},
+        (sorter && sorter.order && {
+          sortOrder: sorter.order
+        }) || {}, {
+          ...filters
+        }
       )
       const result = this.data(parameter)
       // 对接自己的通用数据接口需要修改下方代码中的 r.pageNo, r.totalCount, r.data
@@ -295,7 +295,7 @@ export default {
 
       // 绘制 alert 组件
       // 统一先去除alert组件
-       return (
+      return (
         <a-alert showIcon={true} style="margin-bottom: 16px">
           <template slot="message">
             <span style="margin-right: 12px">已选择: <a style="font-weight: 600">{this.selectedRows.length}</a></span>

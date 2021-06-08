@@ -73,105 +73,115 @@
 </template>
 
 <script>
-import { STable, XCard } from '@/components'
-import { getMenuList } from '@/api/modular/system/menuManage'
-import addForm from './addForm'
-import editForm from './editForm'
-import { mapGetters } from 'vuex'
+  import { STable, XCard } from '@/components'
+  import { getMenuList, sysMenuDelete } from '@/api/modular/system/menuManage'
+  import addForm from './addForm'
+  import editForm from './editForm'
+  import { mapGetters } from 'vuex'
 
-export default {
-  components: {
-    STable,
-    XCard,
-    addForm,
-    editForm
-  },
-  data () {
-    return {
-      data: [],
-      queryParam: {},
-      loading: true,
-      columns: [
-        {
-          title: '菜单名称',
-          dataIndex: 'name',
-          width: '20%'
-        },
-        {
-          title: '菜单类型',
-          dataIndex: 'type',
-          scopedSlots: { customRender: 'type' }
-        },
-        {
-          title: '图标',
-          dataIndex: 'icon',
-          scopedSlots: { customRender: 'icon' }
-        },
-        {
-          title: '组件',
-          dataIndex: 'component',
-          width: '20%',
-          ellipsis: true
-        },
-        {
-          title: '路由地址',
-          dataIndex: 'router',
-          key: 'router',
-          ellipsis: true
-        },
-        {
-          title: '排序',
-          dataIndex: 'sort'
-        }
-      ],
-      loadData: parameter => {
-        return getMenuList(Object.assign(parameter, this.queryParam)).then((res) => {
-          this.removeEmptyChildren(res.data)
-          return res.data
-        })
-      }
-    }
-  },
-  computed: {
-    ...mapGetters(['userInfo'])
-  },
-  created () {
-    if (this.hasPerm('sysMenu:edit') || this.hasPerm('sysMenu:delete')) {
-      this.columns.push({
-        title: '操作',
-        dataIndex: 'action',
-        width: '150px',
-        scopedSlots: { customRender: 'action' }
-      })
-    }
-  },
-  methods: {
-    /**
-     * 去掉无用的支节点
-     */
-    removeEmptyChildren(data) {
-      if (data == null || data.length === 0) return
-      for (let i = 0; i < data.length; i++) {
-        const item = data[i]
-        if (item.children != null && item.children.length === 0) {
-          item.children = null
-        } else {
-          this.removeEmptyChildren(item.children)
+  export default {
+    components: {
+      STable,
+      XCard,
+      addForm,
+      editForm
+    },
+    data () {
+      return {
+        data: [],
+        queryParam: {},
+        loading: true,
+        columns: [
+          {
+            title: '菜单名称',
+            dataIndex: 'name',
+            width: '20%'
+          },
+          {
+            title: '菜单类型',
+            dataIndex: 'type',
+            scopedSlots: { customRender: 'type' }
+          },
+          {
+            title: '图标',
+            dataIndex: 'icon',
+            scopedSlots: { customRender: 'icon' }
+          },
+          {
+            title: '组件',
+            dataIndex: 'component',
+            width: '20%',
+            ellipsis: true
+          },
+          {
+            title: '路由地址',
+            dataIndex: 'router',
+            key: 'router',
+            ellipsis: true
+          },
+          {
+            title: '排序',
+            dataIndex: 'sort'
+          }
+        ],
+        loadData: parameter => {
+          return getMenuList(Object.assign(parameter, this.queryParam)).then((res) => {
+            this.removeEmptyChildren(res.data)
+            return res.data
+          })
         }
       }
     },
-    handleOk () {
-      this.$refs.table.refresh()
+    computed: {
+      ...mapGetters(['userInfo'])
+    },
+    created () {
+      if (this.hasPerm('sysMenu:edit') || this.hasPerm('sysMenu:delete')) {
+        this.columns.push({
+          title: '操作',
+          dataIndex: 'action',
+          width: '150px',
+          scopedSlots: { customRender: 'action' }
+        })
+      }
+    },
+    methods: {
+      /**
+       * 去掉无用的支节点
+       */
+      removeEmptyChildren(data) {
+        if (data == null || data.length === 0) return
+        for (let i = 0; i < data.length; i++) {
+          const item = data[i]
+          if (item.children != null && item.children.length === 0) {
+            item.children = null
+          } else {
+            this.removeEmptyChildren(item.children)
+          }
+        }
+      },
+      handleDel (record) {
+        sysMenuDelete(record).then((res) => {
+          if (res.success) {
+            this.$message.success('删除成功')
+            this.$refs.table.refresh()
+          } else {
+            this.$message.error('删除失败：' + res.message)
+          }
+        })
+      },
+      handleOk () {
+        this.$refs.table.refresh()
+      }
     }
   }
-}
 
 </script>
 <style scoped>
-.table-operator {
-  margin-bottom: 18px;
-}
-button {
-  margin-right: 8px;
-}
+  .table-operator {
+    margin-bottom: 18px;
+  }
+  button {
+    margin-right: 8px;
+  }
 </style>

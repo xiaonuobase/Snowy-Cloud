@@ -71,11 +71,11 @@ public interface SysOrgService extends IService<SysOrg> {
     /**
      * 删除系统组织机构
      *
-     * @param sysOrgParam 删除参数
+     * @param sysOrgParamList 删除参数
      * @author xuyuxiang
      * @date 2020/3/25 14:57
      */
-    void delete(SysOrgParam sysOrgParam);
+    void delete(List<SysOrgParam> sysOrgParamList);
 
     /**
      * 编辑系统组织机构
