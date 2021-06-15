@@ -34,8 +34,10 @@
     </p>
 </p>
 
-### 其他版本
+### 快速链接
 
+* 演示地址与Snowy一致(superAdmin/123456)：https://snowy.xiaonuo.vip
+* 在线文档：https://doc.xiaonuo.vip
 * layui单体版本：[https://gitee.com/xiaonuobase/snowy-layui](https://gitee.com/xiaonuobase/snowy-layui)
 * vue前后分离版本：[https://gitee.com/xiaonuobase/snowy](https://gitee.com/xiaonuobase/snowy)
 * cloud微服务前后分离版本：[https://gitee.com/xiaonuobase/snowy-cloud](https://gitee.com/xiaonuobase/snowy-cloud)
@@ -67,13 +69,6 @@
 * 如需了解我们更多，请移步官网：[https://xiaonuo.vip](https://xiaonuo.vip)
 * 当然，有问题讨论的小伙伴还可以加入我们的QQ技术群：[732230670](https://wpa.qq.com/msgrd?v=3&uin=732230670&_blank)，一起学习讨论。
 
-### 在线演示
-
-* 账号密码：`superAdmin/123456`，地址：[https://cloud.xiaonuo.vip](https://cloud.xiaonuo.vip)
-
-### 在线文档
-
-* https://doc.xiaonuo.vip
 
 ### 架构原理图
 * 业务架构
