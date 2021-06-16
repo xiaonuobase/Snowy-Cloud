@@ -79,7 +79,7 @@ public class ConstantsInitListener implements ApplicationListener<ApplicationCon
 
         Connection conn = null;
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(environment.getProperty("spring.datasource.driver-class-name"));
             assert dataSourceUrl != null;
             conn = DriverManager.getConnection(dataSourceUrl, dataSourceUsername, dataSourcePassword);
 
