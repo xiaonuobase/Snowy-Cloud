@@ -4,6 +4,11 @@ spring:
     url: jdbc:mysql://localhost:3306/snowy-cloud?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT&nullCatalogMeansCurrent=true
     username: root
     password: 123456
+  # redis相关配置
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
 
   boot:
     admin:
@@ -68,9 +73,3 @@ management:
         include: "*"
     health:
       show-details: "ALWAYS"
-
-# redis相关配置
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    password:

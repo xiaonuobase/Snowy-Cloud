@@ -7,6 +7,11 @@ spring:
     # 连接池大小根据实际情况调整
     max-active: 20
     max-pool-prepared-statement-per-connection-size: 20
+  # redis相关配置
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
 
   boot:
     admin:
@@ -72,8 +77,4 @@ management:
     health:
       show-details: "ALWAYS"
 
-# redis相关配置
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    password:
+

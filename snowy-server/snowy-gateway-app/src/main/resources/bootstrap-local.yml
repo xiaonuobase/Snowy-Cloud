@@ -5,6 +5,12 @@ spring:
     username: root
     password: 123456
 
+  # redis相关配置
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+
   boot:
     admin:
       client:
@@ -69,8 +75,4 @@ management:
     health:
       show-details: "ALWAYS"
 
-# redis相关配置
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    password:
+
