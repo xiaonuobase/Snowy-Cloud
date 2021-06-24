@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.common.consts.FeignConstant;
 import vip.xiaonuo.common.pojo.login.SysLoginUser;
+
 import java.util.List;
 
 /**
@@ -100,7 +101,7 @@ public interface LoginContextServiceApi {
      * @date 2021/3/28 14:57
      */
     @RequestMapping("/hasPermission")
-    boolean hasPermission(@RequestParam String requestUri);
+    boolean hasPermission(@RequestParam(value = "requestUri") String requestUri);
 
     /**
      * 判断当前登录用户是否包含某个角色
@@ -111,7 +112,7 @@ public interface LoginContextServiceApi {
      * @date 2021/3/28 14:57
      */
     @RequestMapping("/hasRole")
-    boolean hasRole(@RequestParam String roleCode);
+    boolean hasRole(@RequestParam(value = "roleCode") String roleCode);
 
     /**
      * 判断当前登录用户是否包含任意一个角色
@@ -122,7 +123,7 @@ public interface LoginContextServiceApi {
      * @date 2021/3/28 14:57
      */
     @RequestMapping("/hasAnyRole")
-    boolean hasAnyRole(@RequestParam String roleCodes);
+    boolean hasAnyRole(@RequestParam(value = "roleCodes") String roleCodes);
 
     /**
      * 判断当前登录用户是否是超级管理员
@@ -143,7 +144,7 @@ public interface LoginContextServiceApi {
      * @date 2021/3/28 14:57
      */
     @RequestMapping("/hasAllRole")
-    boolean hasAllRole(@RequestParam String roleCodes);
+    boolean hasAllRole(@RequestParam(value = "roleCodes") String roleCodes);
 
     /**
      * 获取当前登录用户的数据范围集合（组织机构id集合）

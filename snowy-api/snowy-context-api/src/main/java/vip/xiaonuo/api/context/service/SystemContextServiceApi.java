@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.common.consts.FeignConstant;
 import vip.xiaonuo.common.pojo.base.validate.UniqueValidateParam;
 import vip.xiaonuo.common.pojo.login.SysLoginUser;
+
 import java.util.List;
 
 /**
@@ -52,7 +53,7 @@ public interface SystemContextServiceApi {
      * @date 2021/3/28 14:57
      */
     @RequestMapping("/getNameByUserId")
-    String getNameByUserId(@RequestParam Long userId);
+    String getNameByUserId(@RequestParam(value = "userId") Long userId);
 
     /**
      * 根据角色id获取角色名称
@@ -63,7 +64,7 @@ public interface SystemContextServiceApi {
      * @date 2021/3/28 14:57
      */
     @RequestMapping("/getNameByRoleId")
-    String getNameByRoleId(@RequestParam Long roleId);
+    String getNameByRoleId(@RequestParam(value = "roleId") Long roleId);
 
     /**
      * 根据token获取登录用户信息
@@ -74,7 +75,7 @@ public interface SystemContextServiceApi {
      * @date 2021/3/28 14:57
      */
     @RequestMapping("/getLoginUserByToken")
-    SysLoginUser getLoginUserByToken(@RequestParam String token);
+    SysLoginUser getLoginUserByToken(@RequestParam(value = "token") String token);
 
     /**
      * 根据用户账号模糊搜索系统用户列表
@@ -85,7 +86,7 @@ public interface SystemContextServiceApi {
      * @date 2021/3/28 14:57
      */
     @RequestMapping("/listUser")
-    List<Dict> listUser(@RequestParam(required = false) String account);
+    List<Dict> listUser(@RequestParam(required = false, value = "account") String account);
 
     /**
      * 根据角色名模糊搜索系统角色列表
@@ -96,7 +97,7 @@ public interface SystemContextServiceApi {
      * @date 2021/3/28 14:57
      */
     @RequestMapping("/listRole")
-    List<Dict> listRole(@RequestParam(required = false) String name);
+    List<Dict> listRole(@RequestParam(required = false, value = "name") String name);
 
     /**
      * 根据id判断是否是用户
@@ -107,7 +108,7 @@ public interface SystemContextServiceApi {
      * @date 2021/3/28 14:57
      */
     @RequestMapping("/isUser")
-    boolean isUser(@RequestParam Long userOrRoleId);
+    boolean isUser(@RequestParam(value = "userOrRoleId") Long userOrRoleId);
 
     /**
      * 根据id判断是否是角色
@@ -118,7 +119,7 @@ public interface SystemContextServiceApi {
      * @date 2021/3/28 14:57
      */
     @RequestMapping("/isRole")
-    boolean isRole(@RequestParam Long userOrRoleId);
+    boolean isRole(@RequestParam(value = "userOrRoleId") Long userOrRoleId);
 
     /**
      * 根据字典类型获取字典的code值
@@ -129,7 +130,7 @@ public interface SystemContextServiceApi {
      * @date 2021/3/28 14:57
      */
     @RequestMapping("/getDictCodesByDictTypeCode")
-    List<String> getDictCodesByDictTypeCode(@RequestParam String... dictTypeCodes);
+    List<String> getDictCodesByDictTypeCode(@RequestParam(value = "dictTypeCodes") String... dictTypeCodes);
 
     /**
      * 校验某个表中，某一列是否存在重复的值
@@ -142,7 +143,7 @@ public interface SystemContextServiceApi {
      * @date 2021/3/28 14:57
      */
     @RequestMapping(name = "/tableUniValueFlag",consumes = "application/json")
-    boolean tableUniValueFlag(UniqueValidateParam uniqueValidateParam);
+    boolean tableUniValueFlag(@RequestParam(value = "uniqueValidateParam") UniqueValidateParam uniqueValidateParam);
 
     /**
      * 获取系统用户id集合

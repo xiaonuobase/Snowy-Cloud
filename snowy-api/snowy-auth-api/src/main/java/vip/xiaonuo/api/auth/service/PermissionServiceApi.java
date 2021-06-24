@@ -26,6 +26,7 @@ package vip.xiaonuo.api.auth.service;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import vip.xiaonuo.common.consts.FeignConstant;
+
 import java.util.List;
 
 /**

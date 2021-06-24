@@ -49,6 +49,6 @@ public interface TenantInfoServiceApi {
      * @date 2019-06-19 14:17
      */
     @RequestMapping("/getByCode")
-    TenantInfo getByCode(@RequestParam String code);
+    TenantInfo getByCode(@RequestParam(value = "code") String code);
 
 }

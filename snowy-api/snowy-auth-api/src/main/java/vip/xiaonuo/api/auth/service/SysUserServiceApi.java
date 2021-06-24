@@ -33,6 +33,7 @@ import vip.xiaonuo.api.auth.param.SysUserParam;
 import vip.xiaonuo.api.auth.result.SysUserResult;
 import vip.xiaonuo.common.consts.FeignConstant;
 import vip.xiaonuo.common.pojo.page.PageResult;
+
 import java.util.List;
 
 @RequestMapping("/feign/sysUserServiceApi")
@@ -60,7 +61,7 @@ public interface SysUserServiceApi {
      * @date 2020/3/23 9:23
      */
     @RequestMapping("/page")
-    PageResult<SysUserResult> page(SysUserParam sysUserParam);
+    PageResult<SysUserResult> page(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 根据用户账号模糊搜索系统用户列表
@@ -71,7 +72,7 @@ public interface SysUserServiceApi {
      * @date 2020/4/14 9:21
      */
     @RequestMapping("/list")
-    List<Dict> list(SysUserParam sysUserParam);
+    List<Dict> list(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 增加系统用户
@@ -81,7 +82,7 @@ public interface SysUserServiceApi {
      * @date 2020/3/23 9:26
      */
     @RequestMapping("/add")
-    void add(SysUserParam sysUserParam);
+    void add(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 删除系统用户
@@ -91,7 +92,7 @@ public interface SysUserServiceApi {
      * @date 2020/3/23 9:26
      */
     @RequestMapping("/delete")
-    void delete(SysUserParam sysUserParam);
+    void delete(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 编辑系统用户
@@ -101,7 +102,7 @@ public interface SysUserServiceApi {
      * @date 2020/3/23 9:26
      */
     @RequestMapping("/edit")
-    void edit(SysUserParam sysUserParam);
+    void edit(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 查看系统用户
@@ -112,7 +113,7 @@ public interface SysUserServiceApi {
      * @date 2020/3/26 9:52
      */
     @RequestMapping("/detail")
-    SysUserResult detail(SysUserParam sysUserParam);
+    SysUserResult detail(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 修改状态
@@ -122,7 +123,7 @@ public interface SysUserServiceApi {
      * @date 2020/5/25 14:34
      */
     @RequestMapping("/changeStatus")
-    void changeStatus(SysUserParam sysUserParam);
+    void changeStatus(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 授权角色
@@ -132,7 +133,7 @@ public interface SysUserServiceApi {
      * @date 2020/3/28 16:54
      */
     @RequestMapping("/grantRole")
-    void grantRole(SysUserParam sysUserParam);
+    void grantRole(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 授权数据
@@ -142,7 +143,7 @@ public interface SysUserServiceApi {
      * @date 2020/3/28 16:54
      */
     @RequestMapping("/grantData")
-    void grantData(SysUserParam sysUserParam);
+    void grantData(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 更新信息
@@ -152,7 +153,7 @@ public interface SysUserServiceApi {
      * @date 2020/4/1 14:43
      */
     @RequestMapping("/updateInfo")
-    void updateInfo(SysUserParam sysUserParam);
+    void updateInfo(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 修改密码
@@ -162,7 +163,7 @@ public interface SysUserServiceApi {
      * @date 2020/4/1 14:44
      */
     @RequestMapping("/updatePwd")
-    void updatePwd(SysUserParam sysUserParam);
+    void updatePwd(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 获取用户的数据范围（组织机构id集合）
@@ -196,7 +197,7 @@ public interface SysUserServiceApi {
      * @date 2020/5/29 14:10
      */
     @RequestMapping("/ownRole")
-    List<Long> ownRole(SysUserParam sysUserParam);
+    List<Long> ownRole(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 拥有数据
@@ -207,7 +208,7 @@ public interface SysUserServiceApi {
      * @date 2020/5/29 14:10
      */
     @RequestMapping("/ownData")
-    List<Long> ownData(SysUserParam sysUserParam);
+    List<Long> ownData(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 重置密码
@@ -217,7 +218,7 @@ public interface SysUserServiceApi {
      * @date 2020/5/29 14:57
      */
     @RequestMapping("/resetPwd")
-    void resetPwd(SysUserParam sysUserParam);
+    void resetPwd(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 修改头像
@@ -227,7 +228,7 @@ public interface SysUserServiceApi {
      * @date 2020/6/28 15:21
      */
     @RequestMapping("/updateAvatar")
-    void updateAvatar(SysUserParam sysUserParam);
+    void updateAvatar(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 导出用户
@@ -237,7 +238,7 @@ public interface SysUserServiceApi {
      * @date 2020/6/30 16:08
      */
     @RequestMapping("/export")
-    void export(SysUserParam sysUserParam);
+    void export(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 用户选择器
@@ -248,7 +249,7 @@ public interface SysUserServiceApi {
      * @date 2020/7/3 13:17
      */
     @RequestMapping("/selector")
-    List<Dict> selector(SysUserParam sysUserParam);
+    List<Dict> selector(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
      * 根据用户id获取用户
