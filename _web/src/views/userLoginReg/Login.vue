@@ -151,8 +151,7 @@
 <script>
   import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
   import { mapActions } from 'vuex'
-  import { tenantListTenants } from '@/api/modular/tenant/tenantInfoManage'
-  import { getTenantOpen, getSmsCaptcha, getCaptchaOpen } from '@/api/modular/system/loginManage'
+  import { getSmsCaptcha, getCaptchaOpen } from '@/api/modular/system/loginManage'
   import Verify from '@/components/verifition/Verify'
 
   export default {
@@ -197,7 +196,6 @@
       }
     },
     created () {
-      this.getTenantOpen()
       this.getCaptchaOpen()
     },
     methods: {
@@ -209,21 +207,6 @@
         getCaptchaOpen().then((res) => {
           if (res.success) {
             this.captchaOpen = res.data
-          }
-        })
-      },
-      /**
-       * 获取租户开关并取得租户列表
-       */
-      getTenantOpen () {
-        getTenantOpen().then((res) => {
-          if (res.success) {
-            this.tenantOpen = res.data
-            if (res.data) {
-              tenantListTenants().then((res) => {
-                this.tenantsList = res.data
-              })
-            }
           }
         })
       },
