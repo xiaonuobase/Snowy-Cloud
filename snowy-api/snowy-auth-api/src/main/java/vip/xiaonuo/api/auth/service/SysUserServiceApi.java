@@ -49,7 +49,7 @@ public interface SysUserServiceApi {
      * @date 2020/3/11 17:51
      */
     @RequestMapping("/getUserByCount")
-    SysUser getUserByCount(String account);
+    SysUser getUserByCount(@RequestParam("account") String account);
 
     /**
      * 查询系统用户
@@ -174,7 +174,7 @@ public interface SysUserServiceApi {
      * @date 2020/4/5 17:23
      */
     @RequestMapping("/getUserDataScopeIdList")
-    List<Long> getUserDataScopeIdList(@RequestParam Long userId, @RequestParam Long orgId);
+    List<Long> getUserDataScopeIdList(@RequestParam("userId") Long userId, @RequestParam("orgId") Long orgId);
 
     /**
      * 根据用户id获取姓名
@@ -185,7 +185,7 @@ public interface SysUserServiceApi {
      * @date 2020/5/6 15:02
      */
     @RequestMapping("/getNameByUserId")
-    String getNameByUserId(Long userId);
+    String getNameByUserId(@RequestParam("userId") Long userId);
 
     /**
      * 拥有角色
@@ -259,7 +259,7 @@ public interface SysUserServiceApi {
      * @date 2020/7/29 10:07
      **/
     @RequestMapping("/getUserById")
-    SysUser getUserById(Long userId);
+    SysUser getUserById(@RequestParam("userId") Long userId);
 
     /**
      * 将授权的用户信息保存到用户表
@@ -271,7 +271,7 @@ public interface SysUserServiceApi {
      * @date 2020/7/29 10:26
      **/
     @RequestMapping("/saveAuthUserToUser")
-    void saveAuthUserToUser(@RequestParam AuthUser authUser, @RequestParam SysUser sysUser);
+    void saveAuthUserToUser(@RequestParam("authUser") AuthUser authUser, @RequestParam("sysUser") SysUser sysUser);
 
     /**
      * 获取用户id集合
