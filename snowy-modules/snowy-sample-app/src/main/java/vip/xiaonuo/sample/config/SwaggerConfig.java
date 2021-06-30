@@ -22,7 +22,7 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
 5.在修改包名，模块名称，项目代码等时，请注明软件出处 https://gitee.com/xiaonuobase/snowy-cloud
 6.若您的项目无法满足以上几点，可申请商业授权，获取Snowy商业授权许可，请在官网购买授权，地址为 https://www.xiaonuo.vip
  */
-package vip.xiaonuo.sys.config;
+package vip.xiaonuo.sample.config;
 
 import cn.hutool.core.collection.CollectionUtil;
 import org.springframework.context.annotation.Bean;
@@ -77,7 +77,7 @@ public class SwaggerConfig {
         List<Parameter> parameters = getParameters();
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(defaultApiInfo())
-                .groupName(FeignConstant.MAIN_APP)
+                .groupName(FeignConstant.SAMPLE_APP)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(CommonConstant.DEFAULT_PACKAGE_NAME))
                 .paths(PathSelectors.any())
@@ -87,8 +87,8 @@ public class SwaggerConfig {
 
     private ApiInfo defaultApiInfo() {
         return new ApiInfoBuilder()
-                .title(FeignConstant.MAIN_APP+" Doc")
-                .description(FeignConstant.MAIN_APP+" Doc文档")
+                .title(FeignConstant.SAMPLE_APP+" Doc")
+                .description(FeignConstant.SAMPLE_APP+" Doc文档")
                 .termsOfServiceUrl("https://www.xiaonuo.vip")
                 .contact(new Contact("xuyuxiang, yubaoshan, dongxiayu", "https://www.xiaonuo.vip", ""))
                 .version("1.7.0")

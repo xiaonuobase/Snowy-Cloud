@@ -74,6 +74,10 @@ public class AccessFilter implements GlobalFilter {
 
     private static final String GATE_WAY_PREFIX = "/api";
 
+    public static final String API_URI = "/v2/api-docs";
+
+    public static final String DOC_URI = "/doc.html";
+
     @Autowired
     private TokenServiceImpl tokenService;
 
@@ -98,6 +102,11 @@ public class AccessFilter implements GlobalFilter {
 
         final String method = request.getMethod().toString();
         ServerHttpRequest.Builder mutate = request.mutate();
+
+        if (requestUri.indexOf(API_URI) >= 0 || requestUri.indexOf(DOC_URI) >= 0){
+            ServerHttpRequest build = mutate.build();
+            return gatewayFilterChain.filter(serverWebExchange.mutate().request(build).build());
+        }
 
         // 网关不进行拦截的URI配置，常见如验证码、Login接口
         if (isStartWith(requestUri)) {

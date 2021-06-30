@@ -36,4 +36,5 @@ public interface FeignConstant {
     String SAMPLE_APP = "snowy-sample-app";
     String FLOWABLE_APP = "snowy-flowable-app";
     String TENANT_APP = "snowy-tenant-app";
+    String GATEWAY_APP = "snowy-gateway-app";
 }

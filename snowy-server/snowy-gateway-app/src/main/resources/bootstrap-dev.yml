@@ -86,4 +86,22 @@ management:
     health:
       show-details: "ALWAYS"
 
+# knife4j 文档聚合
+knife4j:
+  enableAggregation: true
+  cloud:
+    enable: true
+    routes:
+      - name: snowy-main-app
+        location: /main/v2/api-docs?group=snowy-main-app
+        uri: localhost:9003
+      - name: snowy-tenant-app
+        location: /tenant/v2/api-docs?group=snowy-tenant-app
+        uri: localhost:9003
+      - name: snowy-flowable-app
+        location: /flowable/v2/api-docs?group=snowy-flowable-app
+        uri: localhost:9003
+      - name: snowy-sample-app
+        location: /test/v2/api-docs?group=snowy-sample-app
+        uri: localhost:9003
 

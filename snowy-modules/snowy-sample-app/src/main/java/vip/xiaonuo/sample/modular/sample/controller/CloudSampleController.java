@@ -27,6 +27,7 @@ package vip.xiaonuo.sample.modular.sample.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,17 +52,17 @@ public class CloudSampleController {
     @Autowired
     private CloudSampleService cloudSampleService;
 
-    @RequestMapping("/config/test")
+    @GetMapping("/config/test")
     public ResponseData configTest() {
         return ResponseData.success(configTest);
     }
 
-    @RequestMapping("/getBySampleName")
+    @GetMapping("/getBySampleName")
     public ResponseData getBySampleName(String sampleName){
         return ResponseData.success(cloudSampleService.getBySampleName(sampleName));
     }
 
-    @RequestMapping("/list")
+    @GetMapping("/list")
     public ResponseData list(@RequestBody CloudSampleParam cloudSampleParam){
         return ResponseData.success(cloudSampleService.list(cloudSampleParam));
     }

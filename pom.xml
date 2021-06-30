@@ -58,6 +58,7 @@
     <jasypt.version>2.1.0</jasypt.version>
     <xxljob.version>2.3.0</xxljob.version>
     <mybatis-spring-boot-starter.version>2.1.4</mybatis-spring-boot-starter.version>
+    <sentinel.version>1.8.1</sentinel.version>
   </properties>
 
   <dependencyManagement>
@@ -196,6 +197,12 @@
       <dependency>
         <groupId>com.github.xiaoymin</groupId>
         <artifactId>knife4j-spring-boot-starter</artifactId>
+        <version>${knife4j.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.github.xiaoymin</groupId>
+        <artifactId>knife4j-aggregation-spring-boot-starter</artifactId>
         <version>${knife4j.version}</version>
       </dependency>
 

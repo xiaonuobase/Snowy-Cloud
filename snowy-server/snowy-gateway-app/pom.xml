@@ -188,6 +188,18 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
 
+        <!-- knife4j swagger接口文档 -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- knife4j cloud模式聚合 -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-aggregation-spring-boot-starter</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
