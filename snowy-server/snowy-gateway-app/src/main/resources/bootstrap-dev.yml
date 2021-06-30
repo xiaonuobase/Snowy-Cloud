@@ -34,7 +34,7 @@ spring:
         password: nacos
     sentinel:
       transport:
-        dashboard: localhost:9007
+        dashboard: localhost:9002
         port: 8719
       scg:
         fallback:
