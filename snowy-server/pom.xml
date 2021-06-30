@@ -19,6 +19,7 @@
         <module>snowy-gateway-app</module>
         <module>snowy-nacos-app</module>
         <module>snowy-sentinel-app</module>
+        <module>snowy-xxl-job-app</module>
     </modules>
 
 </project>

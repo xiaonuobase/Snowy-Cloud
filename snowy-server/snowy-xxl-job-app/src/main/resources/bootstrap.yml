@@ -1,0 +1,12 @@
+#服务配置
+server:
+  port: 9004
+  servlet:
+    context-path: /xxl-job-admin
+
+#spring相关配置
+spring:
+  application:
+    name: snowy-xxl-job-app
+  profiles:
+    active: '@spring.active@'

@@ -1,0 +1,10 @@
+
+   _____
+  / ___/____  ____ _      ____  __
+  \__ \/ __ \/ __ \ | /| / / / / /
+ ___/ / / / / /_/ / |/ |/ / /_/ /
+/____/_/ /_/\____/|__/|__/\__, /
+                         /____/
+
+:: Running Spring Boot ${spring-boot.version} ::
+:: Application ${spring.application.name} ::
