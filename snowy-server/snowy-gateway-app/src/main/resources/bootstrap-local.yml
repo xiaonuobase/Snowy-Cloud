@@ -30,6 +30,15 @@ spring:
         file-extension: yml #指定yml格式的配置
         username: nacos
         password: nacos
+    sentinel:
+      transport:
+        dashboard: localhost:9007
+        port: 8719
+      scg:
+        fallback:
+          mode: response
+          response-status: 455
+          response-body: error!
     # gateway配置
     gateway:
       default-filters:

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>vip.xiaonuo</groupId>
+    <artifactId>snowy-server</artifactId>
+    <version>1.7.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>snowy-sentinel-app</artifactId>
+  <packaging>jar</packaging>
+
+  <properties>
+    <curator.version>4.0.1</curator.version>
+    <sentinel.version>1.8.1</sentinel.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.alibaba.csp</groupId>
+      <artifactId>sentinel-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba.csp</groupId>
+      <artifactId>sentinel-web-servlet</artifactId>
+      <version>${sentinel.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba.csp</groupId>
+      <artifactId>sentinel-transport-simple-http</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba.csp</groupId>
+      <artifactId>sentinel-parameter-flow-control</artifactId>
+      <version>${sentinel.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba.csp</groupId>
+      <artifactId>sentinel-api-gateway-adapter-common</artifactId>
+      <version>${sentinel.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-logging</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- cloud context -->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-context</artifactId>
+    </dependency>
+
+    <!-- nacos 注册中心客户端 -->
+    <dependency>
+      <groupId>com.alibaba.cloud</groupId>
+      <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+    </dependency>
+
+    <!-- 暴露各种指标 -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <!-- admin -->
+    <dependency>
+      <groupId>de.codecentric</groupId>
+      <artifactId>spring-boot-admin-starter-client</artifactId>
+    </dependency>
+
+    <!--lombok-->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+
+    <!--hutool-->
+    <dependency>
+      <groupId>cn.hutool</groupId>
+      <artifactId>hutool-all</artifactId>
+    </dependency>
+
+    <!-- snowy 通用包 -->
+    <dependency>
+      <groupId>vip.xiaonuo</groupId>
+      <artifactId>snowy-common</artifactId>
+      <version>1.7.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.14</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.6</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore</artifactId>
+      <version>4.4.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpasyncclient</artifactId>
+      <version>4.1.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore-nio</artifactId>
+      <version>4.4.6</version>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+    </dependency>
+
+    <!-- for Nacos rule publisher sample -->
+    <dependency>
+      <groupId>com.alibaba.csp</groupId>
+      <artifactId>sentinel-datasource-nacos</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- for Apollo rule publisher sample -->
+    <dependency>
+      <groupId>com.ctrip.framework.apollo</groupId>
+      <artifactId>apollo-openapi</artifactId>
+      <version>1.2.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!--for Zookeeper rule publisher sample-->
+    <dependency>
+      <groupId>org.apache.curator</groupId>
+      <artifactId>curator-recipes</artifactId>
+      <version>${curator.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.stefanbirkner</groupId>
+      <artifactId>system-rules</artifactId>
+      <version>1.16.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>sentinel-dashboard</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <fork>true</fork>
+          <mainClass>com.alibaba.csp.sentinel.dashboard.SnowySentinelApp</mainClass>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+
+      <resource>
+        <directory>src/main/webapp/</directory>
+        <excludes>
+          <exclude>resources/node_modules/**</exclude>
+        </excludes>
+      </resource>
+    </resources>
+  </build>
+</project>

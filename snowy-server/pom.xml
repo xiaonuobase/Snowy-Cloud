@@ -18,6 +18,7 @@
         <module>snowy-actuator-app</module>
         <module>snowy-gateway-app</module>
         <module>snowy-nacos-app</module>
+        <module>snowy-sentinel-app</module>
     </modules>
 
 </project>
