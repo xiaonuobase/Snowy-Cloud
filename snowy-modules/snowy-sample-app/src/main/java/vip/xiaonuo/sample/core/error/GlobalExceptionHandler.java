@@ -41,6 +41,7 @@ import vip.xiaonuo.common.exception.enums.abs.AbstractBaseExceptionEnum;
 import vip.xiaonuo.common.pojo.response.ErrorResponseData;
 import vip.xiaonuo.core.sms.modular.aliyun.exp.AliyunSmsException;
 import vip.xiaonuo.core.sms.modular.tencent.exp.TencentSmsException;
+import vip.xiaonuo.core.util.HttpServletUtil;
 import vip.xiaonuo.core.util.ResponseUtil;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.mybatis.spring.MyBatisSystemException;
@@ -59,7 +60,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -227,8 +227,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PermissionException.class)
     @ResponseBody
     public ErrorResponseData noPermission(PermissionException e) {
-        log.error(">>> 权限异常，请求号为：{}，具体信息为：{}", RequestNoContext.get(), e.getMessage());
-        return renderJson(e.getCode(), e.getErrorMessage());
+        log.error(">>> 权限异常，请求号为：{}，具体信息为：{}", RequestNoContext.get(), e.getMessage() +"，请求地址为:" + HttpServletUtil.getRequest().getRequestURI());
+        return renderJson(e.getCode(), e.getErrorMessage() + "，请求地址为:" + HttpServletUtil.getRequest().getRequestURI());
     }
 
     /**

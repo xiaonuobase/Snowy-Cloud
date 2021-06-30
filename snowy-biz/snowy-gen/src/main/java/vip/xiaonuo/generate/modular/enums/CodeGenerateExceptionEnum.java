@@ -28,7 +28,6 @@ import vip.xiaonuo.common.annotion.ExpEnumType;
 import vip.xiaonuo.common.exception.enums.abs.AbstractBaseExceptionEnum;
 import vip.xiaonuo.common.factory.ExpEnumCodeFactory;
 import vip.xiaonuo.generate.core.consts.GenExpEnumConstant;
-import vip.xiaonuo.sys.core.consts.SysExpEnumConstant;
 
 /**
  * 代码生成基础配置相关异常枚举
