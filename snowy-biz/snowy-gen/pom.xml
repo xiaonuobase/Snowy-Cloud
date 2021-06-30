@@ -16,16 +16,11 @@
     <packaging>jar</packaging>
 
     <dependencies>
+
+        <!-- core模块 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-core</artifactId>
-            <version>1.7.0</version>
-        </dependency>
-
-        <!-- 依赖底层核心 -->
-        <dependency>
-            <groupId>vip.xiaonuo</groupId>
-            <artifactId>snowy-system</artifactId>
             <version>1.7.0</version>
         </dependency>
 
