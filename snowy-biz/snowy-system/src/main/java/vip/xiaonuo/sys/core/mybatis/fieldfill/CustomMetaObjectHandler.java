@@ -26,10 +26,10 @@ package vip.xiaonuo.sys.core.mybatis.fieldfill;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.log.Log;
-import vip.xiaonuo.common.context.login.LoginContextHolder;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.ReflectionException;
+import vip.xiaonuo.common.context.login.LoginContextHolder;
 import vip.xiaonuo.common.pojo.login.SysLoginUser;
 
 import java.util.Date;

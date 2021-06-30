@@ -26,13 +26,13 @@ package vip.xiaonuo.sample.core.listener;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
-import vip.xiaonuo.common.consts.CommonConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
+import vip.xiaonuo.common.consts.CommonConstant;
 
 import javax.annotation.Resource;
 import java.lang.management.ManagementFactory;

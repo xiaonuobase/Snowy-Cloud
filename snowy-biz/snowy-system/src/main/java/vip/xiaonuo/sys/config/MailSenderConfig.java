@@ -26,12 +26,12 @@ package vip.xiaonuo.sys.config;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.extra.mail.MailAccount;
-import vip.xiaonuo.common.context.constant.ConstantContextHolder;
-import vip.xiaonuo.core.email.MailSender;
-import vip.xiaonuo.core.email.modular.SimpleMailSender;
-import vip.xiaonuo.common.pojo.email.EmailConfigs;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import vip.xiaonuo.common.context.constant.ConstantContextHolder;
+import vip.xiaonuo.common.pojo.email.EmailConfigs;
+import vip.xiaonuo.core.email.MailSender;
+import vip.xiaonuo.core.email.modular.SimpleMailSender;
 
 /**
  * 邮件发送控制器

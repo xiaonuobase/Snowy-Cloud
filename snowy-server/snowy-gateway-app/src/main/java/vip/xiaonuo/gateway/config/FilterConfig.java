@@ -24,11 +24,11 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.gateway.config;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import vip.xiaonuo.gateway.core.filter.AccessFilter;
 import vip.xiaonuo.gateway.core.filter.CorsFilter;
 import vip.xiaonuo.gateway.core.filter.RequestNoFilter;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * 过滤器配置

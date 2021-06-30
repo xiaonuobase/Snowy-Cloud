@@ -24,12 +24,12 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.sys.modular.file.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.common.pojo.page.PageResult;
 import vip.xiaonuo.sys.modular.file.entity.SysFileInfo;
 import vip.xiaonuo.sys.modular.file.param.SysFileInfoParam;
 import vip.xiaonuo.sys.modular.file.result.SysFileInfoResult;
-import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;

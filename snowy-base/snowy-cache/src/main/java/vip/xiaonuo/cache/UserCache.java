@@ -24,9 +24,9 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.cache;
 
-import vip.xiaonuo.common.pojo.login.SysLoginUser;
-import vip.xiaonuo.cache.base.AbstractRedisCacheOperator;
 import org.springframework.data.redis.core.RedisTemplate;
+import vip.xiaonuo.cache.base.AbstractRedisCacheOperator;
+import vip.xiaonuo.common.pojo.login.SysLoginUser;
 
 /**
  * 登录用户的缓存，存储了当前登录的用户

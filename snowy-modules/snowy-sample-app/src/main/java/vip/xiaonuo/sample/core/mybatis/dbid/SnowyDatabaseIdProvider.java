@@ -24,8 +24,8 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.sample.core.mybatis.dbid;
 
-import vip.xiaonuo.common.enums.DbIdEnum;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
+import vip.xiaonuo.common.enums.DbIdEnum;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;

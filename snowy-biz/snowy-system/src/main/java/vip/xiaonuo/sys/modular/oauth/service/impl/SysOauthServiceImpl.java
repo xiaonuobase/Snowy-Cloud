@@ -25,18 +25,6 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
 package vip.xiaonuo.sys.modular.oauth.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import vip.xiaonuo.api.auth.entity.SysUser;
-import vip.xiaonuo.api.auth.service.AuthService;
-import vip.xiaonuo.cache.OauthCache;
-import vip.xiaonuo.common.context.constant.ConstantContextHolder;
-import vip.xiaonuo.common.exception.ServiceException;
-import vip.xiaonuo.common.pojo.oauth.OauthConfigs;
-import vip.xiaonuo.sys.core.enums.OauthPlatformEnum;
-import vip.xiaonuo.sys.modular.oauth.entity.SysOauthUser;
-import vip.xiaonuo.sys.modular.oauth.enums.SysOauthExceptionEnum;
-import vip.xiaonuo.sys.modular.oauth.mapper.SysOauthMapper;
-import vip.xiaonuo.sys.modular.oauth.service.SysOauthService;
-import vip.xiaonuo.sys.modular.user.service.SysUserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -50,6 +38,18 @@ import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.xiaonuo.api.auth.entity.SysUser;
+import vip.xiaonuo.api.auth.service.AuthService;
+import vip.xiaonuo.cache.OauthCache;
+import vip.xiaonuo.common.context.constant.ConstantContextHolder;
+import vip.xiaonuo.common.exception.ServiceException;
+import vip.xiaonuo.common.pojo.oauth.OauthConfigs;
+import vip.xiaonuo.sys.core.enums.OauthPlatformEnum;
+import vip.xiaonuo.sys.modular.oauth.entity.SysOauthUser;
+import vip.xiaonuo.sys.modular.oauth.enums.SysOauthExceptionEnum;
+import vip.xiaonuo.sys.modular.oauth.mapper.SysOauthMapper;
+import vip.xiaonuo.sys.modular.oauth.service.SysOauthService;
+import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;

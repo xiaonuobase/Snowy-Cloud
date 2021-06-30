@@ -24,8 +24,8 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.sys.modular.timer.mapper;
 
-import vip.xiaonuo.sys.modular.timer.entity.SysTimers;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import vip.xiaonuo.sys.modular.timer.entity.SysTimers;
 
 /**
  * <p>

@@ -27,12 +27,12 @@ package vip.xiaonuo.common.pojo.login;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
-import vip.xiaonuo.common.consts.CommonConstant;
-import vip.xiaonuo.common.pojo.node.LoginMenuTreeNode;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import vip.xiaonuo.common.consts.CommonConstant;
+import vip.xiaonuo.common.pojo.node.LoginMenuTreeNode;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -26,12 +26,12 @@ package vip.xiaonuo.gateway.core.listener;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
-import vip.xiaonuo.gateway.core.consts.AppConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import vip.xiaonuo.gateway.core.consts.AppConstant;
 
 import javax.annotation.Resource;
 import java.lang.management.ManagementFactory;

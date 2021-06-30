@@ -24,10 +24,10 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.main.config;
 
-import vip.xiaonuo.main.core.inteceptor.FeignRequestInterceptor;
 import feign.RequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import vip.xiaonuo.main.core.inteceptor.FeignRequestInterceptor;
 
 /**
  * Feign配置注册（全局）

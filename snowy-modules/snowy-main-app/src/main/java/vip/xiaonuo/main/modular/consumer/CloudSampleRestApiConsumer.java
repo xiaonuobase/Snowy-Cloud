@@ -24,12 +24,12 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.main.modular.consumer;
 
-import vip.xiaonuo.common.consts.FeignConstant;
-import vip.xiaonuo.common.pojo.response.ResponseData;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import vip.xiaonuo.common.consts.FeignConstant;
+import vip.xiaonuo.common.pojo.response.ResponseData;
 
 /**
  * CloudSampleRestApiClient Feign Client

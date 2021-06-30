@@ -24,12 +24,12 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.sys.modular.notice.mapper;
 
-import vip.xiaonuo.sys.modular.notice.entity.SysNotice;
-import vip.xiaonuo.sys.modular.notice.result.SysNoticeReceiveResult;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
+import vip.xiaonuo.sys.modular.notice.entity.SysNotice;
+import vip.xiaonuo.sys.modular.notice.result.SysNoticeReceiveResult;
 
 /**
  * 系统通知公告mapper接口

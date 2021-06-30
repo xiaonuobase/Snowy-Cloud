@@ -24,9 +24,9 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.sys.modular.oauth.service;
 
-import vip.xiaonuo.sys.modular.oauth.entity.SysOauthUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.zhyd.oauth.model.AuthCallback;
+import vip.xiaonuo.sys.modular.oauth.entity.SysOauthUser;
 
 import javax.servlet.http.HttpServletRequest;
 

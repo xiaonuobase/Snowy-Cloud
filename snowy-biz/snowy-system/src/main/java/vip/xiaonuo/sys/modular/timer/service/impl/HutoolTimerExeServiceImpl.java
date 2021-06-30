@@ -29,11 +29,11 @@ import cn.hutool.cron.CronUtil;
 import cn.hutool.cron.task.Task;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.log.Log;
+import org.springframework.stereotype.Service;
 import vip.xiaonuo.common.exception.ServiceException;
 import vip.xiaonuo.common.timer.TimerTaskRunner;
 import vip.xiaonuo.sys.modular.timer.enums.exp.SysTimersExceptionEnum;
 import vip.xiaonuo.sys.modular.timer.service.TimerExeService;
-import org.springframework.stereotype.Service;
 
 /**
  * hutool方式的定时任务执行

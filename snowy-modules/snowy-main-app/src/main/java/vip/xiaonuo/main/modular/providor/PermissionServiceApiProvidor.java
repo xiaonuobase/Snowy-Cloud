@@ -27,6 +27,8 @@ package vip.xiaonuo.main.modular.providor;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
 import vip.xiaonuo.api.auth.service.PermissionServiceApi;
 import vip.xiaonuo.cache.AllPermissionCache;
 import vip.xiaonuo.common.enums.CommonStatusEnum;
@@ -35,8 +37,6 @@ import vip.xiaonuo.sys.modular.menu.entity.SysMenu;
 import vip.xiaonuo.sys.modular.menu.service.SysMenuService;
 import vip.xiaonuo.sys.modular.role.entity.SysRoleMenu;
 import vip.xiaonuo.sys.modular.role.service.SysRoleMenuService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;

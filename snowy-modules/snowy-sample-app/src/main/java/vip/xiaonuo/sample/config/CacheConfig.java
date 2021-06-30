@@ -24,8 +24,8 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.sample.config;
 
-import cn.hutool.cache.CacheUtil;
-import cn.hutool.cache.impl.TimedCache;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -33,8 +33,6 @@ import vip.xiaonuo.cache.MappingCache;
 import vip.xiaonuo.cache.ResourceCache;
 import vip.xiaonuo.cache.UserCache;
 import vip.xiaonuo.common.pojo.login.SysLoginUser;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import vip.xiaonuo.sample.core.redis.FastJson2JsonRedisSerializer;
 
 import java.util.Map;

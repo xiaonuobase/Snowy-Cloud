@@ -26,12 +26,12 @@ package vip.xiaonuo.sample.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import vip.xiaonuo.sample.core.mybatis.dbid.SnowyDatabaseIdProvider;
-import vip.xiaonuo.sample.core.mybatis.fieldfill.CustomMetaObjectHandler;
-import vip.xiaonuo.sample.core.mybatis.sqlfilter.DemoProfileSqlInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import vip.xiaonuo.sample.core.mybatis.dbid.SnowyDatabaseIdProvider;
+import vip.xiaonuo.sample.core.mybatis.fieldfill.CustomMetaObjectHandler;
+import vip.xiaonuo.sample.core.mybatis.sqlfilter.DemoProfileSqlInterceptor;
 
 /**
  * mybatis扩展插件配置

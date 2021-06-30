@@ -24,8 +24,8 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.common.exception;
 
-import vip.xiaonuo.common.exception.enums.abs.AbstractBaseExceptionEnum;
 import lombok.Getter;
+import vip.xiaonuo.common.exception.enums.abs.AbstractBaseExceptionEnum;
 
 /**
  * 授权和鉴权异常

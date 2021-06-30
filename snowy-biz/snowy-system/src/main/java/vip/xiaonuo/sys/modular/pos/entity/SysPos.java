@@ -25,10 +25,10 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
 package vip.xiaonuo.sys.modular.pos.entity;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
-import vip.xiaonuo.common.pojo.base.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import vip.xiaonuo.common.pojo.base.entity.BaseEntity;
 
 /**
  * 系统职位表

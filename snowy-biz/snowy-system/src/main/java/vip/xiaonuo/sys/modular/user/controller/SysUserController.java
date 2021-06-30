@@ -24,19 +24,20 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.sys.modular.user.controller;
 
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import vip.xiaonuo.api.auth.param.SysUserParam;
 import vip.xiaonuo.common.annotion.BusinessLog;
 import vip.xiaonuo.common.annotion.DataScope;
 import vip.xiaonuo.common.annotion.Permission;
 import vip.xiaonuo.common.enums.LogAnnotionOpTypeEnum;
 import vip.xiaonuo.common.pojo.response.ResponseData;
 import vip.xiaonuo.common.pojo.response.SuccessResponseData;
-import vip.xiaonuo.api.auth.param.SysUserParam;
 import vip.xiaonuo.sys.modular.user.service.SysUserService;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+
 import javax.annotation.Resource;
 import java.util.List;
 

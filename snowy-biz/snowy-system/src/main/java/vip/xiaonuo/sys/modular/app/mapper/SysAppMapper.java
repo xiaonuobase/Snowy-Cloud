@@ -24,8 +24,8 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.sys.modular.app.mapper;
 
-import vip.xiaonuo.sys.modular.app.entity.SysApp;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import vip.xiaonuo.sys.modular.app.entity.SysApp;
 
 /**
  * 系统应用mapper接口

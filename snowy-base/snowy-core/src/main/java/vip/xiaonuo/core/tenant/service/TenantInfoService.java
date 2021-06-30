@@ -24,10 +24,10 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.core.tenant.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import vip.xiaonuo.api.tenant.entity.TenantInfo;
 import vip.xiaonuo.common.pojo.page.PageResult;
 import vip.xiaonuo.core.tenant.params.TenantInfoParam;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * 租户表 服务类

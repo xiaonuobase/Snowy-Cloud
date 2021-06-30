@@ -25,13 +25,13 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
 package vip.xiaonuo.sys.modular.timer.tasks;
 
 import cn.hutool.log.Log;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.springframework.stereotype.Component;
 import vip.xiaonuo.common.context.constant.ConstantContext;
 import vip.xiaonuo.common.enums.CommonStatusEnum;
 import vip.xiaonuo.common.timer.TimerTaskRunner;
 import vip.xiaonuo.sys.modular.consts.entity.SysConfig;
 import vip.xiaonuo.sys.modular.consts.service.SysConfigService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;

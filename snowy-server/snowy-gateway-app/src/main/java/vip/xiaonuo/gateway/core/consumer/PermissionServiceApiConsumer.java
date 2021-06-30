@@ -24,9 +24,9 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.gateway.core.consumer;
 
-import vip.xiaonuo.api.auth.service.PermissionServiceApi;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
+import vip.xiaonuo.api.auth.service.PermissionServiceApi;
 
 /**
  * @author : dongxiayu

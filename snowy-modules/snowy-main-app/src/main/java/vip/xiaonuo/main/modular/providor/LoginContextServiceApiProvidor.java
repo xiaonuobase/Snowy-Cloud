@@ -24,10 +24,10 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.main.modular.providor;
 
+import org.springframework.web.bind.annotation.RestController;
 import vip.xiaonuo.api.context.service.LoginContextServiceApi;
 import vip.xiaonuo.common.context.login.LoginContextHolder;
 import vip.xiaonuo.common.pojo.login.SysLoginUser;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 

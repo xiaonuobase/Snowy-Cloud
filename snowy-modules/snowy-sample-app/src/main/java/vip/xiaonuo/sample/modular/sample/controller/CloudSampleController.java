@@ -24,15 +24,15 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.sample.modular.sample.controller;
 
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import vip.xiaonuo.common.pojo.response.ResponseData;
-import vip.xiaonuo.sample.modular.sample.param.CloudSampleParam;
-import vip.xiaonuo.sample.modular.sample.service.CloudSampleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import vip.xiaonuo.common.pojo.response.ResponseData;
+import vip.xiaonuo.sample.modular.sample.param.CloudSampleParam;
+import vip.xiaonuo.sample.modular.sample.service.CloudSampleService;
 
 /**
  * sprindcloud-config示例接口

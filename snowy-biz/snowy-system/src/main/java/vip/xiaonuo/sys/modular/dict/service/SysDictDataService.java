@@ -25,10 +25,10 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
 package vip.xiaonuo.sys.modular.dict.service;
 
 import cn.hutool.core.lang.Dict;
+import com.baomidou.mybatisplus.extension.service.IService;
 import vip.xiaonuo.common.pojo.page.PageResult;
 import vip.xiaonuo.sys.modular.dict.entity.SysDictData;
 import vip.xiaonuo.sys.modular.dict.param.SysDictDataParam;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 

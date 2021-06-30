@@ -24,9 +24,6 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.sample.config;
 
-import vip.xiaonuo.core.web.SnowyRequestResponseBodyMethodProcessor;
-import vip.xiaonuo.sample.core.error.SnowyErrorAttributes;
-import vip.xiaonuo.sample.core.validator.SnowyValidator;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +33,10 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+import vip.xiaonuo.core.web.SnowyRequestResponseBodyMethodProcessor;
+import vip.xiaonuo.sample.core.error.SnowyErrorAttributes;
+import vip.xiaonuo.sample.core.validator.SnowyValidator;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.ArrayList;

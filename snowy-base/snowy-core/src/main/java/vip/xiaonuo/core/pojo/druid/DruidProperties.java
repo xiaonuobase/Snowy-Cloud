@@ -25,9 +25,9 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
 package vip.xiaonuo.core.pojo.druid;
 
 import cn.hutool.log.Log;
-import vip.xiaonuo.common.enums.DbIdEnum;
 import com.alibaba.druid.pool.DruidDataSource;
 import lombok.Data;
+import vip.xiaonuo.common.enums.DbIdEnum;
 
 import java.sql.SQLException;
 import java.util.Properties;

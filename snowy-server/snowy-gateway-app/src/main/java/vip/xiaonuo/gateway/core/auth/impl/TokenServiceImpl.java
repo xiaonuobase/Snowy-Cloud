@@ -25,6 +25,7 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
 package vip.xiaonuo.gateway.core.auth.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import org.springframework.stereotype.Service;
 import vip.xiaonuo.cache.UserCache;
 import vip.xiaonuo.common.consts.CommonConstant;
 import vip.xiaonuo.common.exception.AuthException;
@@ -32,7 +33,6 @@ import vip.xiaonuo.common.exception.enums.AuthExceptionEnum;
 import vip.xiaonuo.common.pojo.login.SysLoginUser;
 import vip.xiaonuo.gateway.core.jwt.JwtPayLoad;
 import vip.xiaonuo.gateway.core.jwt.JwtTokenUtil;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
