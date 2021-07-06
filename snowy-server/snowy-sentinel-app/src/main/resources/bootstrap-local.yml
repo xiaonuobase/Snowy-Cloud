@@ -38,7 +38,7 @@ logging:
 #auth settings
 auth:
   filter:
-    exclude-urls: /,/auth/login,/auth/logout,/registry/machine,/version
+    exclude-urls: /,/auth/login,/auth/logout,/registry/machine,/version,/actuator/**,/details
     exclude-url-suffixes: htm,html,js,css,map,ico,ttf,woff,png
 # If auth.enabled=false, Sentinel console disable login
   username: sentinel
