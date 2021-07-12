@@ -28,10 +28,9 @@ import cn.hutool.core.io.FileUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.Data;
-import vip.xiaonuo.core.consts.CommonConstant;
-import vip.xiaonuo.core.consts.SymbolConstant;
+import vip.xiaonuo.common.consts.CommonConstant;
+import vip.xiaonuo.common.consts.SymbolConstant;
 import vip.xiaonuo.sys.modular.file.util.OnlineDocumentUtil;
-
 import java.io.File;
 import java.util.HashMap;
 

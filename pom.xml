@@ -42,7 +42,7 @@
     <mp.version>3.3.2</mp.version>
     <fastjson.version>1.2.70</fastjson.version>
     <jwt.version>0.9.1</jwt.version>
-    <hutool.version>5.3.7</hutool.version>
+    <hutool.version>5.5.8</hutool.version>
     <lombok.versin>1.18.12</lombok.versin>
     <easypoi.version>4.2.0</easypoi.version>
     <jodconverter.version>4.2.0</jodconverter.version>
