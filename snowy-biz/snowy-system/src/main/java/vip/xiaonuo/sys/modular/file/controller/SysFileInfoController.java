@@ -24,6 +24,10 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.sys.modular.file.controller;
 
+import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.json.JSONUtil;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +37,7 @@ import vip.xiaonuo.common.enums.LogAnnotionOpTypeEnum;
 import vip.xiaonuo.common.pojo.response.ResponseData;
 import vip.xiaonuo.common.pojo.response.SuccessResponseData;
 import vip.xiaonuo.sys.modular.file.param.SysFileInfoParam;
+import vip.xiaonuo.sys.modular.file.result.SysOnlineFileInfoResult;
 import vip.xiaonuo.sys.modular.file.service.SysFileInfoService;
 
 import javax.annotation.Resource;
@@ -49,6 +54,27 @@ public class SysFileInfoController {
 
     @Resource
     private SysFileInfoService sysFileInfoService;
+
+    /**
+     * onlyoffice资源文件路径
+     */
+    public static final String ONLY_OFFICE_APP_JS_SUFFIX = "/web-apps/apps/api/documents/api.js";
+
+    /**
+     * 在线文档配置
+     *
+     * @author xuyuxiang
+     * @date 2020/11/17 16:40
+     */
+    @GetMapping("/sysFileInfo/getOnlineFileConfig")
+    public ResponseData getOnlineFileConfig(SysFileInfoParam sysFileInfoParam) {
+        //生成在线文档的model
+        SysOnlineFileInfoResult sysOnlineFileInfoResult = sysFileInfoService.onlineAddOrUpdate(sysFileInfoParam);
+        Dict dict = Dict.create();
+        dict.put("docServiceApiUrl",  ConstantContextHolder.getOnlyOfficeUrl() + ONLY_OFFICE_APP_JS_SUFFIX);
+        dict.put("sysOnlineFileInfoResult", sysOnlineFileInfoResult);
+        return new SuccessResponseData(dict);
+    }
 
     /**
      * 上传文件
@@ -139,4 +165,15 @@ public class SysFileInfoController {
         return new SuccessResponseData();
     }
 
+    /**
+     * 在线文档编辑回调
+     *
+     * @author xuyuxiang
+     * @date 2021/3/25 16:06
+     */
+    @ResponseBody
+    @PostMapping("/sysFileInfo/track")
+    public void track() {
+        sysFileInfoService.track();
+    }
 }
