@@ -28,11 +28,11 @@ import com.baomidou.mybatisplus.annotation.*;
 import vip.xiaonuo.common.pojo.base.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import java.util.*;
+import cn.afterturn.easypoi.excel.annotation.Excel;
 #foreach ($column in $tableField)
 #if (${column.javaType} == 'BigDecimal')
-#end
-#if(${column.javaType} == "Date")
-import cn.afterturn.easypoi.excel.annotation.Excel;
+import java.math.BigDecimal;
 #end
 #end
 
@@ -62,6 +62,7 @@ public class ${ClassName} extends BaseEntity {
 #if(${column.javaType} == "Date")
     @Excel(name = "${column.columnComment}", databaseFormat = "yyyy-MM-dd HH:mm:ss", format = "yyyy-MM-dd", width = 20)
 #end
+    @Excel(name = "${column.columnComment}")
     private ${column.javaType} ${column.javaName};
 #end
 #end

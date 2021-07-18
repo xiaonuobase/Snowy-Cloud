@@ -26,12 +26,16 @@ package ${packageName}.${modularName}.${busName}.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import vip.xiaonuo.common.consts.CommonConstant;
 import vip.xiaonuo.common.enums.CommonStatusEnum;
 import vip.xiaonuo.common.exception.ServiceException;
 import vip.xiaonuo.core.factory.PageFactory;
 import vip.xiaonuo.common.pojo.page.PageResult;
+import vip.xiaonuo.common.util.PoiUtil;
 import ${packageName}.${modularName}.${busName}.entity.${ClassName};
 import ${packageName}.${modularName}.${busName}.enums.${ClassName}ExceptionEnum;
 import ${packageName}.${modularName}.${busName}.mapper.${ClassName}Mapper;
@@ -39,7 +43,7 @@ import ${packageName}.${modularName}.${busName}.param.${ClassName}Param;
 import ${packageName}.${modularName}.${busName}.service.${ClassName}Service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -82,12 +86,14 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void delete(${ClassName}Param ${className}Param) {
+    public void delete(List<${ClassName}Param> ${className}ParamList) {
+        ${className}ParamList.forEach(${className}Param -> {
 #foreach ($column in $tableField)
 #if (${column.columnKey} == "PRI")
-        this.removeById(${className}Param.get${column.columnKeyName}());
+            this.removeById(${className}Param.get${column.columnKeyName}());
 #end
 #end
+        });
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -120,4 +126,11 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         }
         return ${className};
     }
+
+    @Override
+    public void export(${ClassName}Param ${className}Param) {
+        List<${ClassName}> list = this.list(${className}Param);
+        PoiUtil.exportExcelWithStream("Snowy${ClassName}.xls", ${ClassName}.class, list);
+    }
+
 }

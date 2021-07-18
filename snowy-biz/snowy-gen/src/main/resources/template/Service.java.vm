@@ -68,7 +68,7 @@ public interface ${ClassName}Service extends IService<${ClassName}> {
      * @author ${authorName}
      * @date ${createDateString}
      */
-    void delete(${ClassName}Param ${className}Param);
+    void delete(List<${ClassName}Param> ${className}ParamList);
 
     /**
      * 编辑${functionName}
@@ -85,4 +85,13 @@ public interface ${ClassName}Service extends IService<${ClassName}> {
      * @date ${createDateString}
      */
      ${ClassName} detail(${ClassName}Param ${className}Param);
+
+    /**
+     * 导出${functionName}
+     *
+     * @author ${authorName}
+     * @date ${createDateString}
+     */
+     void export(${ClassName}Param ${className}Param);
+
 }

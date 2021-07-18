@@ -28,8 +28,10 @@ import vip.xiaonuo.core.pojo.base.param.BaseParam;
 import lombok.Data;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotBlank;
+import java.util.*;
 #foreach ($column in $tableField)
 #if (${column.javaType} == 'BigDecimal')
+import java.math.BigDecimal;
 #end
 #end
 
