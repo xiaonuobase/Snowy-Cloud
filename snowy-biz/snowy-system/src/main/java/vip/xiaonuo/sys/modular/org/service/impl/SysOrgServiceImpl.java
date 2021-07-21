@@ -35,6 +35,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.xiaonuo.api.auth.service.AuthService;
 import vip.xiaonuo.common.consts.SymbolConstant;
 import vip.xiaonuo.common.context.login.LoginContextHolder;
 import vip.xiaonuo.common.enums.CommonStatusEnum;
@@ -81,6 +82,9 @@ public class SysOrgServiceImpl extends ServiceImpl<SysOrgMapper, SysOrg> impleme
 
     @Resource
     private SysUserDataScopeService sysUserDataScopeService;
+
+    @Resource
+    private AuthService authService;
 
     @Override
     public PageResult<SysOrg> page(SysOrgParam sysOrgParam) {
@@ -192,6 +196,7 @@ public class SysOrgServiceImpl extends ServiceImpl<SysOrgMapper, SysOrg> impleme
         this.fillPids(sysOrg);
         sysOrg.setStatus(CommonStatusEnum.ENABLE.getCode());
         this.save(sysOrg);
+        this.authService.refreshUserDataScope(sysOrg.getId());
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -202,7 +207,7 @@ public class SysOrgServiceImpl extends ServiceImpl<SysOrgMapper, SysOrg> impleme
             Long id = sysOrg.getId();
             boolean superAdmin = LoginContextHolder.me().isSuperAdmin();
             if (!superAdmin) {
-                List<Long> dataScope = sysOrgParam.getDataScope();
+                List<Long> dataScope = LoginContextHolder.me().getLoginUserDataScopeIdList();
                 //数据范围为空
                 if (ObjectUtil.isEmpty(dataScope)) {
                     throw new PermissionException(PermissionExceptionEnum.NO_PERMISSION_OPERATE);
