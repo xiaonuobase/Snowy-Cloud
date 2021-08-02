@@ -73,27 +73,27 @@
 ### 架构原理图
 * 业务架构
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=68yzjuiA&path=%7BshareItemLink%3A68yzjuiA%7D%2F"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7OPISXaw&path=%7BshareItemLink%3A7OPISXaw%7D%2F"/>
 </p>
 
 * 应用架构
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=68yzy4Aw&path=%7BshareItemLink%3A68yzy4Aw%7D%2F"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7OPIGH_w&path=%7BshareItemLink%3A7OPIGH_w%7D%2F"/>
 </p>
 
 * 数据架构
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=68y0EfOg&path=%7BshareItemLink%3A68y0EfOg%7D%2F"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7OPI0cWw&path=%7BshareItemLink%3A7OPI0cWw%7D%2F"/>
 </p>
 
 * 技术架构
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=68y0Q2EA&path=%7BshareItemLink%3A68y0Q2EA%7D%2F"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7OPJAEqA&path=%7BshareItemLink%3A7OPJAEqA%7D%2F"/>
 </p>
 
 * 部署架构
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=68y0jARw&path=%7BshareItemLink%3A68y0jARw%7D%2F"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7OPJQ02g&path=%7BshareItemLink%3A7OPJQ02g%7D%2F"/>
 </p>
 
 ### 效果图
