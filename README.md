@@ -49,17 +49,33 @@
 您的开发电脑需要安装：NodeJs（最新版）、npm或yarn（最新版）建议使用yarn、Mysql5.7、Jdk1.8
 
 * 启动前端：打开_web文件夹，进行依赖下载，运行npm install或yarn命令，再运行npm run serve或 yarn run serve
+
 * 启动后端：
 
         1.按顺序启动：
           com.alibaba.nacos.SnowyNacosApp
           vip.xiaonuo.actuator.SnowyActuatorApp
+          com.alibaba.csp.sentinel.dashboard.SnowySentinelApp
           vip.xiaonuo.gateway.SnowyGatewayApp
           
-        2.打开application-local中配置数据库信息，运行 SnowyMainApp 类即可启动
+        2.调整 snowy-main-app/application-local.yml 中配置数据库信息，启动 vip.xiaonuo.main.SnowyMainApp
 
-        3.打开application-local中配置数据库信息，运行 SnowySampleApp 类即可启动
-        
+        3.调整 snowy-sample-app/application-local.yml 中配置数据库信息，启动 vip.xiaonuo.sample.SnowySampleApp
+
+* 后端应用端口号说明：
+
+| 应用 | 端口号 |
+| :---: | :---: |
+| snowy-nacos-app | 8848 |
+| snowy-actuator-app | 9001 |
+| snowy-sentinel-app | 9002 |
+| snowy-gateway-app | 9003 |
+| snowy-xxl-job-app | 9004 |
+| snowy-main-app | 9101 |
+| snowy-sample-app | 9102 |
+| snowy-tenant-app | 9103 |
+| snowy-flowable-app | 9104 |
+
 * 浏览器访问：<http://localhost:9000> （默认前端端口为：9000，后端端口为：9002）
 
 ### 框架说明及后续补充
