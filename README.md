@@ -58,9 +58,11 @@
           com.alibaba.csp.sentinel.dashboard.SnowySentinelApp
           vip.xiaonuo.gateway.SnowyGatewayApp
           
-        2.调整 snowy-main-app/application-local.yml 中配置数据库信息，启动 vip.xiaonuo.main.SnowyMainApp
+        2.调整 snowy-main-app/application-local.yml 中配置数据库信息，
+        启动 vip.xiaonuo.main.SnowyMainApp
 
-        3.调整 snowy-sample-app/application-local.yml 中配置数据库信息，启动 vip.xiaonuo.sample.SnowySampleApp
+        3.调整 snowy-sample-app/application-local.yml 中配置数据库信息，
+        启动 vip.xiaonuo.sample.SnowySampleApp
 
 * 后端应用端口号说明：
 
