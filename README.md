@@ -73,8 +73,6 @@
 | snowy-xxl-job-app | 9004 |
 | snowy-main-app | 9101 |
 | snowy-sample-app | 9102 |
-| snowy-tenant-app | 9103 |
-| snowy-flowable-app | 9104 |
 
 * 浏览器访问：<http://localhost:9000> （默认前端端口为：9000，后端端口为：9002）
 
