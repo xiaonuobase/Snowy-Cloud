@@ -13,6 +13,8 @@ spring:
         server-addr: localhost:8848
         username: nacos
         password: nacos
+        metadata:
+          management.context-path: ${server.servlet.context-path}/actuator
       config:
         server-addr: localhost:8848 #Nacos配置中心地址
         file-extension: yml #指定yml格式的配置
