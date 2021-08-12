@@ -35,7 +35,7 @@ import vip.xiaonuo.common.enums.CommonStatusEnum;
 import vip.xiaonuo.common.exception.ServiceException;
 import vip.xiaonuo.core.factory.PageFactory;
 import vip.xiaonuo.common.pojo.page.PageResult;
-import vip.xiaonuo.common.util.PoiUtil;
+import vip.xiaonuo.core.util.PoiUtil;
 import ${packageName}.${modularName}.${busName}.entity.${ClassName};
 import ${packageName}.${modularName}.${busName}.enums.${ClassName}ExceptionEnum;
 import ${packageName}.${modularName}.${busName}.mapper.${ClassName}Mapper;

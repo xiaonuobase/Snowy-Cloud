@@ -56,6 +56,11 @@ public class GenConstant {
     public static String MODULAR_NAME = "modular";
 
     /**
+     * 微服务名，前端代理时api文件中用到
+     */
+    public static String MICRO_NAME = "main";
+
+    /**
      * 本项目生成时是否覆盖
      */
     public static final boolean FLAG = false;

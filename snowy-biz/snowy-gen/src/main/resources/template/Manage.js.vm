@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function ${className}Page (parameter) {
   return axios({
-    url: '/${className}/page',
+    url: '/${microName}/${className}/page',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function ${className}Page (parameter) {
  */
 export function ${className}List (parameter) {
   return axios({
-    url: '/${className}/list',
+    url: '/${microName}/${className}/list',
     method: 'get',
     params: parameter
   })
@@ -36,7 +36,7 @@ export function ${className}List (parameter) {
  */
 export function ${className}Add (parameter) {
   return axios({
-    url: '/${className}/add',
+    url: '/${microName}/${className}/add',
     method: 'post',
     data: parameter
   })
@@ -50,7 +50,7 @@ export function ${className}Add (parameter) {
  */
 export function ${className}Edit (parameter) {
   return axios({
-    url: '/${className}/edit',
+    url: '/${microName}/${className}/edit',
     method: 'post',
     data: parameter
   })
@@ -64,7 +64,7 @@ export function ${className}Edit (parameter) {
  */
 export function ${className}Delete (parameter) {
   return axios({
-    url: '/${className}/delete',
+    url: '/${microName}/${className}/delete',
     method: 'post',
     data: parameter
   })
@@ -78,7 +78,7 @@ export function ${className}Delete (parameter) {
  */
 export function ${className}Export (parameter) {
   return axios({
-    url: '/${className}/export',
+    url: '/${microName}/${className}/export',
     method: 'get',
     params: parameter,
     responseType: 'blob'

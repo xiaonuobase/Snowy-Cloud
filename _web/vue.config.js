@@ -92,7 +92,7 @@ const vueConfig = {
         pathRewrite: {// 需要rewrite的path
           '^/api/system': '/main',
           '^/api/gen': '/main',
-
+          '^/api/main': '/main'
         }
       }
     }

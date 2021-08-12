@@ -181,7 +181,7 @@
        * 默认选中项
        */
       selectedByDefault () {
-        this.form.getFieldDecorator('packageName', { initialValue: 'vip.xiaonuo' })
+        this.form.getFieldDecorator('packageName', { initialValue: 'vip.xiaonuo.main' })
         this.form.getFieldDecorator('tablePrefix', { valuePropName: 'checked', initialValue: 'N' })
         this.form.getFieldDecorator('generateType', { valuePropName: 'checked', initialValue: '1' })
         this.tablePrefixValue = 'N'
@@ -308,7 +308,7 @@
           this.packageNameShow = true
         } else {
           this.packageNameShow = false
-          this.form.setFieldsValue({ packageName: 'vip.xiaonuo' })
+          this.form.setFieldsValue({ packageName: 'vip.xiaonuo.main' })
         }
       }
     }
