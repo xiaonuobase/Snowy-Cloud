@@ -61,9 +61,11 @@ public class ${ClassName} extends BaseEntity {
      */
 #if(${column.javaType} == "Date")
     @Excel(name = "${column.columnComment}", databaseFormat = "yyyy-MM-dd HH:mm:ss", format = "yyyy-MM-dd", width = 20)
-#end
+    private ${column.javaType} ${column.javaName};
+#else
     @Excel(name = "${column.columnComment}")
     private ${column.javaType} ${column.javaName};
+#end
 #end
 #end
 

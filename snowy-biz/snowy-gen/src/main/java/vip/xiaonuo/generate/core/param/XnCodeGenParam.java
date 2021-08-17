@@ -106,6 +106,11 @@ public class XnCodeGenParam {
     /**
      * 菜单上级父ids
      */
-    private String menuPids;
+    private String menuPids = "";
+
+    /**
+     * 微服务名
+     */
+    private String microName = GenConstant.MICRO_NAME;
 
 }

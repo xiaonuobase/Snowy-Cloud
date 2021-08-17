@@ -77,6 +77,8 @@ public class XnVelocityContext {
         // 数据库字段
         velocityContext.put("tableField", xnCodeGenParam.getConfigList());
 
+        velocityContext.put("microName", xnCodeGenParam.getMicroName());
+
         // 前端查询所有
         List<SysCodeGenerateConfig> codeGenerateConfigList = new ArrayList<>();
         xnCodeGenParam.getConfigList().forEach(item -> {
