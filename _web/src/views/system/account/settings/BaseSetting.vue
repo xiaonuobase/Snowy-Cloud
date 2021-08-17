@@ -120,7 +120,7 @@ export default {
           }
         )
         this.birthdayString = moment(this.userInfo.birthday).format('YYYY-MM-DD')
-        this.option.img = process.env.VUE_APP_API_BASE_URL + '/main/sysFileInfo/preview?id=' + this.userInfo.avatar
+        this.option.img = process.env.VUE_APP_API_BASE_URL + '/api/main/sysFileInfo/preview?id=' + this.userInfo.avatar
         this.getSexData()
       }, 100)
     },
@@ -151,7 +151,7 @@ export default {
       this.sexData = this.$options.filters['dictData']('sex')
     },
     setavatar (url) {
-      this.option.img = process.env.VUE_APP_API_BASE_URL + '/main/sysFileInfo/preview?id=' + url
+      this.option.img = process.env.VUE_APP_API_BASE_URL + '/api/main/sysFileInfo/preview?id=' + url
       store.dispatch('GetInfo').then(() => {})
     }
   }

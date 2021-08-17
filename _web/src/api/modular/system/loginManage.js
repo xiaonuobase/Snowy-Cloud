@@ -14,7 +14,7 @@ import { axios } from '@/utils/request'
  */
 export function login (parameter) {
   return axios({
-    url: '/system/login',
+    url: '/main/login',
     method: 'post',
     data: parameter
   })
@@ -28,7 +28,7 @@ export function login (parameter) {
  */
 export function logout (parameter) {
   return axios({
-    url: '/system/logout',
+    url: '/main/logout',
     method: 'get',
     params: parameter
   })
@@ -42,7 +42,7 @@ export function logout (parameter) {
  */
 export function getLoginUser (parameter) {
   return axios({
-    url: '/system/getLoginUser',
+    url: '/main/getLoginUser',
     method: 'get',
     params: parameter
   })
@@ -56,7 +56,7 @@ export function getLoginUser (parameter) {
  */
 export function getTenantOpen (parameter) {
   return axios({
-    url: '/system/getTenantOpen',
+    url: '/main/getTenantOpen',
     method: 'get',
     params: parameter
   })
@@ -70,7 +70,7 @@ export function getTenantOpen (parameter) {
  */
 export function getSmsCaptcha (parameter) {
   return axios({
-    url: '/system/getSmsCaptcha',
+    url: '/main/getSmsCaptcha',
     method: 'get',
     params: parameter
   })
@@ -84,7 +84,7 @@ export function getSmsCaptcha (parameter) {
  */
 export function getCaptchaOpen (parameter) {
   return axios({
-    url: '/system/getCaptchaOpen',
+    url: '/main/getCaptchaOpen',
     method: 'get',
     params: parameter
   })
@@ -98,7 +98,7 @@ export function getCaptchaOpen (parameter) {
  */
 export function reqGet(data) {
   return axios({
-    url: '/system/captcha/get',
+    url: '/main/captcha/get',
     method: 'post',
     data
   })
@@ -112,7 +112,7 @@ export function reqGet(data) {
  */
 export function reqCheck(data) {
   return axios({
-    url: '/system/captcha/check',
+    url: '/main/captcha/check',
     method: 'post',
     data
   })

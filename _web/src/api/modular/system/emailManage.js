@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function emailSendEmail (parameter) {
   return axios({
-    url: '/system/email/sendEmail',
+    url: '/main/email/sendEmail',
     method: 'post',
     data: parameter
   })
@@ -22,7 +22,7 @@ export function emailSendEmail (parameter) {
  */
 export function emailSendEmailHtml (parameter) {
   return axios({
-    url: '/system/email/sendEmailHtml',
+    url: '/main/email/sendEmailHtml',
     method: 'post',
     data: parameter
   })

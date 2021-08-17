@@ -167,7 +167,7 @@
        * 预览文件（微软插件）
        */
       previewMicrosoft (record) {
-        window.open('https://view.officeapps.live.com/op/view.aspx?src=' + process.env.VUE_APP_API_BASE_URL + '/sysFileInfo/download?id=' + record.id)
+        window.open('https://view.officeapps.live.com/op/view.aspx?src=' + process.env.VUE_APP_API_BASE_URL + '/api/main/sysFileInfo/download?id=' + record.id)
       },
       /**
        * 获取字典数据

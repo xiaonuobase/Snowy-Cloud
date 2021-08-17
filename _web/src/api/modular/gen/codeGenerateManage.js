@@ -14,7 +14,7 @@ import { axios } from '@/utils/request'
  */
 export function codeGeneratePage (parameter) {
   return axios({
-    url: '/gen/codeGenerate/page',
+    url: '/main/codeGenerate/page',
     method: 'get',
     params: parameter
   })
@@ -28,7 +28,7 @@ export function codeGeneratePage (parameter) {
  */
 export function codeGenerateAdd (parameter) {
   return axios({
-    url: '/gen/codeGenerate/add',
+    url: '/main/codeGenerate/add',
     method: 'post',
     data: parameter
   })
@@ -42,7 +42,7 @@ export function codeGenerateAdd (parameter) {
  */
 export function codeGenerateEdit (parameter) {
   return axios({
-    url: '/gen/codeGenerate/edit',
+    url: '/main/codeGenerate/edit',
     method: 'post',
     data: parameter
   })
@@ -56,7 +56,7 @@ export function codeGenerateEdit (parameter) {
  */
 export function codeGenerateDelete (parameter) {
   return axios({
-    url: '/gen/codeGenerate/delete',
+    url: '/main/codeGenerate/delete',
     method: 'post',
     data: parameter
   })
@@ -70,7 +70,7 @@ export function codeGenerateDelete (parameter) {
  */
 export function codeGenerateInformationList (parameter) {
   return axios({
-    url: '/gen/codeGenerate/InformationList',
+    url: '/main/codeGenerate/InformationList',
     method: 'get',
     params: parameter
   })
@@ -84,7 +84,7 @@ export function codeGenerateInformationList (parameter) {
  */
 export function codeGenerateRunLocal (parameter) {
   return axios({
-    url: '/gen/codeGenerate/runLocal',
+    url: '/main/codeGenerate/runLocal',
     method: 'post',
     data: parameter
   })
@@ -98,7 +98,7 @@ export function codeGenerateRunLocal (parameter) {
  */
 export function codeGenerateRunDown (parameter) {
   return axios({
-    url: '/gen/codeGenerate/runDown',
+    url: '/main/codeGenerate/runDown',
     method: 'get',
     params: parameter,
     responseType: 'blob'

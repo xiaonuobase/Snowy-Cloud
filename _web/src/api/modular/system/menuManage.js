@@ -9,7 +9,7 @@ import { axios } from '@/utils/request'
  */
 export function getMenuList (parameter) {
   return axios({
-    url: '/system/sysMenu/list',
+    url: '/main/sysMenu/list',
     method: 'get',
     params: parameter
   })
@@ -23,7 +23,7 @@ export function getMenuList (parameter) {
  */
 export function getMenuTree (parameter) {
   return axios({
-    url: '/system/sysMenu/tree',
+    url: '/main/sysMenu/tree',
     method: 'get',
     params: parameter
   })
@@ -37,7 +37,7 @@ export function getMenuTree (parameter) {
  */
 export function sysMenuAdd (parameter) {
   return axios({
-    url: '/system/sysMenu/add',
+    url: '/main/sysMenu/add',
     method: 'post',
     data: parameter
   })
@@ -51,7 +51,7 @@ export function sysMenuAdd (parameter) {
  */
 export function sysMenuDelete (parameter) {
   return axios({
-    url: '/system/sysMenu/delete',
+    url: '/main/sysMenu/delete',
     method: 'post',
     data: parameter
   })
@@ -65,7 +65,7 @@ export function sysMenuDelete (parameter) {
  */
 export function sysMenuDetail (parameter) {
   return axios({
-    url: '/system/sysMenu/detail',
+    url: '/main/sysMenu/detail',
     method: 'post',
     data: parameter
   })
@@ -79,7 +79,7 @@ export function sysMenuDetail (parameter) {
  */
 export function sysMenuEdit (parameter) {
   return axios({
-    url: '/system/sysMenu/edit',
+    url: '/main/sysMenu/edit',
     method: 'post',
     data: parameter
   })
@@ -93,7 +93,7 @@ export function sysMenuEdit (parameter) {
  */
 export function SysMenuTreeForGrant (parameter) {
   return axios({
-    url: '/system/sysMenu/treeForGrant',
+    url: '/main/sysMenu/treeForGrant',
     method: 'get',
     params: parameter
   })
@@ -107,7 +107,7 @@ export function SysMenuTreeForGrant (parameter) {
  */
 export function sysMenuChange (parameter) {
   return axios({
-    url: '/system/sysMenu/change',
+    url: '/main/sysMenu/change',
     method: 'post',
     data: parameter
   })

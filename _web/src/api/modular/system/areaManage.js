@@ -9,7 +9,7 @@ import { axios } from '@/utils/request'
  */
 export function getAreaList (parameter) {
   return axios({
-    url: '/sysArea/list',
+    url: '/main/sysArea/list',
     method: 'get',
     params: parameter
   })

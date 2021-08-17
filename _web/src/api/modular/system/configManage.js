@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function sysConfigPage (parameter) {
   return axios({
-    url: '/system/sysConfig/page',
+    url: '/main/sysConfig/page',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function sysConfigPage (parameter) {
  */
 export function sysConfigAdd (parameter) {
   return axios({
-    url: '/system/sysConfig/add',
+    url: '/main/sysConfig/add',
     method: 'post',
     data: parameter
   })
@@ -36,7 +36,7 @@ export function sysConfigAdd (parameter) {
  */
 export function sysConfigEdit (parameter) {
   return axios({
-    url: '/system/sysConfig/edit',
+    url: '/main/sysConfig/edit',
     method: 'post',
     data: parameter
   })
@@ -50,7 +50,7 @@ export function sysConfigEdit (parameter) {
  */
 export function sysConfigDelete (parameter) {
   return axios({
-    url: '/system/sysConfig/delete',
+    url: '/main/sysConfig/delete',
     method: 'post',
     data: parameter
   })
@@ -64,7 +64,7 @@ export function sysConfigDelete (parameter) {
  */
 export function sysDictTypeDropDown (parameter) {
   return axios({
-    url: '/system/sysDictType/dropDown',
+    url: '/main/sysDictType/dropDown',
     method: 'get',
     params: parameter
   })
@@ -78,7 +78,7 @@ export function sysDictTypeDropDown (parameter) {
  */
 export function sysTimersGetActionClasses (parameter) {
   return axios({
-    url: '/system/sysTimers/getActionClasses',
+    url: '/main/sysTimers/getActionClasses',
     method: 'get',
     params: parameter
   })

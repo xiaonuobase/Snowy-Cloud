@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function sysMachineQuery (parameter) {
   return axios({
-    url: '/system/sysMachine/query',
+    url: '/main/sysMachine/query',
     method: 'get',
     params: parameter
   })

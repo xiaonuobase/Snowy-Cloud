@@ -74,6 +74,8 @@ public class AccessFilter implements GlobalFilter {
 
     private static final String GATE_WAY_PREFIX = "/api";
 
+    private static final String GATE_WAY_FORWARD_SLASH = "/";
+
     public static final String API_URI = "/v2/api-docs";
 
     public static final String DOC_URI = "/doc.html";
@@ -95,7 +97,8 @@ public class AccessFilter implements GlobalFilter {
             while (iterator.hasNext()) {
                 URI next = iterator.next();
                 if (next.getPath().startsWith(GATE_WAY_PREFIX)) {
-                    requestUri = next.getPath().substring(GATE_WAY_PREFIX.length());
+                    int index = StrUtil.indexOf(next.getPath(),GATE_WAY_FORWARD_SLASH.toCharArray()[0],GATE_WAY_PREFIX.length()+1);
+                    requestUri = next.getPath().substring(index);
                 }
             }
         }
@@ -115,6 +118,9 @@ public class AccessFilter implements GlobalFilter {
         }
         //获取请求头的Auth token
         String authToken = request.getHeaders().getFirst(CommonConstant.AUTHORIZATION);
+        if(StrUtil.isEmpty(authToken)){
+            return getVoidMono(serverWebExchange, ResponseData.error(AuthExceptionEnum.REQUEST_TOKEN_EMPTY.getCode(),AuthExceptionEnum.REQUEST_TOKEN_EMPTY.getMessage()), HttpStatus.FORBIDDEN);
+        }
         authToken = authToken.substring(CommonConstant.TOKEN_TYPE_BEARER.length() + 1);
 
         //当前请求的路径

@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function sysNoticePage (parameter) {
   return axios({
-    url: '/system/sysNotice/page',
+    url: '/main/sysNotice/page',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function sysNoticePage (parameter) {
  */
 export function sysNoticeAdd (parameter) {
   return axios({
-    url: '/system/sysNotice/add',
+    url: '/main/sysNotice/add',
     method: 'post',
     data: parameter
   })
@@ -36,7 +36,7 @@ export function sysNoticeAdd (parameter) {
  */
 export function sysNoticeEdit (parameter) {
   return axios({
-    url: '/system/sysNotice/edit',
+    url: '/main/sysNotice/edit',
     method: 'post',
     data: parameter
   })
@@ -50,7 +50,7 @@ export function sysNoticeEdit (parameter) {
  */
 export function sysNoticeDelete (parameter) {
   return axios({
-    url: '/system/sysNotice/delete',
+    url: '/main/sysNotice/delete',
     method: 'post',
     data: parameter
   })
@@ -64,7 +64,7 @@ export function sysNoticeDelete (parameter) {
  */
 export function sysNoticeDetail (parameter) {
   return axios({
-    url: '/system/sysNotice/detail',
+    url: '/main/sysNotice/detail',
     method: 'get',
     params: parameter
   })
@@ -78,7 +78,7 @@ export function sysNoticeDetail (parameter) {
  */
 export function sysNoticeChangeStatus (parameter) {
   return axios({
-    url: '/system/sysNotice/changeStatus',
+    url: '/main/sysNotice/changeStatus',
     method: 'post',
     data: parameter
   })

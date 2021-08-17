@@ -58,8 +58,8 @@
         this.option.fileType = data.document.fileType
         this.option.title = data.document.title
         this.option.key = data.document.key
-        this.option.url = process.env.VUE_APP_API_BASE_URL + data.document.url // res.data.docServiceApiUrl
-        this.callbackUrl = process.env.VUE_APP_API_BASE_URL + data.editorConfig.callbackUrl
+        this.option.url = process.env.VUE_APP_API_BASE_URL + '/api/main' + data.document.url // res.data.docServiceApiUrl
+        this.callbackUrl = process.env.VUE_APP_API_BASE_URL + '/api/main' + data.editorConfig.callbackUrl
         // this.option.type = type
         this.option.review = false
       },

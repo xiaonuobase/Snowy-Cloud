@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function sysNoticeReceived (parameter) {
   return axios({
-    url: '/system/sysNotice/received',
+    url: '/main/sysNotice/received',
     method: 'get',
     params: parameter
   })

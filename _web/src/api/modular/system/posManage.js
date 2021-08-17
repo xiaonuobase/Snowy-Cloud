@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function sysPosPage (parameter) {
   return axios({
-    url: '/system/sysPos/page',
+    url: '/main/sysPos/page',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function sysPosPage (parameter) {
  */
 export function sysPosList (parameter) {
   return axios({
-    url: '/system/sysPos/list',
+    url: '/main/sysPos/list',
     method: 'get',
     params: parameter
   })
@@ -36,7 +36,7 @@ export function sysPosList (parameter) {
  */
 export function sysPosAdd (parameter) {
   return axios({
-    url: '/system/sysPos/add',
+    url: '/main/sysPos/add',
     method: 'post',
     data: parameter
   })
@@ -50,7 +50,7 @@ export function sysPosAdd (parameter) {
  */
 export function sysPosEdit (parameter) {
   return axios({
-    url: '/system/sysPos/edit',
+    url: '/main/sysPos/edit',
     method: 'post',
     data: parameter
   })
@@ -64,7 +64,7 @@ export function sysPosEdit (parameter) {
  */
 export function sysPosDelete (parameter) {
   return axios({
-    url: '/system/sysPos/delete',
+    url: '/main/sysPos/delete',
     method: 'post',
     data: parameter
   })
@@ -78,7 +78,7 @@ export function sysPosDelete (parameter) {
  */
 export function sysPosExport (parameter) {
   return axios({
-    url: '/system/sysPos/export',
+    url: '/main/sysPos/export',
     method: 'get',
     params: parameter,
     responseType: 'blob'

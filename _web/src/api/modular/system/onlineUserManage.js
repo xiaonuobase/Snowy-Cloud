@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function sysOnlineUserList (parameter) {
   return axios({
-    url: '/system/sysOnlineUser/list',
+    url: '/main/sysOnlineUser/list',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function sysOnlineUserList (parameter) {
  */
 export function sysOnlineUserForceExist (parameter) {
   return axios({
-    url: '/system/sysOnlineUser/forceExist',
+    url: '/main/sysOnlineUser/forceExist',
     method: 'post',
     data: parameter
   })

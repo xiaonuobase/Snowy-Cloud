@@ -14,7 +14,7 @@ import { axios } from '@/utils/request'
  */
 export function getAppPage (parameter) {
   return axios({
-    url: '/system/sysApp/page',
+    url: '/main/sysApp/page',
     method: 'get',
     params: parameter
   })
@@ -28,7 +28,7 @@ export function getAppPage (parameter) {
  */
 export function getAppList (parameter) {
   return axios({
-    url: '/system/sysApp/list',
+    url: '/main/sysApp/list',
     method: 'get',
     params: parameter
   })
@@ -42,7 +42,7 @@ export function getAppList (parameter) {
  */
 export function sysAppAdd (parameter) {
   return axios({
-    url: '/system/sysApp/add',
+    url: '/main/sysApp/add',
     method: 'post',
     data: parameter
   })
@@ -57,7 +57,7 @@ export function sysAppAdd (parameter) {
  */
 export function sysAppEdit (parameter) {
   return axios({
-    url: '/system/sysApp/edit',
+    url: '/main/sysApp/edit',
     method: 'post',
     data: parameter
   })
@@ -71,7 +71,7 @@ export function sysAppEdit (parameter) {
  */
 export function sysAppDelete (parameter) {
   return axios({
-    url: '/system/sysApp/delete',
+    url: '/main/sysApp/delete',
     method: 'post',
     data: parameter
   })
@@ -85,7 +85,7 @@ export function sysAppDelete (parameter) {
  */
 export function sysAppSetAsDefault (parameter) {
   return axios({
-    url: '/system/sysApp/setAsDefault',
+    url: '/main/sysApp/setAsDefault',
     method: 'post',
     data: parameter
   })

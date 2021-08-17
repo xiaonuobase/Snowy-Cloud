@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function getUserPage (parameter) {
   return axios({
-    url: '/system/sysUser/page',
+    url: '/main/sysUser/page',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function getUserPage (parameter) {
  */
 export function sysUserAdd (parameter) {
   return axios({
-    url: '/system/sysUser/add',
+    url: '/main/sysUser/add',
     method: 'post',
     data: parameter
   })
@@ -36,7 +36,7 @@ export function sysUserAdd (parameter) {
  */
 export function sysUserEdit (parameter) {
   return axios({
-    url: '/system/sysUser/edit',
+    url: '/main/sysUser/edit',
     method: 'post',
     data: parameter
   })
@@ -50,7 +50,7 @@ export function sysUserEdit (parameter) {
  */
 export function sysUserDetail (parameter) {
   return axios({
-    url: '/system/sysUser/detail',
+    url: '/main/sysUser/detail',
     method: 'get',
     params: parameter
   })
@@ -64,7 +64,7 @@ export function sysUserDetail (parameter) {
  */
 export function sysUserDelete (parameter) {
   return axios({
-    url: '/system/sysUser/delete',
+    url: '/main/sysUser/delete',
     method: 'post',
     data: parameter
   })
@@ -78,7 +78,7 @@ export function sysUserDelete (parameter) {
  */
 export function sysUserExport (parameter) {
   return axios({
-    url: '/system/sysUser/export',
+    url: '/main/sysUser/export',
     method: 'get',
     params: parameter,
     responseType: 'blob'
@@ -93,7 +93,7 @@ export function sysUserExport (parameter) {
  */
 export function sysUserOwnRole (parameter) {
   return axios({
-    url: '/system/sysUser/ownRole',
+    url: '/main/sysUser/ownRole',
     method: 'get',
     params: parameter
   })
@@ -107,7 +107,7 @@ export function sysUserOwnRole (parameter) {
  */
 export function sysUserGrantRole (parameter) {
   return axios({
-    url: '/system/sysUser/grantRole',
+    url: '/main/sysUser/grantRole',
     method: 'post',
     data: parameter
   })
@@ -121,7 +121,7 @@ export function sysUserGrantRole (parameter) {
  */
 export function sysUserOwnData (parameter) {
   return axios({
-    url: '/system/sysUser/ownData',
+    url: '/main/sysUser/ownData',
     method: 'get',
     params: parameter
   })
@@ -135,7 +135,7 @@ export function sysUserOwnData (parameter) {
  */
 export function sysUserGrantData (parameter) {
   return axios({
-    url: '/system/sysUser/grantData',
+    url: '/main/sysUser/grantData',
     method: 'post',
     data: parameter
   })
@@ -149,7 +149,7 @@ export function sysUserGrantData (parameter) {
  */
 export function sysUserChangeStatus (parameter) {
   return axios({
-    url: '/system/sysUser/changeStatus',
+    url: '/main/sysUser/changeStatus',
     method: 'post',
     data: parameter
   })
@@ -163,7 +163,7 @@ export function sysUserChangeStatus (parameter) {
  */
 export function sysUserResetPwd (parameter) {
   return axios({
-    url: '/system/sysUser/resetPwd',
+    url: '/main/sysUser/resetPwd',
     method: 'post',
     data: parameter
   })
@@ -177,7 +177,7 @@ export function sysUserResetPwd (parameter) {
  */
 export function sysUserUpdatePwd (parameter) {
   return axios({
-    url: '/system/sysUser/updatePwd',
+    url: '/main/sysUser/updatePwd',
     method: 'post',
     data: parameter
   })
@@ -191,7 +191,7 @@ export function sysUserUpdatePwd (parameter) {
  */
 export function sysUserSelector (parameter) {
   return axios({
-    url: '/system/sysUser/selector',
+    url: '/main/sysUser/selector',
     method: 'get',
     params: parameter
   })
@@ -205,7 +205,7 @@ export function sysUserSelector (parameter) {
  */
 export function sysUserUpdateAvatar (parameter) {
   return axios({
-    url: '/system/sysUser/updateAvatar',
+    url: '/main/sysUser/updateAvatar',
     method: 'post',
     data: parameter
   })
@@ -219,7 +219,7 @@ export function sysUserUpdateAvatar (parameter) {
  */
 export function sysUserUpdateInfo (parameter) {
   return axios({
-    url: '/system/sysUser/updateInfo',
+    url: '/main/sysUser/updateInfo',
     method: 'post',
     data: parameter
   })

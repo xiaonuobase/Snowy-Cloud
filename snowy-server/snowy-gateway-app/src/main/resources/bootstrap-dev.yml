@@ -61,18 +61,18 @@ spring:
         - id: snowy-main-app
           uri: lb://snowy-main-app
           predicates:
-            - Path=/main/**
+            - Path=/api/main/**
           filters:
-            - StripPrefix=1 #去掉Path中第一个节点
+            - StripPrefix=2 #去掉Path中前两个节点
             - name: Retry
               args:
                 retries: 1 #重试次数
         - id: snowy-sample-app
           uri: lb://snowy-sample-app
           predicates:
-            - Path=/test/**
+            - Path=/api/test/**
           filters:
-            - StripPrefix=1 #去掉Path中第一个节点
+            - StripPrefix=2 #去掉Path中前两个节点
             - name: Retry
               args:
                 retries: 1 #重试次数
@@ -93,15 +93,9 @@ knife4j:
     enable: true
     routes:
       - name: snowy-main-app
-        location: /main/v2/api-docs?group=snowy-main-app
-        uri: localhost:9003
-      - name: snowy-tenant-app
-        location: /tenant/v2/api-docs?group=snowy-tenant-app
-        uri: localhost:9003
-      - name: snowy-flowable-app
-        location: /flowable/v2/api-docs?group=snowy-flowable-app
+        location: /api/main/v2/api-docs?group=snowy-main-app
         uri: localhost:9003
       - name: snowy-sample-app
-        location: /test/v2/api-docs?group=snowy-sample-app
+        location: /api/test/v2/api-docs?group=snowy-sample-app
         uri: localhost:9003
 

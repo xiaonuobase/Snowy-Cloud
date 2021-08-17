@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function sysVisLogPage (parameter) {
   return axios({
-    url: '/system/sysVisLog/page',
+    url: '/main/sysVisLog/page',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function sysVisLogPage (parameter) {
  */
 export function sysOpLogPage (parameter) {
   return axios({
-    url: '/system/sysOpLog/page',
+    url: '/main/sysOpLog/page',
     method: 'get',
     params: parameter
   })
@@ -36,7 +36,7 @@ export function sysOpLogPage (parameter) {
  */
 export function sysVisLogDelete (parameter) {
   return axios({
-    url: '/system/sysVisLog/delete',
+    url: '/main/sysVisLog/delete',
     method: 'post',
     data: parameter
   })
@@ -50,7 +50,7 @@ export function sysVisLogDelete (parameter) {
  */
 export function sysOpLogDelete (parameter) {
   return axios({
-    url: '/system/sysOpLog/delete',
+    url: '/main/sysOpLog/delete',
     method: 'post',
     data: parameter
   })
@@ -64,7 +64,7 @@ export function sysOpLogDelete (parameter) {
  */
 export function sysVisLogExport (parameter) {
   return axios({
-    url: '/system/sysVisLog/export',
+    url: '/main/sysVisLog/export',
     method: 'get',
     params: parameter,
     responseType: 'blob'
@@ -79,7 +79,7 @@ export function sysVisLogExport (parameter) {
  */
 export function sysOpLogExport (parameter) {
   return axios({
-    url: '/system/sysOpLog/export',
+    url: '/main/sysOpLog/export',
     method: 'get',
     params: parameter,
     responseType: 'blob'

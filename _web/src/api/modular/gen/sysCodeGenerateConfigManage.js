@@ -8,7 +8,7 @@ import { axios } from '@/utils/request'
  */
 export function sysCodeGenerateConfigList (parameter) {
   return axios({
-    url: '/gen/sysCodeGenerateConfig/list',
+    url: '/main/sysCodeGenerateConfig/list',
     method: 'get',
     params: parameter
   })
@@ -22,7 +22,7 @@ export function sysCodeGenerateConfigList (parameter) {
  */
 export function sysCodeGenerateConfigEdit (parameter) {
   return axios({
-    url: '/gen/sysCodeGenerateConfig/edit',
+    url: '/main/sysCodeGenerateConfig/edit',
     method: 'post',
     data: parameter
   })
