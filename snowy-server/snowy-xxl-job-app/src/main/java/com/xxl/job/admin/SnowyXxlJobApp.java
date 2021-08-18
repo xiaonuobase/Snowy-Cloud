@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
+ * 分布式任务调度平台
  * @author xuxueli 2018-10-28 00:38:13
  */
 @SpringBootApplication

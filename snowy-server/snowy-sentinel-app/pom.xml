@@ -9,9 +9,10 @@
     <version>1.7.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-
   <artifactId>snowy-sentinel-app</artifactId>
   <packaging>jar</packaging>
+  <description> 流量保护模块</description>
+
 
   <properties>
     <curator.version>4.0.1</curator.version>
