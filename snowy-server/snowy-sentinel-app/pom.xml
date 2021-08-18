@@ -11,7 +11,7 @@
   </parent>
   <artifactId>snowy-sentinel-app</artifactId>
   <packaging>jar</packaging>
-  <description> 流量保护模块</description>
+  <description>流量保护模块</description>
 
 
   <properties>
