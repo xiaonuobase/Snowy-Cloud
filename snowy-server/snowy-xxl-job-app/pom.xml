@@ -7,11 +7,9 @@
     <version>1.7.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-
   <artifactId>snowy-xxl-job-app</artifactId>
-  <description>xxl-job admin</description>
-  <packaging>jar</packaging>
   <description>分布式任务调度平台</description>
+  <packaging>jar</packaging>
 
   <dependencies>
 
