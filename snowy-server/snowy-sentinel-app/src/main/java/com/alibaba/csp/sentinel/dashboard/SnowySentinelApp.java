@@ -21,8 +21,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Sentinel dashboard application.
- *
+ * TODO sentinel 流量保护模块 熔断降级限流
  * @author Carpenter Lee
  */
 @SpringBootApplication
