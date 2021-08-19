@@ -39,7 +39,7 @@
     <mssql.version>9.3.0.jre8-preview</mssql.version>
     <postgresql.version>42.2.19</postgresql.version>
     <druid.version>1.1.21</druid.version>
-    <mp.version>3.3.2</mp.version>
+    <mp.version>3.4.2</mp.version>
     <fastjson.version>1.2.70</fastjson.version>
     <jwt.version>0.9.1</jwt.version>
     <hutool.version>5.5.8</hutool.version>
