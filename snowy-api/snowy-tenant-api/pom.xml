@@ -13,6 +13,7 @@
 
   <artifactId>snowy-tenant-api</artifactId>
   <packaging>jar</packaging>
+  <description>租户api模块</description>
 
   <dependencies>
 

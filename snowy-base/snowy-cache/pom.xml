@@ -11,6 +11,7 @@
 
   <artifactId>snowy-cache</artifactId>
   <packaging>jar</packaging>
+  <description>snowy-缓存模块</description>
 
   <dependencies>
     <!-- snowy通用包 -->

@@ -10,10 +10,9 @@
         <version>1.7.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-
     <artifactId>snowy-system</artifactId>
-
     <packaging>jar</packaging>
+    <description>后台管理模块</description>
 
     <dependencies>
 

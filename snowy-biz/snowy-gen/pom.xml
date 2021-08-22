@@ -12,8 +12,8 @@
     </parent>
 
     <artifactId>snowy-gen</artifactId>
-
     <packaging>jar</packaging>
+    <description>代码生成模块</description>
 
     <dependencies>
 

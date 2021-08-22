@@ -32,7 +32,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * SpringBoot方式启动类
- *
+ * 主模块
  * @author yubaoshan
  * @date 2017/5/21 12:06
  */

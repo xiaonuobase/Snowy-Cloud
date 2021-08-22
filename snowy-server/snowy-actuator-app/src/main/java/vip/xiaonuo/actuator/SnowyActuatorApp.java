@@ -32,7 +32,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * SpringBoot方式 SnowyActuatorApp 启动类
- *
+ * actuator监控服务端
  * @author dongxiayu
  * @date 2020/12/11 12:06
  */
