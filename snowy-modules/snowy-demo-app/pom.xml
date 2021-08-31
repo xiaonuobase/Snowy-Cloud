@@ -10,7 +10,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>snowy-demo-app</artifactId>
+  <artifactId>snowy-sample-app</artifactId>
 
   <packaging>jar</packaging>
 

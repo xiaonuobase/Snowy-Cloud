@@ -13,6 +13,7 @@
 
   <artifactId>snowy-common</artifactId>
   <packaging>jar</packaging>
+  <description>snowy-common模块</description>
 
   <dependencies>
 

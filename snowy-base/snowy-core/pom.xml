@@ -12,8 +12,8 @@
     </parent>
 
     <artifactId>snowy-core</artifactId>
-
     <packaging>jar</packaging>
+    <description>snowy核心模块</description>
 
     <dependencies>
 

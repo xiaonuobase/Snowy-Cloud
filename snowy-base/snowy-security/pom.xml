@@ -12,6 +12,7 @@
   </parent>
 
   <artifactId>snowy-security</artifactId>
+  <description>security权限模块</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
