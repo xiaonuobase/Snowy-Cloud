@@ -1,2 +1,0 @@
-org.springframework.context.ApplicationListener=\
-vip.xiaonuo.sample.core.listener.ConstantsInitListener

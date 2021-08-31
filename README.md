@@ -61,8 +61,8 @@
         2.调整 snowy-main-app/application-local.yml 中配置数据库信息，
           启动 vip.xiaonuo.main.SnowyMainApp
 
-        3.调整 snowy-sample-app/application-local.yml 中配置数据库信息，
-          启动 vip.xiaonuo.sample.SnowySampleApp
+        3.调整 snowy-demo-app/application-local.yml 中配置数据库信息，
+          启动 vip.xiaonuo.demo.SnowyDemoApp
 
 * 后端应用端口号说明：
 
@@ -74,7 +74,7 @@
 | snowy-gateway-app | 9003 |
 | snowy-xxl-job-app | 9004 |
 | snowy-main-app | 9101 |
-| snowy-sample-app | 9102 |
+| snowy-demo-app | 9102 |
 
 * 浏览器访问：<http://localhost:9000> （默认前端端口为：9000，后端端口为：9002）
 

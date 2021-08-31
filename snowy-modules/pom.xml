@@ -17,7 +17,7 @@
 
   <modules>
     <module>snowy-main-app</module>
-    <module>snowy-sample-app</module>
+    <module>snowy-demo-app</module>
   </modules>
 
 </project>
