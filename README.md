@@ -91,6 +91,8 @@
 | ----------------------      | ------------- |
 | 1        | [小诺开源技术团队及框架介绍](https://www.bilibili.com/video/BV1Yf4y1N7YU?from=search&seid=16730766915542181758)    |
 | 2        | [小诺框架Snowy基础环境介绍](https://www.bilibili.com/video/BV1yA411c7d3)    |
+| 3        | [Snowy-Cloud代码下载及启动](https://www.bilibili.com/video/BV1Mq4y1U7D5)    |
+| 4        | [Snowy-Cloud生成一个前后端模块](https://www.bilibili.com/video/BV1Sf4y1H7Gg)    |
 
 更新中。。。
 
