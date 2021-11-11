@@ -13,4 +13,4 @@ spring:
 snowy:
   gate:
     ignore:
-      startWith:  /login,/logout,/oauth,/sysFileInfo/upload,/sysFileInfo/download,/sysFileInfo/preview,/druid,/actuator,/captcha,/getCaptchaOpen,/getTenantOpen,/tenantInfo/listTenants,/designer,/app/rest,/aliPay,/aliPayMgr
+      startWith:  /login,/logout,/oauth,/sysFileInfo/upload,/sysFileInfo/download,/sysFileInfo/preview,/druid,/actuator,/captcha,/getCaptchaOpen,/getTenantOpen,/tenantInfo/listTenants,/designer,/app/rest,/aliPay,/aliPayMgr,/sysMenu/change
