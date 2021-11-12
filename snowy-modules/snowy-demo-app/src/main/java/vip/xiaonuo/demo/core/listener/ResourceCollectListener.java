@@ -36,6 +36,7 @@ import vip.xiaonuo.cache.ResourceCache;
 
 import javax.annotation.Resource;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -71,7 +72,12 @@ public class ResourceCollectListener implements CommandLineRunner {
         }
 
         //2.汇总添加到缓存
-        resourceCache.putAllResources(urlSet);
+        Set<String> urlSetCache = resourceCache.get(ResourceCache.RESOURCE_CACHE_PREFIX);
+        if(CollectionUtil.isEmpty(urlSetCache)){
+            urlSetCache = new HashSet<>();
+        }
+        urlSetCache.addAll(urlSet);
+        resourceCache.put(ResourceCache.RESOURCE_CACHE_PREFIX,urlSetCache);
 
         log.info(">>> 缓存资源URL集合完成!资源数量：{}", urlSet.size());
     }

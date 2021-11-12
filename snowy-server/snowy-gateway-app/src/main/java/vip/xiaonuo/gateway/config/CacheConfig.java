@@ -24,18 +24,19 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.gateway.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import vip.xiaonuo.cache.MappingCache;
 import vip.xiaonuo.cache.ResourceCache;
 import vip.xiaonuo.cache.UserCache;
 import vip.xiaonuo.common.pojo.login.SysLoginUser;
 import vip.xiaonuo.gateway.core.redis.FastJson2JsonRedisSerializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 缓存的配置，默认使用基于内存的缓存，如果分布式部署请更换为redis
@@ -45,18 +46,6 @@ import java.util.Map;
  */
 @Configuration
 public class CacheConfig {
-
-    /**
-     * url资源的缓存，默认不过期
-     *
-     * @author yubaoshan
-     * @date 2020/7/9 11:44
-     */
-    @Bean
-    public ResourceCache resourceCache() {
-        return new ResourceCache();
-    }
-
 
     /**
      * redisTemplate 配置
@@ -110,6 +99,33 @@ public class CacheConfig {
     @Bean
     public MappingCache mappingCache(RedisTemplate<String, Map<String, Object>> mappingRedisTemplate) {
         return new MappingCache(mappingRedisTemplate);
+    }
+
+    /**
+     * resourceCacheRedisTemplate 配置
+     *
+     * @author dongxiayu
+     * @date 2021/4/8 13:55
+     */
+    @Bean
+    public RedisTemplate<String, Set<String>> resourceCacheRedisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, Set<String>> resourceCacheRedisTemplate = new RedisTemplate<>();
+        resourceCacheRedisTemplate.setConnectionFactory(factory);
+        resourceCacheRedisTemplate.setKeySerializer(new StringRedisSerializer());
+        resourceCacheRedisTemplate.setValueSerializer(new FastJson2JsonRedisSerializer<>(Set.class));
+        resourceCacheRedisTemplate.afterPropertiesSet();
+        return resourceCacheRedisTemplate;
+    }
+
+    /**
+     * resourceCache缓存 url资源的缓存，默认不过期
+     *
+     * @author dongxiayu
+     * @date 2021/4/8 13:55
+     */
+    @Bean
+    public ResourceCache resourceCache(RedisTemplate<String, Set<String>> resourceCacheRedisTemplate) {
+        return new ResourceCache(resourceCacheRedisTemplate);
     }
 
 }

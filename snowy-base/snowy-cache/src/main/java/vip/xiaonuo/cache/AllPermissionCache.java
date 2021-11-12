@@ -37,7 +37,7 @@ import java.util.List;
 public class AllPermissionCache extends AbstractRedisCacheOperator<List<String>> {
 
     /**
-     * 登录用户缓存前缀
+     * 所有权限缓存前缀
      */
     public static final String ALL_PERMISSION_CACHE_PREFIX = "All_PERMISSION_CACHE";
 

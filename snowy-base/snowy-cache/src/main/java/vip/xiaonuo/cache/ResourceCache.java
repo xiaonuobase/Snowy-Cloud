@@ -24,7 +24,8 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.cache;
 
-import cn.hutool.core.collection.CollectionUtil;
+import org.springframework.data.redis.core.RedisTemplate;
+import vip.xiaonuo.cache.base.AbstractRedisCacheOperator;
 
 import java.util.Set;
 
@@ -36,28 +37,20 @@ import java.util.Set;
  * @author yubaoshan
  * @date 2020/7/9 11:03
  */
-public class ResourceCache {
-
-    private final Set<String> resourceCaches = CollectionUtil.newHashSet();
+public class ResourceCache extends AbstractRedisCacheOperator<Set<String>> {
 
     /**
-     * 获取所有缓存资源
-     *
-     * @author yubaoshan
-     * @date 2020/7/9 13:52
+     * 项目资源的缓存前缀
      */
-    public Set<String> getAllResources() {
-        return resourceCaches;
+    public static final String RESOURCE_CACHE_PREFIX = "RESOURCE_CACHE";
+
+    public ResourceCache(RedisTemplate<String, Set<String>> redisTemplate) {
+        super(redisTemplate);
     }
 
-    /**
-     * 直接缓存所有资源
-     *
-     * @author yubaoshan
-     * @date 2020/7/9 13:52
-     */
-    public void putAllResources(Set<String> resources) {
-        resourceCaches.addAll(resources);
+    @Override
+    public String getCommonKeyPrefix() {
+        return RESOURCE_CACHE_PREFIX;
     }
 
 }

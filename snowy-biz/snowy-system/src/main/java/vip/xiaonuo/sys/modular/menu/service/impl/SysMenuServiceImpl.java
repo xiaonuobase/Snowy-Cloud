@@ -447,7 +447,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             if (ObjectUtil.isEmpty(permission)) {
                 throw new ServiceException(SysMenuExceptionEnum.MENU_PERMISSION_EMPTY);
             } else {
-                Set<String> urlSet = resourceCache.getAllResources();
+                Set<String> urlSet = resourceCache.get(ResourceCache.RESOURCE_CACHE_PREFIX);
 
                 if (!permission.contains(SymbolConstant.COLON)) {
                     throw new ServiceException(SysMenuExceptionEnum.MENU_PERMISSION_ERROR);

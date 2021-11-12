@@ -26,15 +26,15 @@ package vip.xiaonuo.security.filter.security.entrypoint;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.log.Log;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
 import vip.xiaonuo.cache.ResourceCache;
 import vip.xiaonuo.common.exception.ServiceException;
 import vip.xiaonuo.common.exception.enums.AuthExceptionEnum;
 import vip.xiaonuo.common.exception.enums.PermissionExceptionEnum;
 import vip.xiaonuo.common.exception.enums.ServerExceptionEnum;
 import vip.xiaonuo.core.util.ResponseUtil;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -69,7 +69,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
         String requestUri = request.getRequestURI();
 
         //1.检查redis中RESOURCE缓存是否为空，如果为空，直接抛出系统异常，缓存url作用详见ResourceCollectListener
-        Collection<String> urlCollections = resourceCache.getAllResources();
+        Collection<String> urlCollections = resourceCache.get(ResourceCache.RESOURCE_CACHE_PREFIX);
         if (ObjectUtil.isEmpty(urlCollections)) {
             log.error(">>> 获取缓存的Resource Url为空，请检查缓存中是否被误删，requestUri={}", requestUri);
             ResponseUtil.responseExceptionError(response,
