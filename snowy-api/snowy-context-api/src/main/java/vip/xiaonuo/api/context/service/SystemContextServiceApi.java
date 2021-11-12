@@ -25,6 +25,7 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
 package vip.xiaonuo.api.context.service;
 
 import cn.hutool.core.lang.Dict;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.common.consts.FeignConstant;
@@ -143,7 +144,7 @@ public interface SystemContextServiceApi {
      * @date 2021/3/28 14:57
      */
     @RequestMapping(name = "/tableUniValueFlag",consumes = "application/json")
-    boolean tableUniValueFlag(@RequestParam(value = "uniqueValidateParam") UniqueValidateParam uniqueValidateParam);
+    boolean tableUniValueFlag(@RequestBody UniqueValidateParam uniqueValidateParam);
 
     /**
      * 获取系统用户id集合

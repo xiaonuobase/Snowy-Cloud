@@ -59,6 +59,7 @@
     <xxljob.version>2.3.0</xxljob.version>
     <mybatis-spring-boot-starter.version>2.1.4</mybatis-spring-boot-starter.version>
     <sentinel.version>1.8.1</sentinel.version>
+    <reactor-netty.version>0.9.10.RELEASE</reactor-netty.version>
   </properties>
 
   <dependencyManagement>
@@ -107,6 +108,11 @@
         <groupId>de.codecentric</groupId>
         <artifactId>spring-boot-admin-starter-client</artifactId>
         <version>${spring.boot.admin-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.projectreactor.netty</groupId>
+        <artifactId>reactor-netty</artifactId>
+        <version>${reactor-netty.version}</version>
       </dependency>
 
       <!--mybatis-plus-->
