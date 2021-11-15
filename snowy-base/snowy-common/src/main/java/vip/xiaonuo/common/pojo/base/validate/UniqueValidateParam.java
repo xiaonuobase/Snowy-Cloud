@@ -27,6 +27,8 @@ package vip.xiaonuo.common.pojo.base.validate;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 校验参数时用的方法参数
  *
@@ -35,7 +37,8 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class UniqueValidateParam {
+public class UniqueValidateParam implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * 表名称
