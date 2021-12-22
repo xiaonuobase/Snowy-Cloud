@@ -99,27 +99,27 @@
 ### 架构原理图
 * 业务架构
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7OPISXaw&path=%7BshareItemLink%3A7OPISXaw%7D%2F"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7qwc_Kjw&path=%7BshareItemLink%3A7qwc_Kjw%7D%2F"/>
 </p>
 
 * 应用架构
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7OPIGH_w&path=%7BshareItemLink%3A7OPIGH_w%7D%2F"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7qwdJ4XA&path=%7BshareItemLink%3A7qwdJ4XA%7D%2F"/>
 </p>
 
 * 数据架构
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7OPI0cWw&path=%7BshareItemLink%3A7OPI0cWw%7D%2F"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7qwdT8Cg&path=%7BshareItemLink%3A7qwdT8Cg%7D%2F"/>
 </p>
 
 * 技术架构
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7OPJAEqA&path=%7BshareItemLink%3A7OPJAEqA%7D%2F"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7qwdfF0g&path=%7BshareItemLink%3A7qwdfF0g%7D%2F"/>
 </p>
 
 * 部署架构
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7OPJQ02g&path=%7BshareItemLink%3A7OPJQ02g%7D%2F"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7qwdpQTw&path=%7BshareItemLink%3A7qwdpQTw%7D%2F"/>
 </p>
 
 ### 效果图
@@ -179,7 +179,7 @@
 <table>
     <tr>
         <td>微信群</td>
-        <td><img src="https://pan.xiaonuo.vip/?explorer/share/file&hash=ecc5LVAwwRuysFB28xQQb1p3IPC13hzAtji_Sxyr42naNTnj7xurmI8&name=weixin.png" width="120"/></td>
+        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7qwFVcdA&path=%7BshareItemLink%3A7qwFVcdA%7D%2F" width="120"/></td>
     </tr>
 </table>
 
