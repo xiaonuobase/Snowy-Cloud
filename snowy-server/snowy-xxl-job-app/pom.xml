@@ -88,6 +88,25 @@
       <artifactId>spring-cloud-context</artifactId>
     </dependency>
 
+    <!-- bootstrap 配置加载 -->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-bootstrap</artifactId>
+    </dependency>
+
+    <!-- SpringCloud 负载均衡 -->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+    </dependency>
+
+    <!-- https://blog.csdn.net/Tuine/article/details/122153363 -->
+    <!-- caffeine缓存实现 -->
+    <dependency>
+      <groupId>com.github.ben-manes.caffeine</groupId>
+      <artifactId>caffeine</artifactId>
+    </dependency>
+
     <!-- nacos 注册中心客户端 -->
     <dependency>
       <groupId>com.alibaba.cloud</groupId>
@@ -163,6 +182,11 @@
             </resource>
           </resources>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.6</version>
       </plugin>
     </plugins>
   </build>

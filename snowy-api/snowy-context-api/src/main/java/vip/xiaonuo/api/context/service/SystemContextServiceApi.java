@@ -40,10 +40,11 @@ import java.util.List;
  * @author dongxiayu
  * @date 2021/3/28 14:57
  */
-@RequestMapping("/feign/systemContextServiceApi")
 public interface SystemContextServiceApi {
 
     String APP_NAME = FeignConstant.MAIN_APP;
+
+    String API_PREFIX = "/feign/systemContextServiceApi";
 
     /**
      * 根据用户id获取姓名
@@ -53,7 +54,7 @@ public interface SystemContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/getNameByUserId")
+    @RequestMapping(API_PREFIX+"/getNameByUserId")
     String getNameByUserId(@RequestParam(value = "userId") Long userId);
 
     /**
@@ -64,7 +65,7 @@ public interface SystemContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/getNameByRoleId")
+    @RequestMapping(API_PREFIX+"/getNameByRoleId")
     String getNameByRoleId(@RequestParam(value = "roleId") Long roleId);
 
     /**
@@ -75,7 +76,7 @@ public interface SystemContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/getLoginUserByToken")
+    @RequestMapping(API_PREFIX+"/getLoginUserByToken")
     SysLoginUser getLoginUserByToken(@RequestParam(value = "token") String token);
 
     /**
@@ -86,7 +87,7 @@ public interface SystemContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/listUser")
+    @RequestMapping(API_PREFIX+"/listUser")
     List<Dict> listUser(@RequestParam(required = false, value = "account") String account);
 
     /**
@@ -97,7 +98,7 @@ public interface SystemContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/listRole")
+    @RequestMapping(API_PREFIX+"/listRole")
     List<Dict> listRole(@RequestParam(required = false, value = "name") String name);
 
     /**
@@ -108,7 +109,7 @@ public interface SystemContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/isUser")
+    @RequestMapping(API_PREFIX+"/isUser")
     boolean isUser(@RequestParam(value = "userOrRoleId") Long userOrRoleId);
 
     /**
@@ -119,7 +120,7 @@ public interface SystemContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/isRole")
+    @RequestMapping(API_PREFIX+"/isRole")
     boolean isRole(@RequestParam(value = "userOrRoleId") Long userOrRoleId);
 
     /**
@@ -130,7 +131,7 @@ public interface SystemContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/getDictCodesByDictTypeCode")
+    @RequestMapping(API_PREFIX+"/getDictCodesByDictTypeCode")
     List<String> getDictCodesByDictTypeCode(@RequestParam(value = "dictTypeCodes") String... dictTypeCodes);
 
     /**
@@ -143,7 +144,7 @@ public interface SystemContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping(name = "/tableUniValueFlag",consumes = "application/json")
+    @RequestMapping(name = API_PREFIX+"/tableUniValueFlag",consumes = "application/json")
     boolean tableUniValueFlag(@RequestBody UniqueValidateParam uniqueValidateParam);
 
     /**
@@ -153,7 +154,7 @@ public interface SystemContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      **/
-    @RequestMapping("/getAllUserIdList")
+    @RequestMapping(API_PREFIX+"/getAllUserIdList")
     List<Long> getAllUserIdList();
 
 

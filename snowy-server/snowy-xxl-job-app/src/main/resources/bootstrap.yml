@@ -10,3 +10,11 @@ spring:
     name: snowy-xxl-job-app
   profiles:
     active: '@spring.active@'
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+      cache:
+        enabled: true
+        caffeine:
+          spec: initialCapacity=500,expireAfterWrite=5s

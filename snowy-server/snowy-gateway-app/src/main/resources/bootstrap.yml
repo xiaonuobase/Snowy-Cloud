@@ -10,6 +10,14 @@ spring:
     active: '@spring.active@'
   main:
     allow-bean-definition-overriding: true
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+      cache:
+        enabled: true
+        caffeine:
+          spec: initialCapacity=500,expireAfterWrite=5s
 snowy:
   gate:
     ignore:

@@ -49,7 +49,7 @@ spring:
         add-to-simple-url-handler-mapping: true
         corsConfigurations:
           '[/**]':
-            allowed-origins: "*"
+            allowed-origins-patterns: "*"
             allowed-methods: "*"
             allowed-headers: "*"
             allow-credentials: true
@@ -67,10 +67,10 @@ spring:
             - name: Retry
               args:
                 retries: 1 #重试次数
-        - id: snowy-sample-app
-          uri: lb://snowy-sample-app
+        - id: snowy-demo-app
+          uri: lb://snowy-demo-app
           predicates:
-            - Path=/api/test/**
+            - Path=/api/demo/**
           filters:
             - StripPrefix=2 #去掉Path中前两个节点
             - name: Retry
@@ -95,7 +95,7 @@ knife4j:
       - name: snowy-main-app
         location: /api/main/v2/api-docs?group=snowy-main-app
         uri: localhost:9003
-      - name: snowy-sample-app
-        location: /api/test/v2/api-docs?group=snowy-sample-app
+      - name: snowy-demo-app
+        location: /api/demo/v2/api-docs?group=snowy-demo-app
         uri: localhost:9003
 

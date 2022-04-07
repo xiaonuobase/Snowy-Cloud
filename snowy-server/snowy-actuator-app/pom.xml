@@ -23,6 +23,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- bootstrap 配置加载 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+
         <!-- springboot admin -->
         <dependency>
             <groupId>de.codecentric</groupId>

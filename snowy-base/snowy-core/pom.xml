@@ -48,6 +48,12 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- security-crypto -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+        </dependency>
+
         <!-- 数据库驱动,可根据自己需要自行删减，默认使用mysql -->
         <dependency>
             <groupId>mysql</groupId>

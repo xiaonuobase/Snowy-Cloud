@@ -37,10 +37,11 @@ import java.util.List;
  * @author dongxiayu
  * @date 2021/3/28 14:57
  */
-@RequestMapping("/feign/loginContextServiceApi")
 public interface LoginContextServiceApi {
 
     String APP_NAME = FeignConstant.MAIN_APP;
+
+    String API_PREFIX = "/feign/loginContextServiceApi";
 
     /**
      * 获取当前登录用户
@@ -49,7 +50,7 @@ public interface LoginContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/getSysLoginUser")
+    @RequestMapping(API_PREFIX+"/getSysLoginUser")
     SysLoginUser getSysLoginUser();
 
     /**
@@ -59,7 +60,7 @@ public interface LoginContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/getSysLoginUserWithoutException")
+    @RequestMapping(API_PREFIX+"/getSysLoginUserWithoutException")
     SysLoginUser getSysLoginUserWithoutException();
 
     /**
@@ -69,7 +70,7 @@ public interface LoginContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/getSysLoginUserId")
+    @RequestMapping(API_PREFIX+"/getSysLoginUserId")
     Long getSysLoginUserId();
 
     /**
@@ -79,7 +80,7 @@ public interface LoginContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/hasLogin")
+    @RequestMapping(API_PREFIX+"/hasLogin")
     boolean hasLogin();
 
     /**
@@ -89,7 +90,7 @@ public interface LoginContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/getSysLoginUserAccount")
+    @RequestMapping(API_PREFIX+"/getSysLoginUserAccount")
     String getSysLoginUserAccount();
 
     /**
@@ -100,7 +101,7 @@ public interface LoginContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/hasPermission")
+    @RequestMapping(API_PREFIX+"/hasPermission")
     boolean hasPermission(@RequestParam(value = "requestUri") String requestUri);
 
     /**
@@ -111,7 +112,7 @@ public interface LoginContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/hasRole")
+    @RequestMapping(API_PREFIX+"/hasRole")
     boolean hasRole(@RequestParam(value = "roleCode") String roleCode);
 
     /**
@@ -122,7 +123,7 @@ public interface LoginContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/hasAnyRole")
+    @RequestMapping(API_PREFIX+"/hasAnyRole")
     boolean hasAnyRole(@RequestParam(value = "roleCodes") String roleCodes);
 
     /**
@@ -132,7 +133,7 @@ public interface LoginContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/isSuperAdmin")
+    @RequestMapping(API_PREFIX+"/isSuperAdmin")
     boolean isSuperAdmin();
 
     /**
@@ -143,7 +144,7 @@ public interface LoginContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/hasAllRole")
+    @RequestMapping(API_PREFIX+"/hasAllRole")
     boolean hasAllRole(@RequestParam(value = "roleCodes") String roleCodes);
 
     /**
@@ -153,7 +154,7 @@ public interface LoginContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/getLoginUserDataScopeIdList")
+    @RequestMapping(API_PREFIX+"/getLoginUserDataScopeIdList")
     List<Long> getLoginUserDataScopeIdList();
 
     /**
@@ -163,7 +164,7 @@ public interface LoginContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/getSysLoginUserOrgId")
+    @RequestMapping(API_PREFIX+"/getSysLoginUserOrgId")
     Long getSysLoginUserOrgId();
 
     /**
@@ -173,7 +174,7 @@ public interface LoginContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      */
-    @RequestMapping("/getLoginUserRoleIds")
+    @RequestMapping(API_PREFIX+"/getLoginUserRoleIds")
     List<String> getLoginUserRoleIds();
 
     /**
@@ -183,6 +184,6 @@ public interface LoginContextServiceApi {
      * @author dongxiayu
      * @date 2021/3/28 14:57
      **/
-    @RequestMapping("/getSysLoginUserUpToDate")
+    @RequestMapping(API_PREFIX+"/getSysLoginUserUpToDate")
     SysLoginUser getSysLoginUserUpToDate();
 }

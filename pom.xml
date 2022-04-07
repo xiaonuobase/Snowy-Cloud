@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.1.RELEASE</version>
+    <version>2.6.4</version>
   </parent>
 
   <groupId>vip.xiaonuo</groupId>
@@ -30,10 +30,12 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.boot-version>2.3.2.RELEASE</spring.boot-version>
-    <spring.cloud-version>Hoxton.SR8</spring.cloud-version>
-    <spring.cloud.alibaba-version>2.2.5.RELEASE</spring.cloud.alibaba-version>
-    <spring.boot.admin-version>2.3.1</spring.boot.admin-version>
+    <spring.boot-version>2.6.4</spring.boot-version>
+    <spring.cloud-version>2021.0.1</spring.cloud-version>
+    <spring.cloud.alibaba-version>2021.0.1.0</spring.cloud.alibaba-version>
+    <spring.boot.admin-version>2.6.2</spring.boot.admin-version>
+    <jedis.version>3.7.1</jedis.version>
+    <liquibase.core.version>3.8.0</liquibase.core.version>
     <mysql-connector-java.version>8.0.17</mysql-connector-java.version>
     <oracle.version>11.2.0.3</oracle.version>
     <mssql.version>9.3.0.jre8-preview</mssql.version>
@@ -54,12 +56,14 @@
     <aliyun.sms.esc.version>4.17.6</aliyun.sms.esc.version>
     <qcloud.sms.sdk.version>3.1.57</qcloud.sms.sdk.version>
     <javax.servlet.version>3.1.0</javax.servlet.version>
-    <knife4j.version>2.0.8</knife4j.version>
+    <knife4j.version>3.0.3</knife4j.version>
+    <knife4j-aggregation.version>2.0.9</knife4j-aggregation.version>
     <jasypt.version>2.1.0</jasypt.version>
     <xxljob.version>2.3.0</xxljob.version>
     <mybatis-spring-boot-starter.version>2.1.4</mybatis-spring-boot-starter.version>
     <sentinel.version>1.8.1</sentinel.version>
-    <reactor-netty.version>0.9.10.RELEASE</reactor-netty.version>
+    <reactor-netty.version>0.9.25.RELEASE</reactor-netty.version>
+    <ben-manes.caffeine.version>2.8.8</ben-manes.caffeine.version>
   </properties>
 
   <dependencyManagement>
@@ -109,10 +113,32 @@
         <artifactId>spring-boot-admin-starter-client</artifactId>
         <version>${spring.boot.admin-version}</version>
       </dependency>
+
+      <!--      <dependency>-->
+      <!--        <groupId>io.projectreactor.netty</groupId>-->
+      <!--        <artifactId>reactor-netty</artifactId>-->
+      <!--        <version>${reactor-netty.version}</version>-->
+      <!--      </dependency>-->
+
+      <!-- https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
       <dependency>
-        <groupId>io.projectreactor.netty</groupId>
-        <artifactId>reactor-netty</artifactId>
-        <version>${reactor-netty.version}</version>
+        <groupId>com.github.ben-manes.caffeine</groupId>
+        <artifactId>caffeine</artifactId>
+        <version>${ben-manes.caffeine.version}</version>
+      </dependency>
+
+      <!-- jedis -->
+      <dependency>
+        <groupId>redis.clients</groupId>
+        <artifactId>jedis</artifactId>
+        <version>${jedis.version}</version>
+      </dependency>
+
+      <!-- liquibase -->
+      <dependency>
+        <groupId>org.liquibase</groupId>
+        <artifactId>liquibase-core</artifactId>
+        <version>${liquibase.core.version}</version>
       </dependency>
 
       <!--mybatis-plus-->
@@ -209,7 +235,7 @@
       <dependency>
         <groupId>com.github.xiaoymin</groupId>
         <artifactId>knife4j-aggregation-spring-boot-starter</artifactId>
-        <version>${knife4j.version}</version>
+        <version>${knife4j-aggregation.version}</version>
       </dependency>
 
       <!--easypoi导入导出-->

@@ -34,10 +34,11 @@ import java.util.List;
  * @classname : PermissionServiceApi
  * @date : 2021/4/8 16:13
  */
-@RequestMapping("/feign/permissionServiceApi")
 public interface PermissionServiceApi {
 
     String APP_NAME = FeignConstant.MAIN_APP;
+
+    String API_PREFIX = "/feign/permissionServiceApi";
 
     /**
      * 获取所有权限信息
@@ -46,7 +47,7 @@ public interface PermissionServiceApi {
      * @author dongxiayu
      * @date 2021/4/8 17:51
      */
-    @RequestMapping("/getAllPermission")
+    @RequestMapping(API_PREFIX+"/getAllPermission")
     List<String> getAllPermission();
 
 

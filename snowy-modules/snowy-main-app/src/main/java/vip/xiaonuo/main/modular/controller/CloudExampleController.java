@@ -56,14 +56,14 @@ public class CloudExampleController {
         return new SuccessResponseData(configTest);
     }
 
-    @GetMapping("/sample/config/test")
-    public ResponseData sampleConfigTest() {
+    @GetMapping("/demo/config/test")
+    public ResponseData demoConfigTest() {
         return ResponseData.success(cloudSampleRestApiConsumer.configTest());
     }
 
-    @GetMapping("/sample/getBySampleName")
-    public ResponseData getBySampleName(String sampleName){
-        return ResponseData.success(cloudSampleRestApiConsumer.getBySampleName(sampleName));
+    @GetMapping("/demo/getByDemoName")
+    public ResponseData getByDemoName(String demoName){
+        return ResponseData.success(cloudSampleRestApiConsumer.getByDemoName(demoName));
     }
 
 }

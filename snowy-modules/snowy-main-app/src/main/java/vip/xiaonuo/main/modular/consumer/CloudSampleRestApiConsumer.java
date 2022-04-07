@@ -38,13 +38,13 @@ import vip.xiaonuo.common.pojo.response.ResponseData;
  * @date 2020/12/29 12:06
  */
 @Component
-@FeignClient(name = FeignConstant.SAMPLE_APP)
+@FeignClient(name = FeignConstant.DEMO_APP)
 public interface CloudSampleRestApiConsumer {
 
-    @RequestMapping("/sample/config/test")
+    @RequestMapping("/demo/config/test")
     String configTest();
 
-    @RequestMapping("/sample/getBySampleName")
-    ResponseData getBySampleName(@RequestParam("sampleName") String sampleName);
+    @RequestMapping("/demo/getByDemoName")
+    ResponseData getByDemoName(@RequestParam("demoName") String demoName);
 
 }

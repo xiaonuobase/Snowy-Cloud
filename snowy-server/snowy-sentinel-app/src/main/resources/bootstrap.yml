@@ -19,3 +19,6 @@ spring:
     name: snowy-sentinel-app
   profiles:
     active: '@spring.active@'
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher

@@ -36,10 +36,11 @@ import vip.xiaonuo.common.pojo.page.PageResult;
 
 import java.util.List;
 
-@RequestMapping("/feign/sysUserServiceApi")
 public interface SysUserServiceApi {
 
     String APP_NAME = FeignConstant.MAIN_APP;
+
+    String API_PREFIX = "/feign/sysUserServiceApi";
 
     /**
      * 根据账号获取用户
@@ -49,7 +50,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/3/11 17:51
      */
-    @RequestMapping("/getUserByCount")
+    @RequestMapping(API_PREFIX+"/getUserByCount")
     SysUser getUserByCount(@RequestParam("account") String account);
 
     /**
@@ -60,7 +61,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/3/23 9:23
      */
-    @RequestMapping("/page")
+    @RequestMapping(API_PREFIX+"/page")
     PageResult<SysUserResult> page(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -71,7 +72,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/4/14 9:21
      */
-    @RequestMapping("/list")
+    @RequestMapping(API_PREFIX+"/list")
     List<Dict> list(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -81,7 +82,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/3/23 9:26
      */
-    @RequestMapping("/add")
+    @RequestMapping(API_PREFIX+"/add")
     void add(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -91,7 +92,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/3/23 9:26
      */
-    @RequestMapping("/delete")
+    @RequestMapping(API_PREFIX+"/delete")
     void delete(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -101,7 +102,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/3/23 9:26
      */
-    @RequestMapping("/edit")
+    @RequestMapping(API_PREFIX+"/edit")
     void edit(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -112,7 +113,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/3/26 9:52
      */
-    @RequestMapping("/detail")
+    @RequestMapping(API_PREFIX+"/detail")
     SysUserResult detail(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -122,7 +123,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/5/25 14:34
      */
-    @RequestMapping("/changeStatus")
+    @RequestMapping(API_PREFIX+"/changeStatus")
     void changeStatus(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -132,7 +133,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/3/28 16:54
      */
-    @RequestMapping("/grantRole")
+    @RequestMapping(API_PREFIX+"/grantRole")
     void grantRole(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -142,7 +143,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/3/28 16:54
      */
-    @RequestMapping("/grantData")
+    @RequestMapping(API_PREFIX+"/grantData")
     void grantData(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -152,7 +153,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/4/1 14:43
      */
-    @RequestMapping("/updateInfo")
+    @RequestMapping(API_PREFIX+"/updateInfo")
     void updateInfo(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -162,7 +163,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/4/1 14:44
      */
-    @RequestMapping("/updatePwd")
+    @RequestMapping(API_PREFIX+"/updatePwd")
     void updatePwd(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -174,7 +175,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/4/5 17:23
      */
-    @RequestMapping("/getUserDataScopeIdList")
+    @RequestMapping(API_PREFIX+"/getUserDataScopeIdList")
     List<Long> getUserDataScopeIdList(@RequestParam("userId") Long userId, @RequestParam("orgId") Long orgId);
 
     /**
@@ -185,7 +186,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/5/6 15:02
      */
-    @RequestMapping("/getNameByUserId")
+    @RequestMapping(API_PREFIX+"/getNameByUserId")
     String getNameByUserId(@RequestParam("userId") Long userId);
 
     /**
@@ -196,7 +197,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/5/29 14:10
      */
-    @RequestMapping("/ownRole")
+    @RequestMapping(API_PREFIX+"/ownRole")
     List<Long> ownRole(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -207,7 +208,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/5/29 14:10
      */
-    @RequestMapping("/ownData")
+    @RequestMapping(API_PREFIX+"/ownData")
     List<Long> ownData(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -217,7 +218,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/5/29 14:57
      */
-    @RequestMapping("/resetPwd")
+    @RequestMapping(API_PREFIX+"/resetPwd")
     void resetPwd(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -227,7 +228,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/6/28 15:21
      */
-    @RequestMapping("/updateAvatar")
+    @RequestMapping(API_PREFIX+"/updateAvatar")
     void updateAvatar(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -237,7 +238,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/6/30 16:08
      */
-    @RequestMapping("/export")
+    @RequestMapping(API_PREFIX+"/export")
     void export(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -248,7 +249,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/7/3 13:17
      */
-    @RequestMapping("/selector")
+    @RequestMapping(API_PREFIX+"/selector")
     List<Dict> selector(@RequestParam("sysUserParam") SysUserParam sysUserParam);
 
     /**
@@ -259,7 +260,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/7/29 10:07
      **/
-    @RequestMapping("/getUserById")
+    @RequestMapping(API_PREFIX+"/getUserById")
     SysUser getUserById(@RequestParam("userId") Long userId);
 
     /**
@@ -271,7 +272,7 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/7/29 10:26
      **/
-    @RequestMapping("/saveAuthUserToUser")
+    @RequestMapping(API_PREFIX+"/saveAuthUserToUser")
     void saveAuthUserToUser(@RequestParam("authUser") AuthUser authUser, @RequestParam("sysUser") SysUser sysUser);
 
     /**
@@ -281,6 +282,6 @@ public interface SysUserServiceApi {
      * @author xuyuxiang
      * @date 2020/9/11 17:54
      **/
-    @RequestMapping("/getAllUserIdList")
+    @RequestMapping(API_PREFIX+"/getAllUserIdList")
     List<Long> getAllUserIdList();
 }

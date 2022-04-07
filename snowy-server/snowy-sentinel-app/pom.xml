@@ -58,6 +58,12 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- bootstrap 配置加载 -->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-bootstrap</artifactId>
+    </dependency>
+
     <!-- cloud context -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>

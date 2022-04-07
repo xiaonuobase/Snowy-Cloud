@@ -33,7 +33,7 @@ package vip.xiaonuo.common.consts;
 public interface FeignConstant {
 
     String MAIN_APP = "snowy-main-app";
-    String SAMPLE_APP = "snowy-sample-app";
+    String DEMO_APP = "snowy-demo-app";
     String FLOWABLE_APP = "snowy-flowable-app";
     String TENANT_APP = "snowy-tenant-app";
     String GATEWAY_APP = "snowy-gateway-app";

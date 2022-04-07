@@ -20,6 +20,19 @@ spring:
     serialization:
       # 格式化输出
       indent_output: false
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  main:
+    allow-circular-references: true
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+      cache:
+        enabled: true
+        caffeine:
+          spec: initialCapacity=500,expireAfterWrite=5s
 
 #mybaits相关配置
 mybatis-plus:

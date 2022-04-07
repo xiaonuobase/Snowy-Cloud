@@ -40,10 +40,10 @@
             </exclusions>
         </dependency>
 
-        <!-- 日志追踪 -->
+        <!-- bootstrap 配置加载 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-sleuth</artifactId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
 
         <!--暴露各种指标 -->
@@ -72,6 +72,18 @@
                     <artifactId>spring-boot-starter-webflux</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+
+        <!-- https://blog.csdn.net/Tuine/article/details/122153363 -->
+        <!-- caffeine缓存实现 -->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
         </dependency>
 
         <!-- openfeign -->
