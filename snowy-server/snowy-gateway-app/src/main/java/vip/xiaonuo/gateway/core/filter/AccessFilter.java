@@ -29,6 +29,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import me.zhyd.oauth.model.AuthResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,6 +59,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author : dongxiayu
@@ -221,13 +223,27 @@ public class AccessFilter implements GlobalFilter {
         String removePrefix = StrUtil.removePrefix(requestUri, SymbolConstant.LEFT_DIVIDE);
         String requestPermission = removePrefix.replaceAll(SymbolConstant.LEFT_DIVIDE, SymbolConstant.COLON);
 
-        PermissionServiceApiConsumer permissionServiceApiConsumer = SpringUtil.getBean(PermissionServiceApiConsumer.class);
-        List<String> allPermissionList = permissionServiceApiConsumer.getAllPermission();
-        if(CollectionUtil.isEmpty(allPermissionList)){
+        // https://www.cnblogs.com/w84422/p/15519310.html
+        // 异步调用OpenFeign
+        CompletableFuture<List<String>> allPermissionListCompletableFuture = CompletableFuture.supplyAsync
+                (()-> {
+                    PermissionServiceApiConsumer permissionServiceApiConsumer = SpringUtil.getBean(PermissionServiceApiConsumer.class);
+                    List<String> allPermissionList = permissionServiceApiConsumer.getAllPermission();
+                    return allPermissionList;
+                });
+
+        List<String> allPermissionListResp = null;
+        try {
+            allPermissionListResp = allPermissionListCompletableFuture.get();
+        } catch (Exception e) {
+            log.error(">>> 调用权限获取接口错误", e);
+        }
+
+        if(CollectionUtil.isEmpty(allPermissionListResp)){
             return true;
         }
 
-        if(!allPermissionList.contains(requestPermission)){
+        if(!allPermissionListResp.contains(requestPermission)){
             return true;
         }
 
