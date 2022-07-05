@@ -64,6 +64,8 @@
     <sentinel.version>1.8.1</sentinel.version>
     <reactor-netty.version>0.9.25.RELEASE</reactor-netty.version>
     <ben-manes.caffeine.version>2.8.8</ben-manes.caffeine.version>
+    <javax.mail.version>1.4.7</javax.mail.version>
+    <skipTests>true</skipTests>
   </properties>
 
   <dependencyManagement>
@@ -319,6 +321,13 @@
         <groupId>com.github.ulisesbocchio</groupId>
         <artifactId>jasypt-spring-boot-starter</artifactId>
         <version>${jasypt.version}</version>
+      </dependency>
+
+      <!-- mail -->
+      <dependency>
+        <groupId>javax.mail</groupId>
+        <artifactId>mail</artifactId>
+        <version>${javax.mail.version}</version>
       </dependency>
 
     </dependencies>
