@@ -34,6 +34,7 @@ import vip.xiaonuo.common.pojo.login.SysLoginUser;
 import vip.xiaonuo.demo.core.consumer.LoginContextServiceApiConsumer;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author : dongxiayu
@@ -60,6 +61,19 @@ public class LoginContextBean implements LoginContext {
     @Override
     public SysLoginUser getSysLoginUser() {
         return loginContextServiceApiConsumer.getSysLoginUser();
+    }
+
+    /**
+     * 根据token获取当前登录用户
+     *
+     * @param token
+     * @return 当前登录用户信息
+     * @author dongxiayu
+     * @date 2022/7/2 0:22
+     */
+    @Override
+    public SysLoginUser getSysLoginUserByToken(String token) {
+        return authService.getLoginUserByToken(token);
     }
 
     /**
@@ -102,6 +116,28 @@ public class LoginContextBean implements LoginContext {
     @Override
     public boolean hasLogin() {
         return loginContextServiceApiConsumer.hasLogin();
+    }
+
+    /**
+     * 根据token判断用户是否登录
+     *
+     * @param token
+     * @return 是否登录，true是，false否
+     * @author dongxiayu
+     * @date 2022/7/2 0:22
+     */
+    @Override
+    public boolean hasLoginByToken(String token) {
+        boolean ret = false;
+        try {
+            SysLoginUser sysLoginUser = authService.getLoginUserByToken(token);
+            if(Objects.nonNull(sysLoginUser)){
+                ret = true;
+            }
+        }catch (Exception e){
+            ret = false;
+        }
+        return ret;
     }
 
     /**

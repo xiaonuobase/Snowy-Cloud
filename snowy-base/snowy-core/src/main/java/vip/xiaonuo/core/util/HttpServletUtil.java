@@ -24,13 +24,19 @@ Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意
  */
 package vip.xiaonuo.core.util;
 
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpUtil;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import vip.xiaonuo.common.consts.CommonConstant;
 import vip.xiaonuo.common.exception.ServiceException;
 import vip.xiaonuo.common.exception.enums.ServerExceptionEnum;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * HttpServlet工具类，获取当前request和response
@@ -39,6 +45,12 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2020/3/30 15:09
  */
 public class HttpServletUtil {
+
+    /** 编码 **/
+    private static final String ENCODED = "UTF-8";
+
+    /** 引用 **/
+    private static final String REFERER = "referer";
 
     /**
      * 获取当前请求的request对象
@@ -68,5 +80,18 @@ public class HttpServletUtil {
         } else {
             return requestAttributes.getResponse();
         }
+    }
+
+    /**
+     * @description 从header.referer获取token信息
+     * @author dongxiayu
+     * @date 2022/7/2 0:46
+     * @return
+     **/
+    public static String getTokenFromReferer(){
+        String refererContent = getRequest().getHeader(REFERER);
+        Map<String,String> paramMap = StrUtil.isNotBlank(refererContent)? HttpUtil.decodeParamMap(refererContent, CharsetUtil.charset(ENCODED)):null;
+        String token = Objects.nonNull(paramMap)?paramMap.get(CommonConstant.TOKEN_NAME):null;
+        return token;
     }
 }
