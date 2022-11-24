@@ -36,7 +36,7 @@
     <spring.boot.admin-version>2.6.2</spring.boot.admin-version>
     <jedis.version>3.7.1</jedis.version>
     <liquibase.core.version>3.8.0</liquibase.core.version>
-    <mysql-connector-java.version>8.0.17</mysql-connector-java.version>
+    <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
     <oracle.version>11.2.0.3</oracle.version>
     <mssql.version>9.3.0.jre8-preview</mssql.version>
     <postgresql.version>42.2.19</postgresql.version>
