@@ -1,0 +1,24 @@
+#服务配置
+server:
+  port: 9002
+  servlet:
+    #spring settings
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+    #cookie name setting
+    session:
+      cookie:
+        name:
+          sentinel_dashboard_cookie: sentinel_dashboard_cookie
+
+#spring相关配置
+spring:
+  application:
+    name: snowy-sentinel-app
+  profiles:
+    active: dev
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher

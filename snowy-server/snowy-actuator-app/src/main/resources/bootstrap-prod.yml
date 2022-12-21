@@ -1,0 +1,24 @@
+spring:
+  boot:
+    admin:
+      client:
+        url: http://localhost:9001
+        instance:
+          # 默认使用的是主机名注册，改为使用ip注册
+          prefer-ip: true
+  cloud:
+    # nacos配置
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        username: nacos
+        password: nacos
+
+# 开放所有endpoint，实际生产根据自身需要开放，出于安全考虑不建议全部开放
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: "ALWAYS"

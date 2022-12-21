@@ -1,0 +1,75 @@
+#服务配置
+server:
+  port: 9101
+#spring相关配置
+spring:
+  application:
+    name: snowy-web-app
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  main:
+    allow-circular-references: true
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+      cache:
+        enabled: true
+        caffeine:
+          spec: initialCapacity=500,expireAfterWrite=5s
+    # nacos配置
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        username: nacos
+        password: nacos
+      config:
+        server-addr: localhost:8848 #Nacos配置中心地址
+        file-extension: yml #指定yml格式的配置
+        username: nacos
+        password: nacos
+  boot:
+    admin:
+      client:
+        url: http://localhost:9001
+        instance:
+          # 默认使用的是主机名注册，改为使用ip注册
+          prefer-ip: true
+
+# 开放所有endpoint，实际生产根据自身需要开放，出于安全考虑不建议全部开放
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: "ALWAYS"
+
+##mybaits相关配置
+#mybatis-plus:
+#  mapper-locations: classpath*:vip/xiaonuo/**/mapping/*.xml, classpath:/META-INF/modeler-mybatis-mappings/*.xml
+#  configuration:
+#    map-underscore-to-camel-case: true
+#    cache-enabled: true
+#    lazy-loading-enabled: true
+#    multiple-result-sets-enabled: true
+#    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+#  global-config:
+#    banner: false
+#    db-config:
+#      id-type: assign_id
+#      table-underline: true
+#    enable-sql-runner: true
+#  configuration-properties:
+#    prefix:
+#    #如果数据库为postgresql，则需要配置为blobType: BINARY
+#    blobType: BLOB
+#    #如果数据库为oracle或mssql，则需要配置为boolValue: 1
+#    boolValue: true

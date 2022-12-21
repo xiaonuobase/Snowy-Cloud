@@ -1,0 +1,21 @@
+#服务配置
+server:
+  port: 9003
+
+#spring相关配置
+spring:
+  application:
+    name: snowy-gateway-app
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+      cache:
+        enabled: true
+        caffeine:
+          spec: initialCapacity=500,expireAfterWrite=5s

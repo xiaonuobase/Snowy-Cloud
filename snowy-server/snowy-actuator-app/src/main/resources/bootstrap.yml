@@ -1,0 +1,10 @@
+#服务配置
+server:
+  port: 9001
+
+#spring相关配置
+spring:
+  application:
+    name: snowy-actuator-app
+  profiles:
+    active: dev

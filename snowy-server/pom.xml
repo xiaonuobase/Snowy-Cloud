@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>vip.xiaonuo</groupId>
+        <artifactId>snowy-cloud</artifactId>
+        <version>2.0.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>snowy-server</artifactId>
+    <packaging>pom</packaging>
+    <description>依赖服务模块</description>
+
+    <modules>
+        <!-- Actuator监控应用启动组件 -->
+        <module>snowy-actuator-app</module>
+
+        <!-- Gateway网关应用启动组件 -->
+        <module>snowy-gateway-app</module>
+
+        <!-- Nacos注册中心应用启动组件 -->
+        <module>snowy-nacos-app</module>
+
+        <!-- Sentinel流量保护应用启动组件 -->
+        <module>snowy-sentinel-app</module>
+
+        <!-- XxlJob分布式任务调度应用启动组件 -->
+        <module>snowy-xxl-job-app</module>
+    </modules>
+
+</project>
