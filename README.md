@@ -93,7 +93,7 @@ npm run dev
 | snowy-sentinel-app | SnowySentinelApp | 9002 |
 | snowy-gateway-app  | SnowyGatewayApp  | 9003 |
 | snowy-xxl-job-app  |  SnowyXxlJobApp  | 9004 |
-|   snowy-main-app   |   SnowyMainApp   | 9101 |
+|   snowy-web-app   |   SnowyWebApp   | 9101 |
 |   snowy-biz-app    |   SnowyBizApp    | 9102 |
 
 ## 代码结构
