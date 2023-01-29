@@ -12,17 +12,16 @@
  */
 package vip.xiaonuo.sys.modular.role.service.impl;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -30,15 +29,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import vip.xiaonuo.common.cache.CommonCacheOperator;
+import vip.xiaonuo.common.consts.CacheConstant;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
+import vip.xiaonuo.common.enums.SysBuildInEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
-import vip.xiaonuo.common.enums.SysBuildInEnum;
 import vip.xiaonuo.sys.modular.org.entity.SysOrg;
 import vip.xiaonuo.sys.modular.org.service.SysOrgService;
 import vip.xiaonuo.sys.modular.relation.entity.SysRelation;
@@ -62,6 +60,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -84,6 +83,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Resource
     private SysUserService sysUserService;
+
+    @Resource
+    private CommonCacheOperator commonCacheOperator;
 
     @Override
     public Page<SysRole> page(SysRolePageParam sysRolePageParam) {
@@ -345,25 +347,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public List<String> permissionTreeSelector() {
         List<String> permissionResult = CollectionUtil.newArrayList();
-        SpringUtil.getApplicationContext().getBeansOfType(RequestMappingHandlerMapping.class).values()
-                .forEach(requestMappingHandlerMapping -> requestMappingHandlerMapping.getHandlerMethods()
-                        .forEach((key, value) -> {
-                            SaCheckPermission saCheckPermission = value.getMethod().getAnnotation(SaCheckPermission.class);
-                            if(ObjectUtil.isNotEmpty(saCheckPermission)) {
-                                PatternsRequestCondition patternsCondition = key.getPatternsCondition();
-                                if (patternsCondition != null) {
-                                    String apiName = "未定义接口名称";
-                                    ApiOperation apiOperation = value.getMethod().getAnnotation(ApiOperation.class);
-                                    if(ObjectUtil.isNotEmpty(apiOperation)) {
-                                        String annotationValue = apiOperation.value();
-                                        if(ObjectUtil.isNotEmpty(annotationValue)) {
-                                            apiName = annotationValue;
-                                        }
-                                    }
-                                    permissionResult.add(patternsCondition.getPatterns().iterator().next() + StrUtil.BRACKET_START + apiName + StrUtil.BRACKET_END);
-                                }
-                            }
-                        }));
+
+        Object permissionResourceObject = commonCacheOperator.get(CacheConstant.PERMISSION_RESOURCE_CACHE_KEY);
+        if(Objects.nonNull(permissionResourceObject)){
+            permissionResult = Convert.toList(String.class,permissionResourceObject);
+        }
+
         return CollectionUtil.sortByPinyin(permissionResult.stream().filter(api ->
                 !api.startsWith("/" + StrUtil.BRACKET_START)
                         && !api.startsWith("/error")
