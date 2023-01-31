@@ -16,6 +16,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.springframework.stereotype.Service;
 import vip.xiaonuo.auth.core.pojo.SaBaseLoginUser;
@@ -72,7 +73,7 @@ public class SysIndexServiceImpl implements SysIndexService {
 
     @Override
     public List<SysIndexScheduleListResult> scheduleList(SysIndexScheduleListParam sysIndexScheduleListParam) {
-        return sysRelationService.list(new LambdaUpdateWrapper<SysRelation>().eq(SysRelation::getObjectId, StpUtil.getLoginIdAsString())
+        return sysRelationService.list(new LambdaQueryWrapper<SysRelation>().eq(SysRelation::getObjectId, StpUtil.getLoginIdAsString())
                 .eq(SysRelation::getTargetId, sysIndexScheduleListParam.getScheduleDate())
                 .eq(SysRelation::getCategory, SysRelationCategoryEnum.SYS_USER_SCHEDULE_DATA.getValue()))
                 .stream().map(sysRelation -> {
