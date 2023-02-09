@@ -91,7 +91,10 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
 
     private static final String GEN_PROJECT_PLUGIN_KEY = "snowy-plugin";
 
-    private static final String GEN_PROJECT_PLUGIN_BIZ_KEY = GEN_PROJECT_PLUGIN_KEY + File.separator + "snowy-plugin-biz";
+    private static final String GEN_PROJECT_PLUGIN_MODULE_KEY = "snowy-plugin-biz";
+
+    private static final String GEN_PROJECT_PLUGIN_BIZ_KEY = GEN_PROJECT_PLUGIN_KEY + File.separator + GEN_PROJECT_PLUGIN_MODULE_KEY +
+            File.separator +  GEN_PROJECT_PLUGIN_MODULE_KEY + "-func";
 
     private static final List<JSONObject> GEN_SQL_FILE_LIST = CollectionUtil.newArrayList(
             JSONUtil.createObj().set("name", "Mysql.sql.btl"),
