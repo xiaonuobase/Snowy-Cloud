@@ -230,19 +230,19 @@ public abstract class SaBaseLoginUser {
     private List<String> mobileButtonCodeList;
 
     /** 权限码集合 */
-    @ApiModelProperty(value = "权限码集合", position = 50, hidden = true)
+    @ApiModelProperty(value = "权限码集合", position = 51, hidden = true)
     private List<String> permissionCodeList;
 
     /** 角色码集合 */
-    @ApiModelProperty(value = "角色码集合", position = 51, hidden = true)
+    @ApiModelProperty(value = "角色码集合", position = 52, hidden = true)
     private List<String> roleCodeList;
 
     /** 数据范围集合 */
-    @ApiModelProperty(value = "数据范围集合", position = 52, hidden = true)
+    @ApiModelProperty(value = "数据范围集合", position = 53, hidden = true)
     private List<DataScope> dataScopeList;
 
     /** 用户密码hash值 */
-    @ApiModelProperty(value = "用户密码hash值", position = 53)
+    @ApiModelProperty(value = "用户密码hash值", position = 54)
     private String password;
 
     /** 是否可登录，由继承类实现 */

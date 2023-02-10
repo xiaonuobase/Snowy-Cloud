@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>vip.xiaonuo</groupId>
+        <artifactId>snowy-plugin</artifactId>
+        <version>2.0.0</version>
+    </parent>
+
+    <artifactId>snowy-plugin-mobile</artifactId>
+    <packaging>pom</packaging>
+    <description>移动端管理功能插件</description>
+
+    <modules>
+        <!-- 移动端管理功能插件api接口 -->
+        <module>snowy-plugin-mobile-api</module>
+
+        <!-- 移动端管理功能插件func实现 -->
+        <module>snowy-plugin-mobile-func</module>
+    </modules>
+
+</project>

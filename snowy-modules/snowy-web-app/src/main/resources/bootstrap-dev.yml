@@ -206,10 +206,3 @@ snowy:
     common:
       front-url: http://localhost:9000
       backend-url: http://localhost:9101
-
-    # plugin ten configuration
-    ten:
-      enabled: true
-      ignore-table-names:
-      ten-id-column-name: TENANT_ID
-      default-ten-id: -1
