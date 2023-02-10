@@ -225,6 +225,10 @@ public abstract class SaBaseLoginUser {
     @ApiModelProperty(value = "按钮码集合", position = 49)
     private List<String> buttonCodeList;
 
+    /** 移动端按钮码集合 */
+    @ApiModelProperty(value = "移动端按钮码集合", position = 50)
+    private List<String> mobileButtonCodeList;
+
     /** 权限码集合 */
     @ApiModelProperty(value = "权限码集合", position = 50, hidden = true)
     private List<String> permissionCodeList;

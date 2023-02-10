@@ -127,6 +127,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private DevMessageApi devMessageApi;
 
     @Resource
+    private MobileMenuApi mobileMenuApi;
+
+    @Resource
     private SysOrgService sysOrgService;
 
     @Resource
@@ -143,6 +146,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Resource
     private SysRelationService sysRelationService;
+
+    @Resource
+    private MobileButtonApi mobileButtonApi;
 
     @Override
     public SysLoginUser getUserById(String id) {
@@ -679,6 +685,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return TreeUtil.build(treeNodeList, "0");
     }
 
+    @Override
+    public List<Tree<String>> ownMobileMenu(SysUserIdParam sysUserIdParam) {
+        // 获取角色id列表
+        List<String> roleIdList = this.ownRole(sysUserIdParam);
+        List<Tree<String>> resultList = CollectionUtil.newArrayList();
+        if (ObjectUtil.isNotEmpty(roleIdList)) {
+            resultList = mobileMenuApi.loginMobileMenuTree(sysRelationService.getRelationTargetIdListByObjectIdListAndCategory(roleIdList,
+                    SysRelationCategoryEnum.SYS_ROLE_HAS_MOBILE_MENU.getValue()));
+        }
+        return resultList;
+    }
+
     /**
      * 递归获取父节点
      *
@@ -787,6 +805,23 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             if (ObjectUtil.isNotEmpty(buttonIdList)) {
                 return sysButtonService.listByIds(buttonIdList).stream().map(SysButton::getCode).collect(Collectors.toList());
             }
+        }
+        return CollectionUtil.newArrayList();
+    }
+
+    @Override
+    public List<String> getMobileButtonCodeListListByUserId(String userId) {
+        List<String> roleIdList = sysRelationService.getRelationTargetIdListByObjectIdAndCategory(userId,
+                SysRelationCategoryEnum.SYS_USER_HAS_ROLE.getValue());
+        if (ObjectUtil.isNotEmpty(roleIdList)) {
+            List<String> buttonIdList = CollectionUtil.newArrayList();
+            sysRelationService.getRelationListByObjectIdListAndCategory(roleIdList,
+                    SysRelationCategoryEnum.SYS_ROLE_HAS_MOBILE_MENU.getValue()).forEach(sysRelation -> {
+                if (ObjectUtil.isNotEmpty(sysRelation.getExtJson())) {
+                    buttonIdList.addAll(JSONUtil.parseObj(sysRelation.getExtJson()).getBeanList("buttonInfo", String.class));
+                }
+            });
+            return mobileButtonApi.listByIds(buttonIdList);
         }
         return CollectionUtil.newArrayList();
     }

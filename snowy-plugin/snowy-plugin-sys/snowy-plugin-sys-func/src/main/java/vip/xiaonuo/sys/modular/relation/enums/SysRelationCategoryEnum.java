@@ -35,6 +35,9 @@ public enum SysRelationCategoryEnum {
     /** 角色拥有资源 */
     SYS_ROLE_HAS_RESOURCE("SYS_ROLE_HAS_RESOURCE"),
 
+    /** 角色拥有移动端菜单 */
+    SYS_ROLE_HAS_MOBILE_MENU("SYS_ROLE_HAS_MOBILE_MENU"),
+
     /** 角色拥有权限 */
     SYS_ROLE_HAS_PERMISSION("SYS_ROLE_HAS_PERMISSION");
 
