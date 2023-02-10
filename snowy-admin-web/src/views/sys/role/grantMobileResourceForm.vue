@@ -1,6 +1,6 @@
 <template>
 	<a-drawer
-		title="授权资源"
+		title="授权移动端资源"
 		:width="drawerWidth"
 		:visible="visible"
 		:destroy-on-close="true"
@@ -32,16 +32,16 @@
 
 					<template v-if="column.dataIndex === 'title'">
 						<a-checkbox :checked="record.nameCheck" @update:checked="(val) => changeSub(record, val)">{{
-							record.title
-						}}</a-checkbox>
+								record.title
+							}}</a-checkbox>
 					</template>
 
 					<template v-if="column.dataIndex === 'button'">
 						<template v-if="record.button.length > 0">
 							<template v-for="(item, index) in record.button" :key="item.id">
 								<a-checkbox v-model:checked="item.check" @change="(evt) => changeChildCheckBox(record, evt)">{{
-									item.title
-								}}</a-checkbox>
+										item.title
+									}}</a-checkbox>
 								<br v-if="(index + 1) % 5 === 0" />
 							</template>
 						</template>
@@ -56,12 +56,8 @@
 	</a-drawer>
 </template>
 
-<script setup name="grantResourceForm">
-	import { nextTick } from 'vue'
-	import tool from '@/utils/tool'
+<script setup name="grantMobileResourceForm">
 	import roleApi from '@/api/sys/roleApi'
-	import userCenterApi from '@/api/sys/userCenterApi'
-	import { remove } from 'lodash-es'
 	const spinningLoading = ref(false)
 	let firstShowMap = $ref({})
 	const emit = defineEmits({ successful: null })
@@ -112,16 +108,21 @@
 		} else {
 			// 获取表格数据
 			spinningLoading.value = true
-			const res = await roleApi.roleResourceTreeSelector()
-			const param = {
-				id: resultDataModel.id
+			const res = await roleApi.roleMobileMenuTreeSelector()
+			if (res && res.length > 0) {
+				const param = {
+					id: resultDataModel.id
+				}
+				// 获取回显数据
+				const resEcho = await roleApi.roleOwnMobileMenu(param)
+				spinningLoading.value = false
+				echoDatalist.value = echoModuleData(res, resEcho)
+				moduleId.value = res[0].id
+				loadDatas.value = echoDatalist.value[0].menu
+			} else {
+				spinningLoading.value = false
+				loadDatas.value = []
 			}
-			// 获取回显数据
-			const resEcho = await roleApi.roleOwnResource(param)
-			spinningLoading.value = false
-			echoDatalist.value = echoModuleData(res, resEcho)
-			moduleId.value = res[0].id
-			loadDatas.value = echoDatalist.value[0].menu
 		}
 	}
 	const checkFieldKeys = ['button']
@@ -151,7 +152,7 @@
 							if (item.id === grant.menuId) {
 								menueCheck.value++
 								// 处理按钮
-								if (grant.buttonInfo.length > 0) {
+								if (grant.buttonInfo) {
 									grant.buttonInfo.forEach((button) => {
 										item.button.forEach((itemButton) => {
 											if (button === itemButton.id) {
@@ -281,23 +282,14 @@
 		const param = convertData()
 		submitLoading.value = true
 		roleApi
-			.roleGrantResource(param)
+			.roleGrantMobileMenu(param)
 			.then(() => {
 				onClose()
 				emit('successful')
-				refreshCacheMenu()
 			})
 			.finally(() => {
 				submitLoading.value = false
 			})
-	}
-	// 刷新缓存的菜单
-	const refreshCacheMenu = () => {
-		nextTick(() => {
-			userCenterApi.userLoginMenu().then((res) => {
-				tool.data.set('MENU', res)
-			})
-		})
 	}
 	// 调用这个函数将子组件的一些数据和方法暴露出去
 	defineExpose({
