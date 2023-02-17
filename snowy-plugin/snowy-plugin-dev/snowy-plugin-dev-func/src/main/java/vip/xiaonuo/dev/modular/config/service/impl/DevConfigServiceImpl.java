@@ -179,7 +179,7 @@ public class DevConfigServiceImpl extends ServiceImpl<DevConfigMapper, DevConfig
                     .eq(DevConfig::getConfigKey, devConfigBatchParam.getConfigKey())
                     .set(DevConfig::getConfigValue, devConfigBatchParam.getConfigValue()));
             // 移除对应的缓存
-            commonCacheOperator.remove(CONFIG_CACHE_KEY + devConfigBatchParam.getConfigValue());
+            commonCacheOperator.remove(CONFIG_CACHE_KEY + devConfigBatchParam.getConfigKey());
         });
     }
 }
