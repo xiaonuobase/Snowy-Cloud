@@ -475,7 +475,7 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
             List<GenBasicPreviewResult.GenBasicCodeResult> genBasicCodeFrontendResultList = CollectionUtil.newArrayList();
             GEN_FRONT_FILE_LIST.forEach(fileJsonObject -> {
                 String fileTemplateName = fileJsonObject.getStr("name");
-                String fileTemplatePath = fileJsonObject.getStr("path");
+                String fileTemplatePath = fileJsonObject.getStr("path") + File.separator + genBasic.getModuleName();
                 GenBasicPreviewResult.GenBasicCodeResult genBasicCodeFrontResult = new GenBasicPreviewResult.GenBasicCodeResult();
                 Template templateFront = groupTemplateFront.getTemplate(fileTemplateName);
                 templateFront.binding(bindingJsonObject);
