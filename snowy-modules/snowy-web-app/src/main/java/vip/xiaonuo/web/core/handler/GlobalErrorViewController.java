@@ -53,8 +53,10 @@ public class GlobalErrorViewController {
             } else {
                 commonResult = CommonResult.error();
             }
-            Exception exception = (Exception) model;
-            exception.printStackTrace();
+            if(model instanceof Exception){
+                Exception exception = (Exception) model;
+                exception.printStackTrace();
+            }
         }
         log.error(">>> {}", commonResult.getMsg());
         return commonResult;
