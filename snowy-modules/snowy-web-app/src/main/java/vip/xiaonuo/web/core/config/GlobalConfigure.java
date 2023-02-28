@@ -30,6 +30,8 @@ import cn.hutool.http.Header;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
 import io.swagger.annotations.ApiOperation;
@@ -617,5 +619,15 @@ public class GlobalConfigure implements WebMvcConfigurer {
                 .apis(RequestHandlerSelectors.basePackage("vip.xiaonuo"))
                 .paths(PathSelectors.any())
                 .build().extensions(openApiExtensionResolver.buildExtensions(FeignConstant.WEB_APP));
+    }
+
+    /**
+     * 启用分页插件
+     */
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+        return interceptor;
     }
 }
