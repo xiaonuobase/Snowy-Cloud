@@ -5,7 +5,7 @@
 			<a-row :gutter="24">
 				<a-col :span="8">
 					<a-form-item label="名称关键词" name="searchKey">
-						<a-input v-model:value="searchFormState.searchKey" placeholder="请输入单页名称关键词" allow-clear></a-input>
+						<a-input v-model:value="searchFormState.searchKey" placeholder="请输入单页名称关键词" allow-clear />
 					</a-form-item>
 				</a-col>
 				<a-col :span="8">
@@ -15,12 +15,12 @@
 							:options="categoryOptions"
 							placeholder="请选择类型"
 							allow-clear
-						></a-select>
+						/>
 					</a-form-item>
 				</a-col>
 				<a-col :span="8">
 					<a-button type="primary" html-type="submit" @click="table.refresh()">查询</a-button>
-					<a-button style="margin: 0 8px" @click="() => formRef.resetFields()">重置</a-button>
+					<a-button style="margin: 0 8px" @click="reset">重置</a-button>
 				</a-col>
 			</a-row>
 		</a-form>
@@ -42,7 +42,7 @@
 						<template #icon><plus-outlined /></template>
 						新增单页
 					</a-button>
-					<a-button danger @click="deleteBatchSpa()">删除</a-button>
+					<xn-batch-delete :selectedRowKeys="selectedRowKeys" @batchDelete="deleteBatchSpa" />
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
@@ -76,7 +76,6 @@
 </template>
 
 <script setup name="sysSpa">
-	import { message } from 'ant-design-vue'
 	import spaApi from '@/api/sys/resource/spaApi'
 	import tool from '@/utils/tool'
 	import Form from './form.vue'
@@ -145,18 +144,18 @@
 			}
 		}
 	}
-	let categoryOptions = tool
-		.dictTypeList('MENU_TYPE')
+	const categoryOptions = tool
+		.dictList('MENU_TYPE')
 		.filter((item) => {
 			// 排除
-			if (item.dictValue !== 'CATALOG') {
+			if (item.value !== 'CATALOG') {
 				return item
 			}
 		})
 		.map((item) => {
 			return {
-				value: item['dictValue'],
-				label: item['name'] + '页'
+				value: item['value'],
+				label: item['label'] + '页'
 			}
 		})
 	// 列表数据
@@ -164,6 +163,11 @@
 		return spaApi.spaPage(Object.assign(parameter, searchFormState)).then((res) => {
 			return res
 		})
+	}
+	// 重置
+	const reset = () => {
+		formRef.value.resetFields();
+		table.value.refresh(true)
 	}
 	// 删除
 	const removeSpa = (record) => {
@@ -177,16 +181,7 @@
 		})
 	}
 	// 批量删除
-	const deleteBatchSpa = () => {
-		if (selectedRowKeys.value.length < 1) {
-			message.warning('请选择一条或多条数据')
-			return false
-		}
-		const params = selectedRowKeys.value.map((m) => {
-			return {
-				id: m
-			}
-		})
+	const deleteBatchSpa = (params) => {
 		spaApi.spaDelete(params).then(() => {
 			table.value.clearRefreshSelected()
 		})

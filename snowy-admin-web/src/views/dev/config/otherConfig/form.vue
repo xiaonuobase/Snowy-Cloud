@@ -23,7 +23,7 @@
 				<a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear />
 			</a-form-item>
 			<a-form-item label="排序:" name="sortCode">
-				<a-slider v-model:value="formData.sortCode" :max="100" />
+				<a-input-munber style="width: 100%" v-model:value="formData.sortCode" :max="100" />
 			</a-form-item>
 		</a-form>
 		<template #footer>
@@ -68,20 +68,18 @@
 
 	// 验证并提交数据
 	const onSubmit = () => {
-		formRef.value
-			.validate()
-			.then(() => {
-				submitLoading.value = true
-				configApi
-					.submitForm(formData.value, !formData.value.id)
-					.then(() => {
-						onClose()
-						emit('successful')
-					})
-					.finally(() => {
-						submitLoading.value = false
-					})
-			})
+		formRef.value.validate().then(() => {
+			submitLoading.value = true
+			configApi
+				.submitForm(formData.value, !formData.value.id)
+				.then(() => {
+					onClose()
+					emit('successful')
+				})
+				.finally(() => {
+					submitLoading.value = false
+				})
+		})
 	}
 
 	// 调用这个函数将子组件的一些数据和方法暴露出去

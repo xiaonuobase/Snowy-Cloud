@@ -31,10 +31,15 @@
 				<a-input v-model:value="formData.dictLabel" placeholder="请输入字典名称" allow-clear />
 			</a-form-item>
 			<a-form-item label="字典值：" name="dictValue">
-				<a-input v-model:value="formData.dictValue" placeholder="请输入字典值" allow-clear :disabled="formData.parentId === '0'"/>
+				<a-input
+					v-model:value="formData.dictValue"
+					placeholder="请输入字典值"
+					allow-clear
+					:disabled="formData.parentId === '0'"
+				/>
 			</a-form-item>
 			<a-form-item label="排序：" name="sortCode">
-				<a-slider v-model:value="formData.sortCode" :max="100" />
+				<a-input-number style="width: 100%" v-model:value="formData.sortCode" :max="1000" />
 			</a-form-item>
 		</a-form>
 		<template #footer>
@@ -61,11 +66,14 @@
 	const defaultExpandedKeys = ref([0])
 
 	// 打开抽屉
-	const onOpen = (record, type) => {
+	const onOpen = (record, type, parentId) => {
 		visible = true
 		formData.value = {
 			sortCode: 99,
 			category: type
+		}
+		if (parentId) {
+			formData.value.parentId = parentId
 		}
 		if (record) {
 			formData.value = Object.assign({}, record)
@@ -104,14 +112,12 @@
 	})
 	// 验证并提交数据
 	const onSubmit = () => {
-		formRef.value
-			.validate()
-			.then(() => {
-				dictApi.submitForm(formData.value, !formData.value.id).then(() => {
-					visible = false
-					emit('successful')
-				})
+		formRef.value.validate().then(() => {
+			dictApi.submitForm(formData.value, !formData.value.id).then(() => {
+				visible = false
+				emit('successful')
 			})
+		})
 	}
 	// 调用这个函数将子组件的一些数据和方法暴露出去
 	defineExpose({

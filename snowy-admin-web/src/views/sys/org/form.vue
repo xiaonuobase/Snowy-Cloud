@@ -25,7 +25,7 @@
 					}"
 					selectable="false"
 					tree-line
-				></a-tree-select>
+				/>
 			</a-form-item>
 			<a-form-item label="组织名称：" name="name">
 				<a-input v-model:value="formData.name" placeholder="请输入组织名称" allow-clear />
@@ -36,11 +36,10 @@
 					:options="orgCategoryOptions"
 					style="width: 100%"
 					placeholder="请选择组织分类"
-				>
-				</a-select>
+				/>
 			</a-form-item>
 			<a-form-item label="排序：" name="sortCode">
-				<a-slider v-model:value="formData.sortCode" :max="100" />
+				<a-input-number style="width: 100%" v-model:value="formData.sortCode" :max="100" />
 			</a-form-item>
 			<a-form-item label="指定主管：" name="directorId">
 				<a-button type="link" style="padding-left: 0px" @click="openSelector(formData.directorId)">选择</a-button>
@@ -56,8 +55,8 @@
 		</template>
 		<user-selector-plus
 			ref="UserSelectorPlus"
-			page-url="/api/webapp/sys/org/userSelector"
-			org-url="/api/webapp/sys/org/orgTreeSelector"
+			page-url="/sys/org/userSelector"
+			org-url="/sys/org/orgTreeSelector"
 			:radio-model="true"
 			@onBack="userBack"
 		/>
@@ -68,12 +67,11 @@
 	import { required } from '@/utils/formRules'
 	import { message } from 'ant-design-vue'
 	import orgApi from '@/api/sys/orgApi'
-	import { getCurrentInstance } from 'vue'
 	import userSelectorPlus from '@/components/Selector/userSelectorPlus.vue'
+	import tool from '@/utils/tool'
 
 	// 定义emit事件
 	const emit = defineEmits({ successful: null })
-	const { proxy } = getCurrentInstance()
 	// 默认是关闭状态
 	let visible = $ref(false)
 	let UserSelectorPlus = ref()
@@ -86,11 +84,14 @@
 	const submitLoading = ref(false)
 
 	// 打开抽屉
-	const onOpen = (record) => {
+	const onOpen = (record, parentId) => {
 		visible = true
 		extJson.value = ref([])
 		formData.value = {
 			sortCode: 99
+		}
+		if (parentId) {
+			formData.value.parentId = parentId
 		}
 		if (record) {
 			const param = {
@@ -124,12 +125,7 @@
 		sortCode: [required('请选择排序')]
 	}
 	// 机构分类字典
-	let orgCategoryOptions = proxy.$TOOL.dictTypeList('ORG_CATEGORY').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const orgCategoryOptions = tool.dictList('ORG_CATEGORY')
 	// 打开人员选择器，选择主管
 	const openSelector = (id) => {
 		let checkedUserIds = []
@@ -152,21 +148,19 @@
 	}
 	// 验证并提交数据
 	const onSubmit = () => {
-		formRef.value
-			.validate()
-			.then(() => {
-				submitLoading.value = true
-				formData.value.extJson = JSON.stringify(extJson.value)
-				orgApi
-					.submitForm(formData.value, !formData.value.id)
-					.then(() => {
-						visible = false
-						emit('successful')
-					})
-					.finally(() => {
-						submitLoading.value = false
-					})
-			})
+		formRef.value.validate().then(() => {
+			submitLoading.value = true
+			formData.value.extJson = JSON.stringify(extJson.value)
+			orgApi
+				.submitForm(formData.value, !formData.value.id)
+				.then(() => {
+					visible = false
+					emit('successful')
+				})
+				.finally(() => {
+					submitLoading.value = false
+				})
+		})
 	}
 	// 调用这个函数将子组件的一些数据和方法暴露出去
 	defineExpose({

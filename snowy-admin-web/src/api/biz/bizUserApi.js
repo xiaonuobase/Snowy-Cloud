@@ -69,5 +69,17 @@ export default {
 	// 给人员授权角色
 	grantRole(data) {
 		return request('grantRole', data)
+	},
+	// 人员导出
+	userExport(data) {
+		return request('export', data, 'get', {
+			responseType: 'blob'
+		})
+	},
+	// 导出人员个人信息
+	userExportUserInfo(data) {
+		return request('exportUserInfo', data, 'get', {
+			responseType: 'blob'
+		})
 	}
 }

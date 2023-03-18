@@ -1,27 +1,25 @@
 <template>
 	<a-card :bordered="false" :body-style="{ 'padding-bottom': '0px' }" class="mb-2">
-		<a-form ref="formRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
+		<a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
 			<a-row :gutter="24">
 				<a-col :span="6">
 					<a-form-item label="关键字" name="searchKey">
-						<a-input v-model:value="searchFormState.searchKey" placeholder="请输入关键字"></a-input>
+						<a-input v-model:value="searchFormState.searchKey" placeholder="请输入关键字" />
 					</a-form-item>
 				</a-col>
 				<a-col :span="6">
 					<a-form-item label="分类" name="category">
-						<a-select v-model:value="searchFormState.category" placeholder="请选择分类" :options="categoryOptions">
-						</a-select>
+						<a-select v-model:value="searchFormState.category" placeholder="请选择分类" :options="categoryOptions" />
 					</a-form-item>
 				</a-col>
 				<a-col :span="6">
 					<a-form-item label="状态" name="jobStatus">
-						<a-select v-model:value="searchFormState.jobStatus" placeholder="请选择状态" :options="jobStatusOptions">
-						</a-select>
+						<a-select v-model:value="searchFormState.jobStatus" placeholder="请选择状态" :options="jobStatusOptions" />
 					</a-form-item>
 				</a-col>
 				<a-col :span="6">
 					<a-button type="primary" @click="table.refresh(true)">查询</a-button>
-					<a-button style="margin: 0 8px" @click="() => formRef.resetFields()">重置</a-button>
+					<a-button style="margin: 0 8px" @click="reset">重置</a-button>
 				</a-col>
 			</a-row>
 		</a-form>
@@ -43,7 +41,7 @@
 						<template #icon><plus-outlined /></template>
 						新增
 					</a-button>
-					<a-button danger @click="deleteBatchJob()">删除</a-button>
+					<xn-batch-delete :selectedRowKeys="selectedRowKeys" @batchDelete="deleteBatchJob" />
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
@@ -64,6 +62,8 @@
 				</template>
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
+						<a @click="immediatelyRun(record)">立即运行</a>
+						<a-divider type="vertical" />
 						<a @click="form.onOpen(record)">编辑</a>
 						<a-divider type="vertical" />
 						<a-popconfirm title="确定要删除此定时任务吗？" @confirm="deleteJob(record)">
@@ -78,12 +78,11 @@
 </template>
 
 <script setup name="devJob">
-	import { message } from 'ant-design-vue'
 	import tool from '@/utils/tool'
 	import Form from './form.vue'
 	import jobApi from '@/api/dev/jobApi'
 	let searchFormState = reactive({})
-	const formRef = ref()
+	const searchFormRef = ref()
 	const table = ref()
 	let form = ref()
 	const statusLoading = ref(false)
@@ -123,7 +122,7 @@
 			title: '操作',
 			dataIndex: 'action',
 			align: 'center',
-			width: '200px'
+			width: '220px'
 		}
 	]
 	let selectedRowKeys = ref([])
@@ -145,6 +144,11 @@
 		return jobApi.jobPage(Object.assign(parameter, searchFormState)).then((res) => {
 			return res
 		})
+	}
+	// 重置
+	const reset = () => {
+		searchFormRef.value.resetFields();
+		table.value.refresh(true)
 	}
 	// 启停
 	const editJobStatus = (record) => {
@@ -169,6 +173,15 @@
 				})
 		}
 	}
+	// 立即运行
+	const immediatelyRun = (record) => {
+		const params = {
+			id: record.id
+		}
+		jobApi.jobRunJobNow(params).then(() => {
+			table.value.refresh(true)
+		})
+	}
 	// 删除
 	const deleteJob = (record) => {
 		let params = [
@@ -181,32 +194,13 @@
 		})
 	}
 	// 批量删除
-	const deleteBatchJob = () => {
-		if (selectedRowKeys.value.length < 1) {
-			message.warning('请选择一条或多条数据')
-			return false
-		}
-		const params = selectedRowKeys.value.map((m) => {
-			return {
-				id: m
-			}
-		})
+	const deleteBatchJob = (params) => {
 		jobApi.jobDelete(params).then(() => {
 			table.value.clearRefreshSelected()
 		})
 	}
 	// 分类
-	const categoryOptions = tool.dictTypeList('JOB_CATEGORY').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const categoryOptions = tool.dictList('JOB_CATEGORY')
 	// 状态
-	const jobStatusOptions = tool.dictTypeList('JOB_STATUS').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const jobStatusOptions = tool.dictList('JOB_STATUS')
 </script>

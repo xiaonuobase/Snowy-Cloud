@@ -17,13 +17,17 @@ import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
+import vip.xiaonuo.common.enums.SysDataTypeEnum;
 import vip.xiaonuo.common.exception.CommonException;
+import vip.xiaonuo.common.listener.CommonDataChangeEventCenter;
 import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.common.enums.SysBuildInEnum;
 import vip.xiaonuo.sys.modular.resource.entity.SysSpa;
@@ -65,6 +69,7 @@ public class SysSpaServiceImpl extends ServiceImpl<SysSpaMapper, SysSpa> impleme
         return this.page(CommonPageRequest.defaultPage(), queryWrapper);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void add(SysSpaAddParam sysSpaAddParam) {
         checkParam(sysSpaAddParam);
@@ -77,6 +82,9 @@ public class SysSpaServiceImpl extends ServiceImpl<SysSpaMapper, SysSpa> impleme
         sysSpa.setCode(RandomUtil.randomString(10));
         sysSpa.setCategory(SysResourceCategoryEnum.SPA.getValue());
         this.save(sysSpa);
+
+        // 发布增加事件
+        CommonDataChangeEventCenter.doAddWithData(SysDataTypeEnum.RESOURCE.getValue(), JSONUtil.createArray().put(sysSpa));
     }
 
     @SuppressWarnings("all")
@@ -99,6 +107,7 @@ public class SysSpaServiceImpl extends ServiceImpl<SysSpaMapper, SysSpa> impleme
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void edit(SysSpaEditParam sysSpaEditParam) {
         SysSpa sysSpa = this.queryEntity(sysSpaEditParam.getId());
@@ -111,6 +120,9 @@ public class SysSpaServiceImpl extends ServiceImpl<SysSpaMapper, SysSpa> impleme
             throw new CommonException("存在重复的单页面，名称为：{}", sysSpa.getTitle());
         }
         this.updateById(sysSpa);
+
+        // 发布更新事件
+        CommonDataChangeEventCenter.doUpdateWithData(SysDataTypeEnum.RESOURCE.getValue(), JSONUtil.createArray().put(sysSpa));
     }
 
     @SuppressWarnings("all")
@@ -143,7 +155,10 @@ public class SysSpaServiceImpl extends ServiceImpl<SysSpaMapper, SysSpa> impleme
                 throw new CommonException("不可删除系统内置单页面");
             }
             // 删除
-            this.removeBatchByIds(sysSpaIdList);
+            this.removeByIds(sysSpaIdList);
+
+            // 发布删除事件
+            CommonDataChangeEventCenter.doDeleteWithDataId(SysDataTypeEnum.RESOURCE.getValue(), sysSpaIdList);
         }
     }
 

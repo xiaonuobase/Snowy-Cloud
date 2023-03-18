@@ -19,7 +19,7 @@
 					<a-row :gutter="24">
 						<a-col :span="8">
 							<a-form-item name="searchKey" label="名称关键词">
-								<a-input v-model:value="searchFormState.searchKey" placeholder="请输入机构名称关键词"></a-input>
+								<a-input v-model:value="searchFormState.searchKey" placeholder="请输入机构名称关键词" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="8">
@@ -27,7 +27,7 @@
 								<template #icon><SearchOutlined /></template>
 								查询
 							</a-button>
-							<a-button class="snowy-buttom-left" @click="() => searchFormRef.resetFields()">
+							<a-button class="snowy-buttom-left" @click="reset">
 								<template #icon><redo-outlined /></template>
 								重置
 							</a-button>
@@ -44,15 +44,24 @@
 					:alert="options.alert.show"
 					bordered
 					:row-key="(record) => record.id"
+					:tool-config="toolConfig"
 					:row-selection="options.rowSelection"
 				>
 					<template #operator class="table-operator">
 						<a-space>
-							<a-button type="primary" @click="form.onOpen()" v-if="hasPerm('bizOrgAdd')">
+							<a-button
+								type="primary"
+								@click="form.onOpen(undefined, searchFormState.parentId)"
+								v-if="hasPerm('bizOrgAdd')"
+							>
 								<template #icon><plus-outlined /></template>
 								新增
 							</a-button>
-							<a-button danger @click="deleteBatchOrg()" v-if="hasPerm('bizOrgBatchDelete')">删除</a-button>
+							<xn-batch-delete
+								v-if="hasPerm('bizOrgBatchDelete')"
+								:selectedRowKeys="selectedRowKeys"
+								@batchDelete="deleteBatchOrg"
+							/>
 						</a-space>
 					</template>
 					<template #bodyCell="{ column, record }">
@@ -75,7 +84,7 @@
 </template>
 
 <script setup name="bizOrg">
-	import { message, Empty } from 'ant-design-vue'
+	import { Empty } from 'ant-design-vue'
 	import bizOrgApi from '@/api/biz/bizOrgApi'
 	import Form from './form.vue'
 
@@ -116,6 +125,7 @@
 			}
 		}
 	}
+	const toolConfig = { refresh: true, height: true, columnSetting: true }
 	// 定义tableDOM
 	const table = ref(null)
 	const form = ref()
@@ -135,30 +145,37 @@
 			return res
 		})
 	}
+	// 重置
+	const reset = () => {
+		searchFormRef.value.resetFields()
+		table.value.refresh(true)
+	}
 	// 加载左侧的树
 	const loadTreeData = () => {
-		bizOrgApi.orgTree().then((res) => {
-			cardLoading.value = false
-			if (res !== null) {
-				treeData.value = res
-				// 默认展开2级
-				treeData.value.forEach((item) => {
-					// 因为0的顶级
-					if (item.parentId === '0') {
-						defaultExpandedKeys.value.push(item.id)
-						// 取到下级ID
-						if (item.children) {
-							item.children.forEach((items) => {
-								defaultExpandedKeys.value.push(items.id)
-							})
+		bizOrgApi
+			.orgTree()
+			.then((res) => {
+				cardLoading.value = false
+				if (res !== null) {
+					treeData.value = res
+					// 默认展开2级
+					treeData.value.forEach((item) => {
+						// 因为0的顶级
+						if (item.parentId === '0') {
+							defaultExpandedKeys.value.push(item.id)
+							// 取到下级ID
+							if (item.children) {
+								item.children.forEach((items) => {
+									defaultExpandedKeys.value.push(items.id)
+								})
+							}
 						}
-					}
-				})
-			}
-		})
-		.finally(() => {
-			cardLoading.value = false
-		})
+					})
+				}
+			})
+			.finally(() => {
+				cardLoading.value = false
+			})
 	}
 	// 点击树查询
 	const treeSelect = (selectedKeys) => {
@@ -181,16 +198,7 @@
 		})
 	}
 	// 批量删除
-	const deleteBatchOrg = () => {
-		if (selectedRowKeys.value.length < 1) {
-			message.warning('请选择一条或多条数据')
-			return false
-		}
-		const params = selectedRowKeys.value.map((m) => {
-			return {
-				id: m
-			}
-		})
+	const deleteBatchOrg = (params) => {
 		bizOrgApi.orgDelete(params).then(() => {
 			table.value.clearRefreshSelected()
 		})

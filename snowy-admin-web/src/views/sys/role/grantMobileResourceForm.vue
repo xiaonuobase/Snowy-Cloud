@@ -32,16 +32,16 @@
 
 					<template v-if="column.dataIndex === 'title'">
 						<a-checkbox :checked="record.nameCheck" @update:checked="(val) => changeSub(record, val)">{{
-								record.title
-							}}</a-checkbox>
+							record.title
+						}}</a-checkbox>
 					</template>
 
 					<template v-if="column.dataIndex === 'button'">
 						<template v-if="record.button.length > 0">
 							<template v-for="(item, index) in record.button" :key="item.id">
 								<a-checkbox v-model:checked="item.check" @change="(evt) => changeChildCheckBox(record, evt)">{{
-										item.title
-									}}</a-checkbox>
+									item.title
+								}}</a-checkbox>
 								<br v-if="(index + 1) % 5 === 0" />
 							</template>
 						</template>

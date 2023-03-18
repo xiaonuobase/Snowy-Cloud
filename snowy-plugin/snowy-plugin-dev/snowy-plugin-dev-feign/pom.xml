@@ -20,7 +20,6 @@
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-common</artifactId>
-            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>*</groupId>
@@ -39,7 +38,6 @@
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-dev-api</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- Spring Cloud OpenFeign -->

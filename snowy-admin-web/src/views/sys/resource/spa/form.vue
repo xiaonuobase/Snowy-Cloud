@@ -18,8 +18,7 @@
 					button-style="solid"
 					:options="categoryOptions"
 					option-type="button"
-				>
-				</a-radio-group>
+				/>
 			</a-form-item>
 
 			<a-form-item name="path">
@@ -70,7 +69,7 @@
 				<a-button type="primary" @click="iconSelector.showIconModal(formData.icon)">选择</a-button>
 			</a-form-item>
 			<a-form-item label="排序:" name="sortCode">
-				<a-slider v-model:value="formData.sortCode" :max="100" />
+				<a-input-number style="width: 100%" v-model:value="formData.sortCode" :max="100" />
 			</a-form-item>
 		</a-form>
 		<template #footer>
@@ -82,11 +81,10 @@
 </template>
 
 <script setup name="spaForm">
-	import { message } from 'ant-design-vue'
 	import { required } from '@/utils/formRules'
 	import IconSelector from '@/components/Selector/iconSelector.vue'
 	import spaApi from '@/api/sys/resource/spaApi'
-	import { getCurrentInstance } from 'vue'
+	import tool from '@/utils/tool'
 	// 默认是关闭状态
 	let visible = $ref(false)
 	const emit = defineEmits({ successful: null })
@@ -125,36 +123,36 @@
 	const iconCallBack = (value) => {
 		formData.value.icon = value
 	}
-	const { proxy } = getCurrentInstance()
-	let categoryOptions = proxy.$TOOL
-		.dictTypeList('MENU_TYPE')
+	let categoryOptions = tool
+		.dictList('MENU_TYPE')
 		.filter((item) => {
 			// 排除
-			if (item.dictValue !== 'CATALOG') {
+			if (item.value !== 'CATALOG') {
 				return item
 			}
 		})
 		.map((item) => {
 			return {
-				value: item['dictValue'],
-				label: item['name'] + '页'
+				value: item['value'],
+				label: item['label'] + '页'
 			}
 		})
 
 	// 验证并提交数据
 	const onSubmit = () => {
-		formRef.value
-			.validate()
-			.then(() => {
-				const param = parameterChanges(formData.value)
-				submitLoading.value = true
-				spaApi.submitForm(param, !param.id).then(() => {
+		formRef.value.validate().then(() => {
+			const param = parameterChanges(formData.value)
+			submitLoading.value = true
+			spaApi
+				.submitForm(param, !param.id)
+				.then(() => {
 					visible = false
 					emit('successful')
-				}).finally(() => {
+				})
+				.finally(() => {
 					submitLoading.value = false
 				})
-			})
+		})
 	}
 	const parameterChanges = (data) => {
 		if (!data.component) {

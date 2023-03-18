@@ -14,6 +14,7 @@ package vip.xiaonuo.biz.modular.user.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
@@ -182,7 +183,7 @@ public class BizUserController {
     }
 
     /**
-     * 用户拥有角色
+     * 人员拥有角色
      *
      * @author xuyuxiang
      * @date 2022/4/24 20:00
@@ -196,7 +197,7 @@ public class BizUserController {
     }
 
     /**
-     * 给用户授权角色
+     * 给人员授权角色
      *
      * @author xuyuxiang
      * @date 2022/4/24 20:00
@@ -212,34 +213,32 @@ public class BizUserController {
     }
 
     /**
-     * 人员导入
-     *
-     * @author xuyuxiang
-     * @date 2022/4/24 20:00
-     */
-    @ApiOperationSupport(order = 11)
-    @ApiOperation("人员导入")
-    @CommonLog("人员导入")
-    @SaCheckPermission("/biz/user/import")
-    @PostMapping("/biz/user/import")
-    public CommonResult<String> importUser(@RequestPart("file") @ApiParam(value="文件", required = true) MultipartFile file) {
-        bizUserService.importUser(file);
-        return CommonResult.ok();
-    }
-
-    /**
      * 人员导出
      *
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 12)
+    @ApiOperationSupport(order = 11)
     @ApiOperation("人员导出")
     @CommonLog("人员导出")
     @SaCheckPermission("/biz/user/export")
     @GetMapping(value = "/biz/user/export", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void exportUser(BizUserExportParam bizUserExportParam, HttpServletResponse response) throws IOException {
         bizUserService.exportUser(bizUserExportParam, response);
+    }
+
+    /**
+     * 按模板导出人员个人信息
+     *
+     * @author xuyuxiang
+     * @date 2022/4/24 20:00
+     */
+    @ApiOperationSupport(order = 12)
+    @ApiOperation("导出人员个人信息")
+    @CommonLog("导出人员个人信息")
+    @GetMapping(value = "/biz/user/exportUserInfo", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void exportUserInfo(BizUserIdParam bizUserIdParam, HttpServletResponse response) throws IOException {
+        bizUserService.exportUserInfo(bizUserIdParam, response);
     }
 
     /* ====人员部分所需要用到的选择器==== */

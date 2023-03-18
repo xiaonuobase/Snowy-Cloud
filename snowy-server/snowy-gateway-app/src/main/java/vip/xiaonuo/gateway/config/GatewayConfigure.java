@@ -159,6 +159,8 @@ public class GatewayConfigure {
             "/api/webapp/dev/sms/page",
             "/api/webapp/dev/sms/delete",
             "/api/webapp/dev/sms/detail",
+            "/api/webapp/gen/basic/**",
+            "/api/webapp/gen/config/**",
             "/api/flwapp/flw/model/**",
             "/api/flwapp/flw/templatePrint/**",
             "/api/flwapp/flw/templateSn/**",

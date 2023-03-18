@@ -12,8 +12,9 @@
  */
 package vip.xiaonuo.sys.modular.user.service.impl;
 
-import cn.afterturn.easypoi.excel.ExcelExportUtil;
-import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.cache.manager.POICacheManager;
+import cn.afterturn.easypoi.entity.ImageEntity;
+import cn.afterturn.easypoi.word.WordExportUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
@@ -21,9 +22,12 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.img.ImgUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
@@ -36,6 +40,16 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.metadata.data.WriteCellData;
+import com.alibaba.excel.read.listener.PageReadListener;
+import com.alibaba.excel.write.handler.CellWriteHandler;
+import com.alibaba.excel.write.handler.context.CellWriteHandlerContext;
+import com.alibaba.excel.write.metadata.style.WriteCellStyle;
+import com.alibaba.excel.write.metadata.style.WriteFont;
+import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
+import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
+import com.alibaba.excel.write.style.row.AbstractRowHeightStyleStrategy;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -43,21 +57,26 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fhs.trans.service.impl.TransService;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import vip.xiaonuo.auth.core.enums.SysUserStatusEnum;
 import vip.xiaonuo.auth.core.pojo.SysLoginUser;
 import vip.xiaonuo.common.cache.CommonCacheOperator;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
+import vip.xiaonuo.common.enums.SysBuildInEnum;
+import vip.xiaonuo.common.enums.SysDataTypeEnum;
+import vip.xiaonuo.common.excel.CommonExcelCustomMergeStrategy;
 import vip.xiaonuo.common.exception.CommonException;
+import vip.xiaonuo.common.listener.CommonDataChangeEventCenter;
 import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.common.util.*;
 import vip.xiaonuo.dev.api.DevConfigApi;
 import vip.xiaonuo.dev.api.DevEmailApi;
 import vip.xiaonuo.dev.api.DevMessageApi;
 import vip.xiaonuo.dev.api.DevSmsApi;
-import vip.xiaonuo.common.enums.SysBuildInEnum;
 import vip.xiaonuo.mobile.vip.MobileButtonApi;
 import vip.xiaonuo.mobile.vip.MobileMenuApi;
 import vip.xiaonuo.sys.modular.org.entity.SysOrg;
@@ -77,7 +96,6 @@ import vip.xiaonuo.sys.modular.role.entity.SysRole;
 import vip.xiaonuo.sys.modular.role.enums.SysRoleDataScopeCategoryEnum;
 import vip.xiaonuo.sys.modular.role.service.SysRoleService;
 import vip.xiaonuo.sys.modular.user.entity.SysUser;
-import vip.xiaonuo.auth.core.enums.SysUserStatusEnum;
 import vip.xiaonuo.sys.modular.user.mapper.SysUserMapper;
 import vip.xiaonuo.sys.modular.user.param.*;
 import vip.xiaonuo.sys.modular.user.result.*;
@@ -88,10 +106,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.io.InputStream;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -108,6 +124,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private static final String SNOWY_SYS_DEFAULT_WORKBENCH_DATA_KEY = "SNOWY_SYS_DEFAULT_WORKBENCH_DATA";
 
     private static final String USER_CACHE_KEY = "user-validCode:";
+
+    public static final String USER_CACHE_ALL_KEY = "sys-user:all";
 
     @Resource
     private CommonCacheOperator commonCacheOperator;
@@ -228,6 +246,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 设置状态
         sysUser.setUserStatus(SysUserStatusEnum.ENABLE.getValue());
         this.save(sysUser);
+
+        // 发布增加事件
+        CommonDataChangeEventCenter.doAddWithData(SysDataTypeEnum.USER.getValue(), JSONUtil.createArray().put(sysUser));
     }
 
     private void checkParam(SysUserAddParam sysUserAddParam) {
@@ -267,6 +288,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         BeanUtil.copyProperties(sysUserEditParam, sysUser);
         this.updateById(sysUser);
+
+        // 发布更新事件
+        CommonDataChangeEventCenter.doUpdateWithData(SysDataTypeEnum.USER.getValue(), JSONUtil.createArray().put(sysUser));
     }
 
     private void checkParam(SysUserEditParam sysUserEditParam) {
@@ -307,8 +331,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             if (containsSuperAdminAccount) {
                 throw new CommonException("不可删除系统内置超管用户");
             }
+
             // 清除【将这些用户作为主管】的信息
             this.update(new LambdaUpdateWrapper<SysUser>().in(SysUser::getDirectorId, sysUserIdList).set(SysUser::getDirectorId, null));
+
             // 清除【将这些用户作为兼任职位的主管】的信息
             this.list(new LambdaQueryWrapper<SysUser>().isNotNull(SysUser::getPositionJson)).forEach(sysUser -> {
                 List<JSONObject> handledJsonObjectList = JSONUtil.toList(JSONUtil.parseArray(sysUser.getPositionJson()),
@@ -321,10 +347,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 this.update(new LambdaUpdateWrapper<SysUser>().eq(SysUser::getId, sysUser.getId())
                         .set(SysUser::getPositionJson, JSONUtil.toJsonStr(handledJsonObjectList)));
             });
-            // 执行删除
-            this.removeBatchByIds(sysUserIdList);
 
-            // TODO 此处需要将这些用户踢下线，并永久注销这些用户
+            // 清除【将这些用户作为主管】的机构的主管信息
+            sysOrgService.update(new LambdaUpdateWrapper<SysOrg>().in(SysOrg::getDirectorId, sysUserIdList).set(SysOrg::getDirectorId, null));
+
+            // 执行删除
+            this.removeByIds(sysUserIdList);
+
+            // 发布删除事件
+            CommonDataChangeEventCenter.doDeleteWithDataId(SysDataTypeEnum.USER.getValue(), sysUserIdList);
         }
     }
 
@@ -388,7 +419,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             throw new CommonException("验证码错误");
         }
         // 不一致则直接验证码错误
-        if (!validCode.equals(Convert.toStr(existValidCode))) {
+        if (!validCode.equals(Convert.toStr(existValidCode).toLowerCase())) {
             // 移除该验证码
             commonCacheOperator.remove(USER_CACHE_KEY + validCodeReqNo);
             throw new CommonException("验证码错误");
@@ -542,7 +573,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         List<String> roleIdList = this.ownRole(sysUserIdParam);
 
         // 获取菜单id列表
-        List<String> menuIdList = CollectionUtil.newArrayList();
+        List<String> menuIdList = sysRelationService.getRelationTargetIdListByObjectIdAndCategory(sysUserIdParam.getId(),
+                SysRelationCategoryEnum.SYS_USER_HAS_RESOURCE.getValue());
 
         if (ObjectUtil.isNotEmpty(roleIdList)) {
             menuIdList = sysRelationService.getRelationTargetIdListByObjectIdListAndCategory(roleIdList,
@@ -732,10 +764,50 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public SysUserOwnResourceResult ownResource(SysUserIdParam sysUserIdParam) {
+        SysUserOwnResourceResult sysUserOwnResourceResult = new SysUserOwnResourceResult();
+        sysUserOwnResourceResult.setId(sysUserIdParam.getId());
+        sysUserOwnResourceResult.setGrantInfoList(sysRelationService.getRelationListByObjectIdAndCategory(sysUserIdParam.getId(),
+                SysRelationCategoryEnum.SYS_USER_HAS_RESOURCE.getValue()).stream().map(sysRelation ->
+                JSONUtil.toBean(sysRelation.getExtJson(), SysUserOwnResourceResult.SysUserOwnResource.class)).collect(Collectors.toList()));
+        return sysUserOwnResourceResult;
+    }
+
+    @Override
+    public void grantResource(SysUserGrantResourceParam sysUserGrantResourceParam) {
+        String id = sysUserGrantResourceParam.getId();
+        List<String> menuIdList = sysUserGrantResourceParam.getGrantInfoList().stream()
+                .map(SysUserGrantResourceParam.SysUserGrantResource::getMenuId).collect(Collectors.toList());
+        List<String> extJsonList = sysUserGrantResourceParam.getGrantInfoList().stream()
+                .map(JSONUtil::toJsonStr).collect(Collectors.toList());
+        sysRelationService.saveRelationBatchWithClear(id, menuIdList, SysRelationCategoryEnum.SYS_USER_HAS_RESOURCE.getValue(),
+                extJsonList);
+    }
+
+    @Override
+    public SysUserOwnPermissionResult ownPermission(SysUserIdParam sysUserIdParam) {
+        SysUserOwnPermissionResult sysUserOwnPermissionResult = new SysUserOwnPermissionResult();
+        sysUserOwnPermissionResult.setId(sysUserIdParam.getId());
+        sysUserOwnPermissionResult.setGrantInfoList(sysRelationService.getRelationListByObjectIdAndCategory(sysUserIdParam.getId(),
+                SysRelationCategoryEnum.SYS_USER_HAS_PERMISSION.getValue()).stream().map(sysRelation ->
+                JSONUtil.toBean(sysRelation.getExtJson(), SysUserOwnPermissionResult.SysUserOwnPermission.class)).collect(Collectors.toList()));
+        return sysUserOwnPermissionResult;
+    }
+
+    @Override
+    public void grantPermission(SysUserGrantPermissionParam sysUserGrantPermissionParam) {
+        String id = sysUserGrantPermissionParam.getId();
+        List<String> apiUrlList = sysUserGrantPermissionParam.getGrantInfoList().stream()
+                .map(SysUserGrantPermissionParam.SysUserGrantPermission::getApiUrl).collect(Collectors.toList());
+        List<String> extJsonList = sysUserGrantPermissionParam.getGrantInfoList().stream()
+                .map(JSONUtil::toJsonStr).collect(Collectors.toList());
+        sysRelationService.saveRelationBatchWithClear(id, apiUrlList, SysRelationCategoryEnum.SYS_USER_HAS_PERMISSION.getValue(),
+                extJsonList);
+    }
+
+    @Override
     public List<Tree<String>> loginOrgTree(SysUserIdParam sysUserIdParam) {
-        LambdaQueryWrapper<SysOrg> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.orderByAsc(SysOrg::getSortCode);
-        List<SysOrg> sysOrgList = sysOrgService.list(lambdaQueryWrapper);
+        List<SysOrg> sysOrgList = sysOrgService.getCachedAllOrgList();
         SysUser sysUser = this.queryEntity(sysUserIdParam.getId());
         List<TreeNode<String>> treeNodeList = sysOrgList.stream().map(sysOrg -> {
             TreeNode<String> treeNode = new TreeNode<>(sysOrg.getId(), sysOrg.getParentId(), sysOrg.getName(), sysOrg.getSortCode());
@@ -754,15 +826,40 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public void updateUserInfo(SysUserUpdateInfoParam sysUserUpdateInfoParam) {
         SysUser sysUser = this.queryEntity(sysUserUpdateInfoParam.getId());
+
+        if (ObjectUtil.isNotEmpty(sysUserUpdateInfoParam.getPhone())) {
+            if (!PhoneUtil.isMobile(sysUserUpdateInfoParam.getPhone())) {
+                throw new CommonException("手机号码：{}格式错误", sysUserUpdateInfoParam.getPhone());
+            }
+            if (this.count(new LambdaQueryWrapper<SysUser>().ne(SysUser::getId, sysUser.getId())
+                    .eq(SysUser::getPhone, sysUserUpdateInfoParam.getPhone())) > 0) {
+                throw new CommonException("存在重复的手机号，手机号为：{}", sysUserUpdateInfoParam.getPhone());
+            }
+        }
+        LambdaUpdateWrapper<SysUser> lambdaUpdateWrapper = new LambdaUpdateWrapper<SysUser>().eq(SysUser::getId, sysUser.getId());
+        if(ObjectUtil.isNotEmpty(sysUserUpdateInfoParam.getName())) {
+            lambdaUpdateWrapper.set(SysUser::getName, sysUserUpdateInfoParam.getName());
+        }
+        if(ObjectUtil.isNotEmpty(sysUserUpdateInfoParam.getPhone())) {
+            lambdaUpdateWrapper.set(SysUser::getPhone, CommonCryptogramUtil.doSm4CbcEncrypt(sysUserUpdateInfoParam.getPhone()));
+        }
+        if(ObjectUtil.isNotEmpty(sysUserUpdateInfoParam.getNickname())) {
+            lambdaUpdateWrapper.set(SysUser::getNickname, sysUserUpdateInfoParam.getNickname());
+        }
+        if(ObjectUtil.isNotEmpty(sysUserUpdateInfoParam.getGender())) {
+            lambdaUpdateWrapper.set(SysUser::getGender, sysUserUpdateInfoParam.getGender());
+        }
+        if(ObjectUtil.isNotEmpty(sysUserUpdateInfoParam.getBirthday())) {
+            lambdaUpdateWrapper.set(SysUser::getBirthday, sysUserUpdateInfoParam.getBirthday());
+        }
+        if(ObjectUtil.isNotEmpty(sysUserUpdateInfoParam.getEmail())) {
+            lambdaUpdateWrapper.set(SysUser::getEmail, sysUserUpdateInfoParam.getEmail());
+        }
+        if(ObjectUtil.isNotEmpty(sysUserUpdateInfoParam.getSignature())) {
+            lambdaUpdateWrapper.set(SysUser::getSignature, sysUserUpdateInfoParam.getSignature());
+        }
         // 更新指定字段
-        this.update(new LambdaUpdateWrapper<SysUser>().eq(SysUser::getId, sysUser.getId())
-                .set(SysUser::getName, sysUserUpdateInfoParam.getName())
-                .set(SysUser::getPhone, CommonCryptogramUtil.doSm4CbcEncrypt(sysUserUpdateInfoParam.getPhone()))
-                .set(SysUser::getNickname, sysUserUpdateInfoParam.getNickname())
-                .set(SysUser::getGender, sysUserUpdateInfoParam.getGender())
-                .set(SysUser::getBirthday, sysUserUpdateInfoParam.getBirthday())
-                .set(SysUser::getEmail, sysUserUpdateInfoParam.getEmail())
-                .set(SysUser::getSignature, sysUserUpdateInfoParam.getSignature()));
+        this.update(lambdaUpdateWrapper);
     }
 
     @Override
@@ -774,7 +871,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public String loginWorkbench(SysUserIdParam sysUserIdParam) {
         SysUser sysUser = this.queryEntity(sysUserIdParam.getId());
-        SysRelation sysRelation = sysRelationService.getOne(new LambdaQueryWrapper<SysRelation>().eq(SysRelation::getObjectId, sysUser.getId())
+        SysRelation sysRelation = sysRelationService.getOne(new LambdaUpdateWrapper<SysRelation>().eq(SysRelation::getObjectId, sysUser.getId())
                 .eq(SysRelation::getCategory, SysRelationCategoryEnum.SYS_USER_WORKBENCH_DATA.getValue()));
         if (ObjectUtil.isNotEmpty(sysRelation)) {
             return sysRelation.getExtJson();
@@ -792,97 +889,257 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public List<String> getButtonCodeList(String userId) {
+    public List<JSONObject> getRoleList(String userId) {
         List<String> roleIdList = sysRelationService.getRelationTargetIdListByObjectIdAndCategory(userId,
                 SysRelationCategoryEnum.SYS_USER_HAS_ROLE.getValue());
         if (ObjectUtil.isNotEmpty(roleIdList)) {
-            List<String> buttonIdList = CollectionUtil.newArrayList();
-            sysRelationService.getRelationListByObjectIdListAndCategory(roleIdList,
-                    SysRelationCategoryEnum.SYS_ROLE_HAS_RESOURCE.getValue()).forEach(sysRelation -> {
-                if (ObjectUtil.isNotEmpty(sysRelation.getExtJson())) {
-                    buttonIdList.addAll(JSONUtil.parseObj(sysRelation.getExtJson()).getBeanList("buttonInfo", String.class));
-                }
-            });
-            if (ObjectUtil.isNotEmpty(buttonIdList)) {
-                return sysButtonService.listByIds(buttonIdList).stream().map(SysButton::getCode).collect(Collectors.toList());
-            }
+            return sysRoleService.listByIds(roleIdList).stream().map(JSONUtil::parseObj).collect(Collectors.toList());
         }
         return CollectionUtil.newArrayList();
     }
 
     @Override
-    public List<String> getMobileButtonCodeListListByUserId(String userId) {
-        List<String> roleIdList = sysRelationService.getRelationTargetIdListByObjectIdAndCategory(userId,
-                SysRelationCategoryEnum.SYS_USER_HAS_ROLE.getValue());
-        if (ObjectUtil.isNotEmpty(roleIdList)) {
-            List<String> buttonIdList = CollectionUtil.newArrayList();
-            sysRelationService.getRelationListByObjectIdListAndCategory(roleIdList,
-                    SysRelationCategoryEnum.SYS_ROLE_HAS_MOBILE_MENU.getValue()).forEach(sysRelation -> {
-                if (ObjectUtil.isNotEmpty(sysRelation.getExtJson())) {
-                    buttonIdList.addAll(JSONUtil.parseObj(sysRelation.getExtJson()).getBeanList("buttonInfo", String.class));
-                }
-            });
+    public List<String> getButtonCodeList(List<String> userAndRoleIdList) {
+        List<String> buttonIdList = CollectionUtil.newArrayList();
+        sysRelationService.list(new LambdaQueryWrapper<SysRelation>().in(SysRelation::getObjectId, userAndRoleIdList)
+                .in(SysRelation::getCategory, SysRelationCategoryEnum.SYS_USER_HAS_RESOURCE.getValue(),
+                        SysRelationCategoryEnum.SYS_ROLE_HAS_RESOURCE.getValue())).forEach(sysRelation -> {
+            if (ObjectUtil.isNotEmpty(sysRelation.getExtJson())) {
+                buttonIdList.addAll(JSONUtil.parseObj(sysRelation.getExtJson()).getBeanList("buttonInfo", String.class));
+            }
+        });
+        if (ObjectUtil.isNotEmpty(buttonIdList)) {
+            return sysButtonService.listByIds(buttonIdList).stream().map(SysButton::getCode).collect(Collectors.toList());
+        }
+        return CollectionUtil.newArrayList();
+    }
+
+    @Override
+    public List<String> getMobileButtonCodeList(List<String> userAndRoleIdList) {
+        List<String> buttonIdList = CollectionUtil.newArrayList();
+        sysRelationService.getRelationListByObjectIdListAndCategory(userAndRoleIdList,
+                SysRelationCategoryEnum.SYS_ROLE_HAS_MOBILE_MENU.getValue()).forEach(sysRelation -> {
+            if (ObjectUtil.isNotEmpty(sysRelation.getExtJson())) {
+                buttonIdList.addAll(JSONUtil.parseObj(sysRelation.getExtJson()).getBeanList("buttonInfo", String.class));
+            }
+        });
+        if (ObjectUtil.isNotEmpty(buttonIdList)) {
             return mobileButtonApi.listByIds(buttonIdList);
         }
         return CollectionUtil.newArrayList();
     }
 
     @Override
-    public List<JSONObject> getPermissionList(String userId, String orgId) {
-        if (ObjectUtil.isNotEmpty(orgId)) {
-            List<String> roleIdList = sysRelationService.getRelationTargetIdListByObjectIdAndCategory(userId,
-                    SysRelationCategoryEnum.SYS_USER_HAS_ROLE.getValue());
-            if (ObjectUtil.isNotEmpty(roleIdList)) {
-                Map<String, List<SysRelation>> groupMap = sysRelationService.getRelationListByObjectIdListAndCategory(roleIdList,
-                        SysRelationCategoryEnum.SYS_ROLE_HAS_PERMISSION.getValue()).stream().collect(Collectors.groupingBy(SysRelation::getTargetId));
-                if (ObjectUtil.isNotEmpty(groupMap)) {
-                    List<JSONObject> resultList = CollectionUtil.newArrayList();
-                    List<SysOrg> sysOrgList = sysOrgService.list();
-                    List<String> scopeAllList = sysOrgList.stream().map(SysOrg::getId).collect(Collectors.toList());
-                    List<String> scopeOrgList = CollectionUtil.newArrayList(orgId);
-                    List<String> scopeOrgChildList = sysOrgService.getChildListById(sysOrgList, orgId, true)
-                            .stream().map(SysOrg::getId).collect(Collectors.toList());
-                    groupMap.forEach((key, value) -> {
-                        JSONObject jsonObject = JSONUtil.createObj().set("apiUrl", key);
-                        Set<String> scopeSet = CollectionUtil.newHashSet();
-                        value.forEach(sysRelation -> {
-                            JSONObject extJsonObject = JSONUtil.parseObj(sysRelation.getExtJson());
-                            String scopeCategory = extJsonObject.getStr("scopeCategory");
-                            if (!scopeCategory.equals(SysRoleDataScopeCategoryEnum.SCOPE_SELF.getValue())) {
-                                if (scopeCategory.equals(SysRoleDataScopeCategoryEnum.SCOPE_ALL.getValue())) {
-                                    scopeSet.addAll(scopeAllList);
-                                } else if (scopeCategory.equals(SysRoleDataScopeCategoryEnum.SCOPE_ORG.getValue())) {
-                                    scopeSet.addAll(scopeOrgList);
-                                } else if (scopeCategory.equals(SysRoleDataScopeCategoryEnum.SCOPE_ORG_CHILD.getValue())) {
-                                    scopeSet.addAll(scopeOrgChildList);
-                                } else {
-                                    scopeSet.addAll(extJsonObject.getBeanList("scopeDefineOrgIdList", String.class));
-                                }
-                            }
-                        });
-                        resultList.add(jsonObject.set("dataScope", CollectionUtil.newArrayList(scopeSet)));
-                    });
-                    return resultList;
+    public List<JSONObject> getPermissionList(List<String> userAndRoleIdList, String orgId) {
+        Map<String, List<SysRelation>> map = sysRelationService.list(new LambdaQueryWrapper<SysRelation>()
+                .in(SysRelation::getObjectId, userAndRoleIdList).in(SysRelation::getCategory,
+                        SysRelationCategoryEnum.SYS_USER_HAS_PERMISSION.getValue(),
+                        SysRelationCategoryEnum.SYS_ROLE_HAS_PERMISSION.getValue())).stream()
+                .collect(Collectors.groupingBy(SysRelation::getTargetId));
+        return getScopeListByMap(map, orgId);
+    }
+
+    public List<JSONObject> getScopeListByMap(Map<String, List<SysRelation>> groupMap, String orgId) {
+        List<JSONObject> resultList = CollectionUtil.newArrayList();
+        List<SysOrg> sysOrgList = sysOrgService.getCachedAllOrgList();
+        List<String> scopeAllList = sysOrgList.stream().map(SysOrg::getId).collect(Collectors.toList());
+        List<String> scopeOrgList = CollectionUtil.newArrayList(orgId);
+        List<String> scopeOrgChildList = sysOrgService.getChildListById(sysOrgList, orgId, true)
+                .stream().map(SysOrg::getId).collect(Collectors.toList());
+        groupMap.forEach((key, value) -> {
+            JSONObject jsonObject = JSONUtil.createObj().set("apiUrl", key);
+            Set<String> scopeSet = CollectionUtil.newHashSet();
+            value.forEach(sysRelation -> {
+                JSONObject extJsonObject = JSONUtil.parseObj(sysRelation.getExtJson());
+                String scopeCategory = extJsonObject.getStr("scopeCategory");
+                if (!scopeCategory.equals(SysRoleDataScopeCategoryEnum.SCOPE_SELF.getValue())) {
+                    if (scopeCategory.equals(SysRoleDataScopeCategoryEnum.SCOPE_ALL.getValue())) {
+                        scopeSet.addAll(scopeAllList);
+                    } else if (scopeCategory.equals(SysRoleDataScopeCategoryEnum.SCOPE_ORG.getValue())) {
+                        scopeSet.addAll(scopeOrgList);
+                    } else if (scopeCategory.equals(SysRoleDataScopeCategoryEnum.SCOPE_ORG_CHILD.getValue())) {
+                        scopeSet.addAll(scopeOrgChildList);
+                    } else {
+                        scopeSet.addAll(extJsonObject.getBeanList("scopeDefineOrgIdList", String.class));
+                    }
+                }
+            });
+            resultList.add(jsonObject.set("dataScope", CollectionUtil.newArrayList(scopeSet)));
+        });
+        return resultList;
+    }
+
+    @Override
+    public void downloadImportUserTemplate(HttpServletResponse response) throws IOException {
+        try {
+            InputStream inputStream = POICacheManager.getFile("userImportTemplate.xlsx");
+            byte[] bytes = IoUtil.readBytes(inputStream);
+            CommonDownloadUtil.download("SNOWY2.0系统B端用户导入模板.xlsx", bytes, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            CommonResponseUtil.renderError(response, "导出失败");
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public JSONObject importUser(MultipartFile file) {
+        try {
+            int successCount = 0;
+            int errorCount = 0;
+            JSONArray errorDetail = JSONUtil.createArray();
+            // 创建临时文件
+            File tempFile = FileUtil.writeBytes(file.getBytes(), FileUtil.file(FileUtil.getTmpDir() +
+                    FileUtil.FILE_SEPARATOR + "userImportTemplate.xlsx"));
+            // 读取excel
+            List<SysUserImportParam> sysUserImportParamList =  EasyExcel.read(tempFile).head(SysUserImportParam.class).sheet()
+                    .headRowNumber(2).doReadSync();
+            List<SysUser> allUserList = this.list();
+            for (int i = 0; i < sysUserImportParamList.size(); i++) {
+                JSONObject jsonObject = this.doImport(allUserList, sysUserImportParamList.get(i), i);
+                if(jsonObject.getBool("success")) {
+                    successCount += 1;
+                } else{
+                    errorCount += 1;
+                    errorDetail.add(jsonObject);
                 }
             }
+            return JSONUtil.createObj()
+                    .set("totalCount", sysUserImportParamList.size())
+                    .set("successCount", successCount)
+                    .set("errorCount", errorCount)
+                    .set("errorDetail", errorDetail);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CommonException("文件导入失败");
         }
-        return CollectionUtil.newArrayList();
     }
 
-    @Override
-    public List<String> getRoleCodeList(String userId) {
-        List<String> roleIdList = sysRelationService.getRelationTargetIdListByObjectIdAndCategory(userId,
-                SysRelationCategoryEnum.SYS_USER_HAS_ROLE.getValue());
-        if (ObjectUtil.isNotEmpty(roleIdList)) {
-            return sysRoleService.listByIds(roleIdList)
-                    .stream().map(SysRole::getCode).collect(Collectors.toList());
-        }
-        return CollectionUtil.newArrayList();
-    }
+    /**
+     * 执行导入
+     *
+     * @author xuyuxiang
+     * @date 2023/3/7 13:22
+     **/
+    public JSONObject doImport(List<SysUser> allUserList, SysUserImportParam sysUserImportParam, int i) {
+        String account = sysUserImportParam.getAccount();
+        String name = sysUserImportParam.getName();
+        String orgFullName = sysUserImportParam.getOrgName();
+        String positionFullName = sysUserImportParam.getPositionName();
+        // 校验必填参数
+        if(ObjectUtil.hasEmpty(account, name, orgFullName, positionFullName)) {
+            return JSONUtil.createObj().set("index", i + 1).set("success", false).set("msg", "必填字段存在空值");
+        } else {
+            try {
+                // 机构名称
+                String orgName = CollectionUtil.getLast(StrUtil.split(orgFullName, StrUtil.DASHED));
+                // 职位名称
+                String positionName = CollectionUtil.getLast(StrUtil.split(positionFullName, StrUtil.DASHED));
+                // 机构id
+                String orgId = sysOrgService.getOrgIdByOrgFullNameWithCreate(orgFullName);
+                // 职位id
+                String positionId = sysPositionService.getPositionIdByPositionNameWithCreate(orgId, positionName);
 
-    @Override
-    public void importUser(MultipartFile file) {
-        // TODO 待完善
+                // 查找账号对应索引
+                int index = CollStreamUtil.toList(allUserList, SysUser::getAccount).indexOf(account);
+                SysUser sysUser = new SysUser();
+                boolean isAdd = false;
+                if(index == -1) {
+                    isAdd = true;
+                } else {
+                    sysUser = allUserList.get(index);
+                }
+
+                // 获取手机号和邮箱
+                String phone = sysUserImportParam.getPhone();
+                String email = sysUserImportParam.getEmail();
+
+                // 判断手机号是否跟系统现有的重复
+                if(ObjectUtil.isNotEmpty(phone)) {
+                    if(isAdd) {
+                        boolean repeatPhone = allUserList.stream().anyMatch(tempSysUser -> ObjectUtil
+                                .isNotEmpty(tempSysUser.getPhone()) && tempSysUser.getPhone().equals(phone));
+                        if(repeatPhone) {
+                            // 新增用户手机号重复则不导入该手机号
+                            sysUserImportParam.setPhone(null);
+                        }
+                    } else {
+                        String finalExistUserId = sysUser.getId();
+                        boolean repeatPhone = allUserList.stream().anyMatch(tempSysUser -> ObjectUtil
+                                .isNotEmpty(tempSysUser.getPhone()) && tempSysUser.getPhone()
+                                .equals(phone) && !tempSysUser.getId().equals(finalExistUserId));
+                        if(repeatPhone) {
+                            // 更新用户手机号重复则使用原手机号
+                            sysUser.setPhone(sysUser.getPhone());
+                        }
+                    }
+                }
+                // 判断邮箱是否跟系统现有的重复
+                if(ObjectUtil.isNotEmpty(email)) {
+                    if(isAdd) {
+                        boolean repeatEmail = allUserList.stream().anyMatch(tempSysUser -> ObjectUtil
+                                .isNotEmpty(tempSysUser.getEmail()) && tempSysUser.getEmail().equals(email));
+                        if(repeatEmail) {
+                            // 新增邮箱重复则不导入该邮箱
+                            sysUserImportParam.setEmail(null);
+                        }
+                    } else {
+                        String finalExistUserId = sysUser.getId();
+                        boolean repeatEmail = allUserList.stream().anyMatch(tempSysUser -> ObjectUtil
+                                .isNotEmpty(tempSysUser.getEmail()) && tempSysUser.getEmail()
+                                .equals(email) && !tempSysUser.getId().equals(finalExistUserId));
+                        if(repeatEmail) {
+                            // 更新用户手机号重复则使用原邮箱
+                            sysUser.setEmail(sysUser.getEmail());
+                        }
+                    }
+                }
+                // 拷贝属性
+                BeanUtil.copyProperties(sysUserImportParam, sysUser);
+
+                // 设置机构id和职位id
+                sysUser.setOrgId(orgId);
+                sysUser.setPositionId(positionId);
+
+                // 设置机构名称和职位名称（暂时无作用）
+                sysUser.setOrgName(orgName);
+                sysUser.setPositionName(positionName);
+
+                // 发布事件
+                if(isAdd) {
+                    // 设置id
+                    sysUser.setId(IdWorker.getIdStr());
+                    // 设置默认头像
+                    sysUser.setAvatar(CommonAvatarUtil.generateImg(sysUser.getName()));
+                    // 设置默认密码
+                    sysUser.setPassword(CommonCryptogramUtil.doHashValue(devConfigApi.getValueByKey(SNOWY_SYS_DEFAULT_PASSWORD_KEY)));
+                    // 设置排序码
+                    sysUser.setSortCode(99);
+                    // 设置状态
+                    sysUser.setUserStatus(SysUserStatusEnum.ENABLE.getValue());
+                    // 发布增加事件
+                    CommonDataChangeEventCenter.doAddWithData(SysDataTypeEnum.USER.getValue(), JSONUtil.createArray().put(sysUser));
+                    // 更新全部用户
+                    allUserList.add(sysUser);
+                } else {
+                    // 发布更新事件
+                    CommonDataChangeEventCenter.doUpdateWithData(SysDataTypeEnum.USER.getValue(), JSONUtil.createArray().put(sysUser));
+                    // 删除指定索引元素
+                    allUserList.remove(index);
+                    // 插入指定索引元素
+                    allUserList.add(index, sysUser);
+                }
+
+                // 保存或更新
+                this.saveOrUpdate(sysUser);
+
+                // 返回成功
+                return JSONUtil.createObj().set("success", true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return JSONUtil.createObj().set("success", false).set("index", i + 1).set("msg", "数据导入异常");
+            }
+        }
     }
 
     @Override
@@ -890,27 +1147,124 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         File tempFile = null;
         try {
             QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-            if (ObjectUtil.isNotEmpty(sysUserExportParam.getSearchKey())) {
-                queryWrapper.lambda().like(SysUser::getAccount, sysUserExportParam.getSearchKey()).or()
-                        .like(SysUser::getName, sysUserExportParam.getSearchKey());
+            if(ObjectUtil.isNotEmpty(sysUserExportParam.getUserIds())) {
+                queryWrapper.lambda().in(SysUser::getId, StrUtil.split(sysUserExportParam.getUserIds(), StrUtil.COMMA));
+            } else {
+                if (ObjectUtil.isNotEmpty(sysUserExportParam.getSearchKey())) {
+                    queryWrapper.lambda().like(SysUser::getAccount, sysUserExportParam.getSearchKey())
+                            .or().like(SysUser::getName, sysUserExportParam.getSearchKey())
+                            .or().like(SysUser::getPhone, sysUserExportParam.getSearchKey());
+                }
+                if (ObjectUtil.isNotEmpty(sysUserExportParam.getUserStatus())) {
+                    queryWrapper.lambda().eq(SysUser::getUserStatus, sysUserExportParam.getUserStatus());
+                }
             }
-            if (ObjectUtil.isNotEmpty(sysUserExportParam.getUserStatus())) {
-                queryWrapper.lambda().eq(SysUser::getUserStatus, sysUserExportParam.getUserStatus());
+            String fileName = "SNOWY2.0系统B端用户信息清单.xlsx";
+            List<SysUser> sysUserList = this.list(queryWrapper);
+            if(ObjectUtil.isEmpty(sysUserList)) {
+                throw new CommonException("无数据可导出");
             }
-            String fileName = "SNOWY2.0系统B端用户信息清单";
-            List<SysUserExportResult> sysUserExportResultList = this.list(queryWrapper).stream()
-                    .map(sysUser -> BeanUtil.copyProperties(sysUser, SysUserExportResult.class)).peek(sysUserExportResult -> {
-                        if (ObjectUtil.isNotEmpty(sysUserExportResult.getAvatar())) {
-                            sysUserExportResult.setAvatarByte(ImgUtil.toBytes(ImgUtil.toImage(StrUtil
-                                    .split(sysUserExportResult.getAvatar(), StrUtil.COMMA).get(1)), ImgUtil.IMAGE_TYPE_PNG));
+            transService.transBatch(sysUserList);
+            sysUserList = CollectionUtil.sort(sysUserList, Comparator.comparing(SysUser::getOrgId));
+            List<SysUserExportResult> sysUserExportResultList = sysUserList.stream()
+                    .map(sysUser -> {
+                        SysUserExportResult sysUserExportResult = new SysUserExportResult();
+                        BeanUtil.copyProperties(sysUser, sysUserExportResult);
+                        sysUserExportResult.setGroupName(ObjectUtil.isNotEmpty(sysUserExportResult.getOrgName())?
+                                sysUserExportResult.getOrgName():"无组织");
+                        // 状态枚举转为文字
+                        sysUserExportResult.setUserStatus(sysUserExportResult.getUserStatus()
+                                .equalsIgnoreCase(SysUserStatusEnum.ENABLE.getValue())?"正常":"停用");
+                        // 将base64转为byte数组
+                        if (ObjectUtil.isNotEmpty(sysUser.getAvatar())) {
+                            sysUserExportResult.setAvatar(ImgUtil.toBytes(ImgUtil.toImage(StrUtil
+                                    .split(sysUser.getAvatar(), StrUtil.COMMA).get(1)), ImgUtil.IMAGE_TYPE_PNG));
                         }
+                        return sysUserExportResult;
                     }).collect(Collectors.toList());
-            Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams(fileName, "B端用户"),
-                    SysUserExportResult.class, sysUserExportResultList);
-            tempFile = FileUtil.file(FileUtil.getTmpDir() + FileUtil.FILE_SEPARATOR + fileName + ".xls");
-            BufferedOutputStream outputStream = FileUtil.getOutputStream(tempFile);
-            workbook.write(outputStream);
-            outputStream.close();
+            // 创建临时文件
+            tempFile = FileUtil.file(FileUtil.getTmpDir() + FileUtil.FILE_SEPARATOR + fileName);
+
+            // 头的策略
+            WriteCellStyle headWriteCellStyle = new WriteCellStyle();
+            WriteFont headWriteFont = new WriteFont();
+            headWriteFont.setFontHeightInPoints((short) 14);
+            headWriteCellStyle.setWriteFont(headWriteFont);
+            // 水平垂直居中
+            headWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            headWriteCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+            // 内容的策略
+            WriteCellStyle contentWriteCellStyle = new WriteCellStyle();
+            // 这里需要指定 FillPatternType 为FillPatternType.SOLID_FOREGROUND 不然无法显示背景颜色.头默认了 FillPatternType所以可以不指定
+            contentWriteCellStyle.setFillPatternType(FillPatternType.SOLID_FOREGROUND);
+            // 内容背景白色
+            contentWriteCellStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+            WriteFont contentWriteFont = new WriteFont();
+
+            // 内容字体大小
+            contentWriteFont.setFontHeightInPoints((short) 12);
+            contentWriteCellStyle.setWriteFont(contentWriteFont);
+
+            //设置边框样式，细实线
+            contentWriteCellStyle.setBorderLeft(BorderStyle.THIN);
+            contentWriteCellStyle.setBorderTop(BorderStyle.THIN);
+            contentWriteCellStyle.setBorderRight(BorderStyle.THIN);
+            contentWriteCellStyle.setBorderBottom(BorderStyle.THIN);
+
+            // 水平垂直居中
+            contentWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.LEFT);
+            contentWriteCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+            // 这个策略是 头是头的样式 内容是内容的样式 其他的策略可以自己实现
+            HorizontalCellStyleStrategy horizontalCellStyleStrategy = new HorizontalCellStyleStrategy(headWriteCellStyle,
+                    contentWriteCellStyle);
+
+            // 写excel
+            EasyExcel.write(tempFile.getPath(), SysUserExportResult.class)
+                    // 自定义样式
+                    .registerWriteHandler(horizontalCellStyleStrategy)
+                    // 自动列宽
+                    .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
+                    // 机构分组合并单元格
+                    .registerWriteHandler(new CommonExcelCustomMergeStrategy(sysUserExportResultList.stream().map(SysUserExportResult::getGroupName)
+                            .collect(Collectors.toList()), 0))
+                    // 设置第一行字体
+                    .registerWriteHandler(new CellWriteHandler() {
+                        @Override
+                        public void afterCellDispose(CellWriteHandlerContext context) {
+                            WriteCellData<?> cellData = context.getFirstCellData();
+                            WriteCellStyle writeCellStyle = cellData.getOrCreateStyle();
+                            Integer rowIndex = context.getRowIndex();
+                            if(rowIndex == 0) {
+                                WriteFont headWriteFont = new WriteFont();
+                                headWriteFont.setFontName("宋体");
+                                headWriteFont.setBold(true);
+                                headWriteFont.setFontHeightInPoints((short) 16);
+                                writeCellStyle.setWriteFont(headWriteFont);
+                            }
+                        }
+                    })
+                    // 设置表头行高
+                    .registerWriteHandler(new AbstractRowHeightStyleStrategy() {
+                        @Override
+                        protected void setHeadColumnHeight(Row row, int relativeRowIndex) {
+                            if(relativeRowIndex == 0) {
+                                // 表头第一行
+                                row.setHeightInPoints(34);
+                            } else {
+                                // 表头其他行
+                                row.setHeightInPoints(30);
+                            }
+                        }
+                        @Override
+                        protected void setContentColumnHeight(Row row, int relativeRowIndex) {
+                            // 内容行
+                            row.setHeightInPoints(20);
+                        }
+                    })
+                    .sheet("用户信息")
+                    .doWrite(sysUserExportResultList);
             CommonDownloadUtil.download(tempFile, response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -921,10 +1275,70 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public void exportUserInfo(SysUserIdParam sysUserIdParam, HttpServletResponse response) throws IOException {
+        File destTemplateFile = null;
+        File resultFile = null;
+        try {
+            SysUser sysUser = this.queryEntity(sysUserIdParam.getId());
+            transService.transOne(sysUser);
+            // 读取模板流
+            InputStream inputStream = POICacheManager.getFile("userExportTemplate.docx");
+            // 创建一个临时模板
+            destTemplateFile = FileUtil.writeFromStream(inputStream, FileUtil.file(FileUtil.getTmpDir() +
+                    File.separator + "userExportTemplate.docx"));
+            // 构造填充的参数
+            Map<String, Object> map = BeanUtil.beanToMap(sysUser);
+            String avatarBase64;
+            if(ObjectUtil.isNotEmpty(sysUser.getAvatar())) {
+                avatarBase64 = sysUser.getAvatar();
+            } else {
+                avatarBase64 = CommonAvatarUtil.generateImg(sysUser.getName());
+            }
+            // 头像
+            ImageEntity imageEntity = new ImageEntity(ImgUtil.toBytes(ImgUtil.toImage(StrUtil
+                    .split(avatarBase64, StrUtil.COMMA).get(1)), ImgUtil.IMAGE_TYPE_PNG), 120, 160);
+            map.put("avatar", imageEntity);
+            if(ObjectUtil.isNotEmpty(sysUser.getBirthday())) {
+                try {
+                    // 年龄
+                    long age = DateUtil.betweenYear(DateUtil.parseDate(sysUser.getBirthday()), DateTime.now(), true);
+                    if(age != 0) {
+                        map.put("age", age + "岁");
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+            // 导出时间
+            map.put("exportDateTime", DateUtil.format(DateTime.now(), DatePattern.CHINESE_DATE_PATTERN));
+            // 生成doc
+            XWPFDocument doc = WordExportUtil.exportWord07(destTemplateFile.getAbsolutePath(), map);
+            // 生成临时导出文件
+            resultFile = FileUtil.file(FileUtil.getTmpDir() + File.separator + "SNOWY2.0系统B端用户信息_" + sysUser.getName() + ".docx");
+            // 写入
+            BufferedOutputStream outputStream = FileUtil.getOutputStream(resultFile);
+            doc.write(outputStream);
+            outputStream.close();
+            // 下载
+            CommonDownloadUtil.download(resultFile, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            CommonResponseUtil.renderError(response, "导出失败");
+        } finally {
+            // 删除临时文件
+            if(ObjectUtil.isNotEmpty(destTemplateFile)) {
+                FileUtil.del(destTemplateFile);
+            }
+            if(ObjectUtil.isNotEmpty(resultFile)) {
+                FileUtil.del(resultFile);
+            }
+        }
+    }
+
+    @Override
     public List<SysUserPositionResult> loginPositionInfo(SysUserIdParam sysUserIdParam) {
         SysUser sysUser = this.queryEntity(sysUserIdParam.getId());
         List<SysUserPositionResult> sysUserPositionResultList = CollectionUtil.newArrayList();
-        List<SysOrg> sysOrgList = sysOrgService.list();
+        List<SysOrg> sysOrgList = sysOrgService.getCachedAllOrgList();
         String primaryOrgId = sysUser.getOrgId();
         SysOrg primarySysOrg = sysOrgService.getById(sysOrgList, primaryOrgId);
         if (ObjectUtil.isEmpty(primarySysOrg)) {
@@ -982,13 +1396,29 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return sysUserPositionResultList;
     }
 
+    @Override
+    public List<SysUser> getCachedAllUserSelectorList() {
+        // 从缓存中取
+        Object cacheValue = commonCacheOperator.get(USER_CACHE_ALL_KEY);
+        if(ObjectUtil.isNotEmpty(cacheValue)) {
+            return JSONUtil.toList(JSONUtil.parseArray(cacheValue), SysUser.class);
+        }
+        // 只查询部分字段
+        List<SysUser> userList = this.list(new LambdaQueryWrapper<SysUser>().select(SysUser::getId, SysUser::getOrgId,
+                SysUser::getId, SysUser::getPositionId, SysUser::getAccount, SysUser::getName, SysUser::getSortCode)
+                .orderByAsc(SysUser::getSortCode));
+        if(ObjectUtil.isNotEmpty(userList)) {
+            // 更新到缓存
+            commonCacheOperator.put(USER_CACHE_ALL_KEY, userList);
+        }
+        return userList;
+    }
+
     /* ====用户部分所需要用到的选择器==== */
 
     @Override
     public List<Tree<String>> orgTreeSelector() {
-        LambdaQueryWrapper<SysOrg> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.orderByAsc(SysOrg::getSortCode);
-        List<SysOrg> sysOrgList = sysOrgService.list(lambdaQueryWrapper);
+        List<SysOrg> sysOrgList = sysOrgService.getCachedAllOrgList();
         List<TreeNode<String>> treeNodeList = sysOrgList.stream().map(sysOrg ->
                 new TreeNode<>(sysOrg.getId(), sysOrg.getParentId(), sysOrg.getName(), sysOrg.getSortCode()))
                 .collect(Collectors.toList());
@@ -1050,14 +1480,26 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         LambdaQueryWrapper<SysUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 只查询部分字段
         lambdaQueryWrapper.select(SysUser::getId, SysUser::getOrgId, SysUser::getAccount, SysUser::getName, SysUser::getSortCode);
-        if (ObjectUtil.isNotEmpty(sysUserSelectorUserParam.getOrgId())) {
-            lambdaQueryWrapper.eq(SysUser::getOrgId, sysUserSelectorUserParam.getOrgId());
+        // 如果查询条件为空，则从缓存中查询
+        if(ObjectUtil.isAllEmpty(sysUserSelectorUserParam.getOrgId(), sysUserSelectorUserParam.getSearchKey())) {
+            return this.getCachedAllUserSelectorList();
+        } else {
+            if (ObjectUtil.isNotEmpty(sysUserSelectorUserParam.getOrgId())) {
+                // 如果机构id不为空，则查询该机构所在顶级机构下的所有人
+                List<String> parentAndChildOrgIdList = CollStreamUtil.toList(sysOrgService.getParentAndChildListById(sysOrgService
+                        .getCachedAllOrgList(), sysUserSelectorUserParam.getOrgId(), true), SysOrg::getId);
+                if (ObjectUtil.isNotEmpty(parentAndChildOrgIdList)) {
+                    lambdaQueryWrapper.in(SysUser::getOrgId, parentAndChildOrgIdList);
+                } else {
+                    return CollectionUtil.newArrayList();
+                }
+            }
+            if (ObjectUtil.isNotEmpty(sysUserSelectorUserParam.getSearchKey())) {
+                lambdaQueryWrapper.like(SysUser::getName, sysUserSelectorUserParam.getSearchKey());
+            }
+            lambdaQueryWrapper.orderByAsc(SysUser::getSortCode);
+            return this.list(lambdaQueryWrapper);
         }
-        if (ObjectUtil.isNotEmpty(sysUserSelectorUserParam.getSearchKey())) {
-            lambdaQueryWrapper.like(SysUser::getName, sysUserSelectorUserParam.getSearchKey());
-        }
-        lambdaQueryWrapper.orderByAsc(SysUser::getSortCode);
-        return this.list(lambdaQueryWrapper);
     }
 
     @Override

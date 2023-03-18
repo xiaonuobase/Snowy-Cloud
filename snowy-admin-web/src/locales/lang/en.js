@@ -16,7 +16,11 @@ export default {
 		editButton: 'edit',
 		removeButton: 'delete',
 		batchRemoveButton: 'batch Remove',
-		detailButton: 'detail'
+		detailButton: 'detail',
+		searchKey: 'Search Key',
+		imports: 'Import',
+		more: 'More',
+		export: 'Export',
 	},
 	model: {
 		user: 'user',
@@ -50,5 +54,19 @@ export default {
 		emailCodePlaceholder: 'Please input a Email code',
 		restPhoneType: 'For phone rest',
 		restEmailType: 'For email rest'
+	},
+	user: {
+		userStatus: 'User Status',
+		resetPassword: 'Reset Password',
+		role: 'Role',
+		batchExportButton: 'Batch Export',
+		grantRole: 'Grant Role',
+		grantResource: 'Grant Resource',
+		grantPermission: 'Grant Permission',
+		exportUserInfo: 'Export UserInfo',
+		placeholderNameAndSearchKey: 'Please enter your name or keyword',
+		placeholderUserStatus: 'Please select status',
+		popconfirmDeleteUser: 'Are you sure you want to delete it？',
+		popconfirmResatUserPwd: 'Are you sure you want to reset？'
 	}
 }

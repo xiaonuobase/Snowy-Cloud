@@ -330,12 +330,12 @@
 
 <script setup>
 	import bizUserApi from '@/api/biz/bizUserApi'
-	import { required, rules } from '@/utils/formRules'
+	import { required } from '@/utils/formRules'
+	import tool from '@/utils/tool'
 	// 默认是关闭状态
 	let visible = $ref(false)
 	const formRef = ref()
 	const activeTabsKey = ref('1')
-	const { proxy } = getCurrentInstance()
 	const emit = defineEmits({ successful: null })
 	const formLoading = ref(false)
 	const treeData = ref([])
@@ -351,33 +351,42 @@
 	let formData = ref({})
 
 	// 打开抽屉
-	const onOpen = (record) => {
+	const onOpen = (record, orgId) => {
 		visible = true
 		formData.value = {
 			gender: '男',
 			positionJson: []
 		}
+		if (orgId) {
+			formData.value.orgId = orgId
+			// 通过机构再查询职位、主管
+			nextTick(() => {
+				selePositionData(orgId)
+			})
+		}
 		if (record) {
 			convertFormData(record)
 		}
-		// 机构选择器数据
-		bizUserApi.userOrgTreeSelector().then((res) => {
-			if (res !== null) {
-				treeData.value = res
-				// 默认展开2级
-				treeData.value.forEach((item) => {
-					// 因为0的顶级
-					if (item.parentId === '0') {
-						treeDefaultExpandedKeys.value.push(item.id)
-						// 取到下级ID
-						if (item.children) {
-							item.children.forEach((items) => {
-								treeDefaultExpandedKeys.value.push(items.id)
-							})
+		nextTick(() => {
+			// 机构选择器数据
+			bizUserApi.userOrgTreeSelector().then((res) => {
+				if (res !== null) {
+					treeData.value = res
+					// 默认展开2级
+					treeData.value.forEach((item) => {
+						// 因为0的顶级
+						if (item.parentId === '0') {
+							treeDefaultExpandedKeys.value.push(item.id)
+							// 取到下级ID
+							if (item.children) {
+								item.children.forEach((items) => {
+									treeDefaultExpandedKeys.value.push(items.id)
+								})
+							}
 						}
-					}
-				})
-			}
+					})
+				}
+			})
 		})
 	}
 	// 关闭抽屉
@@ -514,33 +523,13 @@
 		})
 	}
 	// 性别
-	const genderOptions = proxy.$TOOL.dictTypeList('GENDER').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const genderOptions = tool.dictList('GENDER')
 	// 民族
-	const nationOptions = proxy.$TOOL.dictTypeList('NATION').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const nationOptions = tool.dictList('NATION')
 	// 身份证件
-	const idcardTypeOptions = proxy.$TOOL.dictTypeList('IDCARD_TYPE').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const idcardTypeOptions = tool.dictList('IDCARD_TYPE')
 	// 文化程度
-	const cultureLevelOptions = proxy.$TOOL.dictTypeList('CULTURE_LEVEL').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const cultureLevelOptions = tool.dictList('CULTURE_LEVEL')
 
 	// 调用这个函数将子组件的一些数据和方法暴露出去
 	defineExpose({

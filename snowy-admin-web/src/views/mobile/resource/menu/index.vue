@@ -17,7 +17,7 @@
 					<a-space>
 						<a-input v-model:value="searchFormState.searchKey" placeholder="请输入模块名称关键词"></a-input>
 						<a-button type="primary" @click="table.refresh(true)">查询</a-button>
-						<a-button style="margin: 0 8px" @click="() => searchFormRef.resetFields()">重置</a-button>
+						<a-button style="margin: 0 8px" @click="reset">重置</a-button>
 					</a-space>
 				</a-form-item>
 			</a-space>
@@ -41,7 +41,7 @@
 						<template #icon><plus-outlined /></template>
 						新增
 					</a-button>
-					<a-button danger @click="deleteBatchMobileMenu()">删除</a-button>
+					<xn-batch-delete :selectedRowKeys="selectedRowKeys" @batchDelete="deleteBatchMobileMenu" />
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
@@ -183,6 +183,11 @@
 			})
 		}
 	}
+	// 重置
+	const reset = () => {
+		searchFormRef.value.resetFields();
+		table.value.refresh(true)
+	}
 	// 切换模块标签查询菜单列表
 	const moduleClock = (value) => {
 		searchFormState.module = value
@@ -200,16 +205,7 @@
 		})
 	}
 	// 批量删除
-	const deleteBatchMobileMenu = () => {
-		if (selectedRowKeys.value.length < 1) {
-			message.warning('请选择一条或多条数据')
-			return false
-		}
-		const params = selectedRowKeys.value.map((m) => {
-			return {
-				id: m
-			}
-		})
+	const deleteBatchMobileMenu = (params) => {
 		mobileMenuApi.mobileMenuDelete(params).then(() => {
 			table.value.clearRefreshSelected()
 		})

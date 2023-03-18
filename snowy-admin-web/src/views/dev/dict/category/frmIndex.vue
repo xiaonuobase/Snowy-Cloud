@@ -33,13 +33,13 @@
 									<template #icon><SearchOutlined /></template>
 									查询
 								</a-button>
-								<a-button class="snowy-buttom-left" @click="() => searchFormRef.resetFields()">
+								<a-button class="snowy-buttom-left" @click="reset">
 									<template #icon><redo-outlined /></template>
 									重置
 								</a-button>
 							</a-col>
 							<a-col :span="8">
-								<a-button type="primary" @click="form.onOpen(undefined, 'FRM')">
+								<a-button type="primary" @click="form.onOpen(undefined, 'FRM', searchFormState.parentId)">
 									<template #icon><plus-outlined /></template>
 									新增
 								</a-button>
@@ -104,6 +104,11 @@
 		return dictApi.dictPage(Object.assign(parameter, searchFormState)).then((res) => {
 			return res
 		})
+	}
+	// 重置
+	const reset = () => {
+		searchFormRef.value.resetFields();
+		table.value.refresh(true)
 	}
 	// 加载左侧的树
 	const loadTreeData = () => {

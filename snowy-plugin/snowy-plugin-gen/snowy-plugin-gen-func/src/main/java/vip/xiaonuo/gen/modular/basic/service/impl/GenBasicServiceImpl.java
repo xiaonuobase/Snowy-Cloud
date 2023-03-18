@@ -123,6 +123,8 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
 
     private static final String UPDATE_TIME_KEY = "UPDATE_TIME";
 
+    private static final String DELETE_FLAG_KEY = "DELETE_FLAG";
+
     @Resource
     private Environment environment;
 
@@ -239,7 +241,7 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
             // 级联删除配置
             genConfigService.remove(new LambdaQueryWrapper<GenConfig>().in(GenConfig::getBasicId, basicIdIdList));
             // 执行删除
-            this.removeBatchByIds(basicIdIdList);
+            this.removeByIds(basicIdIdList);
         }
     }
 
@@ -274,8 +276,8 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
             List<GenBasicTableResult> tables = new ArrayList<>();
             rs = metaData.getTables(null, schema, "%", new String[]{"TABLE", "VIEW"});
             while (rs.next()) {
-                String tableName = rs.getString("TABLE_NAME").toUpperCase();
-                if (!tableName.startsWith("ACT_")) {
+                String tableName = rs.getString("TABLE_NAME");
+                if (!StrUtil.startWithIgnoreCase(tableName, "ACT_")) {
                     GenBasicTableResult genBasicTableResult = new GenBasicTableResult();
                     genBasicTableResult.setTableName(tableName);
                     String remarks = rs.getString("REMARKS");
@@ -552,7 +554,7 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
         // 主键名驼峰
         bindingJsonObject.set("dbTableKeyCamelCase", StrUtil.toCamelCase(genBasic.getDbTableKey().toLowerCase()));
         // 主键首字母大写名
-        bindingJsonObject.set("dbTableKeyFirstUpper", StrUtil.upperFirst(genBasic.getDbTableKey().toLowerCase()));
+        bindingJsonObject.set("dbTableKeyFirstUpper", StrUtil.upperFirst(StrUtil.toCamelCase(genBasic.getDbTableKey().toLowerCase())));
         // 主键注释
         bindingJsonObject.set("dbTableKeyRemark", genBasic.getDbTableKey());
         // 表单布局
@@ -651,6 +653,8 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
                     // 是否需要自动更新
                     configItem.set("needAutoUpdate", UPDATE_USER_KEY.equalsIgnoreCase(genConfig.getFieldName()) ||
                             UPDATE_TIME_KEY.equalsIgnoreCase(genConfig.getFieldName()));
+                    // 是否需要逻辑删除
+                    configItem.set("needLogicDelete", DELETE_FLAG_KEY.equalsIgnoreCase(genConfig.getFieldName()));
                     configList.add(configItem);
 
                 });

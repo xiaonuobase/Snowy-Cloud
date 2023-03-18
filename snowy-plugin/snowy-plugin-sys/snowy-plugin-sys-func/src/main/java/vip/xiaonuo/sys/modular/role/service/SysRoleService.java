@@ -84,7 +84,7 @@ public interface SysRoleService extends IService<SysRole> {
      * @author xuyuxiang
      * @date 2022/5/13 20:51
      */
-    SysRoleOwnResourceResult ownResource(SysRoleIdParam SysRoleIdParam);
+    SysRoleOwnResourceResult ownResource(SysRoleIdParam sysRoleIdParam);
 
     /**
      * 给角色授权资源

@@ -32,7 +32,12 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <scope>test</scope>
+            <scope>test</scope><exclusions>
+            <exclusion>
+                <artifactId>logback-classic</artifactId>
+                <groupId>ch.qos.logback</groupId>
+            </exclusion>
+        </exclusions>
         </dependency>
 
         <!-- dynamic-datasource -->

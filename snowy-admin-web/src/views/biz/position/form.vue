@@ -40,7 +40,7 @@
 				</a-select>
 			</a-form-item>
 			<a-form-item label="排序：" name="sortCode">
-				<a-slider v-model:value="formData.sortCode" :max="100" />
+				<a-input-number style="width: 100%" v-model:value="formData.sortCode" :max="100" />
 			</a-form-item>
 		</a-form>
 		<template #footer>
@@ -52,14 +52,12 @@
 
 <script setup name="bizPositionForm">
 	import { required } from '@/utils/formRules'
-	import { getCurrentInstance } from 'vue'
-	import { message } from 'ant-design-vue'
 	import bizOrgApi from '@/api/biz/bizOrgApi'
 	import bizPositionApi from '@/api/biz/bizPositionApi'
+	import tool from '@/utils/tool'
 
 	// 定义emit事件
 	const emit = defineEmits({ successful: null })
-	const { proxy } = getCurrentInstance()
 	// 默认是关闭状态
 	let visible = $ref(false)
 	const formRef = ref()
@@ -70,10 +68,13 @@
 	const submitLoading = ref(false)
 
 	// 打开抽屉
-	const onOpen = (record) => {
+	const onOpen = (record, orgId) => {
 		visible = true
 		formData.value = {
 			sortCode: 99
+		}
+		if (orgId) {
+			formData.value.orgId = orgId
 		}
 		if (record) {
 			formData.value = Object.assign({}, record)
@@ -101,25 +102,22 @@
 		category: [required('请选择岗位分类')],
 		sortCode: [required('请选择排序')]
 	}
-	let positionCategoryOptions = proxy.$TOOL.dictTypeList('POSITION_CATEGORY').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const positionCategoryOptions = tool.dictList('POSITION_CATEGORY')
 	// 验证并提交数据
 	const onSubmit = () => {
 		formRef.value
 			.validate()
 			.then(() => {
 				submitLoading.value = true
-				bizPositionApi.submitForm(formData.value, !formData.value.id).then(() => {
-					visible = false
-					emit('successful')
-				})
-				.finally(() => {
-					submitLoading.value = false
-				})
+				bizPositionApi
+					.submitForm(formData.value, !formData.value.id)
+					.then(() => {
+						visible = false
+						emit('successful')
+					})
+					.finally(() => {
+						submitLoading.value = false
+					})
 			})
 			.catch(() => {})
 	}

@@ -18,8 +18,7 @@
 					button-style="solid"
 					:options="categoryOptions"
 					option-type="button"
-				>
-				</a-radio-group>
+				/>
 			</a-form-item>
 			<a-form-item label="上级菜单：" name="parentId">
 				<a-tree-select
@@ -39,7 +38,7 @@
 					selectable="false"
 					tree-line
 					@change="parentChange(formData.parentId)"
-				></a-tree-select>
+				/>
 			</a-form-item>
 			<a-form-item v-if="formData.menuType !== 'CATALOG'" name="path">
 				<template #label>
@@ -88,7 +87,7 @@
 				<a-button type="primary" @click="iconSelector.showIconModal(formData.icon)">选择</a-button>
 			</a-form-item>
 			<a-form-item label="排序:" name="sortCode">
-				<a-slider v-model:value="formData.sortCode" :max="100" />
+				<a-input-number style="width: 100%" v-model:value="formData.sortCode" :max="100" />
 			</a-form-item>
 		</a-form>
 		<template #footer>
@@ -105,7 +104,6 @@
 	import tool from '@/utils/tool'
 	import menuApi from '@/api/sys/resource/menuApi'
 	import IconSelector from '@/components/Selector/iconSelector.vue'
-	import { getCurrentInstance } from 'vue'
 	// 默认是关闭状态
 	let visible = $ref(false)
 	const emit = defineEmits({ successful: null })
@@ -180,14 +178,7 @@
 		component: [required('请输入组件地址')]
 	}
 
-	const { proxy } = getCurrentInstance()
-	let categoryOptions = proxy.$TOOL.dictTypeList('MENU_TYPE').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
-
+	const categoryOptions = tool.dictList('MENU_TYPE')
 	// 验证并提交数据
 	const onSubmit = () => {
 		formRef.value
@@ -199,7 +190,8 @@
 					onClose()
 					emit('successful')
 				})
-			}).finally(() => {
+			})
+			.finally(() => {
 				submitLoading.value = false
 			})
 	}

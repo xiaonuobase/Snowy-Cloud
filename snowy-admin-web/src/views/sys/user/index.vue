@@ -14,6 +14,39 @@
 			</a-card>
 		</a-col>
 		<a-col :span="19">
+			<a-card :bordered="false" style="margin-bottom: 10px">
+				<a-form ref="searchFormRef" name="advanced_search" class="ant-advanced-search-form" :model="searchFormState">
+					<a-row :gutter="24">
+						<a-col :span="8">
+							<a-form-item name="searchKey" :label="$t('common.searchKey')">
+								<a-input
+									v-model:value="searchFormState.searchKey"
+									:placeholder="$t('user.placeholderNameAndSearchKey')"
+								/>
+							</a-form-item>
+						</a-col>
+						<a-col :span="8">
+							<a-form-item name="userStatus" :label="$t('user.userStatus')">
+								<a-select v-model:value="searchFormState.userStatus" :placeholder="$t('user.placeholderUserStatus')">
+									<a-select-option v-for="item in statusData" :key="item.value" :value="item.value">{{
+										item.label
+									}}</a-select-option>
+								</a-select>
+							</a-form-item>
+						</a-col>
+						<a-col :span="8">
+							<a-button type="primary" @click="table.refresh(true)">
+								<template #icon><SearchOutlined /></template>
+								{{ $t('common.searchButton') }}
+							</a-button>
+							<a-button class="snowy-buttom-left" @click="reset">
+								<template #icon><redo-outlined /></template>
+								{{ $t('common.resetButton') }}
+							</a-button>
+						</a-col>
+					</a-row>
+				</a-form>
+			</a-card>
 			<a-card :bordered="false">
 				<s-table
 					ref="table"
@@ -26,43 +59,25 @@
 					:row-selection="options.rowSelection"
 				>
 					<template #operator class="table-operator">
-						<a-form
-							ref="searchFormRef"
-							name="advanced_search"
-							class="ant-advanced-search-form"
-							:model="searchFormState"
-						>
-							<a-row :gutter="24">
-								<a-col :span="6">
-									<a-form-item name="searchKey">
-										<a-input v-model:value="searchFormState.searchKey" placeholder="请输入姓名或账号"></a-input>
-									</a-form-item>
-								</a-col>
-								<a-col :span="6">
-									<a-form-item name="userStatus">
-										<a-select v-model:value="searchFormState.userStatus" placeholder="请选择状态">
-											<a-select-option v-for="item in statusData" :key="item.dictValue" :value="item.dictValue">{{
-												item.name
-											}}</a-select-option>
-										</a-select>
-									</a-form-item>
-								</a-col>
-								<a-col :span="6">
-									<a-button type="primary" @click="table.refresh(true)">{{ $t('common.searchButton') }}</a-button>
-									<a-button class="snowy-buttom-left" @click="() => searchFormRef.resetFields()">{{
-										$t('common.resetButton')
-									}}</a-button>
-								</a-col>
-								<a-col :span="6">
-									<a-button type="primary" class="primaryAdd" @click="form.onOpen()">
-										<span>{{ $t('common.addButton') }}{{ $t('model.user') }}</span>
-									</a-button>
-									<a-button danger @click="removeBatchUser()">{{
-										$t('common.batchRemoveButton')
-									}}</a-button>
-								</a-col>
-							</a-row>
-						</a-form>
+						<a-space>
+							<a-button type="primary" @click="form.onOpen(undefined, searchFormState.orgId)">
+								<template #icon><plus-outlined /></template>
+								<span>{{ $t('common.addButton') }}{{ $t('model.user') }}</span>
+							</a-button>
+							<a-button @click="ImpExpRef.onOpen()">
+								<template #icon><import-outlined /></template>
+								<span>{{ $t('common.imports') }}</span>
+							</a-button>
+							<a-button @click="exportBatchUserVerify">
+								<template #icon><export-outlined /></template>
+								{{ $t('user.batchExportButton') }}
+							</a-button>
+							<xn-batch-delete
+								:buttonName="$t('common.batchRemoveButton')"
+								:selectedRowKeys="selectedRowKeys"
+								@batchDelete="deleteBatchUser"
+							/>
+						</a-space>
 					</template>
 					<template #bodyCell="{ column, record }">
 						<template v-if="column.dataIndex === 'avatar'">
@@ -72,26 +87,48 @@
 							{{ $TOOL.dictTypeData('GENDER', record.gender) }}
 						</template>
 						<template v-if="column.dataIndex === 'userStatus'">
-							<a-switch
-								:loading="loading"
-								:checked="record.userStatus === 'ENABLE'"
-								@change="editStatus(record)"
-							/>
+							<a-switch :loading="loading" :checked="record.userStatus === 'ENABLE'" @change="editStatus(record)" />
 						</template>
 						<template v-if="column.dataIndex === 'action'">
 							<a @click="form.onOpen(record)">{{ $t('common.editButton') }}</a>
 							<a-divider type="vertical" />
-							<a @click="selectRole(record)">角色</a>
-							<a-divider type="vertical" />
-							<a-popconfirm title="确定重置此用户密码？" @confirm="resetPassword(record)">
-								<a>重置密码</a>
+							<a-popconfirm :title="$t('user.popconfirmDeleteUser')" placement="topRight" @confirm="removeUser(record)">
+								<a-button type="link" danger size="small">
+									{{ $t('common.removeButton') }}
+								</a-button>
 							</a-popconfirm>
 							<a-divider type="vertical" />
-							<a-popconfirm title="确定要删除此用户吗？" @confirm="removeUser(record)">
-								<a-button type="link" danger size="small">{{
-									$t('common.removeButton')
-									}}</a-button>
-							</a-popconfirm>
+							<a-dropdown>
+								<a class="ant-dropdown-link">
+									{{ $t('common.more') }}
+									<DownOutlined />
+								</a>
+								<template #overlay>
+									<a-menu>
+										<a-menu-item>
+											<a-popconfirm
+												:title="$t('user.popconfirmResatUserPwd')"
+												placement="topRight"
+												@confirm="resetPassword(record)"
+											>
+												<a>{{ $t('user.resetPassword') }}</a>
+											</a-popconfirm>
+										</a-menu-item>
+										<a-menu-item>
+											<a @click="selectRole(record)">{{ $t('user.grantRole') }}</a>
+										</a-menu-item>
+										<a-menu-item>
+											<a @click="grantResourceFormRef.onOpen(record)">{{ $t('user.grantResource') }}</a>
+										</a-menu-item>
+										<a-menu-item>
+											<a @click="grantPermissionFormRef.onOpen(record)">{{ $t('user.grantPermission') }}</a>
+										</a-menu-item>
+										<a-menu-item>
+											<a @click="exportUserInfo(record)">{{ $t('user.exportUserInfo') }}</a>
+										</a-menu-item>
+									</a-menu>
+								</template>
+							</a-dropdown>
 						</template>
 					</template>
 				</s-table>
@@ -101,18 +138,25 @@
 	<Form ref="form" @successful="table.refresh(true)" />
 	<role-selector-plus
 		ref="RoleSelectorPlus"
-		page-url="/api/webapp/sys/user/roleSelector"
-		org-url="/api/webapp/sys/user/orgTreeSelector"
+		page-url="/sys/user/roleSelector"
+		org-url="/sys/user/orgTreeSelector"
 		@onBack="roleBack"
 	/>
+	<ImpExp ref="ImpExpRef" />
+	<grantResourceForm ref="grantResourceFormRef" @successful="table.refresh(true)" />
+	<grantPermissionForm ref="grantPermissionFormRef" @successful="table.refresh(true)" />
 </template>
 
 <script setup name="sysUser">
 	import { message, Empty } from 'ant-design-vue'
-	import { getCurrentInstance } from 'vue'
+	import tool from '@/utils/tool'
+	import downloadUtil from '@/utils/downloadUtil'
 	import userApi from '@/api/sys/userApi'
 	import roleSelectorPlus from '@/components/Selector/roleSelectorPlus.vue'
 	import Form from './form.vue'
+	import ImpExp from './impExp.vue'
+	import grantResourceForm from './grantResourceForm.vue'
+	import grantPermissionForm from './grantPermissionForm.vue'
 
 	const columns = [
 		{
@@ -132,7 +176,7 @@
 		},
 		{
 			title: '性别',
-			dataIndex: 'gender',
+			dataIndex: 'genderName',
 			width: '50px'
 		},
 		{
@@ -159,25 +203,25 @@
 			title: '操作',
 			dataIndex: 'action',
 			align: 'center',
-			width: '240px'
+			width: '220px'
 		}
 	]
-	const { proxy } = getCurrentInstance()
-	const statusData = proxy.$TOOL.dictTypeList('COMMON_STATUS')
+	const statusData = tool.dictList('COMMON_STATUS')
 	const searchFormRef = ref()
 	let defaultExpandedKeys = ref([])
 	let searchFormState = reactive({})
 	const table = ref(null)
 	const treeData = ref([])
-	let selectedRowKeys = ref([])
+	const selectedRowKeys = ref([])
 	const treeFieldNames = { children: 'children', title: 'name', key: 'id' }
 	let form = ref(null)
-	let RoleSelector = ref()
 	let RoleSelectorPlus = ref()
 	const selectedRecord = ref({})
 	const loading = ref(false)
 	const cardLoading = ref(true)
-
+	const ImpExpRef = ref()
+	const grantResourceFormRef = ref()
+	const grantPermissionFormRef = ref()
 	// 表格查询 返回 Promise 对象
 	const loadData = (parameter) => {
 		return userApi.userPage(Object.assign(parameter, searchFormState)).then((res) => {
@@ -209,7 +253,7 @@
 		alert: {
 			show: false,
 			clear: () => {
-				selectedRowKeys = ref([])
+				selectedRowKeys.value = ref([])
 			}
 		},
 		rowSelection: {
@@ -217,6 +261,11 @@
 				selectedRowKeys.value = selectedRowKey
 			}
 		}
+	}
+	// 重置
+	const reset = () => {
+		searchFormRef.value.resetFields()
+		table.value.refresh(true)
 	}
 	// 点击树查询
 	const treeSelect = (selectedKeys) => {
@@ -261,17 +310,37 @@
 			table.value.refresh()
 		})
 	}
-	// 批量删除用户
-	const removeBatchUser = () => {
-		if (selectedRowKeys.value.length < 1) {
-			message.warning('请选择一条或多条数据')
+	// 批量导出校验并加参数
+	const exportBatchUserVerify = () => {
+		if ((selectedRowKeys.value.length < 1) & !searchFormState.searchKey & !searchFormState.userStatus) {
+			message.warning('请输入查询条件或勾选要导出的信息')
+		}
+		if (selectedRowKeys.value.length > 0) {
+			const params = selectedRowKeys.value.map((m) => {
+				return m
+			})
+			exportBatchUser(params)
 			return
 		}
-		const params = selectedRowKeys.value.map((m) => {
-			return {
-				id: m
+		if (searchFormState.searchKey || searchFormState.userStatus) {
+			const params = {
+				searchKey: searchFormState.searchKey,
+				userStatus: searchFormState.userStatus
 			}
+			exportBatchUser(params)
+			return
+		}
+	}
+	// 批量导出
+	const exportBatchUser = (params) => {
+		console.log(JSON.stringify(params))
+		userApi.userExport(params).then((res) => {
+			downloadUtil.resultDownload(res)
+			table.value.clearSelected()
 		})
+	}
+	// 批量删除
+	const deleteBatchUser = (params) => {
 		userApi.userDelete(params).then(() => {
 			table.value.clearRefreshSelected()
 		})
@@ -304,6 +373,15 @@
 	const resetPassword = (record) => {
 		userApi.userResetPassword(record).then(() => {})
 	}
+	// 导出用户信息
+	const exportUserInfo = (record) => {
+		const params = {
+			id: record.id
+		}
+		userApi.userExportUserInfo(params).then((res) => {
+			downloadUtil.resultDownload(res)
+		})
+	}
 </script>
 
 <style scoped>
@@ -312,9 +390,6 @@
 	}
 	.ant-form-item {
 		margin-bottom: 0 !important;
-	}
-	.primaryAdd {
-		margin-right: 10px;
 	}
 	.snowy-table-avatar {
 		margin-top: -10px;

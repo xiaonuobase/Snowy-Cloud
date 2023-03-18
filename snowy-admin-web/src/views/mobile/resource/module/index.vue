@@ -9,7 +9,7 @@
 				</a-col>
 				<a-col :span="8">
 					<a-button type="primary" @click="table.refresh(true)">查询</a-button>
-					<a-button style="margin: 0 8px" @click="() => formRef.resetFields()">重置</a-button>
+					<a-button style="margin: 0 8px" @click="reset">重置</a-button>
 				</a-col>
 			</a-row>
 		</a-form>
@@ -31,7 +31,7 @@
 						<template #icon><plus-outlined /></template>
 						新增模块
 					</a-button>
-					<a-button danger @click="deleteBatchModule()">删除</a-button>
+					<xn-batch-delete :selectedRowKeys="selectedRowKeys" @batchDelete="deleteBatchModule" />
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
@@ -56,7 +56,6 @@
 </template>
 
 <script setup name="mobileModule">
-	import { message } from 'ant-design-vue'
 	import Form from './form.vue'
 	import moduleApi from '@/api/mobile/resource/moduleApi'
 	let searchFormState = reactive({})
@@ -110,11 +109,10 @@
 			return res
 		})
 	}
-	// 查询
-	const onSearch = () => {
-		if (searchFormState.searchKey) {
-			table.value.refresh(true)
-		}
+	// 重置
+	const reset = () => {
+		formRef.value.resetFields();
+		table.value.refresh(true)
 	}
 	// 删除
 	const deleteModule = (record) => {
@@ -128,16 +126,7 @@
 		})
 	}
 	// 批量删除
-	const deleteBatchModule = () => {
-		if (selectedRowKeys.value.length < 1) {
-			message.warning('请选择一条或多条数据')
-			return false
-		}
-		const params = selectedRowKeys.value.map((m) => {
-			return {
-				id: m
-			}
-		})
+	const deleteBatchModule = (params) => {
 		moduleApi.moduleDelete(params).then(() => {
 			table.value.clearRefreshSelected()
 		})

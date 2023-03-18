@@ -18,8 +18,7 @@
 					:options="categoryOptions"
 					style="width: 100%"
 					placeholder="请选择角色分类"
-				>
-				</a-select>
+				/>
 			</a-form-item>
 			<a-form-item v-if="formData.category === 'ORG'" label="所属机构：" name="orgId">
 				<a-tree-select
@@ -37,10 +36,10 @@
 					}"
 					selectable="false"
 					tree-line
-				></a-tree-select>
+				/>
 			</a-form-item>
 			<a-form-item label="排序：" name="sortCode">
-				<a-slider v-model:value="formData.sortCode" :max="100" />
+				<a-input-number style="width: 100%" v-model:value="formData.sortCode" :max="100" />
 			</a-form-item>
 		</a-form>
 		<template #footer>
@@ -52,13 +51,12 @@
 
 <script setup name="roleForm">
 	import { required } from '@/utils/formRules'
-	import { getCurrentInstance } from 'vue'
+	import tool from '@/utils/tool'
 	import orgApi from '@/api/sys/orgApi'
 	import roleApi from '@/api/sys/roleApi'
 
 	// 定义emit事件
 	const emit = defineEmits({ successful: null })
-	const { proxy } = getCurrentInstance()
 	// 默认是关闭状态
 	let visible = $ref(false)
 	const formRef = ref()
@@ -69,10 +67,18 @@
 	const submitLoading = ref(false)
 
 	// 打开抽屉
-	const onOpen = (record) => {
+	const onOpen = (record, category, orgId) => {
 		visible = true
 		formData.value = {
 			sortCode: 99
+		}
+		// 判断角色的类型
+		if (category) {
+			formData.value.category = category
+		}
+		if (orgId) {
+			formData.value.category = 'ORG'
+			formData.value.orgId = orgId
 		}
 		if (record) {
 			formData.value = Object.assign({}, record)
@@ -94,28 +100,21 @@
 		sortCode: [required('请选择排序')]
 	}
 	// 机构分类字典
-	let categoryOptions = proxy.$TOOL.dictTypeList('ROLE_CATEGORY').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	let categoryOptions = tool.dictList('ROLE_CATEGORY')
 	// 验证并提交数据
 	const onSubmit = () => {
-		formRef.value
-			.validate()
-			.then(() => {
-				submitLoading.value = true
-				roleApi
-					.submitForm(formData.value, !formData.value.id)
-					.then(() => {
-						visible = false
-						emit('successful')
-					})
-					.finally(() => {
-						submitLoading.value = false
-					})
-			})
+		formRef.value.validate().then(() => {
+			submitLoading.value = true
+			roleApi
+				.submitForm(formData.value, !formData.value.id)
+				.then(() => {
+					visible = false
+					emit('successful')
+				})
+				.finally(() => {
+					submitLoading.value = false
+				})
+		})
 	}
 	// 调用这个函数将子组件的一些数据和方法暴露出去
 	defineExpose({

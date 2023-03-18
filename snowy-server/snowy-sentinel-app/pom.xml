@@ -25,7 +25,6 @@
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-common</artifactId>
-            <version>${project.parent.version}</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>

@@ -10,4 +10,6 @@
 
 ####代码生成插件: snowy-plugin-gen
 
+####移动端管理插件: snowy-plugin-mobile
+
 ####系统功能插件: snowy-plugin-sys

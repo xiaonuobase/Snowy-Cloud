@@ -71,6 +71,8 @@ import vip.xiaonuo.common.consts.FeignConstant;
 import vip.xiaonuo.common.enums.CommonDeleteFlagEnum;
 import vip.xiaonuo.common.enums.SysBuildInEnum;
 import vip.xiaonuo.common.exception.CommonException;
+import vip.xiaonuo.common.listener.CommonDataChangeEventCenter;
+import vip.xiaonuo.common.listener.CommonDataChangeListener;
 import vip.xiaonuo.common.pojo.CommonResult;
 import vip.xiaonuo.common.pojo.CommonWrapperInterface;
 import vip.xiaonuo.biz.core.handler.GlobalExceptionUtil;
@@ -186,6 +188,8 @@ public class GlobalConfigure implements WebMvcConfigurer {
             "/dev/sms/page",
             "/dev/sms/delete",
             "/dev/sms/detail",
+            "/gen/basic/**",
+            "/gen/config/**",
             "/mobile/menu/**",
             "/mobile/module/**",
             "/flw/model/**",
@@ -631,5 +635,16 @@ public class GlobalConfigure implements WebMvcConfigurer {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
         return interceptor;
+    }
+
+    /**
+     * 注册数据变化事件中心 事件发布器
+     *
+     * @author xuyuxiang
+     * @date 2023/3/3 14:27
+     **/
+    @Resource
+    public void registerListenerList(List<CommonDataChangeListener> dataChangeListenerList) {
+        CommonDataChangeEventCenter.registerListenerList(dataChangeListenerList);
     }
 }

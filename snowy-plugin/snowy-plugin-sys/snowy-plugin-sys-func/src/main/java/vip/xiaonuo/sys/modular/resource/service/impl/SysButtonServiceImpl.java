@@ -25,8 +25,11 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
+import vip.xiaonuo.common.enums.SysDataTypeEnum;
 import vip.xiaonuo.common.exception.CommonException;
+import vip.xiaonuo.common.listener.CommonDataChangeEventCenter;
 import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.sys.modular.relation.entity.SysRelation;
 import vip.xiaonuo.sys.modular.relation.enums.SysRelationCategoryEnum;
@@ -83,6 +86,7 @@ public class SysButtonServiceImpl extends ServiceImpl<SysButtonMapper, SysButton
         return this.page(CommonPageRequest.defaultPage(), queryWrapper);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void add(SysButtonAddParam sysButtonAddParam) {
         SysButton sysButton = BeanUtil.toBean(sysButtonAddParam, SysButton.class);
@@ -94,6 +98,9 @@ public class SysButtonServiceImpl extends ServiceImpl<SysButtonMapper, SysButton
         }
         sysButton.setCategory(SysResourceCategoryEnum.BUTTON.getValue());
         this.save(sysButton);
+
+        // 发布增加事件
+        CommonDataChangeEventCenter.doAddWithData(SysDataTypeEnum.RESOURCE.getValue(), JSONUtil.createArray().put(sysButton));
     }
 
     @Override
@@ -111,6 +118,7 @@ public class SysButtonServiceImpl extends ServiceImpl<SysButtonMapper, SysButton
         });
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void edit(SysButtonEditParam sysButtonEditParam) {
         SysButton sysButton = this.queryEntity(sysButtonEditParam.getId());
@@ -123,6 +131,9 @@ public class SysButtonServiceImpl extends ServiceImpl<SysButtonMapper, SysButton
             throw new CommonException("存在重复的按钮，编码为：{}", sysButton.getCode());
         }
         this.updateById(sysButton);
+
+        // 发布更新事件
+        CommonDataChangeEventCenter.doUpdateWithData(SysDataTypeEnum.RESOURCE.getValue(), JSONUtil.createArray().put(sysButton));
     }
 
     @Override
@@ -151,7 +162,10 @@ public class SysButtonServiceImpl extends ServiceImpl<SysButtonMapper, SysButton
                             .set(SysRelation::getExtJson, JSONUtil.toJsonStr(extJsonObject)));
                 });
                 // 执行删除
-                this.removeBatchByIds(buttonIdList);
+                this.removeByIds(buttonIdList);
+
+                // 发布删除事件
+                CommonDataChangeEventCenter.doDeleteWithDataId(SysDataTypeEnum.RESOURCE.getValue(), buttonIdList);
             }
         }
     }
