@@ -15,12 +15,11 @@
  */
 package com.alibaba.csp.sentinel.dashboard.discovery;
 
-import java.util.ConcurrentModificationException;
-import java.util.Set;
-
+import com.alibaba.csp.sentinel.dashboard.config.DashboardConfig;
 import org.junit.Test;
 
-import com.alibaba.csp.sentinel.dashboard.config.DashboardConfig;
+import java.util.ConcurrentModificationException;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 

@@ -12,7 +12,6 @@
  */
 package vip.xiaonuo.auth.core.pojo;
 
-import vip.xiaonuo.auth.core.pojo.SaBaseLoginUser;
 import vip.xiaonuo.auth.core.enums.SysUserStatusEnum;
 
 /**

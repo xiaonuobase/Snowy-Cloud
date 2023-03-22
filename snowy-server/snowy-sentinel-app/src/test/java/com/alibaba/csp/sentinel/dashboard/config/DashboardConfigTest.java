@@ -15,11 +15,11 @@
  */
 package com.alibaba.csp.sentinel.dashboard.config;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
+
+import static org.junit.Assert.assertEquals;
 
 public class DashboardConfigTest {
     @Rule

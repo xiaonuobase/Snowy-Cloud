@@ -1,12 +1,11 @@
 package com.alibaba.csp.sentinel.dashboard.util;
 
-import static org.junit.Assert.*;
+import com.alibaba.csp.sentinel.dashboard.datasource.entity.SentinelVersion;
+import org.junit.Test;
 
 import java.util.Optional;
 
-import org.junit.Test;
-
-import com.alibaba.csp.sentinel.dashboard.datasource.entity.SentinelVersion;
+import static org.junit.Assert.*;
 
 public class VersionUtilsTest {
     @Test

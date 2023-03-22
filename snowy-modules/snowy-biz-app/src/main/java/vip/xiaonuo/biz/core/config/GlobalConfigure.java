@@ -65,6 +65,7 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import vip.xiaonuo.auth.core.util.StpClientUtil;
+import vip.xiaonuo.biz.core.handler.GlobalExceptionUtil;
 import vip.xiaonuo.common.annotation.CommonNoRepeat;
 import vip.xiaonuo.common.annotation.CommonWrapper;
 import vip.xiaonuo.common.consts.FeignConstant;
@@ -75,7 +76,6 @@ import vip.xiaonuo.common.listener.CommonDataChangeEventCenter;
 import vip.xiaonuo.common.listener.CommonDataChangeListener;
 import vip.xiaonuo.common.pojo.CommonResult;
 import vip.xiaonuo.common.pojo.CommonWrapperInterface;
-import vip.xiaonuo.biz.core.handler.GlobalExceptionUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;

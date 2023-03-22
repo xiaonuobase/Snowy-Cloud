@@ -12,7 +12,6 @@
  */
 package vip.xiaonuo.biz.modular.user.result;
 
-import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
