@@ -27,6 +27,7 @@
 
         <!-- snowy-base -->
         <snowy.version>2.0.0</snowy.version>
+        <spring-framework.version>5.3.26</spring-framework.version>
         <spring.boot-version>2.5.12</spring.boot-version>
         <spring.cloud-version>2020.0.6</spring.cloud-version>
         <spring.cloud.bootstrap-version>3.1.3</spring.cloud.bootstrap-version>
@@ -246,14 +247,6 @@
 
 
             <!-- ===================== snowy-cloud-base ========================= -->
-            <!-- SpringBoot -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring.boot-version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
 
             <!-- SpringCloud -->
             <dependency>
