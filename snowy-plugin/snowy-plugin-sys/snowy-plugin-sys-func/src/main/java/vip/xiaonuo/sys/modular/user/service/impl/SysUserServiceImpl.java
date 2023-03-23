@@ -531,7 +531,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                     sysUser.getId()).set(SysUser::getAvatar, base64));
             return base64;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(">>> 头像修改失败：", e);
             throw new CommonException("头像修改失败，用户id值为：{}", sysUser.getId());
         }
     }
@@ -975,8 +975,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             byte[] bytes = IoUtil.readBytes(inputStream);
             CommonDownloadUtil.download("SNOWY2.0系统B端用户导入模板.xlsx", bytes, response);
         } catch (Exception e) {
-            e.printStackTrace();
-            CommonResponseUtil.renderError(response, "导出失败");
+            log.error(">>> 下载用户导入模板失败：", e);
+            CommonResponseUtil.renderError(response, "下载用户导入模板失败");
         }
     }
 
@@ -1009,8 +1009,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                     .set("errorCount", errorCount)
                     .set("errorDetail", errorDetail);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new CommonException("文件导入失败");
+            log.error(">>> 用户导入失败：", e);
+            throw new CommonException("用户导入失败");
         }
     }
 
@@ -1135,7 +1135,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 // 返回成功
                 return JSONUtil.createObj().set("success", true);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(">>> 数据导入异常：", e);
                 return JSONUtil.createObj().set("success", false).set("index", i + 1).set("msg", "数据导入异常");
             }
         }
@@ -1266,8 +1266,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                     .doWrite(sysUserExportResultList);
             CommonDownloadUtil.download(tempFile, response);
         } catch (Exception e) {
-            e.printStackTrace();
-            CommonResponseUtil.renderError(response, "导出失败");
+            log.error(">>> 用户导出失败：", e);
+            CommonResponseUtil.renderError(response, "用户导出失败");
         } finally {
             FileUtil.del(tempFile);
         }
@@ -1320,7 +1320,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             // 下载
             CommonDownloadUtil.download(resultFile, response);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(">>> 导出用户个人信息失败：", e);
             CommonResponseUtil.renderError(response, "导出失败");
         } finally {
             // 删除临时文件
