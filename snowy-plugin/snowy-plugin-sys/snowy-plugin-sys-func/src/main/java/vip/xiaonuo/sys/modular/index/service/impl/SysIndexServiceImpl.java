@@ -17,7 +17,6 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.springframework.stereotype.Service;
 import vip.xiaonuo.auth.core.pojo.SaBaseLoginUser;
 import vip.xiaonuo.auth.core.util.StpLoginUserUtil;
@@ -67,7 +66,7 @@ public class SysIndexServiceImpl implements SysIndexService {
         List<String> scheduleIdList = sysIndexScheduleIdParamList.stream().map(SysIndexScheduleIdParam::getId)
                 .collect(Collectors.toList());
         if(ObjectUtil.isNotEmpty(scheduleIdList)) {
-            sysRelationService.removeBatchByIds(scheduleIdList);
+            sysRelationService.removeByIds(scheduleIdList);
         }
     }
 

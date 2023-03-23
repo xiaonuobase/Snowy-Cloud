@@ -4,8 +4,6 @@
 		:width="650"
 		:visible="visible"
 		:destroy-on-close="true"
-		:body-style="{ paddingBottom: '80px' }"
-		:footer-style="{ textAlign: 'right' }"
 		@close="onClose"
 	>
 		<s-table
@@ -39,7 +37,6 @@
 </template>
 
 <script setup>
-	import { message } from 'ant-design-vue'
 	import fieldApi from '@/api/sys/resource/fieldApi'
 	import Form from './form.vue'
 	const columns = [

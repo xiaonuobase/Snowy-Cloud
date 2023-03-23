@@ -18,7 +18,11 @@ export default {
 		editButton: '编辑',
 		removeButton: '删除',
 		batchRemoveButton: '批量删除',
-		detailButton: '详情'
+		detailButton: '详情',
+		searchKey: '关键词',
+		imports: '导入',
+		more: '更多',
+		export: '导出',
 	},
 	model: {
 		user: '用户',
@@ -52,5 +56,19 @@ export default {
 		emailCodePlaceholder: '请输入邮件验证码',
 		restPhoneType: '手机号找回',
 		restEmailType: '邮箱找回'
+	},
+	user: {
+		userStatus: '用户状态',
+		resetPassword: '重置密码',
+		role: '角色',
+		batchExportButton: '批量导出',
+		grantRole: '授权角色',
+		grantResource: '授权资源',
+		grantPermission: '授权权限',
+		exportUserInfo: '导出信息',
+		placeholderNameAndSearchKey: '请输入姓名或关键词',
+		placeholderUserStatus: '请选择状态',
+		popconfirmDeleteUser: '确定要删除吗？',
+		popconfirmResatUserPwd: '确定要重置吗？'
 	}
 }

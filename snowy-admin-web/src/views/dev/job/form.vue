@@ -1,11 +1,9 @@
 <template>
-	<a-drawer
+	<xn-form-container
 		:title="formData.id ? '编辑定时任务' : '增加定时任务'"
-		:width="500"
+		:width="550"
 		:visible="visible"
 		:destroy-on-close="true"
-		:body-style="{ paddingBottom: '80px' }"
-		:footer-style="{ textAlign: 'right' }"
 		@close="onClose"
 	>
 		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
@@ -13,24 +11,23 @@
 				<a-input v-model:value="formData.name" placeholder="请输入定时任务名称" allow-clear />
 			</a-form-item>
 			<a-form-item label="分类：" name="category">
-				<a-select v-model:value="formData.category" placeholder="请选择分类" :options="categoryOptions"> </a-select>
+				<a-select v-model:value="formData.category" placeholder="请选择分类" :options="categoryOptions" />
 			</a-form-item>
 			<a-form-item label="任务类名：" name="actionClass">
-				<a-select v-model:value="formData.actionClass" placeholder="请选择任务类名" :options="actionClassOptions">
-				</a-select>
+				<a-select v-model:value="formData.actionClass" placeholder="请选择任务类名" :options="actionClassOptions" />
 			</a-form-item>
 			<a-form-item label="表达式：" name="cronExpression">
-				<cron v-model:modelValue="formData.cronExpression"></cron>
+				<cron v-model:modelValue="formData.cronExpression" />
 			</a-form-item>
 			<a-form-item label="排序:" name="sortCode">
-				<a-slider v-model:value="formData.sortCode" :max="100" />
+				<a-input-number style="width: 100%" v-model:value="formData.sortCode" :max="100" />
 			</a-form-item>
 		</a-form>
 		<template #footer>
 			<a-button style="margin-right: 8px" @click="onClose">关闭</a-button>
 			<a-button type="primary" @click="onSubmit" :loading="submitLoading">保存</a-button>
 		</template>
-	</a-drawer>
+	</xn-form-container>
 </template>
 
 <script setup name="devJobForm">
@@ -84,28 +81,21 @@
 
 	// 验证并提交数据
 	const onSubmit = () => {
-		formRef.value
-			.validate()
-			.then(() => {
-				submitLoading.value = true
-				jobApi
-					.submitForm(formData.value, !formData.value.id)
-					.then(() => {
-						onClose()
-						emit('successful')
-					})
-					.finally(() => {
-						submitLoading.value = false
-					})
-			})
+		formRef.value.validate().then(() => {
+			submitLoading.value = true
+			jobApi
+				.submitForm(formData.value, !formData.value.id)
+				.then(() => {
+					onClose()
+					emit('successful')
+				})
+				.finally(() => {
+					submitLoading.value = false
+				})
+		})
 	}
 	// 分类
-	const categoryOptions = tool.dictTypeList('JOB_CATEGORY').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const categoryOptions = tool.dictList('JOB_CATEGORY')
 	// 调用这个函数将子组件的一些数据和方法暴露出去
 	defineExpose({
 		onOpen

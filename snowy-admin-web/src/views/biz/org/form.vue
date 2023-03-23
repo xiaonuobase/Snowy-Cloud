@@ -1,11 +1,9 @@
 <template>
-	<a-drawer
+	<xn-form-container
 		:title="formData.id ? '编辑机构' : '增加机构'"
-		:width="500"
+		:width="550"
 		:visible="visible"
 		:destroy-on-close="true"
-		:body-style="{ paddingBottom: '80px' }"
-		:footer-style="{ textAlign: 'right' }"
 		@close="onClose"
 	>
 		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
@@ -25,7 +23,7 @@
 					}"
 					selectable="false"
 					tree-line
-				></a-tree-select>
+				/>
 			</a-form-item>
 			<a-form-item label="机构名称：" name="name">
 				<a-input v-model:value="formData.name" placeholder="请输入机构名称" allow-clear />
@@ -36,11 +34,10 @@
 					:options="orgCategoryOptions"
 					style="width: 100%"
 					placeholder="请选择机构分类"
-				>
-				</a-select>
+				/>
 			</a-form-item>
 			<a-form-item label="排序：" name="sortCode">
-				<a-slider v-model:value="formData.sortCode" :max="100" />
+				<a-input-number style="width: 100%" v-model:value="formData.sortCode" :max="100" />
 			</a-form-item>
 			<a-form-item label="指定主管：" name="directorId">
 				<a-button type="link" style="padding-left: 0px" @click="openSelector(formData.directorId)">选择</a-button>
@@ -56,24 +53,22 @@
 		</template>
 		<user-selector-plus
 			ref="UserSelectorPlus"
-			page-url="/api/bizapp/biz/org/userSelector"
-			org-url="/api/bizapp/biz/org/orgTreeSelector"
+			page-url="/biz/org/userSelector"
+			org-url="/biz/org/orgTreeSelector"
 			:radio-model="true"
 			@onBack="userBack"
 		/>
-	</a-drawer>
+	</xn-form-container>
 </template>
 
 <script setup name="bizOrgForm">
-	import { required, rules } from '@/utils/formRules'
-	import { message } from 'ant-design-vue'
+	import { required } from '@/utils/formRules'
 	import bizOrgApi from '@/api/biz/bizOrgApi'
-	import { getCurrentInstance } from 'vue'
 	import userSelectorPlus from '@/components/Selector/userSelectorPlus.vue'
+	import tool from '@/utils/tool'
 
 	// 定义emit事件
 	const emit = defineEmits({ successful: null })
-	const { proxy } = getCurrentInstance()
 	// 默认是关闭状态
 	let visible = $ref(false)
 	let UserSelectorPlus = ref()
@@ -86,11 +81,14 @@
 	const submitLoading = ref(false)
 
 	// 打开抽屉
-	const onOpen = (record) => {
+	const onOpen = (record, parentId) => {
 		visible = true
 		extJson.value = ref([])
 		formData.value = {
 			sortCode: 99
+		}
+		if (parentId) {
+			formData.value.parentId = parentId
 		}
 		if (record) {
 			const param = {
@@ -124,12 +122,7 @@
 		sortCode: [required('请选择排序')]
 	}
 	// 机构分类字典
-	let orgCategoryOptions = proxy.$TOOL.dictTypeList('ORG_CATEGORY').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const orgCategoryOptions = tool.dictList('ORG_CATEGORY')
 	// 打开人员选择器，选择主管
 	const openSelector = (id) => {
 		let checkedUserIds = []
@@ -157,13 +150,15 @@
 			.then(() => {
 				submitLoading.value = true
 				formData.value.extJson = JSON.stringify(extJson.value)
-				bizOrgApi.submitForm(formData.value, !formData.value.id).then(() => {
-					visible = false
-					emit('successful')
-				})
-				.finally(() => {
-					submitLoading.value = false
-				})
+				bizOrgApi
+					.submitForm(formData.value, !formData.value.id)
+					.then(() => {
+						visible = false
+						emit('successful')
+					})
+					.finally(() => {
+						submitLoading.value = false
+					})
 			})
 			.catch(() => {})
 	}
@@ -172,5 +167,3 @@
 		onOpen
 	})
 </script>
-
-<style scoped></style>

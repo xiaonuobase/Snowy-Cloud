@@ -12,7 +12,7 @@
 						<template #icon><SearchOutlined /></template>
 						查询
 					</a-button>
-					<a-button class="snowy-buttom-left" @click="() => searchFormRef.resetFields()">
+					<a-button class="snowy-buttom-left" @click="reset">
 						<template #icon><redo-outlined /></template>
 						重置
 					</a-button>
@@ -34,7 +34,7 @@
 			<template #operator class="table-operator">
 				<a-space>
 					<a-button type="primary" @click="form.onOpen()"> 发送站内信 </a-button>
-					<a-button danger @click="deleteBatchEmail()">删除</a-button>
+					<xn-batch-delete :selectedRowKeys="selectedRowKeys" @batchDelete="deleteBatchEmail" />
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
@@ -53,7 +53,6 @@
 </template>
 
 <script setup name="devMessage">
-	import { message } from 'ant-design-vue'
 	import messageApi from '@/api/dev/messageApi'
 	import Form from './form.vue'
 	import detail from './detail.vue'
@@ -110,6 +109,11 @@
 			return data
 		})
 	}
+	// 重置
+	const reset = () => {
+		searchFormRef.value.resetFields()
+		table.value.refresh(true)
+	}
 	// 删除
 	const deleteMessage = (record) => {
 		let params = [
@@ -122,16 +126,7 @@
 		})
 	}
 	// 批量删除
-	const deleteBatchEmail = () => {
-		if (selectedRowKeys.value.length < 1) {
-			message.warning('请选择一条或多条数据')
-			return false
-		}
-		const params = selectedRowKeys.value.map((m) => {
-			return {
-				id: m
-			}
-		})
+	const deleteBatchEmail = (params) => {
 		messageApi.messageDelete(params).then(() => {
 			table.value.clearRefreshSelected()
 		})

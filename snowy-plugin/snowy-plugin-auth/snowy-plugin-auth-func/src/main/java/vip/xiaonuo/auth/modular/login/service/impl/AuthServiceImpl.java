@@ -16,10 +16,12 @@ import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.PhoneUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.springframework.stereotype.Service;
 import vip.xiaonuo.auth.api.SaBaseLoginUserApi;
@@ -43,6 +45,7 @@ import vip.xiaonuo.dev.api.DevConfigApi;
 import vip.xiaonuo.dev.api.DevSmsApi;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -137,7 +140,7 @@ public class AuthServiceImpl implements AuthService {
             throw new CommonException(AuthExceptionEnum.VALID_CODE_ERROR.getValue());
         }
         // 不一致则直接验证码错误
-        if(!validCode.equals(Convert.toStr(existValidCode))) {
+        if(!validCode.equals(Convert.toStr(existValidCode).toLowerCase())) {
             // 移除该验证码
             commonCacheOperator.remove(AUTH_CACHE_KEY + validCodeReqNo);
             throw new CommonException(AuthExceptionEnum.VALID_CODE_ERROR.getValue());
@@ -281,17 +284,27 @@ public class AuthServiceImpl implements AuthService {
             throw new CommonException(AuthExceptionEnum.ACCOUNT_DISABLED.getValue());
         }
         // 执行登录
-        StpUtil.login(saBaseLoginUser.getId(), new SaLoginModel().setDevice(device));
+        StpUtil.login(saBaseLoginUser.getId(), new SaLoginModel().setDevice(device).setExtra("name", saBaseLoginUser.getName()));
+        // 角色集合
+        List<JSONObject> roleList = loginUserApi.getRoleListByUserId(saBaseLoginUser.getId());
+        // 角色id集合
+        List<String> roleIdList = roleList.stream().map(jsonObject -> jsonObject.getStr("id")).collect(Collectors.toList());
+        // 角色码集合
+        List<String> roleCodeList = roleList.stream().map(jsonObject -> jsonObject.getStr("code")).collect(Collectors.toList());
+        // 角色id和用户id集合
+        List<String> userAndRoleIdList = CollectionUtil.unionAll(roleIdList, CollectionUtil.newArrayList(saBaseLoginUser.getId()));
         // 获取按钮码
-        saBaseLoginUser.setButtonCodeList(loginUserApi.getButtonCodeListListByUserId(saBaseLoginUser.getId()));
+        saBaseLoginUser.setButtonCodeList(loginUserApi.getButtonCodeListListByUserAndRoleIdList(userAndRoleIdList));
+        // 获取移动端按钮码
+        saBaseLoginUser.setMobileButtonCodeList(loginUserApi.getMobileButtonCodeListListByUserIdAndRoleIdList(userAndRoleIdList));
         // 获取数据范围
         saBaseLoginUser.setDataScopeList(Convert.toList(SaBaseLoginUser.DataScope.class,
-                loginUserApi.getPermissionListByUserId(saBaseLoginUser.getId(), saBaseLoginUser.getOrgId())));
+                loginUserApi.getPermissionListByUserIdAndRoleIdList(userAndRoleIdList, saBaseLoginUser.getOrgId())));
         // 获取权限码
         saBaseLoginUser.setPermissionCodeList(saBaseLoginUser.getDataScopeList().stream()
                 .map(SaBaseLoginUser.DataScope::getApiUrl).collect(Collectors.toList()));
         // 获取角色码
-        saBaseLoginUser.setRoleCodeList(loginUserApi.getRoleCodeListByUserId(saBaseLoginUser.getId()));
+        saBaseLoginUser.setRoleCodeList(roleCodeList);
         // 缓存用户信息，此处使用TokenSession为了指定时间内无操作则自动下线
         StpUtil.getTokenSession().set("loginUser", saBaseLoginUser);
         // 返回token
@@ -310,17 +323,27 @@ public class AuthServiceImpl implements AuthService {
             throw new CommonException(AuthExceptionEnum.ACCOUNT_DISABLED.getValue());
         }
         // 执行登录
-        StpClientUtil.login(saBaseClientLoginUser.getId(), new SaLoginModel().setDevice(device));
+        StpClientUtil.login(saBaseClientLoginUser.getId(), new SaLoginModel().setDevice(device).setExtra("name", saBaseClientLoginUser.getName()));
+        // 角色集合
+        List<JSONObject> roleList = loginUserApi.getRoleListByUserId(saBaseClientLoginUser.getId());
+        // 角色id集合
+        List<String> roleIdList = roleList.stream().map(jsonObject -> jsonObject.getStr("id")).collect(Collectors.toList());
+        // 角色码集合
+        List<String> roleCodeList = roleList.stream().map(jsonObject -> jsonObject.getStr("code")).collect(Collectors.toList());
+        // 角色id和用户id集合
+        List<String> userAndRoleIdList = CollectionUtil.unionAll(roleIdList, CollectionUtil.newArrayList(saBaseClientLoginUser.getId()));
         // 获取按钮码
-        saBaseClientLoginUser.setButtonCodeList(clientLoginUserApi.getButtonCodeListListByUserId(saBaseClientLoginUser.getId()));
+        saBaseClientLoginUser.setButtonCodeList(clientLoginUserApi.getButtonCodeListListByUserAndRoleIdList(userAndRoleIdList));
+        // 获取移动端按钮码
+        saBaseClientLoginUser.setMobileButtonCodeList(clientLoginUserApi.getMobileButtonCodeListListByUserIdAndRoleIdList(userAndRoleIdList));
         // 获取数据范围
         saBaseClientLoginUser.setDataScopeList(Convert.toList(SaBaseClientLoginUser.DataScope.class,
-                clientLoginUserApi.getPermissionListByUserId(saBaseClientLoginUser.getId(), null)));
+                clientLoginUserApi.getPermissionListByUserIdAndRoleIdList(userAndRoleIdList, null)));
         // 获取权限码
         saBaseClientLoginUser.setPermissionCodeList(saBaseClientLoginUser.getDataScopeList().stream()
                 .map(SaBaseClientLoginUser.DataScope::getApiUrl).collect(Collectors.toList()));
         // 获取角色码
-        saBaseClientLoginUser.setRoleCodeList(clientLoginUserApi.getRoleCodeListByUserId(saBaseClientLoginUser.getId()));
+        saBaseClientLoginUser.setRoleCodeList(roleCodeList);
         // 缓存用户信息，此处使用TokenSession为了指定时间内无操作则自动下线
         StpClientUtil.getTokenSession().set("loginUser", saBaseClientLoginUser);
         // 返回token

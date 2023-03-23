@@ -1,6 +1,6 @@
 import { baseRequest } from '@/utils/request'
 
-const request = (url, ...arg) => baseRequest(`/${moduleName}/${busName}/` + url, ...arg)
+const request = (url, ...arg) => baseRequest(`/api/${moduleName}app/${moduleName}/${busName}/` + url, ...arg)
 
 /**
  * ${functionName}Api接口管理器

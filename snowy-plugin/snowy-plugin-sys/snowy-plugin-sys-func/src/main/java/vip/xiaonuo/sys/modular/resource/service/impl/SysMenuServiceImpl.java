@@ -30,7 +30,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
+import vip.xiaonuo.common.enums.SysDataTypeEnum;
 import vip.xiaonuo.common.exception.CommonException;
+import vip.xiaonuo.common.listener.CommonDataChangeEventCenter;
 import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.sys.modular.relation.entity.SysRelation;
 import vip.xiaonuo.sys.modular.relation.enums.SysRelationCategoryEnum;
@@ -102,6 +104,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         return TreeUtil.build(treeNodeList, "0");
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void add(SysMenuAddParam sysMenuAddParam) {
         checkParam(sysMenuAddParam);
@@ -124,6 +127,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         }
         sysMenu.setCategory(SysResourceCategoryEnum.MENU.getValue());
         this.save(sysMenu);
+
+        // 发布增加事件
+        CommonDataChangeEventCenter.doAddWithData(SysDataTypeEnum.RESOURCE.getValue(), JSONUtil.createArray().put(sysMenu));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -185,6 +191,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void edit(SysMenuEditParam sysMenuEditParam) {
         SysMenu sysMenu = this.queryEntity(sysMenuEditParam.getId());
@@ -213,6 +220,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             }
         }
         this.updateById(sysMenu);
+
+        // 发布更新事件
+        CommonDataChangeEventCenter.doUpdateWithData(SysDataTypeEnum.RESOURCE.getValue(), JSONUtil.createArray().put(sysMenu));
     }
 
     @Override
@@ -265,7 +275,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                 sysRelationService.remove(new LambdaUpdateWrapper<SysRelation>().in(SysRelation::getTargetId, toDeleteMenuIdList)
                         .eq(SysRelation::getCategory, SysRelationCategoryEnum.SYS_ROLE_HAS_RESOURCE.getValue()));
                 // 执行删除
-                this.removeBatchByIds(toDeleteMenuIdList);
+                this.removeByIds(toDeleteMenuIdList);
+
+                // 发布删除事件
+                CommonDataChangeEventCenter.doDeleteWithDataId(SysDataTypeEnum.RESOURCE.getValue(), toDeleteMenuIdList);
             }
         }
     }

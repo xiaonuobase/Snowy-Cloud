@@ -88,7 +88,7 @@
 				<a-col :span="24">
 					<a-form-item>
 						<a-button type="primary" :loading="submitLoading" @click="onSubmit()">保存</a-button>
-						<a-button style="margin-left: 10px" @click="() => formRef.resetFields()">重置</a-button>
+						<a-button style="margin-left: 10px" @click="resetForm">重置</a-button>
 					</a-form-item>
 				</a-col>
 			</a-row>
@@ -140,19 +140,9 @@
 		}
 	})
 	// 文件引擎
-	const fileEngineOptions = tool.dictTypeList('FILE_ENGINE').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const fileEngineOptions = tool.dictList('FILE_ENGINE')
 	// 开关
-	const commonSwitchOptions = tool.dictTypeList('COMMON_SWITCH').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const commonSwitchOptions = tool.dictList('COMMON_SWITCH')
 
 	const customRequest = (data) => {
 		formData.value.SNOWY_SYS_LOGO = ref([])
@@ -202,14 +192,12 @@
 				submitLoading.value = true
 				let submitParam = cloneDeep(formData.value)
 				submitParam.SNOWY_SYS_LOGO = submitParam.SNOWY_SYS_LOGO[0]
-
 				const param = Object.entries(submitParam).map((item) => {
 					return {
 						configKey: item[0],
 						configValue: item[1]
 					}
 				})
-
 				// 创建快捷方式
 				const shortcut = {
 					shortcut: menuTreeSelectRef.value.getSelectData()
@@ -226,5 +214,13 @@
 					})
 			})
 			.catch(() => {})
+	}
+	// 重置表单，且设置默认值
+	const resetForm = () => {
+		imageUrl.value = ''
+		formData.value = {
+			SNOWY_SYS_DEFAULT_CAPTCHA_OPEN: 'true',
+			SNOWY_SYS_DEFAULT_FILE_ENGINE: 'LOCAL'
+		}
 	}
 </script>

@@ -1,14 +1,13 @@
 <template>
-    <a-drawer
+    <xn-form-container
         <% for(var i = 0; i < configList.~size; i++) { %>
         <% if(configList[i].needTableId) { %>
         :title="formData.${configList[i].fieldNameCamelCase} ? '编辑${functionName}' : '增加${functionName}'"
         <% } %>
         <% } %>
-        :width="600"
+        :width="700"
         :visible="visible"
         :destroy-on-close="true"
-        :footer-style="{ textAlign: 'right' }"
         @close="onClose"
     >
         <a-form ref="formRef" :model="formData" :rules="formRules" layout="${formLayout}">
@@ -74,7 +73,7 @@
             <a-button style="margin-right: 8px" @click="onClose">关闭</a-button>
             <a-button type="primary" @click="onSubmit" :loading="submitLoading">保存</a-button>
         </template>
-    </a-drawer>
+    </xn-form-container>
 </template>
 
 <script setup name="${classNameFirstLower}Form">
@@ -147,30 +146,28 @@
     }
     // 验证并提交数据
     const onSubmit = () => {
-        formRef.value
-            .validate()
-            .then(() => {
-                submitLoading.value = true
-                const formDataParam = cloneDeep(formData.value)
+        formRef.value.validate().then(() => {
+            submitLoading.value = true
+            const formDataParam = cloneDeep(formData.value)
+            <% for(var i = 0; i < configList.~size; i++) { %>
+            <% if(configList[i].whetherAddUpdate && configList[i].effectType == 'checkbox') { %>
+            formDataParam.${configList[i].fieldNameCamelCase} = JSON.stringify(formDataParam.${configList[i].fieldNameCamelCase})
+            <% } %>
+            <% } %>
+            ${classNameFirstLower}Api
                 <% for(var i = 0; i < configList.~size; i++) { %>
-                <% if(configList[i].whetherAddUpdate && configList[i].effectType == 'checkbox') { %>
-                formDataParam.${configList[i].fieldNameCamelCase} = JSON.stringify(formDataParam.${configList[i].fieldNameCamelCase})
+                <% if(configList[i].needTableId) { %>
+                .${classNameFirstLower}SubmitForm(formDataParam, !formDataParam.${configList[i].fieldNameCamelCase})
                 <% } %>
                 <% } %>
-                ${classNameFirstLower}Api
-                    <% for(var i = 0; i < configList.~size; i++) { %>
-                    <% if(configList[i].needTableId) { %>
-                    .${classNameFirstLower}SubmitForm(formDataParam, !formDataParam.${configList[i].fieldNameCamelCase})
-                    <% } %>
-                    <% } %>
-                    .then(() => {
-                        onClose()
-                        emit('successful')
-                    })
-                    .finally(() => {
-                        submitLoading.value = false
-                    })
-            })
+                .then(() => {
+                    onClose()
+                    emit('successful')
+                })
+                .finally(() => {
+                    submitLoading.value = false
+                })
+        })
     }
     // 抛出函数
     defineExpose({

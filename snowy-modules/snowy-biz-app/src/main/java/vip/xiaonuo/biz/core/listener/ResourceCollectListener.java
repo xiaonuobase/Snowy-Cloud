@@ -82,7 +82,11 @@ public class ResourceCollectListener implements CommandLineRunner {
             permissionResource = Convert.toList(String.class,permissionResourceObject);
         }
         if(CollUtil.isNotEmpty(permissionResult)){
-            permissionResource.addAll(permissionResult);
+            for(String permission : permissionResult){
+                if(!permissionResource.contains(permission)){
+                    permissionResource.add(permission);
+                }
+            }
 
             // 刷新缓存
             commonCacheOperator.put(CacheConstant.PERMISSION_RESOURCE_CACHE_KEY, permissionResource);

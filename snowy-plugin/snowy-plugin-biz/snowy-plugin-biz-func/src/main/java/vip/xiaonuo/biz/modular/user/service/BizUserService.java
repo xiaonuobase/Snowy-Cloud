@@ -15,7 +15,6 @@ package vip.xiaonuo.biz.modular.user.service;
 import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.biz.modular.org.entity.BizOrg;
 import vip.xiaonuo.biz.modular.position.entity.BizPosition;
 import vip.xiaonuo.biz.modular.user.entity.BizUser;
@@ -123,20 +122,20 @@ public interface BizUserService extends IService<BizUser> {
     void grantRole(BizUserGrantRoleParam bizUserGrantRoleParam);
 
     /**
-     * 人员导入
-     *
-     * @author xuyuxiang
-     * @date 2022/8/8 13:16
-     **/
-    void importUser(MultipartFile file);
-
-    /**
-     * 人员导出
+     * 用户导出
      *
      * @author xuyuxiang
      * @date 2022/8/8 13:16
      **/
     void exportUser(BizUserExportParam bizUserExportParam, HttpServletResponse response) throws IOException;
+
+    /**
+     * 导出用户个人信息
+     *
+     * @author xuyuxiang
+     * @date 2022/8/8 13:16
+     **/
+    void exportUserInfo(BizUserIdParam bizUserIdParam, HttpServletResponse response) throws IOException;
 
     /* ====人员部分所需要用到的选择器==== */
 

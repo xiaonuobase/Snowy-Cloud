@@ -222,6 +222,14 @@ public interface SysUserService extends IService<SysUser> {
     List<Tree<String>> ownMenu(SysUserIdParam sysUserIdParam);
 
     /**
+     * 获取用户拥有移动端菜单
+     *
+     * @author xuyuxiang
+     * @date 2022/6/25 18:55
+     */
+    List<Tree<String>> ownMobileMenu(SysUserIdParam sysUserIdParam);
+
+    /**
      * 获取用户拥有角色
      *
      * @author xuyuxiang
@@ -236,6 +244,38 @@ public interface SysUserService extends IService<SysUser> {
      * @date 2022/4/29 11:13
      **/
     void grantRole(SysUserGrantRoleParam sysUserGrantRoleParam);
+
+    /**
+     * 获取用户拥有资源
+     *
+     * @author xuyuxiang
+     * @date 2022/5/13 20:51
+     */
+    SysUserOwnResourceResult ownResource(SysUserIdParam sysUserIdParam);
+
+    /**
+     * 给用户授权资源
+     *
+     * @author xuyuxiang
+     * @date 2022/4/29 10:12
+     **/
+    void grantResource(SysUserGrantResourceParam sysUserGrantResourceParam);
+
+    /**
+     * 获取用户拥有权限
+     *
+     * @author xuyuxiang
+     * @date 2022/5/13 20:51
+     */
+    SysUserOwnPermissionResult ownPermission(SysUserIdParam sysUserIdParam);
+
+    /**
+     * 给用户授权权限
+     *
+     * @author xuyuxiang
+     * @date 2022/4/29 10:12
+     **/
+    void grantPermission(SysUserGrantPermissionParam sysUserGrantPermissionParam);
 
     /**
      * 获取用户组织树
@@ -270,12 +310,28 @@ public interface SysUserService extends IService<SysUser> {
     String loginWorkbench(SysUserIdParam sysUserIdParam);
 
     /**
+     * 获取角色集合
+     *
+     * @author xuyuxiang
+     * @date 2022/4/29 11:13
+     **/
+    List<JSONObject> getRoleList(String userId);
+
+    /**
      * 获取按钮编码集合
      *
      * @author xuyuxiang
      * @date 2022/4/29 11:13
      **/
-    List<String> getButtonCodeList(String userId);
+    List<String> getButtonCodeList(List<String> userAndRoleIdList);
+
+    /**
+     * 获取移动端按钮编码集合
+     *
+     * @author xuyuxiang
+     * @date 2022/4/29 11:13
+     **/
+    List<String> getMobileButtonCodeList(List<String> userAndRoleIdList);
 
     /**
      * 获取权限集合
@@ -283,15 +339,15 @@ public interface SysUserService extends IService<SysUser> {
      * @author xuyuxiang
      * @date 2022/4/29 11:13
      **/
-    List<JSONObject> getPermissionList(String userId, String orgId);
+    List<JSONObject> getPermissionList(List<String> userAndRoleIdList, String orgId);
 
     /**
-     * 获取角色码集合
+     * 下载用户导入模板
      *
      * @author xuyuxiang
-     * @date 2022/4/29 11:13
+     * @date 2022/8/8 13:16
      **/
-    List<String> getRoleCodeList(String userId);
+    void downloadImportUserTemplate(HttpServletResponse response) throws IOException;
 
     /**
      * 用户导入
@@ -299,7 +355,7 @@ public interface SysUserService extends IService<SysUser> {
      * @author xuyuxiang
      * @date 2022/8/8 13:16
      **/
-    void importUser(MultipartFile file);
+    JSONObject importUser(MultipartFile file);
 
     /**
      * 用户导出
@@ -310,12 +366,28 @@ public interface SysUserService extends IService<SysUser> {
     void exportUser(SysUserExportParam sysUserExportParam, HttpServletResponse response) throws IOException;
 
     /**
+     * 导出用户个人信息
+     *
+     * @author xuyuxiang
+     * @date 2022/8/8 13:16
+     **/
+    void exportUserInfo(SysUserIdParam sysUserIdParam, HttpServletResponse response) throws IOException;
+
+    /**
      * 获取登录用户的职位信息
      *
      * @author xuyuxiang
      * @date 2022/8/22 9:03
      **/
     List<SysUserPositionResult> loginPositionInfo(SysUserIdParam sysUserIdParam);
+
+    /**
+     * 获取缓存的所有用户选择器
+     *
+     * @author xuyuxiang
+     * @date 2022/7/25 19:42
+     **/
+    List<SysUser> getCachedAllUserSelectorList();
 
     /* ====用户部分所需要用到的选择器==== */
 

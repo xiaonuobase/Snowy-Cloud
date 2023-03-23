@@ -27,7 +27,7 @@
 								<template #icon><SearchOutlined /></template>
 								查询
 							</a-button>
-							<a-button class="snowy-buttom-left" @click="() => searchFormRef.resetFields()">
+							<a-button class="snowy-buttom-left" @click="reset">
 								<template #icon><redo-outlined /></template>
 								重置
 							</a-button>
@@ -49,11 +49,11 @@
 				>
 					<template #operator class="table-operator">
 						<a-space>
-							<a-button type="primary" @click="form.onOpen()">
+							<a-button type="primary" @click="form.onOpen(undefined, searchFormState.category, searchFormState.orgId)">
 								<template #icon><plus-outlined /></template>
 								新增角色
 							</a-button>
-							<a-button danger @click="deleteBatchRole()">删除</a-button>
+							<xn-batch-delete :selectedRowKeys="selectedRowKeys" @batchDelete="deleteBatchRole" />
 						</a-space>
 					</template>
 					<template #bodyCell="{ column, record }">
@@ -78,6 +78,9 @@
 											<a @click="GrantResourceForm.onOpen(record)">授权资源</a>
 										</a-menu-item>
 										<a-menu-item>
+											<a @click="GrantMobileResourceForm.onOpen(record)">授权移动端资源</a>
+										</a-menu-item>
+										<a-menu-item>
 											<a @click="GrantPermissionForm.onOpen(record)">授权权限</a>
 										</a-menu-item>
 										<a-menu-item>
@@ -93,21 +96,23 @@
 		</a-col>
 	</a-row>
 	<grantResourceForm ref="GrantResourceForm" @successful="table.refresh(true)" />
+	<grantMobileResourceForm ref="GrantMobileResourceForm" @successful="table.refresh(true)" />
 	<grantPermissionForm ref="GrantPermissionForm" @successful="table.refresh(true)" />
 	<Form ref="form" @successful="table.refresh(true)" />
 	<user-selector-plus
 		ref="userselectorPlusRef"
-		page-url="/api/webapp/sys/role/userSelector"
-		org-url="/api/webapp/sys/role/orgTreeSelector"
+		page-url="/sys/role/userSelector"
+		org-url="/sys/role/orgTreeSelector"
 		@onBack="userCallBack"
 	/>
 </template>
 
 <script setup name="sysRole">
-	import { message, Empty } from 'ant-design-vue'
+	import { Empty } from 'ant-design-vue'
 	import roleApi from '@/api/sys/roleApi'
 	import orgApi from '@/api/sys/orgApi'
 	import grantResourceForm from './grantResourceForm.vue'
+	import grantMobileResourceForm from './grantMobileResourceForm.vue'
 	import grantPermissionForm from './grantPermissionForm.vue'
 	import userSelectorPlus from '@/components/Selector/userSelectorPlus.vue'
 	import Form from './form.vue'
@@ -153,6 +158,7 @@
 	const table = ref()
 	const form = ref()
 	const GrantResourceForm = ref()
+	const GrantMobileResourceForm = ref()
 	const GrantPermissionForm = ref()
 	const userselectorPlusRef = ref()
 	const searchFormRef = ref()
@@ -172,6 +178,11 @@
 		return roleApi.rolePage(param).then((res) => {
 			return res
 		})
+	}
+	// 重置
+	const reset = () => {
+		searchFormRef.value.resetFields()
+		table.value.refresh(true)
 	}
 	// 加载左侧的树
 	orgApi.orgTree().then((res) => {
@@ -219,7 +230,7 @@
 	}
 	// 可伸缩列
 	const handleResizeColumn = (w, col) => {
-		col.width = w;
+		col.width = w
 	}
 	// 删除
 	const removeOrg = (record) => {
@@ -233,16 +244,7 @@
 		})
 	}
 	// 批量删除
-	const deleteBatchRole = () => {
-		if (selectedRowKeys.value.length < 1) {
-			message.warning('请选择一条或多条数据')
-			return false
-		}
-		const params = selectedRowKeys.value.map((m) => {
-			return {
-				id: m
-			}
-		})
+	const deleteBatchRole = (params) => {
 		roleApi.roleDelete(params).then(() => {
 			table.value.clearRefreshSelected()
 		})

@@ -18,9 +18,6 @@
 		<p v-else-if="noTitleKey === 'fileConfig'">
 			<FileConfig />
 		</p>
-		<p v-else-if="noTitleKey === 'payConfig'">
-			<PayConfig />
-		</p>
 		<p v-else-if="noTitleKey === 'thirdConfig'">
 			<ThirdConfig />
 		</p>
@@ -31,12 +28,10 @@
 </template>
 
 <script setup name="devConfig">
-	import { Empty } from 'ant-design-vue'
 	import SysConfig from './sysConfig.vue'
 	import EmailConfig from './emailConfig/index.vue'
 	import SmsConfig from './smsConfig/index.vue'
 	import FileConfig from './fileConfig/index.vue'
-	import PayConfig from './payConfig/index.vue'
 	import ThirdConfig from './thirdConfig/index.vue'
 	import otherConfig from './otherConfig/index.vue'
 	const key = ref('sysConfig')
@@ -58,10 +53,6 @@
 		{
 			key: 'fileConfig',
 			tab: '文件配置'
-		},
-		{
-			key: 'payConfig',
-			tab: '支付配置'
 		},
 		{
 			key: 'thirdConfig',

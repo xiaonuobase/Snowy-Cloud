@@ -30,7 +30,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
+import vip.xiaonuo.common.enums.SysDataTypeEnum;
 import vip.xiaonuo.common.exception.CommonException;
+import vip.xiaonuo.common.listener.CommonDataChangeEventCenter;
 import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.sys.modular.org.entity.SysOrg;
 import vip.xiaonuo.sys.modular.org.service.SysOrgService;
@@ -86,6 +88,7 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
         return this.page(CommonPageRequest.defaultPage(), queryWrapper);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void add(SysPositionAddParam sysPositionAddParam) {
         SysPositionCategoryEnum.validate(sysPositionAddParam.getCategory());
@@ -97,8 +100,12 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
         }
         sysPosition.setCode(RandomUtil.randomString(10));
         this.save(sysPosition);
+
+        // 发布增加事件
+        CommonDataChangeEventCenter.doAddWithData(SysDataTypeEnum.POSITION.getValue(), JSONUtil.createArray().put(sysPosition));
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void edit(SysPositionEditParam sysPositionEditParam) {
         SysPositionCategoryEnum.validate(sysPositionEditParam.getCategory());
@@ -110,6 +117,9 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
             throw new CommonException("同组织下存在重复的职位，名称为：{}", sysPosition.getName());
         }
         this.updateById(sysPosition);
+
+        // 发布更新事件
+        CommonDataChangeEventCenter.doUpdateWithData(SysDataTypeEnum.POSITION.getValue(), JSONUtil.createArray().put(sysPosition));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -135,7 +145,10 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
                 }
             }
             // 执行删除
-            this.removeBatchByIds(positionIdList);
+            this.removeByIds(positionIdList);
+
+            // 发布删除事件
+            CommonDataChangeEventCenter.doDeleteWithDataId(SysDataTypeEnum.POSITION.getValue(), positionIdList);
         }
     }
 
@@ -159,13 +172,30 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
         return index == -1?null:originDataList.get(index);
     }
 
+    @Override
+    public String getPositionIdByPositionNameWithCreate(String orgId, String positionName) {
+        SysPosition sysPosition = this.getOne(new LambdaQueryWrapper<SysPosition>().eq(SysPosition::getOrgId, orgId).eq(SysPosition::getName, positionName));
+        if(ObjectUtil.isNotEmpty(sysPosition)) {
+            return sysPosition.getId();
+        } else {
+            sysPosition = new SysPosition();
+            sysPosition.setOrgId(orgId);
+            sysPosition.setName(positionName);
+            sysPosition.setCode(RandomUtil.randomString(10));
+            sysPosition.setCategory(SysPositionCategoryEnum.LOW.getValue());
+            sysPosition.setSortCode(99);
+            this.save(sysPosition);
+            // 发布增加事件
+            CommonDataChangeEventCenter.doAddWithData(SysDataTypeEnum.POSITION.getValue(), JSONUtil.createArray().put(sysPosition));
+            return sysPosition.getId();
+        }
+    }
+
     /* ====职位部分所需要用到的选择器==== */
 
     @Override
     public List<Tree<String>> orgTreeSelector() {
-        LambdaQueryWrapper<SysOrg> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.orderByAsc(SysOrg::getSortCode);
-        List<SysOrg> sysOrgList = sysOrgService.list(lambdaQueryWrapper);
+        List<SysOrg> sysOrgList = sysOrgService.getCachedAllOrgList();
         List<TreeNode<String>> treeNodeList = sysOrgList.stream().map(sysOrg ->
                 new TreeNode<>(sysOrg.getId(), sysOrg.getParentId(), sysOrg.getName(), sysOrg.getSortCode()))
                 .collect(Collectors.toList());

@@ -1,11 +1,9 @@
 <template>
-	<a-drawer
+	<xn-form-container
 		title="发送站内信"
-		:width="500"
+		:width="550"
 		:visible="visible"
 		:destroy-on-close="true"
-		:body-style="{ paddingBottom: '80px' }"
-		:footer-style="{ textAlign: 'right' }"
 		@close="onClose"
 	>
 		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
@@ -18,8 +16,7 @@
 					:options="categoryOptions"
 					style="width: 100%"
 					placeholder="请选择站内信分类"
-				>
-				</a-select>
+				/>
 			</a-form-item>
 			<a-form-item label="正文：" name="content">
 				<a-textarea v-model:value="formData.content" placeholder="请输入正文" :auto-size="{ minRows: 5, maxRows: 5 }" />
@@ -27,7 +24,7 @@
 			<a-form-item label="接收人：" name="receiverIdList">
 				<a-button type="primary" @click="openUserSelector">选择人员</a-button>
 				<br />
-				<a-tag class="mt-3" v-for="(user, index) in userList" color="cyan" closable @close="removeUserTag(index)">{{
+				<a-tag class="mt-3" v-for="(user, index) in userList" color="cyan" :key="index" @close="removeUserTag(index)">{{
 					user.name
 				}}</a-tag>
 			</a-form-item>
@@ -36,11 +33,11 @@
 			<a-button style="margin-right: 8px" @click="onClose">关闭</a-button>
 			<a-button type="primary" @click="onSubmit" :loading="sendLoading">发送</a-button>
 		</template>
-	</a-drawer>
+	</xn-form-container>
 	<user-selector-plus
 		ref="UserSelectorPlus"
-		page-url="/api/webapp/sys/org/userSelector"
-		org-url="/api/webapp/sys/org/orgTreeSelector"
+		page-url="/sys/org/userSelector"
+		org-url="/sys/org/orgTreeSelector"
 		@onBack="userBack"
 	/>
 </template>
@@ -50,13 +47,12 @@
 	import { message } from 'ant-design-vue'
 	import messageApi from '@/api/dev/messageApi'
 	import userSelectorPlus from '@/components/Selector/userSelectorPlus.vue'
-	import {getCurrentInstance} from "vue";
+	import tool from '@/utils/tool'
 
 	const sendLoading = ref(false)
 	let UserSelectorPlus = ref()
 	// 定义emit事件
 	const emit = defineEmits({ successful: null })
-	const { proxy } = getCurrentInstance()
 	// 默认是关闭状态
 	let visible = $ref(false)
 	const formRef = ref()
@@ -79,12 +75,7 @@
 		category: [required('请选择站内信分类')]
 	}
 	// 站内信分类字典
-	let categoryOptions = proxy.$TOOL.dictTypeList('MESSAGE_CATEGORY').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const categoryOptions = tool.dictList('MESSAGE_CATEGORY')
 	// 打开人员选择器
 	const openUserSelector = () => {
 		let ids = []

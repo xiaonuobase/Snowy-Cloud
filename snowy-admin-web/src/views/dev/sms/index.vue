@@ -22,7 +22,7 @@
 						<template #icon><SearchOutlined /></template>
 						查询
 					</a-button>
-					<a-button class="snowy-buttom-left" @click="() => searchFormRef.resetFields()">
+					<a-button class="snowy-buttom-left" @click="reset">
 						<template #icon><redo-outlined /></template>
 						重置
 					</a-button>
@@ -47,7 +47,7 @@
 						<template #icon><plus-outlined /></template>
 						发送短信
 					</a-button>
-					<a-button danger @click="deleteBatchSms()">删除</a-button>
+					<xn-batch-delete :selectedRowKeys="selectedRowKeys" @batchDelete="deleteBatchSms" />
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
@@ -69,13 +69,11 @@
 </template>
 
 <script setup name="devSms">
-	import { message } from 'ant-design-vue'
 	import smsApi from '@/api/dev/smsApi'
 	import Form from './form.vue'
-	import { getCurrentInstance } from 'vue'
 	import detail from './detail.vue'
+	import tool from '@/utils/tool'
 
-	const { proxy } = getCurrentInstance()
 	const table = ref(null)
 	const form = ref()
 	const searchFormRef = ref()
@@ -140,12 +138,12 @@
 			return data
 		})
 	}
-	const engineOptions = proxy.$TOOL.dictTypeList('SMS_ENGINE').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	// 重置
+	const reset = () => {
+		searchFormRef.value.resetFields()
+		table.value.refresh(true)
+	}
+	const engineOptions = tool.dictList('SMS_ENGINE')
 	// 删除
 	const deleteSms = (record) => {
 		let params = [
@@ -158,16 +156,7 @@
 		})
 	}
 	// 批量删除
-	const deleteBatchSms = () => {
-		if (selectedRowKeys.value.length < 1) {
-			message.warning('请选择一条或多条数据')
-			return false
-		}
-		const params = selectedRowKeys.value.map((m) => {
-			return {
-				id: m
-			}
-		})
+	const deleteBatchSms = (params) => {
 		smsApi.smsDelete(params).then(() => {
 			table.value.clearRefreshSelected()
 		})

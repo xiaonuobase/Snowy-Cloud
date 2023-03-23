@@ -1,11 +1,10 @@
 <template>
-	<a-drawer
+	<xn-form-container
 		:title="formData.id ? '编辑用户' : '增加用户'"
-		:width="620"
+		:width="800"
 		:visible="visible"
 		:destroy-on-close="true"
-		:body-style="{ paddingBottom: '80px', 'padding-top': '0px' }"
-		:footer-style="{ textAlign: 'right' }"
+		:body-style="{ 'padding-top': '0px' }"
 		@close="onClose"
 	>
 		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
@@ -26,7 +25,7 @@
 					<a-row :gutter="16">
 						<a-col :span="12">
 							<a-form-item label="性别：" name="gender">
-								<a-radio-group v-model:value="formData.gender" :options="genderOptions"> </a-radio-group>
+								<a-radio-group v-model:value="formData.gender" :options="genderOptions" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
@@ -72,7 +71,7 @@
 										value: 'id'
 									}"
 									@change="selePositionData(formData.orgId, 0)"
-								></a-tree-select>
+								/>
 							</a-form-item>
 						</a-col>
 						<a-col :span="8">
@@ -84,8 +83,7 @@
 									style="width: 100%"
 									placeholder="请选择职位"
 									allow-clear
-								>
-								</a-select>
+								/>
 							</a-form-item>
 						</a-col>
 						<a-col :span="8">
@@ -97,8 +95,7 @@
 									style="width: 100%"
 									placeholder="请选择主管"
 									allow-clear
-								>
-								</a-select>
+								/>
 							</a-form-item>
 						</a-col>
 					</a-row>
@@ -150,7 +147,7 @@
 											:tree-default-expanded-keys="treeDefaultExpandedKeys"
 											:field-names="{ children: 'children', label: 'name', value: 'id' }"
 											@select="childOrgSelect(positionInfo, 0)"
-										></a-tree-select>
+										/>
 									</a-form-item>
 								</a-col>
 								<a-col :span="7">
@@ -165,8 +162,7 @@
 											style="width: 100%"
 											placeholder="请选择职位"
 											allow-clear
-										>
-										</a-select>
+										/>
 									</a-form-item>
 								</a-col>
 								<a-col :span="7">
@@ -178,8 +174,7 @@
 											style="width: 100%"
 											placeholder="请选择主管"
 											allow-clear
-										>
-										</a-select>
+										/>
 									</a-form-item>
 								</a-col>
 								<a-col :span="3" style="margin-top: 4px">
@@ -193,7 +188,7 @@
 					<a-row :gutter="16">
 						<a-col :span="12">
 							<a-form-item label="民族：" name="nation">
-								<a-select v-model:value="formData.nation" placeholder="请选择民族" :options="nationOptions"> </a-select>
+								<a-select v-model:value="formData.nation" placeholder="请选择民族" :options="nationOptions" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
@@ -227,13 +222,16 @@
 					<a-row :gutter="16">
 						<a-col :span="12">
 							<a-form-item label="证件类型：" name="idCardType">
-								<a-select v-model:value="formData.idCardType" placeholder="请选择证件类型" :options="idcardTypeOptions">
-								</a-select>
+								<a-select
+									v-model:value="formData.idCardType"
+									placeholder="请选择证件类型"
+									:options="idcardTypeOptions"
+								/>
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
-							<a-form-item label="证据号码：" name="idCardNumber">
-								<a-input v-model:value="formData.idCardNumber" placeholder="请输入通信地址" allow-clear />
+							<a-form-item label="证件号码：" name="idCardNumber">
+								<a-input v-model:value="formData.idCardNumber" placeholder="请输入证件号码" allow-clear />
 							</a-form-item>
 						</a-col>
 					</a-row>
@@ -244,8 +242,7 @@
 									v-model:value="formData.cultureLevel"
 									placeholder="请选择文化程度"
 									:options="cultureLevelOptions"
-								>
-								</a-select>
+								/>
 							</a-form-item>
 						</a-col>
 						<a-col :span="12">
@@ -325,17 +322,17 @@
 			<a-button style="margin-right: 8px" @click="onClose">关闭</a-button>
 			<a-button type="primary" :loading="formLoading" @click="onSubmit">保存</a-button>
 		</template>
-	</a-drawer>
+	</xn-form-container>
 </template>
 
 <script setup>
 	import userApi from '@/api/sys/userApi'
-	import { required, rules } from '@/utils/formRules'
+	import { required } from '@/utils/formRules'
+	import tool from '@/utils/tool'
 	// 默认是关闭状态
 	let visible = $ref(false)
 	const formRef = ref()
 	const activeTabsKey = ref('1')
-	const { proxy } = getCurrentInstance()
 	const emit = defineEmits({ successful: null })
 	const formLoading = ref(false)
 	const treeData = ref([])
@@ -351,33 +348,42 @@
 	let formData = ref({})
 
 	// 打开抽屉
-	const onOpen = (record) => {
+	const onOpen = (record, orgId) => {
 		visible = true
 		formData.value = {
 			gender: '男',
 			positionJson: []
 		}
+		if (orgId) {
+			formData.value.orgId = orgId
+			// 通过机构再查询职位、主管
+			nextTick(() => {
+				selePositionData(orgId)
+			})
+		}
 		if (record) {
 			convertFormData(record)
 		}
-		// 机构选择器数据
-		userApi.userOrgTreeSelector().then((res) => {
-			if (res !== null) {
-				treeData.value = res
-				// 默认展开2级
-				treeData.value.forEach((item) => {
-					// 因为0的顶级
-					if (item.parentId === '0') {
-						treeDefaultExpandedKeys.value.push(item.id)
-						// 取到下级ID
-						if (item.children) {
-							item.children.forEach((items) => {
-								treeDefaultExpandedKeys.value.push(items.id)
-							})
+		nextTick(() => {
+			// 机构选择器数据
+			userApi.userOrgTreeSelector().then((res) => {
+				if (res !== null) {
+					treeData.value = res
+					// 默认展开2级
+					treeData.value.forEach((item) => {
+						// 因为0的顶级
+						if (item.parentId === '0') {
+							treeDefaultExpandedKeys.value.push(item.id)
+							// 取到下级ID
+							if (item.children) {
+								item.children.forEach((items) => {
+									treeDefaultExpandedKeys.value.push(items.id)
+								})
+							}
 						}
-					}
-				})
-			}
+					})
+				}
+			})
 		})
 	}
 	// 关闭抽屉
@@ -514,34 +520,13 @@
 		})
 	}
 	// 性别
-	const genderOptions = proxy.$TOOL.dictTypeList('GENDER').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const genderOptions = tool.dictList('GENDER')
 	// 民族
-	const nationOptions = proxy.$TOOL.dictTypeList('NATION').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const nationOptions = tool.dictList('NATION')
 	// 身份证件
-	const idcardTypeOptions = proxy.$TOOL.dictTypeList('IDCARD_TYPE').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const idcardTypeOptions = tool.dictList('IDCARD_TYPE')
 	// 文化程度
-	const cultureLevelOptions = proxy.$TOOL.dictTypeList('CULTURE_LEVEL').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
-
+	const cultureLevelOptions = tool.dictList('CULTURE_LEVEL')
 	// 调用这个函数将子组件的一些数据和方法暴露出去
 	defineExpose({
 		onOpen
@@ -560,10 +545,6 @@
 		padding-bottom: 5px;
 		padding-top: 5px;
 		padding-left: 15px;
-	}
-	.dashedButton {
-		margin-top: 10px;
-		width: 100%;
 	}
 	.form-div {
 		padding-top: 10px;

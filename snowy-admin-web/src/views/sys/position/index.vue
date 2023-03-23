@@ -19,7 +19,7 @@
 					<a-row :gutter="24">
 						<a-col :span="8">
 							<a-form-item name="searchKey" label="名称关键词">
-								<a-input v-model:value="searchFormState.searchKey" placeholder="请输入职位名称关键词"></a-input>
+								<a-input v-model:value="searchFormState.searchKey" placeholder="请输入职位名称关键词" />
 							</a-form-item>
 						</a-col>
 						<a-col :span="8">
@@ -27,7 +27,7 @@
 								<template #icon><SearchOutlined /></template>
 								查询
 							</a-button>
-							<a-button class="snowy-buttom-left" @click="() => searchFormRef.resetFields()">
+							<a-button class="snowy-buttom-left" @click="reset">
 								<template #icon><redo-outlined /></template>
 								重置
 							</a-button>
@@ -48,11 +48,11 @@
 				>
 					<template #operator class="table-operator">
 						<a-space>
-							<a-button type="primary" @click="form.onOpen()">
+							<a-button type="primary" @click="form.onOpen(undefined, searchFormState.orgId)">
 								<template #icon><plus-outlined /></template>
 								新增
 							</a-button>
-							<a-button danger @click="deleteBatchPosition()">删除</a-button>
+							<xn-batch-delete :selectedRowKeys="selectedRowKeys" @batchDelete="deleteBatchPosition" />
 						</a-space>
 					</template>
 					<template #bodyCell="{ column, record }">
@@ -75,7 +75,7 @@
 </template>
 
 <script setup name="sysPosition">
-	import { message, Empty } from 'ant-design-vue'
+	import { Empty } from 'ant-design-vue'
 	import positionApi from '@/api/sys/positionApi'
 	import orgApi from '@/api/sys/orgApi'
 	import Form from './form.vue'
@@ -133,6 +133,11 @@
 			return res
 		})
 	}
+	// 重置
+	const reset = () => {
+		searchFormRef.value.resetFields()
+		table.value.refresh(true)
+	}
 	// 加载左侧的树
 	orgApi.orgTree().then((res) => {
 		cardLoading.value = false
@@ -174,16 +179,7 @@
 		})
 	}
 	// 批量删除
-	const deleteBatchPosition = () => {
-		if (selectedRowKeys.value.length < 1) {
-			message.warning('请选择一条或多条数据')
-			return false
-		}
-		const params = selectedRowKeys.value.map((m) => {
-			return {
-				id: m
-			}
-		})
+	const deleteBatchPosition = (params) => {
 		positionApi.positionDelete(params).then(() => {
 			table.value.clearRefreshSelected()
 		})

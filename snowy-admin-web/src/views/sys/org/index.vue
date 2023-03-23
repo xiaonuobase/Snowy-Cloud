@@ -8,8 +8,7 @@
 					:tree-data="treeData"
 					:field-names="treeFieldNames"
 					@select="treeSelect"
-				>
-				</a-tree>
+				/>
 				<a-empty v-else :image="Empty.PRESENTED_IMAGE_SIMPLE" />
 			</a-card>
 		</a-col>
@@ -27,7 +26,7 @@
 								<template #icon><SearchOutlined /></template>
 								查询
 							</a-button>
-							<a-button class="snowy-buttom-left" @click="() => searchFormRef.resetFields()">
+							<a-button class="snowy-buttom-left" @click="reset">
 								<template #icon><redo-outlined /></template>
 								重置
 							</a-button>
@@ -48,11 +47,11 @@
 				>
 					<template #operator class="table-operator">
 						<a-space>
-							<a-button type="primary" @click="form.onOpen()">
+							<a-button type="primary" @click="form.onOpen(undefined, searchFormState.parentId)">
 								<template #icon><plus-outlined /></template>
 								新增
 							</a-button>
-							<a-button danger @click="deleteBatchOrg()">删除</a-button>
+							<xn-batch-delete :selectedRowKeys="selectedRowKeys" @batchDelete="deleteBatchOrg" />
 						</a-space>
 					</template>
 					<template #bodyCell="{ column, record }">
@@ -133,6 +132,11 @@
 			return res
 		})
 	}
+	// 重置
+	const reset = () => {
+		searchFormRef.value.resetFields()
+		table.value.refresh(true)
+	}
 	// 加载左侧的树
 	const loadTreeData = () => {
 		orgApi.orgTree().then((res) => {
@@ -176,16 +180,7 @@
 		})
 	}
 	// 批量删除
-	const deleteBatchOrg = () => {
-		if (selectedRowKeys.value.length < 1) {
-			message.warning('请选择一条或多条数据')
-			return false
-		}
-		const params = selectedRowKeys.value.map((m) => {
-			return {
-				id: m
-			}
-		})
+	const deleteBatchOrg = (params) => {
 		orgApi.orgDelete(params).then(() => {
 			table.value.clearRefreshSelected()
 		})

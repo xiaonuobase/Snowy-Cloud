@@ -8,7 +8,7 @@
 							<img :src="userInfo.avatar" />
 						</a-spin>
 						<a @click="uploadLogo">
-							<div class="mask"><upload-outlined /></div>
+							<div :class="userInfo.avatar ? 'mask' : 'mask-notImg'"><upload-outlined /></div>
 						</a>
 					</div>
 					<div class="username">{{ userInfo.name }}</div>
@@ -19,13 +19,13 @@
 					<p><i class="group"></i>{{ userInfo.orgName }}</p>
 					<p>
 						<i class="address"></i>
-						<span>{{ userInfo.homeAddress }}</span>
+						<span>{{ userInfo.homeAddress ? userInfo.homeAddress : '暂无地址' }}</span>
 					</p>
 				</div>
 				<a-divider />
 				<div class="account-center-team">
-					<div class="mb-2" v-if="userInfo.signature">
-						<a-image :src="userInfo.signature" style="height: 120px; border: 1px solid rgb(236 236 236)" />
+					<div class="mb-2" v-if="userInfo.signature" style="width: 100%">
+						<a-image :src="userInfo.signature" width="100%" style="height: 120px; border: 1px solid rgb(236 236 236)" />
 					</div>
 					<a-button @click="XnSignNameRef.show()">打开签名板</a-button>
 					<XnSignName ref="XnSignNameRef" :image="userInfo.signature" @successful="signSuccess" />
@@ -64,7 +64,7 @@
 
 <script setup>
 	import { onMounted } from 'vue'
-	import { useRoute } from 'vue-router';
+	import { useRoute } from 'vue-router'
 	import tool from '@/utils/tool'
 	import store from '@/store'
 	import userCenterApi from '@/api/sys/userCenterApi'
@@ -108,12 +108,12 @@
 	const onTabChange = (key) => {
 		noTitleKey.value = key
 	}
-	const Route = useRoute();
+	const Route = useRoute()
 	onMounted(() => {
 		if (Route.query.tab) {
 			noTitleKey.value = Route.query.tab
 		}
-	});
+	})
 	// 头像裁剪图片回调
 	const cropUploadSuccess = (data) => {
 		// 转换为file类型
@@ -173,7 +173,24 @@
 			justify-content: center;
 			align-items: center;
 		}
+		.mask-notImg {
+			border-radius: 50%;
+			position: absolute;
+			margin-top: -24px;
+			width: 104px;
+			height: 104px;
+			background: rgba(101, 101, 101, 0.6);
+			color: #ffffff;
+			opacity: 0;
+			font-size: 25px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 		.avatar a:hover .mask {
+			opacity: 1;
+		}
+		.avatar a:hover .mask-notImg {
 			opacity: 1;
 		}
 		.username {

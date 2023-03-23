@@ -1,10 +1,9 @@
 <template>
-	<a-drawer
+	<xn-form-container
 		title="详情"
-		:width="600"
+		:width="700"
 		:visible="visible"
 		:destroy-on-close="true"
-		:footer-style="{ textAlign: 'right' }"
 		@close="onClose"
 	>
 		<a-descriptions :column="1" size="middle" bordered class="mb-2">
@@ -20,13 +19,13 @@
 
 		<a-space direction="vertical" class="mb-2" style="width: 100%">
 			请求参数：
-			<XnHighlightjs :code="paramJson"></XnHighlightjs>
+			<XnHighlightjs language="JSON" :code="paramJson"></XnHighlightjs>
 		</a-space>
 		<a-space direction="vertical" class="mb-2" style="width: 100%">
 			返回结果：
-			<XnHighlightjs language="JSON" :code="resultJson"></XnHighlightjs>
+			<XnHighlightjs autodetect :code="resultJson"></XnHighlightjs>
 		</a-space>
-	</a-drawer>
+	</xn-form-container>
 </template>
 
 <script setup name="oplogDetail">

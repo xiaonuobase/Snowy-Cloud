@@ -143,6 +143,9 @@ snowy-cloud
         |-snowy-plugin-sys-api == 系统功能插件api接口
         |-snowy-plugin-sys-feign == 系统功能插件feign接口
         |-snowy-plugin-sys-func == 系统功能插件func实现
+    |-snowy-plugin-mobile == 移动端管理插件
+        |-snowy-plugin-mobile-api == 移动端管理插件api接口
+        |-snowy-plugin-mobile-func == 移动端管理插件func实现
   |-snowy-server == 服务组件
     |-snowy-actuator-app == 监控服务模块
     |-snowy-gateway-app == 网关服务模块
@@ -219,7 +222,7 @@ snowy-cloud
 ## 官方群聊
 
 
-QQ技术群：732230670
+QQ技术群：732230670（已满）、685395081
 
 微信技术群：因群达到200人以上，需加微信拉群
 
@@ -254,7 +257,7 @@ QQ技术群：732230670
 ## 曾获荣誉
 
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7xtGQLOA&path=%7BshareItemLink%3A7xtGQLOA%7D%2F"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/file&hash=ec54DtG4v8DfcUEPF0ACAHWW-urCcymI_0fSSaqMmMXKLsTWdHpQqH0e&name=/%E8%8D%A3%E8%AA%892021%E4%B8%8E2022.jpg"/>
 </p>
 
 ## 版权说明

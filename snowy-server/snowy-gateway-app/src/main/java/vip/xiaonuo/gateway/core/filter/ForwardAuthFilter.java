@@ -14,10 +14,6 @@ package vip.xiaonuo.gateway.core.filter;
 
 import cn.dev33.satoken.SaManager;
 import cn.dev33.satoken.config.SaTokenConfig;
-import cn.dev33.satoken.context.SaHolder;
-import cn.dev33.satoken.context.model.SaRequest;
-import cn.dev33.satoken.context.model.SaStorage;
-import cn.dev33.satoken.id.SaIdUtil;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.http.HttpHeaders;

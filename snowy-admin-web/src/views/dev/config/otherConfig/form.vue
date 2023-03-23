@@ -1,11 +1,9 @@
 <template>
-	<a-drawer
+	<xn-form-container
 		:title="formData.id ? '编辑配置' : '增加配置'"
-		:width="500"
+		:width="550"
 		:visible="visible"
 		:destroy-on-close="true"
-		:body-style="{ paddingBottom: '80px' }"
-		:footer-style="{ textAlign: 'right' }"
 		@close="onClose"
 	>
 		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
@@ -23,14 +21,14 @@
 				<a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear />
 			</a-form-item>
 			<a-form-item label="排序:" name="sortCode">
-				<a-slider v-model:value="formData.sortCode" :max="100" />
+				<a-input-number style="width: 100%" v-model:value="formData.sortCode" :max="1000" />
 			</a-form-item>
 		</a-form>
 		<template #footer>
 			<a-button style="margin-right: 8px" @click="onClose">关闭</a-button>
 			<a-button type="primary" @click="onSubmit" :loading="submitLoading">保存</a-button>
 		</template>
-	</a-drawer>
+	</xn-form-container>
 </template>
 
 <script setup>
@@ -68,20 +66,18 @@
 
 	// 验证并提交数据
 	const onSubmit = () => {
-		formRef.value
-			.validate()
-			.then(() => {
-				submitLoading.value = true
-				configApi
-					.submitForm(formData.value, !formData.value.id)
-					.then(() => {
-						onClose()
-						emit('successful')
-					})
-					.finally(() => {
-						submitLoading.value = false
-					})
-			})
+		formRef.value.validate().then(() => {
+			submitLoading.value = true
+			configApi
+				.submitForm(formData.value, !formData.value.id)
+				.then(() => {
+					onClose()
+					emit('successful')
+				})
+				.finally(() => {
+					submitLoading.value = false
+				})
+		})
 	}
 
 	// 调用这个函数将子组件的一些数据和方法暴露出去

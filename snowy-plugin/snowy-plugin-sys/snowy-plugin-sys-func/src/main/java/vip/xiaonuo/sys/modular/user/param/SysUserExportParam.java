@@ -33,4 +33,8 @@ public class SysUserExportParam {
     /** 账号、姓名、手机号关键词 */
     @ApiModelProperty(value = "账号、姓名、手机号关键词")
     private String searchKey;
+
+    /** 用户id集合 */
+    @ApiModelProperty(value = "用户id集合")
+    private String userIds;
 }

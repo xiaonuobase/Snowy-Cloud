@@ -15,17 +15,17 @@
  */
 package com.alibaba.csp.sentinel.dashboard.client;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.apache.http.HttpException;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.protocol.RequestContent;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.http.HttpException;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.protocol.RequestContent;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class SentinelApiClientTest {
     @Test

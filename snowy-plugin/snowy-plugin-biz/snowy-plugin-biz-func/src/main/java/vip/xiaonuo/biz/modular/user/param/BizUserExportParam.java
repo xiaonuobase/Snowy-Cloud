@@ -33,4 +33,8 @@ public class BizUserExportParam {
     /** 账号、姓名、手机号关键词 */
     @ApiModelProperty(value = "账号、姓名、手机号关键词")
     private String searchKey;
+
+    /** 人员id集合 */
+    @ApiModelProperty(value = "人员id集合")
+    private String userIds;
 }

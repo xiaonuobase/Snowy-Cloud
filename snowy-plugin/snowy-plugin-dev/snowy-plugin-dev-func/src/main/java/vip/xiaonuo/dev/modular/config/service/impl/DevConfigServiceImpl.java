@@ -16,6 +16,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.DesensitizedUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -34,6 +35,7 @@ import vip.xiaonuo.dev.modular.config.enums.DevConfigCategoryEnum;
 import vip.xiaonuo.dev.modular.config.mapper.DevConfigMapper;
 import vip.xiaonuo.dev.modular.config.param.*;
 import vip.xiaonuo.dev.modular.config.service.DevConfigService;
+
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,6 +50,8 @@ import java.util.stream.Collectors;
 public class DevConfigServiceImpl extends ServiceImpl<DevConfigMapper, DevConfig> implements DevConfigService {
 
     private static final String CONFIG_CACHE_KEY = "dev-config:";
+
+    private static final String SNOWY_SYS_DEFAULT_PASSWORD_KEY = "SNOWY_SYS_DEFAULT_PASSWORD";
 
     @Resource
     private CommonCacheOperator commonCacheOperator;
@@ -97,7 +101,11 @@ public class DevConfigServiceImpl extends ServiceImpl<DevConfigMapper, DevConfig
         if(ObjectUtil.isNotEmpty(devConfigListParam.getCategory())) {
             lambdaQueryWrapper.eq(DevConfig::getCategory, devConfigListParam.getCategory());
         }
-        return this.list(lambdaQueryWrapper);
+        return this.list(lambdaQueryWrapper).stream().peek(devConfig -> {
+            if(devConfig.getConfigKey().equals(SNOWY_SYS_DEFAULT_PASSWORD_KEY)) {
+                devConfig.setConfigValue(DesensitizedUtil.password(devConfig.getConfigValue()));
+            }
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -153,7 +161,7 @@ public class DevConfigServiceImpl extends ServiceImpl<DevConfigMapper, DevConfig
                     commonCacheOperator.remove(CONFIG_CACHE_KEY + devConfig.getConfigValue());
                 });
                 // 执行删除
-                this.removeBatchByIds(devConfigIdList);
+                this.removeByIds(devConfigIdList);
             }
         }
     }
@@ -179,7 +187,7 @@ public class DevConfigServiceImpl extends ServiceImpl<DevConfigMapper, DevConfig
                     .eq(DevConfig::getConfigKey, devConfigBatchParam.getConfigKey())
                     .set(DevConfig::getConfigValue, devConfigBatchParam.getConfigValue()));
             // 移除对应的缓存
-            commonCacheOperator.remove(CONFIG_CACHE_KEY + devConfigBatchParam.getConfigValue());
+            commonCacheOperator.remove(CONFIG_CACHE_KEY + devConfigBatchParam.getConfigKey());
         });
     }
 }

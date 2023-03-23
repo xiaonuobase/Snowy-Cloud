@@ -15,11 +15,11 @@
  */
 package com.alibaba.csp.sentinel.dashboard.discovery;
 
-import static org.junit.Assert.*;
-
+import com.alibaba.csp.sentinel.dashboard.config.DashboardConfig;
 import org.junit.Test;
 
-import com.alibaba.csp.sentinel.dashboard.config.DashboardConfig;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Jason Joo

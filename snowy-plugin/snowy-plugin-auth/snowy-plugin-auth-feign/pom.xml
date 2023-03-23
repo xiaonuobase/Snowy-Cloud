@@ -22,7 +22,6 @@
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-auth-api</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
     </dependencies>

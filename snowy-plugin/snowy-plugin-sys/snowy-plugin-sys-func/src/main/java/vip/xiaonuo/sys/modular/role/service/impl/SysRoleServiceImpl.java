@@ -35,8 +35,11 @@ import vip.xiaonuo.common.cache.CommonCacheOperator;
 import vip.xiaonuo.common.consts.CacheConstant;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.enums.SysBuildInEnum;
+import vip.xiaonuo.common.enums.SysDataTypeEnum;
 import vip.xiaonuo.common.exception.CommonException;
+import vip.xiaonuo.common.listener.CommonDataChangeEventCenter;
 import vip.xiaonuo.common.page.CommonPageRequest;
+import vip.xiaonuo.mobile.vip.MobileMenuApi;
 import vip.xiaonuo.sys.modular.org.entity.SysOrg;
 import vip.xiaonuo.sys.modular.org.service.SysOrgService;
 import vip.xiaonuo.sys.modular.relation.entity.SysRelation;
@@ -49,9 +52,7 @@ import vip.xiaonuo.sys.modular.role.entity.SysRole;
 import vip.xiaonuo.sys.modular.role.enums.SysRoleCategoryEnum;
 import vip.xiaonuo.sys.modular.role.mapper.SysRoleMapper;
 import vip.xiaonuo.sys.modular.role.param.*;
-import vip.xiaonuo.sys.modular.role.result.SysRoleGrantResourceTreeResult;
-import vip.xiaonuo.sys.modular.role.result.SysRoleOwnPermissionResult;
-import vip.xiaonuo.sys.modular.role.result.SysRoleOwnResourceResult;
+import vip.xiaonuo.sys.modular.role.result.*;
 import vip.xiaonuo.sys.modular.role.service.SysRoleService;
 import vip.xiaonuo.sys.modular.user.entity.SysUser;
 import vip.xiaonuo.sys.modular.user.service.SysUserService;
@@ -87,6 +88,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Resource
     private CommonCacheOperator commonCacheOperator;
 
+    @Resource
+    private MobileMenuApi mobileMenuApi;
+
     @Override
     public Page<SysRole> page(SysRolePageParam sysRolePageParam) {
         QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
@@ -112,6 +116,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         return this.page(CommonPageRequest.defaultPage(), queryWrapper);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void add(SysRoleAddParam sysRoleAddParam) {
         SysRoleCategoryEnum.validate(sysRoleAddParam.getCategory());
@@ -134,8 +139,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
         sysRole.setCode(RandomUtil.randomString(10));
         this.save(sysRole);
+
+        // 发布增加事件
+        CommonDataChangeEventCenter.doAddWithData(SysDataTypeEnum.ROLE.getValue(), JSONUtil.createArray().put(sysRole));
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void edit(SysRoleEditParam sysRoleEditParam) {
         SysRole sysRole = this.queryEntity(sysRoleEditParam.getId());
@@ -161,6 +170,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
         BeanUtil.copyProperties(sysRoleEditParam, sysRole);
         this.updateById(sysRole);
+
+        // 发布更新事件
+        CommonDataChangeEventCenter.doUpdateWithData(SysDataTypeEnum.ROLE.getValue(), JSONUtil.createArray().put(sysRole));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -183,7 +195,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             sysRelationService.remove(new LambdaUpdateWrapper<SysRelation>().in(SysRelation::getObjectId, sysRoleIdList)
                     .eq(SysRelation::getCategory, SysRelationCategoryEnum.SYS_ROLE_HAS_PERMISSION.getValue()));
             // 执行删除
-            this.removeBatchByIds(sysRoleIdList);
+            this.removeByIds(sysRoleIdList);
+
+            // 发布删除事件
+            CommonDataChangeEventCenter.doDeleteWithDataId(SysDataTypeEnum.ROLE.getValue(), sysRoleIdList);
         }
     }
 
@@ -210,6 +225,27 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         List<String> extJsonList = sysRoleGrantResourceParam.getGrantInfoList().stream()
                 .map(JSONUtil::toJsonStr).collect(Collectors.toList());
         sysRelationService.saveRelationBatchWithClear(id, menuIdList, SysRelationCategoryEnum.SYS_ROLE_HAS_RESOURCE.getValue(),
+                extJsonList);
+    }
+
+    @Override
+    public SysRoleOwnMobileMenuResult ownMobileMenu(SysRoleIdParam sysRoleIdParam) {
+        SysRoleOwnMobileMenuResult sysRoleOwnMobileMenuResult = new SysRoleOwnMobileMenuResult();
+        sysRoleOwnMobileMenuResult.setId(sysRoleIdParam.getId());
+        sysRoleOwnMobileMenuResult.setGrantInfoList(sysRelationService.getRelationListByObjectIdAndCategory(sysRoleIdParam.getId(),
+                SysRelationCategoryEnum.SYS_ROLE_HAS_MOBILE_MENU.getValue()).stream().map(sysRelation ->
+                JSONUtil.toBean(sysRelation.getExtJson(), SysRoleOwnMobileMenuResult.SysRoleOwnMobileMenu.class)).collect(Collectors.toList()));
+        return sysRoleOwnMobileMenuResult;
+    }
+
+    @Override
+    public void grantMobileMenu(SysRoleGrantMobileMenuParam sysRoleGrantMobileMenuParam) {
+        String id = sysRoleGrantMobileMenuParam.getId();
+        List<String> menuIdList = sysRoleGrantMobileMenuParam.getGrantInfoList().stream()
+                .map(SysRoleGrantMobileMenuParam.SysRoleGrantMobileMenu::getMenuId).collect(Collectors.toList());
+        List<String> extJsonList = sysRoleGrantMobileMenuParam.getGrantInfoList().stream()
+                .map(JSONUtil::toJsonStr).collect(Collectors.toList());
+        sysRelationService.saveRelationBatchWithClear(id, menuIdList, SysRelationCategoryEnum.SYS_ROLE_HAS_MOBILE_MENU.getValue(),
                 extJsonList);
     }
 
@@ -268,9 +304,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public List<Tree<String>> orgTreeSelector() {
-        LambdaQueryWrapper<SysOrg> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.orderByAsc(SysOrg::getSortCode);
-        List<SysOrg> sysOrgList = sysOrgService.list(lambdaQueryWrapper);
+        List<SysOrg> sysOrgList = sysOrgService.getCachedAllOrgList();
         List<TreeNode<String>> treeNodeList = sysOrgList.stream().map(sysOrg ->
                 new TreeNode<>(sysOrg.getId(), sysOrg.getParentId(), sysOrg.getName(), sysOrg.getSortCode()))
                 .collect(Collectors.toList());
@@ -345,6 +379,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
+    public List<SysRoleGrantMobileMenuTreeResult> mobileMenuTreeSelector() {
+        return BeanUtil.copyToList(mobileMenuApi.mobileMenuTreeSelector(), SysRoleGrantMobileMenuTreeResult.class);
+    }
+
+    @Override
     public List<String> permissionTreeSelector() {
         List<String> permissionResult = CollectionUtil.newArrayList();
 
@@ -383,15 +422,27 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public List<SysUser> userSelector(SysRoleSelectorUserParam sysRoleSelectorUserParam) {
         LambdaQueryWrapper<SysUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 只查询部分字段
-        lambdaQueryWrapper.select(SysUser::getId, SysUser::getOrgId, SysUser::getAccount, SysUser::getName);
-        if(ObjectUtil.isNotEmpty(sysRoleSelectorUserParam.getOrgId())) {
-            lambdaQueryWrapper.eq(SysUser::getOrgId, sysRoleSelectorUserParam.getOrgId());
+        lambdaQueryWrapper.select(SysUser::getId, SysUser::getOrgId, SysUser::getAccount, SysUser::getName, SysUser::getSortCode);
+        // 如果查询条件为空，则从缓存中查询
+        if(ObjectUtil.isAllEmpty(sysRoleSelectorUserParam.getOrgId(), sysRoleSelectorUserParam.getSearchKey())) {
+            return sysUserService.getCachedAllUserSelectorList();
+        } else {
+            if (ObjectUtil.isNotEmpty(sysRoleSelectorUserParam.getOrgId())) {
+                // 如果机构id不为空，则查询该机构所在顶级机构下的所有人
+                List<String> parentAndChildOrgIdList = CollStreamUtil.toList(sysOrgService.getParentAndChildListById(sysOrgService
+                        .getCachedAllOrgList(), sysRoleSelectorUserParam.getOrgId(), true), SysOrg::getId);
+                if (ObjectUtil.isNotEmpty(parentAndChildOrgIdList)) {
+                    lambdaQueryWrapper.in(SysUser::getOrgId, parentAndChildOrgIdList);
+                } else {
+                    return CollectionUtil.newArrayList();
+                }
+            }
+            if (ObjectUtil.isNotEmpty(sysRoleSelectorUserParam.getSearchKey())) {
+                lambdaQueryWrapper.like(SysUser::getName, sysRoleSelectorUserParam.getSearchKey());
+            }
+            lambdaQueryWrapper.orderByAsc(SysUser::getSortCode);
+            return sysUserService.list(lambdaQueryWrapper);
         }
-        if(ObjectUtil.isNotEmpty(sysRoleSelectorUserParam.getSearchKey())) {
-            lambdaQueryWrapper.like(SysUser::getName, sysRoleSelectorUserParam.getSearchKey());
-        }
-        lambdaQueryWrapper.orderByAsc(SysUser::getSortCode);
-        return sysUserService.list(lambdaQueryWrapper);
     }
 
     /* ====以下为各种递归方法==== */

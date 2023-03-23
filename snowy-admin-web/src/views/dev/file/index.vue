@@ -4,13 +4,12 @@
 			<a-row :gutter="24">
 				<a-col :span="8">
 					<a-form-item name="searchKey" label="名称关键词">
-						<a-input v-model:value="searchFormState.searchKey" placeholder="请输入文件名称关键词"></a-input>
+						<a-input v-model:value="searchFormState.searchKey" placeholder="请输入文件名称关键词" />
 					</a-form-item>
 				</a-col>
 				<a-col :span="8">
 					<a-form-item name="engine" label="存储位置">
-						<a-select v-model:value="searchFormState.engine" placeholder="请选择存储位置" :options="engineOptions">
-						</a-select>
+						<a-select v-model:value="searchFormState.engine" placeholder="请选择存储位置" :options="engineOptions" />
 					</a-form-item>
 				</a-col>
 				<a-col :span="8">
@@ -18,7 +17,7 @@
 						<template #icon><SearchOutlined /></template>
 						查询
 					</a-button>
-					<a-button class="snowy-buttom-left" @click="() => searchFormRef.resetFields()">
+					<a-button class="snowy-buttom-left" @click="reset">
 						<template #icon><redo-outlined /></template>
 						重置
 					</a-button>
@@ -43,7 +42,7 @@
 						<UploadOutlined />
 						文件上传
 					</a-button>
-					<a-button danger @click="deleteBatchFile()">删除</a-button>
+					<xn-batch-delete :selectedRowKeys="selectedRowKeys" @batchDelete="deleteBatchFile" />
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
@@ -100,7 +99,6 @@
 </template>
 
 <script setup name="devFile">
-	import { message } from 'ant-design-vue'
 	import fileApi from '@/api/dev/fileApi'
 	import uploadForm from './uploadForm.vue'
 	import detail from './detail.vue'
@@ -170,6 +168,11 @@
 			return data
 		})
 	}
+	// 重置
+	const reset = () => {
+		searchFormRef.value.resetFields()
+		table.value.refresh(true)
+	}
 	// 删除
 	const deleteFile = (record) => {
 		let params = [
@@ -182,27 +185,13 @@
 		})
 	}
 	// 批量删除
-	const deleteBatchFile = () => {
-		if (selectedRowKeys.value.length < 1) {
-			message.warning('请选择一条或多条数据')
-			return false
-		}
-		const params = selectedRowKeys.value.map((m) => {
-			return {
-				id: m
-			}
-		})
+	const deleteBatchFile = (params) => {
 		fileApi.fileDelete(params).then(() => {
 			table.value.clearRefreshSelected()
 		})
 	}
 	// 存储位置
-	const engineOptions = tool.dictTypeList('FILE_ENGINE').map((item) => {
-		return {
-			value: item['dictValue'],
-			label: item['name']
-		}
-	})
+	const engineOptions = tool.dictList('FILE_ENGINE')
 </script>
 
 <style scoped>
