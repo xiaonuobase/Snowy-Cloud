@@ -60,6 +60,8 @@
 <script>
 	import tool from '@/utils/tool'
 	import XnContextMenu from '@/components/XnContextMenu/index.vue'
+	import {globalStore, iframeStore, keepAliveStore, viewTagsStore} from '@/store'
+	import { mapState, mapActions } from 'pinia'
 
 	export default {
 		name: 'Tags',
@@ -67,7 +69,7 @@
 		props: {},
 		data() {
 			return {
-				tagList: this.$store.state.viewTags.viewTags,
+				// tagList: [],
 				activeKey: this.$route.fullPath,
 				maxTabs: 20,
 				contextMenuTarget: null,
@@ -75,9 +77,19 @@
 				currentContextMenuTabIndex: 0
 			}
 		},
+		computed: {
+			...mapState(viewTagsStore, ['viewTags']),
+			...mapState(globalStore, ['layoutTagsOpen']),
+			tagList() {
+				return this.viewTags
+			}
+		},
 		watch: {
 			$route(to) {
 				this.addViewTags(to)
+			},
+			layoutTagsOpen() {
+				this.closeOtherCacheTabs()
 			}
 		},
 		created() {
@@ -98,6 +110,9 @@
 			}
 		},
 		methods: {
+			...mapActions(viewTagsStore, ['addViewTags', 'pushViewTags', 'removeViewTags']),
+			...mapActions(iframeStore, ['addIframe', 'removeIframeList', 'refreshIframe']),
+			...mapActions(keepAliveStore, ['pushKeepLive', 'removeKeepLive', 'setRouteShow']),
 			handleTabContextMenu(evt) {
 				evt.preventDefault()
 				let target = evt.target
@@ -150,14 +165,13 @@
 			// 增加tag
 			addViewTags(route) {
 				this.activeKey = route.fullPath
-
 				if (route.name && !route.meta.fullpage) {
-					this.$store.commit('pushViewTags', route)
-					this.$store.commit('pushKeepLive', route.name)
+					this.pushViewTags(route)
+					this.pushKeepLive(route.name)
 				}
 				if (this.tagList.length - 1 > this.maxTabs) {
 					const firstTag = this.tagList[1]
-					this.$store.commit('removeViewTags', firstTag)
+					this.removeViewTags(firstTag)
 				}
 			},
 			// 高亮tag
@@ -166,9 +180,9 @@
 			},
 			// 关闭tag
 			closeSelectedTag(tag, autoPushLatestView = true) {
-				this.$store.commit('removeViewTags', tag)
-				this.$store.commit('removeIframeList', tag)
-				this.$store.commit('removeKeepLive', tag.name)
+				this.removeViewTags(tag)
+				this.removeIframeList(tag)
+				this.removeKeepLive(tag.name)
 				if (autoPushLatestView && this.isActive(tag)) {
 					const latestView = this.tagList.slice(-1)[0]
 					if (latestView) {
@@ -190,13 +204,13 @@
 						query: nowTag.query
 					})
 				}
-				this.$store.commit('refreshIframe', nowTag)
+				this.refreshIframe(nowTag)
 				setTimeout(() => {
-					this.$store.commit('removeKeepLive', nowTag.name)
-					this.$store.commit('setRouteShow', false)
+					this.removeKeepLive(nowTag.name)
+					this.setRouteShow(false)
 					this.$nextTick(() => {
-						this.$store.commit('pushKeepLive', nowTag.name)
-						this.$store.commit('setRouteShow', true)
+						this.pushKeepLive(nowTag.name)
+						this.setRouteShow(true)
 					})
 				}, 0)
 			},
@@ -228,6 +242,13 @@
 					} else {
 						this.closeSelectedTag(tag, false)
 					}
+				})
+			},
+			// 多标签功能关闭时关闭被缓存的标签
+			closeOtherCacheTabs () {
+				const tags = [...this.tagList]
+				tags.forEach((tag) => {
+					this.closeSelectedTag(tag, false)
 				})
 			},
 			// TAB 最大化（包括标签栏）
