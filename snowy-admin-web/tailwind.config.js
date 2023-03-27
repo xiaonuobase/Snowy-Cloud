@@ -28,6 +28,16 @@ const generateFontSize = () => {
 
 const colors = require('tailwindcss/colors')
 
+const filterWarnColors = (colors) => {
+	const result = {}
+	for (const key in colors) {
+		if (['lightBlue', 'warmGray', 'trueGray', 'coolGray', 'blueGray'].indexOf(key) === -1) {
+			result[key] = colors[key]
+		}
+	}
+	return result
+}
+
 module.exports = {
 	content: ['./src/**/*.vue', './src/**/*.js'],
 	darkMode: 'class', // or 'media' or 'class'
@@ -39,12 +49,7 @@ module.exports = {
 		colors: {
 			transparent: 'transparent',
 			current: 'currentColor',
-			black: colors.black,
-			white: colors.white,
-			gray: colors.neutral,
-			indigo: colors.indigo,
-			red: colors.rose,
-			yellow: colors.amber,
+			...filterWarnColors(colors),
 			...generatePrimaryColors()
 		},
 		fontWeight: {

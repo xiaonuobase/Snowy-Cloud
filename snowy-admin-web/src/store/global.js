@@ -8,7 +8,8 @@
  *	5.不可二次分发开源参与同类竞品，如有想法可联系团队xiaonuobase@qq.com商议合作。
  *	6.若您的项目无法满足以上几点，需要更多功能代码，获取Snowy商业授权许可，请在官网购买授权，地址为 https://www.xiaonuo.vip
  */
-import { changeColor, getLocalSetting } from '@/utils/themeUtil'
+import { defineStore } from 'pinia'
+import { changeColor } from '@/utils/themeUtil'
 import config from '@/config'
 import { message } from 'ant-design-vue'
 import tool from '@/utils/tool'
@@ -25,8 +26,13 @@ const getCacheConfig = (value) => {
 	}
 	return data
 }
-export default {
-	state: {
+
+/**
+ * deprecated 请使用 useGlobalStore
+ */
+export const globalStore = defineStore({
+	id: 'global',
+	state: () => ({
 		// 移动端布局
 		ismobile: false,
 		// 布局
@@ -42,8 +48,7 @@ export default {
 		// 顶栏是否应用主题色
 		topHanderThemeColorOpen: getCacheConfig('SNOWY_TOP_HANDER_THEME_COLOR_OPEN'),
 		// 顶栏主题色通栏
-		topHanderThemeColorSpread:
-			getCacheConfig('SNOWY_TOP_HANDER_THEME_COLOR_SPREAD'),
+		topHanderThemeColorSpread: getCacheConfig('SNOWY_TOP_HANDER_THEME_COLOR_SPREAD'),
 		// 模块坞
 		moduleUnfoldOpen: getCacheConfig('SNOWY_MODULE_UNFOLD_OPEN'),
 		// 主题
@@ -56,57 +61,42 @@ export default {
 		userInfo: toolDataGet('USER_INFO') || {},
 		// 系统配置
 		sysBaseConfig: toolDataGet('SNOWY_SYS_BASE_CONFIG') || config.SYS_BASE_CONFIG
-	},
-	mutations: {
-		SET_ismobile(state, key) {
-			state.ismobile = key
+	}),
+	getters: {},
+	actions: {
+		setIsmobile(key) {
+			this.ismobile = key
 		},
-		SET_layout(state, key) {
-			state.layout = key
+		setLayout(key) {
+			this.layout = key
 		},
-		SET_theme(state, key) {
-			state.theme = key
+		setTheme(key) {
+			this.theme = key
 			const closeMessage = message.loading(`加载中...`)
-			changeColor(state.themeColor, key).then(closeMessage)
+			changeColor(this.themeColor, key).then(closeMessage)
 		},
-		SET_themeColor(state, key) {
-			state.themeColor = key
+		setThemeColor(key) {
+			this.themeColor = key
 			const closeMessage = message.loading(`加载中...`)
-			changeColor(key, state.theme).then(closeMessage)
+			changeColor(key, this.theme).then(closeMessage)
 		},
-		initTheme(state) {
+		initTheme() {
 			const closeMessage = message.loading(`加载中...`)
-			changeColor(state.themeColor, state.theme).then(closeMessage)
+			changeColor(this.themeColor, this.theme).then(closeMessage)
 		},
-		TOGGLE_menuIsCollapse(state) {
-			state.menuIsCollapse = !state.menuIsCollapse
+		toggleConfig(key) {
+			this[key] = !this[key]
 		},
-		TOGGLE_sideUniqueOpen(state) {
-			state.sideUniqueOpen = !state.sideUniqueOpen
+		setFormStyle(key) {
+			this.formStyle = key
 		},
-		TOGGLE_layoutTagsOpen(state) {
-			state.layoutTagsOpen = !state.layoutTagsOpen
+		setUserInfo(key) {
+			this.userInfo = key
 		},
-		TOGGLE_breadcrumbOpen(state) {
-			state.breadcrumbOpen = !state.breadcrumbOpen
-		},
-		TOGGLE_topHanderThemeColorOpen(state) {
-			state.topHanderThemeColorOpen = !state.topHanderThemeColorOpen
-		},
-		TOGGLE_topHanderThemeColorSpread(state) {
-			state.topHanderThemeColorSpread = !state.topHanderThemeColorSpread
-		},
-		TOGGLE_moduleUnfoldOpen(state) {
-			state.moduleUnfoldOpen = !state.moduleUnfoldOpen
-		},
-		SET_formStyle(state, key) {
-			state.formStyle = key
-		},
-		SET_userInfo(state, key) {
-			state.userInfo = key
-		},
-		SET_sysBaseConfig(state, key) {
-			state.sysBaseConfig = key
+		setSysBaseConfig(key) {
+			this.sysBaseConfig = key
 		}
 	}
-}
+})
+
+export const useGlobalStore = globalStore

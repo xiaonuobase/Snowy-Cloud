@@ -36,6 +36,7 @@ a, button, input, textarea {
 .aminui {
 	overflow: hidden;
 	height: 100%;
+	min-height: 640px;
 	display: flex;
 	flex-flow: column;
 }
@@ -150,6 +151,11 @@ a, button, input, textarea {
 	border-bottom: 1px solid var(--border-color-split);
 	box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
 	background-color: var(--body-background);
+
+	.ant-menu-item{
+		height: 48px;
+		line-height: 48px;
+	}
 }
 // 应用主题色
 .snowy-header-primary-color {
@@ -163,6 +169,10 @@ a, button, input, textarea {
 	}
 	.ant-breadcrumb-separator {
 		color: white;
+	}
+	.ant-menu-light .ant-menu-item:hover{
+		color: #ccc;
+		background-color: var(--primary-7);
 	}
 }
 
@@ -388,6 +398,24 @@ a, button, input, textarea {
 	padding: 12px 0!important;
 }
 
+/* 重写antdv的表格滚动条 */
+.ant-table-body {
+	&::-webkit-scrollbar {
+		height: 10px;
+		width: 10px;
+	}
+	&::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		-webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
+		background: @border-color-split;
+	}
+	&::-webkit-scrollbar-track {
+		-webkit-box-shadow: 0;
+		border-radius: 10px;
+		background: @background-color-base;
+	}
+}
+
 // 滚动条，需要哪里，加哪个class
 body,
 .ant-drawer-wrapper-body,
@@ -407,7 +435,6 @@ body,
 .org-table,
 .pos-table,
 .poi-list,
-.ant-table-body,
 .snowy-orgpos-vis,
 .index-message-list,
 .ant-picker-time-panel-column,
