@@ -638,36 +638,6 @@
                 <version>${mssql.connector.java.version}</version>
             </dependency>-->
 
-            <!-- easy-poi -->
-            <dependency>
-                <groupId>cn.afterturn</groupId>
-                <artifactId>easypoi-spring-boot-starter</artifactId>
-                <version>${easypoi.version}</version>
-            </dependency>
-
-            <!-- sm-crypto -->
-            <dependency>
-                <groupId>com.antherd</groupId>
-                <artifactId>sm-crypto</artifactId>
-                <version>${smcrypto.version}</version>
-            </dependency>
-
-            <!-- ===================== snowy-web-app ========================= -->
-            <!-- junit -->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <!-- mysql -->
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql.connector.java.version}</version>
-            </dependency>
-
             <!-- oracle -->
             <!--<dependency>
                 <groupId>com.oracle.database.jdbc</groupId>
@@ -693,20 +663,6 @@
                 <artifactId>sa-token-reactor-spring-boot-starter</artifactId>
                 <version>${sa.token.version}</version>
             </dependency>
-
-            <!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） -->
-            <dependency>
-                <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-dao-redis-jackson</artifactId>
-                <version>${sa.token.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-                <version>${dynamic.datasource.version}</version>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 
