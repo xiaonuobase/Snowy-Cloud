@@ -178,6 +178,33 @@ snowy-cloud
 
 作者也在上班工作，所以在利用休息时间为大家创作，录制视频的目的也是为各位小伙伴提供文档跟技术交流群聊之外的上手学习资料
 
+## 架构原理图
+* 业务架构
+<p align="center">
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=9Mor3UYA&path=%7BshareItemLink%3A9Mor3UYA%7D%2F"/>
+</p>
+
+* 应用架构
+<p align="center">
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=9MosIA7A&path=%7BshareItemLink%3A9MosIA7A%7D%2F"/>
+</p>
+
+* 数据架构
+<p align="center">
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=9MoseTCw&path=%7BshareItemLink%3A9MoseTCw%7D%2F"/>
+</p>
+
+* 技术架构
+<p align="center">
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=9MospSEQ&path=%7BshareItemLink%3A9MospSEQ%7D%2F"/>
+</p>
+
+* 部署架构
+<p align="center">
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=9Mos0iCg&path=%7BshareItemLink%3A9Mos0iCg%7D%2F"/>
+</p>
+
+
 ## 效果图例
 
 <table>
