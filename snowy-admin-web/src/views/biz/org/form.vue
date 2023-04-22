@@ -53,8 +53,8 @@
 		</template>
 		<user-selector-plus
 			ref="UserSelectorPlus"
-			page-url="/biz/org/userSelector"
-			org-url="/biz/org/orgTreeSelector"
+			page-url="/api/bizapp/biz/org/userSelector"
+			org-url="/api/bizapp/biz/org/orgTreeSelector"
 			:radio-model="true"
 			@onBack="userBack"
 		/>

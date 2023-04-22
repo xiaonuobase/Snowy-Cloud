@@ -138,8 +138,8 @@
 	<Form ref="form" @successful="table.refresh(true)" />
 	<role-selector-plus
 		ref="RoleSelectorPlus"
-		page-url="/sys/user/roleSelector"
-		org-url="/sys/user/orgTreeSelector"
+		page-url="/api/webapp/sys/user/roleSelector"
+		org-url="/api/webapp/sys/user/orgTreeSelector"
 		@onBack="roleBack"
 	/>
 	<ImpExp ref="ImpExpRef" />

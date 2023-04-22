@@ -101,8 +101,8 @@
 	<Form ref="form" @successful="table.refresh(true)" />
 	<user-selector-plus
 		ref="userselectorPlusRef"
-		page-url="/sys/role/userSelector"
-		org-url="/sys/role/orgTreeSelector"
+		page-url="/api/webapp/sys/role/userSelector"
+		org-url="/api/webapp/sys/role/orgTreeSelector"
 		@onBack="userCallBack"
 	/>
 </template>

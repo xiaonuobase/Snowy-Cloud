@@ -143,8 +143,8 @@
 	<Form ref="form" @successful="table.refresh(true)" />
 	<role-selector-plus
 		ref="RoleSelectorPlus"
-		page-url="/biz/user/roleSelector"
-		org-url="/biz/user/orgTreeSelector"
+		page-url="/api/bizapp/biz/user/roleSelector"
+		org-url="/api/bizapp/biz/user/orgTreeSelector"
 		:role-global="false"
 		@onBack="roleBack"
 	/>

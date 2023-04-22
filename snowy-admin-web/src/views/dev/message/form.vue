@@ -36,8 +36,8 @@
 	</xn-form-container>
 	<user-selector-plus
 		ref="UserSelectorPlus"
-		page-url="/sys/org/userSelector"
-		org-url="/sys/org/orgTreeSelector"
+		page-url="/api/webapp/sys/org/userSelector"
+		org-url="/api/webapp/sys/org/orgTreeSelector"
 		@onBack="userBack"
 	/>
 </template>
