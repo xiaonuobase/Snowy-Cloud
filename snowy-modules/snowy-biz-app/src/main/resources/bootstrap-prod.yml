@@ -63,6 +63,17 @@ spring:
 #          password: SYSDBA
 #      strict: true
 
+  # kingbase database
+#  datasource:
+#    dynamic:
+#      datasource:
+#        master:
+#          driver-class-name: com.kingbase8.Driver
+#          url: jdbc:kingbase8://localhost:54321/snowy
+#          username: SYSTEM
+#          password: 123456
+#      strict: true
+
       # druid global configuration
       public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMWiTVtdXFVrgFHDDKELZM0SywkWY3KjugN90eY5Sogon1j8Y0ClPF7nx3FuE7pAeBKiv7ChIS0vvx/59WUpKmUCAwEAAQ==
       druid:
