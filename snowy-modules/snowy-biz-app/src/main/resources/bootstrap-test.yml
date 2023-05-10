@@ -131,6 +131,7 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     banner: false
+    enable-sql-runner: true
     db-config:
       id-type: ASSIGN_ID
       logic-delete-field: DELETE_FLAG
