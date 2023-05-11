@@ -67,6 +67,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import vip.xiaonuo.auth.core.util.StpClientUtil;
 import vip.xiaonuo.common.annotation.CommonNoRepeat;
 import vip.xiaonuo.common.annotation.CommonWrapper;
+import vip.xiaonuo.common.cache.CommonCacheOperator;
 import vip.xiaonuo.common.consts.FeignConstant;
 import vip.xiaonuo.common.enums.CommonDeleteFlagEnum;
 import vip.xiaonuo.common.enums.SysBuildInEnum;
@@ -75,17 +76,20 @@ import vip.xiaonuo.common.listener.CommonDataChangeEventCenter;
 import vip.xiaonuo.common.listener.CommonDataChangeListener;
 import vip.xiaonuo.common.pojo.CommonResult;
 import vip.xiaonuo.common.pojo.CommonWrapperInterface;
+import vip.xiaonuo.common.util.CommonTimeFormatUtil;
 import vip.xiaonuo.web.core.handler.GlobalExceptionUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Snowy配置
@@ -96,6 +100,11 @@ import java.util.*;
 @Configuration
 @MapperScan(basePackages = {"vip.xiaonuo.**.mapper, com.bstek.**.mapper"})
 public class GlobalConfigure implements WebMvcConfigurer {
+
+    private static final String COMMON_REPEAT_SUBMIT_CACHE_KEY = "common-repeatSubmit:";
+
+    @Resource
+    private CommonCacheOperator commonCacheOperator;
 
     @Resource
     private OpenApiExtensionResolver openApiExtensionResolver;
@@ -335,10 +344,11 @@ public class GlobalConfigure implements WebMvcConfigurer {
                     Method method = handlerMethod.getMethod();
                     CommonNoRepeat annotation = method.getAnnotation(CommonNoRepeat.class);
                     if (ObjectUtil.isNotEmpty(annotation)) {
-                        if (this.isRepeatSubmit(request, annotation)) {
+                        JSONObject repeatSubmitJsonObject = this.isRepeatSubmit(request, annotation);
+                        if (repeatSubmitJsonObject.getBool("repeat")) {
                             response.setCharacterEncoding(CharsetUtil.UTF_8);
                             response.setContentType(ContentType.JSON.toString());
-                            response.getWriter().write(JSONUtil.toJsonStr(CommonResult.error("请求过于频繁，请稍后再试")));
+                            response.getWriter().write(JSONUtil.toJsonStr(CommonResult.error("请求过于频繁，请" + repeatSubmitJsonObject.getStr("time") + "后再试")));
                             return false;
                         }
                     }
@@ -346,25 +356,34 @@ public class GlobalConfigure implements WebMvcConfigurer {
                 return true;
             }
 
-            public boolean isRepeatSubmit(HttpServletRequest request, CommonNoRepeat annotation) {
+            public JSONObject isRepeatSubmit(HttpServletRequest request, CommonNoRepeat annotation) {
                 JSONObject jsonObject = JSONUtil.createObj();
                 jsonObject.set("repeatParam", JSONUtil.toJsonStr(request.getParameterMap()));
                 jsonObject.set("repeatTime", DateUtil.current());
                 String url = request.getRequestURI();
-                HttpSession session = request.getSession();
-                Object sessionObj = session.getAttribute("repeatData");
-                if (ObjectUtil.isNotEmpty(sessionObj)) {
-                    JSONObject sessionJsonObject = JSONUtil.parseObj(sessionObj);
-                    if(sessionJsonObject.containsKey(url)) {
-                        JSONObject existRepeatJsonObject = sessionJsonObject.getJSONObject(url);
-                        if (jsonObject.getStr("repeatParam").equals(existRepeatJsonObject.getStr("repeatParam")) &&
-                                jsonObject.getLong("repeatTime") - existRepeatJsonObject.getLong("repeatTime") < annotation.interval()) {
-                            return true;
+                // 获取该接口缓存的限流数据
+                Object cacheObj = commonCacheOperator.get(COMMON_REPEAT_SUBMIT_CACHE_KEY + url);
+                if (ObjectUtil.isNotEmpty(cacheObj)) {
+                    JSONObject cacheJsonObject = JSONUtil.parseObj(cacheObj);
+                    if(cacheJsonObject.containsKey(url)) {
+                        JSONObject existRepeatJsonObject = cacheJsonObject.getJSONObject(url);
+                        // 如果与上次参数一致，且时间间隔小于要求的限流时长，则判定为重复提交
+                        if (jsonObject.getStr("repeatParam").equals(existRepeatJsonObject.getStr("repeatParam"))) {
+                            long interval = jsonObject.getLong("repeatTime") - existRepeatJsonObject.getLong("repeatTime");
+                            if(interval < annotation.interval()) {
+                                long secondsParam = (annotation.interval() - interval) / 1000;
+                                if(secondsParam == 0) {
+                                    return JSONUtil.createObj().set("repeat", false);
+                                } else {
+                                    return JSONUtil.createObj().set("repeat", true).set("time", CommonTimeFormatUtil.formatSeconds(secondsParam));
+                                }
+                            }
                         }
                     }
                 }
-                session.setAttribute("repeatData", JSONUtil.createObj().set(url, jsonObject));
-                return false;
+                // 缓存最新的该接口的限流数据，为防止缓存的数据过多，缓存时效为1小时
+                commonCacheOperator.put(COMMON_REPEAT_SUBMIT_CACHE_KEY + url, JSONUtil.createObj().set(url, jsonObject), 60 * 60);
+                return JSONUtil.createObj().set("repeat", false);
             }
         }).addPathPatterns("/**");
     }
@@ -504,15 +523,15 @@ public class GlobalConfigure implements WebMvcConfigurer {
         @Override
         public String getDatabaseId(DataSource dataSource) throws SQLException {
             String url = dataSource.getConnection().getMetaData().getURL();
-            if (url.contains("oracle")) {
+            if (url.contains("jdbc:oracle")) {
                 return "oracle";
-            } else if (url.contains("postgresql")) {
+            } else if (url.contains("jdbc:postgresql")) {
                 return "pgsql";
-            } else if (url.contains("mysql")) {
+            } else if (url.contains("jdbc:mysql")) {
                 return "mysql";
-            } else if (url.contains("dm")) {
+            } else if (url.contains("jdbc:dm")) {
                 return "dm";
-            } else if (url.contains("kingbase")) {
+            } else if (url.contains("jdbc:kingbase")) {
                 return "kingbase";
             }  else {
                 return "mysql";
@@ -564,7 +583,7 @@ public class GlobalConfigure implements WebMvcConfigurer {
                 //为空则设置createTime
                 Object createTime = metaObject.getValue(CREATE_TIME);
                 if (ObjectUtil.isNull(createTime)) {
-                    setFieldValByName(CREATE_TIME, new Date(), metaObject);
+                    setFieldValByName(CREATE_TIME, DateTime.now(), metaObject);
                 }
             } catch (ReflectionException ignored) { }
         }
