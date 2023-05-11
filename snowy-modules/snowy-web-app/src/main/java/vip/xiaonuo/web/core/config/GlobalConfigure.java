@@ -522,7 +522,7 @@ public class GlobalConfigure implements WebMvcConfigurer {
 
         @Override
         public String getDatabaseId(DataSource dataSource) throws SQLException {
-            String url = dataSource.getConnection().getMetaData().getURL();
+            String url = dataSource.getConnection().getMetaData().getURL().toLowerCase();
             if (url.contains("jdbc:oracle")) {
                 return "oracle";
             } else if (url.contains("jdbc:postgresql")) {
