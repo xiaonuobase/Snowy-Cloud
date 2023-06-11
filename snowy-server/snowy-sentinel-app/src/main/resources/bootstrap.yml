@@ -1,24 +1,15 @@
-#服务配置
-server:
-  port: 9002
-  servlet:
-    #spring settings
-    encoding:
-      force: true
-      charset: UTF-8
-      enabled: true
-    #cookie name setting
-    session:
-      cookie:
-        name:
-          sentinel_dashboard_cookie: sentinel_dashboard_cookie
-
-#spring相关配置
 spring:
   application:
     name: snowy-sentinel-app
   profiles:
     active: dev
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        namespace: snowy-cloud-2x-${spring.profiles.active}
+        group: ${spring.profiles.active}
+        prefix: ${spring.application.name}
+        file-extension: yaml
+        username: nacos
+        password: nacos

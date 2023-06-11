@@ -130,10 +130,10 @@
         </dependency>
 
         <!-- nacos 配置中心客户端 -->
-        <!--<dependency>
+        <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-        </dependency>-->
+        </dependency>
 
         <!-- Alibaba Sentinel -->
         <dependency>

@@ -1,0 +1,121 @@
+# 服务配置
+server:
+  port: 9004
+  servlet:
+    context-path: /xxl-job-admin
+
+# spring相关配置
+spring:
+  boot:
+    admin:
+      client:
+        url: http://localhost:9001
+        instance:
+          # 默认使用的是主机名注册，改为使用ip注册
+          prefer-ip: true
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+      cache:
+        enabled: true
+        caffeine:
+          spec: initialCapacity=500,expireAfterWrite=5s
+    # nacos配置
+    nacos:
+      discovery:
+        server-addr: ${spring.cloud.nacos.config.server-addr}
+        namespace: ${spring.cloud.nacos.config.namespace}
+        group: ${spring.cloud.nacos.config.group}
+        username: ${spring.cloud.nacos.config.username}
+        password: ${spring.cloud.nacos.config.password}
+        metadata:
+          management.context-path: ${server.servlet.context-path}/actuator
+      config:
+        server-addr: localhost:8848 #Nacos配置中心地址
+        file-extension: yml #指定yml格式的配置
+        username: nacos
+        password: nacos
+  datasource:
+    ### xxl-job, datasource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/snowy-cloud-job?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&nullCatalogMeansCurrent=true
+    username: root
+    password: 123456
+    ### datasource-pool
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 30
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: HikariCP
+      max-lifetime: 900000
+      connection-timeout: 10000
+      connection-test-query: SELECT 1
+      validation-timeout: 1000
+  ### resources
+  resources:
+    static-locations: classpath:/static/
+  mvc:
+    servlet:
+      load-on-startup: 0
+    static-path-pattern: /static/**
+  ### freemarker
+  freemarker:
+    templateLoaderPath: classpath:/templates/
+    suffix: .ftl
+    charset: UTF-8
+    request-context-attribute: request
+    settings:
+      number_format: 0.##########
+  ### xxl-job, email
+  mail:
+    host: smtp.qq.com
+    port: 25
+    username: xxx@qq.com
+    from: xxx@qq.com
+    password: xxx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+
+### mybatis
+mybatis:
+  mapper-locations: classpath:/mybatis-mapper/*Mapper.xml
+# type-aliases-package: com.xxl.job.admin.core.model
+
+### xxl-job
+### xxl-job, access token
+xxl:
+  job:
+    accessToken:
+    ### xxl-job, i18n (default is zh_CN, and you can choose "zh_CN", "zh_TC" and "en")
+    i18n: zh_CN
+    ## xxl-job, triggerpool max size
+    triggerpool:
+      fast:
+        max: 200
+      slow:
+        max: 100
+    ### xxl-job, log retention days
+    logretentiondays: 30
+
+### actuator
+# 开放所有endpoint，实际生产根据自身需要开放，出于安全考虑不建议全部开放
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: "ALWAYS"
+  health:
+    mail:
+      enabled: false

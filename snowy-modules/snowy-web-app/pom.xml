@@ -165,10 +165,10 @@
         </dependency>
 
         <!-- nacos 配置中心客户端 -->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
 
         <!-- 暴露各种指标 -->
         <dependency>

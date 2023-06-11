@@ -1,0 +1,200 @@
+# 服务配置
+server:
+  port: 9003
+
+# spring相关配置
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/snowy-cloud?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&useInformationSchema=true
+    username: root
+    password: 123456
+
+# Oracle数据库
+#spring:
+#  datasource:
+#    driver-class-name: oracle.jdbc.OracleDriver
+#    url: jdbc:oracle:thin:@localhost:1521:xe
+#    username: SNOWY-CLOUD-ORACLE
+#    password: 123456
+
+# SQLServer配置
+#spring:
+#  datasource:
+#    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#    url: jdbc:sqlserver://localhost:1433;DatabaseName=snowy-cloud-mssql
+#    username: sa
+#    password: 123456
+
+# PostgreSQL配置
+#spring:
+#  datasource:
+#    driverClassName: org.postgresql.Driver
+#    url: jdbc:postgresql://127.0.0.1:5432/snowy-cloud-postgresql
+#    username: postgres
+#    password: 123456
+
+# 达梦数据库配置
+#spring:
+#  datasource:
+#    driver-class-name: dm.jdbc.driver.DmDriver
+#    url: jdbc:dm://localhost:5236/SYSDBA
+#    username: SYSDBA
+#    password: 123456789
+
+# 人大金仓数据库
+#spring:
+#  datasource:
+#    driver-class-name: com.kingbase8.Driver
+#    url: jdbc:kingbase8://localhost:54321/snowy-cloud-kingbase
+#    username: system
+#    password: 123456
+# #人大金仓数据库兼容问题，不需要加在sql语句中加public的解决方法：
+# #在根目录data下的kingbase.conf文档里面找到search_path = '"$user",PUBLIC,sys_catalog'进行替换放开
+# #重启数据库即可完全兼容，注意 sql中不能出现mysql中的关键字的单引号
+
+  # redis相关配置
+  redis:
+    database: 1
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 10s
+    lettuce:
+      pool:
+        max-active: 200
+        max-wait: -1ms
+        max-idle: 10
+        min-idle: 0
+
+  boot:
+    admin:
+      client:
+        url: http://localhost:9001
+        instance:
+          # 默认使用的是主机名注册，改为使用ip注册
+          prefer-ip: true
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+      cache:
+        enabled: true
+        caffeine:
+          spec: initialCapacity=500,expireAfterWrite=5s
+    # nacos配置
+    nacos:
+      discovery:
+        server-addr: ${spring.cloud.nacos.config.server-addr}
+        namespace: ${spring.cloud.nacos.config.namespace}
+        group: ${spring.cloud.nacos.config.group}
+        username: ${spring.cloud.nacos.config.username}
+        password: ${spring.cloud.nacos.config.password}
+    sentinel:
+      transport:
+        dashboard: localhost:9002
+        port: 8719
+      scg:
+        fallback:
+          mode: response
+          response-status: 455
+          response-body: error!
+    # gateway配置
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        corsConfigurations:
+          '[/**]':
+            allowed-origins-patterns: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+      discovery:
+        locator:
+          lowerCaseServiceId: true
+          enabled: true
+      routes:
+        - id: snowy-web-app
+          uri: lb://snowy-web-app
+          predicates:
+            - Path=/api/webapp/**
+          filters:
+            - SwaggerHeaderFilter
+            - StripPrefix=2 #去掉Path中前两个节点
+            - name: Retry
+              args:
+                retries: 1 #重试次数
+        - id: snowy-biz-app
+          uri: lb://snowy-biz-app
+          predicates:
+            - Path=/api/bizapp/**
+          filters:
+            - SwaggerHeaderFilter
+            - StripPrefix=2 #去掉Path中前两个节点
+            - name: Retry
+              args:
+                retries: 1 #重试次数
+
+# 开放所有endpoint，实际生产根据自身需要开放，出于安全考虑不建议全部开放
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: "ALWAYS"
+
+#########################################
+# sa-token configuration
+#########################################
+sa-token:
+  token-name: token
+  timeout: 2592000
+  activity-timeout: -1
+  is-concurrent: true
+  is-share: false
+  max-login-count: -1
+  token-style: random-32
+  is-log: false
+  is-print: false
+
+  # sa-token alone-redis configuration
+  alone-redis:
+    database: 2
+    host: ${spring.redis.host}
+    port: ${spring.redis.port}
+    password: ${spring.redis.password}
+    timeout: ${spring.redis.timeout}
+    lettuce:
+      pool:
+        max-active: ${spring.redis.lettuce.pool.max-active}
+        max-wait: ${spring.redis.lettuce.pool.max-wait}
+        max-idle: ${spring.redis.lettuce.pool.max-idle}
+        min-idle: ${spring.redis.lettuce.pool.min-idle}
+
+# knife4j 文档聚合
+knife4j:
+  enable: true
+  production: false
+  basic:
+    enable: true
+    username: admin
+    password: 123456
+  setting:
+    enableOpenApi: false
+    enableSwaggerModels: false
+    enableFooter: false
+    enableFooterCustom: true
+    footerCustomContent: Apache License 2.0 | Copyright 2022-[SNOWY](https://www.xiaonuo.vip)
+  enableAggregation: true
+  cloud:
+    enable: true
+    routes:
+      - name: snowy-web-app
+        location: /api/webapp/v2/api-docs?group=snowy-web-app
+        uri: localhost:9003
+      - name: snowy-biz-app
+        location: /api/bizapp/v2/api-docs?group=snowy-biz-app
+        uri: localhost:9003

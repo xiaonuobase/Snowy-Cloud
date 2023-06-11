@@ -1,11 +1,13 @@
 #########################################
+# server configuration
+#########################################
+server:
+  port: 9102
+
+#########################################
 # spring profiles configuration
 #########################################
 spring:
-#  profiles:
-#    active: local
-#spring.profiles.active=test
-#spring.profiles.active=prod
 
   #########################################
   # multipart configuration
@@ -14,6 +16,49 @@ spring:
     multipart:
       max-request-size: 100MB
       max-file-size: 100MB
+
+  #########################################
+  # mvc configuration
+  #########################################
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  #########################################
+  # main configuration
+  #########################################
+  main:
+    allow-circular-references: true
+
+  #########################################
+  # boot configuration
+  #########################################
+  boot:
+    admin:
+      client:
+        url: http://localhost:9001
+        instance:
+          # 默认使用的是主机名注册，改为使用ip注册
+          prefer-ip: true
+
+  #########################################
+  # cloud configuration
+  #########################################
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+      cache:
+        enabled: true
+        caffeine:
+          spec: initialCapacity=500,expireAfterWrite=5s
+    nacos:
+      discovery:
+        server-addr: ${spring.cloud.nacos.config.server-addr}
+        namespace: ${spring.cloud.nacos.config.namespace}
+        group: ${spring.cloud.nacos.config.group}
+        username: ${spring.cloud.nacos.config.username}
+        password: ${spring.cloud.nacos.config.password}
 
   #########################################
   # datasource configuration
@@ -124,6 +169,17 @@ spring:
         min-idle: 0
 
 #########################################
+# 开放所有endpoint，实际生产根据自身需要开放，出于安全考虑不建议全部开放
+#########################################
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: "ALWAYS"
+
+#########################################
 # mybatis-plus configuration
 #########################################
 mybatis-plus:
@@ -217,4 +273,11 @@ snowy:
   config:
     common:
       front-url: http://localhost:9000
-      backend-url: http://localhost:9101
+      backend-url: http://localhost:9102
+
+    # plugin ten configuration
+    ten:
+      enabled: true
+      ignore-table-names:
+      ten-id-column-name: TENANT_ID
+      default-ten-id: -1

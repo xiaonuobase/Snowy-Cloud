@@ -1,10 +1,15 @@
-#服务配置
-server:
-  port: 9001
-
-#spring相关配置
 spring:
   application:
     name: snowy-actuator-app
   profiles:
     active: dev
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        namespace: snowy-cloud-2x-${spring.profiles.active}
+        group: ${spring.profiles.active}
+        prefix: ${spring.application.name}
+        file-extension: yaml
+        username: nacos
+        password: nacos

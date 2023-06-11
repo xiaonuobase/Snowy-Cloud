@@ -1,8 +1,3 @@
-#服务配置
-server:
-  port: 9003
-
-#spring相关配置
 spring:
   application:
     name: snowy-gateway-app
@@ -12,10 +7,12 @@ spring:
     allow-bean-definition-overriding: true
     web-application-type: reactive
   cloud:
-    loadbalancer:
-      ribbon:
-        enabled: false
-      cache:
-        enabled: true
-        caffeine:
-          spec: initialCapacity=500,expireAfterWrite=5s
+    nacos:
+      config:
+        server-addr: localhost:8848
+        namespace: snowy-cloud-2x-${spring.profiles.active}
+        group: ${spring.profiles.active}
+        prefix: ${spring.application.name}
+        file-extension: yaml
+        username: nacos
+        password: nacos

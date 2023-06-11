@@ -1,3 +1,10 @@
+# 服务配置
+server:
+  port: 9004
+  servlet:
+    context-path: /xxl-job-admin
+
+# spring相关配置
 spring:
   boot:
     admin:
@@ -7,12 +14,21 @@ spring:
           # 默认使用的是主机名注册，改为使用ip注册
           prefer-ip: true
   cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+      cache:
+        enabled: true
+        caffeine:
+          spec: initialCapacity=500,expireAfterWrite=5s
     # nacos配置
     nacos:
       discovery:
-        server-addr: localhost:8848
-        username: nacos
-        password: nacos
+        server-addr: ${spring.cloud.nacos.config.server-addr}
+        namespace: ${spring.cloud.nacos.config.namespace}
+        group: ${spring.cloud.nacos.config.group}
+        username: ${spring.cloud.nacos.config.username}
+        password: ${spring.cloud.nacos.config.password}
         metadata:
           management.context-path: ${server.servlet.context-path}/actuator
       config:

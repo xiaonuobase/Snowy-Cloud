@@ -114,6 +114,12 @@
             <version>${sa.token.version}</version>
         </dependency>
 
+        <!-- snowy-common -->
+        <dependency>
+            <groupId>vip.xiaonuo</groupId>
+            <artifactId>snowy-common</artifactId>
+        </dependency>
+
         <!-- 登录鉴权插件 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
@@ -175,10 +181,10 @@
         </dependency>
 
         <!-- nacos 配置中心客户端 -->
-        <!--        <dependency>-->
-        <!--            <groupId>com.alibaba.cloud</groupId>-->
-        <!--            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
 
         <!-- 暴露各种指标 -->
         <dependency>

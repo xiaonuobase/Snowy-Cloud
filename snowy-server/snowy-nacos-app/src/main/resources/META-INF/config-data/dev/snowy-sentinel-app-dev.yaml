@@ -1,4 +1,23 @@
+# 服务配置
+server:
+  port: 9002
+  servlet:
+    #spring settings
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+    #cookie name setting
+    session:
+      cookie:
+        name:
+          sentinel_dashboard_cookie: sentinel_dashboard_cookie
+
+# spring相关配置
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   boot:
     admin:
       client:
@@ -10,9 +29,11 @@ spring:
     # nacos配置
     nacos:
       discovery:
-        server-addr: localhost:8848
-        username: nacos
-        password: nacos
+        server-addr: ${spring.cloud.nacos.config.server-addr}
+        namespace: ${spring.cloud.nacos.config.namespace}
+        group: ${spring.cloud.nacos.config.group}
+        username: ${spring.cloud.nacos.config.username}
+        password: ${spring.cloud.nacos.config.password}
 
 # 开放所有endpoint，实际生产根据自身需要开放，出于安全考虑不建议全部开放
 management:
@@ -23,7 +44,7 @@ management:
     health:
       show-details: "ALWAYS"
 
-#logging settings
+# logging settings
 logging:
   level:
     org:
@@ -35,7 +56,7 @@ logging:
     file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
     console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
 
-#auth settings
+# auth settings
 auth:
   filter:
     exclude-urls: /,/auth/login,/auth/logout,/registry/machine,/version,/actuator/**,/details
@@ -48,4 +69,4 @@ auth:
 # filtering in pom.xml for this resource file.
 sentinel:
   dashboard:
-    version: 1.8.1
+    version: 1.8.5

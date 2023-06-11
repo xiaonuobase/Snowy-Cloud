@@ -1,3 +1,8 @@
+# 服务配置
+server:
+  port: 9003
+
+# spring相关配置
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -5,48 +10,48 @@ spring:
     username: root
     password: 123456
 
-  # Oracle数据库
-  #spring:
-  #  datasource:
-  #    driver-class-name: oracle.jdbc.OracleDriver
-  #    url: jdbc:oracle:thin:@localhost:1521:xe
-  #    username: SNOWY-CLOUD-ORACLE
-  #    password: 123456
+# Oracle数据库
+#spring:
+#  datasource:
+#    driver-class-name: oracle.jdbc.OracleDriver
+#    url: jdbc:oracle:thin:@localhost:1521:xe
+#    username: SNOWY-CLOUD-ORACLE
+#    password: 123456
 
-  # SQLServer配置
-  #spring:
-  #  datasource:
-  #    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-  #    url: jdbc:sqlserver://localhost:1433;DatabaseName=snowy-cloud-mssql
-  #    username: sa
-  #    password: 123456
+# SQLServer配置
+#spring:
+#  datasource:
+#    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#    url: jdbc:sqlserver://localhost:1433;DatabaseName=snowy-cloud-mssql
+#    username: sa
+#    password: 123456
 
-  # PostgreSQL配置
-  #spring:
-  #  datasource:
-  #    driverClassName: org.postgresql.Driver
-  #    url: jdbc:postgresql://127.0.0.1:5432/snowy-cloud-postgresql
-  #    username: postgres
-  #    password: 123456
+# PostgreSQL配置
+#spring:
+#  datasource:
+#    driverClassName: org.postgresql.Driver
+#    url: jdbc:postgresql://127.0.0.1:5432/snowy-cloud-postgresql
+#    username: postgres
+#    password: 123456
 
-  # 达梦数据库配置
-  #spring:
-  #  datasource:
-  #    driver-class-name: dm.jdbc.driver.DmDriver
-  #    url: jdbc:dm://localhost:5236/SYSDBA
-  #    username: SYSDBA
-  #    password: 123456789
+# 达梦数据库配置
+#spring:
+#  datasource:
+#    driver-class-name: dm.jdbc.driver.DmDriver
+#    url: jdbc:dm://localhost:5236/SYSDBA
+#    username: SYSDBA
+#    password: 123456789
 
-  # 人大金仓数据库
-  #spring:
-  #  datasource:
-  #    driver-class-name: com.kingbase8.Driver
-  #    url: jdbc:kingbase8://localhost:54321/snowy-cloud-kingbase
-  #    username: system
-  #    password: 123456
-  # #人大金仓数据库兼容问题，不需要加在sql语句中加public的解决方法：
-  # #在根目录data下的kingbase.conf文档里面找到search_path = '"$user",PUBLIC,sys_catalog'进行替换放开
-  # #重启数据库即可完全兼容，注意 sql中不能出现mysql中的关键字的单引号
+# 人大金仓数据库
+#spring:
+#  datasource:
+#    driver-class-name: com.kingbase8.Driver
+#    url: jdbc:kingbase8://localhost:54321/snowy-cloud-kingbase
+#    username: system
+#    password: 123456
+# #人大金仓数据库兼容问题，不需要加在sql语句中加public的解决方法：
+# #在根目录data下的kingbase.conf文档里面找到search_path = '"$user",PUBLIC,sys_catalog'进行替换放开
+# #重启数据库即可完全兼容，注意 sql中不能出现mysql中的关键字的单引号
 
   # redis相关配置
   redis:
@@ -70,17 +75,21 @@ spring:
           # 默认使用的是主机名注册，改为使用ip注册
           prefer-ip: true
   cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+      cache:
+        enabled: true
+        caffeine:
+          spec: initialCapacity=500,expireAfterWrite=5s
     # nacos配置
     nacos:
       discovery:
-        server-addr: localhost:8848
-        username: nacos
-        password: nacos
-      config:
-        server-addr: localhost:8848 #Nacos配置中心地址
-        file-extension: yml #指定yml格式的配置
-        username: nacos
-        password: nacos
+        server-addr: ${spring.cloud.nacos.config.server-addr}
+        namespace: ${spring.cloud.nacos.config.namespace}
+        group: ${spring.cloud.nacos.config.group}
+        username: ${spring.cloud.nacos.config.username}
+        password: ${spring.cloud.nacos.config.password}
     sentinel:
       transport:
         dashboard: localhost:9002
