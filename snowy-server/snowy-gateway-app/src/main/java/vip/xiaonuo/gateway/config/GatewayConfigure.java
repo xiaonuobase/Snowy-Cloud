@@ -82,6 +82,8 @@ public class GatewayConfigure {
             "/configuration/security",
             "/ureport/**",
             "/druid/**",
+            "/images/**",
+
             "/api/webapp/v2/api-docs",
             "/api/bizapp/v2/api-docs",
 
