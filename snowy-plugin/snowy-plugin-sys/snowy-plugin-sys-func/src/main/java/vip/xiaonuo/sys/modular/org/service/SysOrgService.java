@@ -86,7 +86,7 @@ public interface SysOrgService extends IService<SysOrg> {
     SysOrg queryEntity(String id);
 
     /**
-     * 获取缓存的所有组织
+     * 获取所有组织
      *
      * @author xuyuxiang
      * @date 2022/7/25 19:42
@@ -165,7 +165,7 @@ public interface SysOrgService extends IService<SysOrg> {
      * @author xuyuxiang
      * @date 2022/7/22 13:34
      **/
-    List<SysOrg> orgListSelector(SysOrgSelectorOrgListParam sysOrgSelectorOrgListParam);
+    Page<SysOrg> orgListSelector(SysOrgSelectorOrgListParam sysOrgSelectorOrgListParam);
 
     /**
      * 获取用户选择器
@@ -173,5 +173,5 @@ public interface SysOrgService extends IService<SysOrg> {
      * @author xuyuxiang
      * @date 2022/4/24 20:08
      */
-    List<SysUser> userSelector(SysOrgSelectorUserParam sysOrgSelectorUserParam);
+    Page<SysUser> userSelector(SysOrgSelectorUserParam sysOrgSelectorUserParam);
 }

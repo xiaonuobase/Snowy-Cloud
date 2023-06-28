@@ -417,7 +417,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public List<SysRole> roleSelector(SysRoleSelectorRoleParam sysRoleSelectorRoleParam) {
+    public Page<SysRole> roleSelector(SysRoleSelectorRoleParam sysRoleSelectorRoleParam) {
         LambdaQueryWrapper<SysRole> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 查询部分字段
         lambdaQueryWrapper.select(SysRole::getId, SysRole::getOrgId, SysRole::getName,
@@ -431,18 +431,22 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         if(ObjectUtil.isNotEmpty(sysRoleSelectorRoleParam.getSearchKey())) {
             lambdaQueryWrapper.like(SysRole::getName, sysRoleSelectorRoleParam.getSearchKey());
         }
+        if(ObjectUtil.isNotEmpty(sysRoleSelectorRoleParam.getDataScopeList())) {
+            lambdaQueryWrapper.in(SysRole::getOrgId, sysRoleSelectorRoleParam.getDataScopeList());
+        }
         lambdaQueryWrapper.orderByAsc(SysRole::getSortCode);
-        return this.list(lambdaQueryWrapper);
+        return this.page(CommonPageRequest.defaultPage(), lambdaQueryWrapper);
     }
 
     @Override
-    public List<SysUser> userSelector(SysRoleSelectorUserParam sysRoleSelectorUserParam) {
+    public Page<SysUser> userSelector(SysRoleSelectorUserParam sysRoleSelectorUserParam) {
         LambdaQueryWrapper<SysUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 只查询部分字段
-        lambdaQueryWrapper.select(SysUser::getId, SysUser::getOrgId, SysUser::getAccount, SysUser::getName, SysUser::getSortCode);
-        // 如果查询条件为空，则从缓存中查询
+        lambdaQueryWrapper.select(SysUser::getId, SysUser::getAvatar, SysUser::getOrgId, SysUser::getPositionId, SysUser::getAccount,
+                SysUser::getName, SysUser::getSortCode, SysUser::getGender, SysUser::getEntryDate);
+        // 如果查询条件为空，则直接查询
         if(ObjectUtil.isAllEmpty(sysRoleSelectorUserParam.getOrgId(), sysRoleSelectorUserParam.getSearchKey())) {
-            return sysUserService.getCachedAllUserSelectorList();
+            return sysUserService.getAllUserSelectorList();
         } else {
             if (ObjectUtil.isNotEmpty(sysRoleSelectorUserParam.getOrgId())) {
                 // 如果机构id不为空，则查询该机构所在顶级机构下的所有人
@@ -451,14 +455,14 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 if (ObjectUtil.isNotEmpty(parentAndChildOrgIdList)) {
                     lambdaQueryWrapper.in(SysUser::getOrgId, parentAndChildOrgIdList);
                 } else {
-                    return CollectionUtil.newArrayList();
+                    return new Page<>();
                 }
             }
             if (ObjectUtil.isNotEmpty(sysRoleSelectorUserParam.getSearchKey())) {
                 lambdaQueryWrapper.like(SysUser::getName, sysRoleSelectorUserParam.getSearchKey());
             }
             lambdaQueryWrapper.orderByAsc(SysUser::getSortCode);
-            return sysUserService.list(lambdaQueryWrapper);
+            return sysUserService.page(CommonPageRequest.defaultPage(), lambdaQueryWrapper);
         }
     }
 

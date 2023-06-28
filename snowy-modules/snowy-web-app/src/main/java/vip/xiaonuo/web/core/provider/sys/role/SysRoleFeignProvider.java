@@ -58,10 +58,11 @@ public class SysRoleFeignProvider implements SysRoleFeign {
      * @author dongxiayu
      * @date 2022/7/22 14:49
      */
+    @SuppressWarnings("ALL")
     @Override
     @RequestMapping("/feign/sys/role/roleSelector")
-    public String roleSelector(@RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "category",required = false) String category, @RequestParam(value = "searchKey",required = false) String searchKey) {
-        return JSONUtil.toJsonStr(sysRoleApiProvider.roleSelector(orgId, category, searchKey));
+    public String roleSelector(@RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "category",required = false) String category, @RequestParam(value = "searchKey",required = false) String searchKey,@RequestParam(value = "dataScopeList",required = false)  List<String> dataScopeList){
+        return JSONUtil.toJsonStr(sysRoleApiProvider.roleSelector(orgId, category, searchKey, dataScopeList));
     }
 
     /**

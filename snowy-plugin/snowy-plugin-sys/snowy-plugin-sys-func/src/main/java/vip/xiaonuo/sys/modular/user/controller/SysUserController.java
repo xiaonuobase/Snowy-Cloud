@@ -340,7 +340,7 @@ public class SysUserController {
     @ApiOperationSupport(order = 20)
     @ApiOperation("获取组织列表选择器")
     @GetMapping("/sys/user/orgListSelector")
-    public CommonResult<List<SysOrg>> orgListSelector(SysUserSelectorOrgListParam sysUserSelectorOrgListParam) {
+    public CommonResult<Page<SysOrg>> orgListSelector(SysUserSelectorOrgListParam sysUserSelectorOrgListParam) {
         return CommonResult.data(sysUserService.orgListSelector(sysUserSelectorOrgListParam));
     }
 
@@ -353,7 +353,7 @@ public class SysUserController {
     @ApiOperationSupport(order = 21)
     @ApiOperation("获取职位选择器")
     @GetMapping("/sys/user/positionSelector")
-    public CommonResult<List<SysPosition>> positionSelector(SysUserSelectorPositionParam sysUserSelectorPositionParam) {
+    public CommonResult<Page<SysPosition>> positionSelector(SysUserSelectorPositionParam sysUserSelectorPositionParam) {
         return CommonResult.data(sysUserService.positionSelector(sysUserSelectorPositionParam));
     }
 
@@ -366,7 +366,7 @@ public class SysUserController {
     @ApiOperationSupport(order = 22)
     @ApiOperation("获取角色选择器")
     @GetMapping("/sys/user/roleSelector")
-    public CommonResult<List<SysRole>> roleSelector(SysUserSelectorRoleParam sysUserSelectorRoleParam) {
+    public CommonResult<Page<SysRole>> roleSelector(SysUserSelectorRoleParam sysUserSelectorRoleParam) {
         return CommonResult.data(sysUserService.roleSelector(sysUserSelectorRoleParam));
     }
 
@@ -379,7 +379,7 @@ public class SysUserController {
     @ApiOperationSupport(order = 23)
     @ApiOperation("获取用户选择器")
     @GetMapping("/sys/user/userSelector")
-    public CommonResult<List<SysUser>> userSelector(SysUserSelectorUserParam sysUserSelectorUserParam) {
+    public CommonResult<Page<SysUser>> userSelector(SysUserSelectorUserParam sysUserSelectorUserParam) {
         return CommonResult.data(sysUserService.userSelector(sysUserSelectorUserParam));
     }
 }
