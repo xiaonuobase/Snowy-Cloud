@@ -449,7 +449,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             return sysUserService.getAllUserSelectorList();
         } else {
             if (ObjectUtil.isNotEmpty(sysRoleSelectorUserParam.getOrgId())) {
-                // 如果组织id不为空，则查询该组织及其子极其子下的所有人
+                // 如果组织id不为空，则查询该组织及其子及其子下的所有人
                 List<String> childOrgIdList = CollStreamUtil.toList(sysOrgService.getChildListById(sysOrgService
                         .getCachedAllOrgList(), sysRoleSelectorUserParam.getOrgId(), true), SysOrg::getId);
                 if (ObjectUtil.isNotEmpty(childOrgIdList)) {
