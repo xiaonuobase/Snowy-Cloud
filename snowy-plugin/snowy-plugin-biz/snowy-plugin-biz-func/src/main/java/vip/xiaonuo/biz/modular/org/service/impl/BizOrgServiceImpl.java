@@ -257,23 +257,13 @@ public class BizOrgServiceImpl extends ServiceImpl<BizOrgMapper, BizOrg> impleme
     }
 
     @Override
-    public List<BizOrg> getCachedAllOrgList() {
-        // 从缓存中取
-        Object cacheValue = commonCacheOperator.get(ORG_CACHE_ALL_KEY);
-        if(ObjectUtil.isNotEmpty(cacheValue)) {
-            return JSONUtil.toList(JSONUtil.parseArray(cacheValue), BizOrg.class);
-        }
-        List<BizOrg> orgList = this.list(new LambdaQueryWrapper<BizOrg>().orderByAsc(BizOrg::getSortCode));
-        if(ObjectUtil.isNotEmpty(orgList)) {
-            // 更新到缓存
-            commonCacheOperator.put(ORG_CACHE_ALL_KEY, JSONUtil.toJsonStr(orgList));
-        }
-        return orgList;
+    public List<BizOrg> getAllOrgList() {
+        return this.list(new LambdaQueryWrapper<BizOrg>().orderByAsc(BizOrg::getSortCode));
     }
 
     @Override
     public String getOrgIdByOrgFullNameWithCreate(String orgFullName) {
-        List<BizOrg> cachedAllOrgList = this.getCachedAllOrgList();
+        List<BizOrg> cachedAllOrgList = this.getAllOrgList();
         List<Tree<String>> treeList = TreeUtil.build(cachedAllOrgList.stream().map(bizOrg ->
                 new TreeNode<>(bizOrg.getId(), bizOrg.getParentId(), bizOrg.getName(), bizOrg.getSortCode()))
                 .collect(Collectors.toList()), "0");
@@ -380,8 +370,15 @@ public class BizOrgServiceImpl extends ServiceImpl<BizOrgMapper, BizOrg> impleme
         // 只查询部分字段
         lambdaQueryWrapper.select(BizUser::getId, BizUser::getAvatar, BizUser::getOrgId, BizUser::getPositionId, BizUser::getAccount,
                 BizUser::getName, BizUser::getSortCode, BizUser::getGender, BizUser::getEntryDate);
-        if(ObjectUtil.isNotEmpty(bizOrgSelectorUserParam.getOrgId())) {
-            lambdaQueryWrapper.eq(BizUser::getOrgId, bizOrgSelectorUserParam.getOrgId());
+        if (ObjectUtil.isNotEmpty(bizOrgSelectorUserParam.getOrgId())) {
+            // 如果机构id不为空，则查询该机构及其子机构下的所有人
+            List<String> childOrgIdList = CollStreamUtil.toList(this.getChildListById(this
+                    .getAllOrgList(), bizOrgSelectorUserParam.getOrgId(), true), BizOrg::getId);
+            if (ObjectUtil.isNotEmpty(childOrgIdList)) {
+                lambdaQueryWrapper.in(BizUser::getOrgId, childOrgIdList);
+            } else {
+                return new Page<>();
+            }
         }
         if(ObjectUtil.isNotEmpty(bizOrgSelectorUserParam.getSearchKey())) {
             lambdaQueryWrapper.like(BizUser::getName, bizOrgSelectorUserParam.getSearchKey());
@@ -392,6 +389,7 @@ public class BizOrgServiceImpl extends ServiceImpl<BizOrgMapper, BizOrg> impleme
 
     /* ====以下为各种递归方法==== */
 
+    @Override
     public List<BizOrg> getParentAndChildListById(List<BizOrg> originDataList, String id, boolean includeSelf) {
         List<BizOrg> parentListById = this.getParentListById(originDataList, id, false);
         List<BizOrg> childListById = this.getChildListById(originDataList, id, true);
@@ -411,6 +409,7 @@ public class BizOrgServiceImpl extends ServiceImpl<BizOrgMapper, BizOrg> impleme
         return resultList;
     }
 
+    @Override
     public List<BizOrg> getParentListById(List<BizOrg> originDataList, String id, boolean includeSelf) {
         List<BizOrg> resultList = CollectionUtil.newArrayList();
         execRecursionFindParent(originDataList, id, resultList);
@@ -422,6 +421,7 @@ public class BizOrgServiceImpl extends ServiceImpl<BizOrgMapper, BizOrg> impleme
         }
         return resultList;
     }
+
 
     public void execRecursionFindChild(List<BizOrg> originDataList, String id, List<BizOrg> resultList) {
         originDataList.forEach(item -> {
@@ -444,16 +444,19 @@ public class BizOrgServiceImpl extends ServiceImpl<BizOrgMapper, BizOrg> impleme
         });
     }
 
+    @Override
     public BizOrg getById(List<BizOrg> originDataList, String id) {
         int index = CollStreamUtil.toList(originDataList, BizOrg::getId).indexOf(id);
         return index == -1?null:originDataList.get(index);
     }
 
+    @Override
     public BizOrg getParentById(List<BizOrg> originDataList, String id) {
         BizOrg self = this.getById(originDataList, id);
         return ObjectUtil.isNotEmpty(self)?self:this.getById(originDataList, self.getParentId());
     }
 
+    @Override
     public BizOrg getChildById(List<BizOrg> originDataList, String id) {
         int index = CollStreamUtil.toList(originDataList, BizOrg::getParentId).indexOf(id);
         return index == -1?null:originDataList.get(index);
