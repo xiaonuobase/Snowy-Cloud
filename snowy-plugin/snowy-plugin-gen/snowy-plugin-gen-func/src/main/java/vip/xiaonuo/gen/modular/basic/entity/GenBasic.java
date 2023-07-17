@@ -61,39 +61,43 @@ public class GenBasic extends CommonEntity {
     @ApiModelProperty(value = "所属模块", position = 8)
     private String module;
 
+    /** 移动端所属模块 */
+    @ApiModelProperty(value = "移动端所属模块", position = 9)
+    private String mobileModule;
+
     /** 上级目录 */
-    @ApiModelProperty(value = "上级目录", position = 9)
+    @ApiModelProperty(value = "上级目录", position = 10)
     private String menuPid;
 
     /** 功能名 */
-    @ApiModelProperty(value = "功能名", position = 10)
+    @ApiModelProperty(value = "功能名", position = 11)
     private String functionName;
 
     /** 业务名 */
-    @ApiModelProperty(value = "业务名", position = 11)
+    @ApiModelProperty(value = "业务名", position = 12)
     private String busName;
 
     /** 类名 */
-    @ApiModelProperty(value = "类名", position = 12)
+    @ApiModelProperty(value = "类名", position = 13)
     private String className;
 
     /** 表单布局 */
-    @ApiModelProperty(value = "表单布局", position = 13)
+    @ApiModelProperty(value = "表单布局", position = 14)
     private String formLayout;
 
     /** 使用栅格 */
-    @ApiModelProperty(value = "使用栅格", position = 14)
+    @ApiModelProperty(value = "使用栅格", position = 15)
     private String gridWhether;
 
     /** 排序 */
-    @ApiModelProperty(value = "排序", position = 15)
+    @ApiModelProperty(value = "排序", position = 16)
     private Integer sortCode;
 
     /** 包名 */
-    @ApiModelProperty(value = "包名", position = 16)
+    @ApiModelProperty(value = "包名", position = 17)
     private String packageName;
 
     /** 作者 */
-    @ApiModelProperty(value = "作者", position = 17)
+    @ApiModelProperty(value = "作者", position = 18)
     private String authorName;
 }

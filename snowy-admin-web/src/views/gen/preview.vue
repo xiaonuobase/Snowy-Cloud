@@ -55,6 +55,11 @@
 							codeTypeList: data.genBasicCodeFrontendResultList
 						},
 						{
+							codeTypeKey: 'mobile',
+							codeTypeTitle: '移动端代码',
+							codeTypeList: data.genBasicCodeMobileResultList
+						},
+						{
 							codeTypeKey: 'backend',
 							codeTypeTitle: '后端代码',
 							codeTypeList: data.genBasicCodeBackendResultList
