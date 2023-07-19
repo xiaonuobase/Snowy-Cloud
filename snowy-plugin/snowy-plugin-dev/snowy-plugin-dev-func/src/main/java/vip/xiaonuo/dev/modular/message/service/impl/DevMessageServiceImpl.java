@@ -152,6 +152,13 @@ public class DevMessageServiceImpl extends ServiceImpl<DevMessageMapper, DevMess
         return CollectionUtil.newArrayList();
     }
 
+    @Override
+    public Long unreadCount(String loginId){
+        return devRelationService.getRelationListByTargetIdAndCategory(loginId,
+                DevRelationCategoryEnum.MSG_TO_USER.getValue()).stream().filter(devRelation -> JSONUtil
+                .parseObj(devRelation.getExtJson()).getBool("read").equals(false)).count();
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(List<DevMessageIdParam> devMessageIdParamList) {
