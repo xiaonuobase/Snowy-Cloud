@@ -143,6 +143,7 @@ spring:
         enabled: true
         login-username: admin
         login-password: 123456
+        allow: ""
 
   #########################################
   # jackson configuration

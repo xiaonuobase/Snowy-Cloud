@@ -126,6 +126,15 @@ spring:
             - name: Retry
               args:
                 retries: 1 #重试次数
+        - id: snowy-web-app
+          uri: lb://snowy-web-app
+          predicates:
+            - Path=/druid/**
+          filters:
+            - SwaggerHeaderFilter
+            - name: Retry
+              args:
+                retries: 1 #重试次数
         - id: snowy-biz-app
           uri: lb://snowy-biz-app
           predicates:
