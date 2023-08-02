@@ -142,18 +142,32 @@ public class SysUserFeignProvider implements SysUserFeign {
     }
 
     /**
-     * 根据用户id和组织id和职位id获取上级主管id
+     * 根据用户id和组织id和职位id和主管层级获取上级主管id
      *
+     * @param userIdList
      * @param userId
      * @param orgId
-     * @param positionId
+     * @param supervisorLevel
      * @author dongxiayu
      * @date 2022/6/6 14:50
      */
     @Override
-    @RequestMapping("/feign/sys/user/getSupervisorIdByUserIdAndOrgIdAndPositionId")
-    public String getSupervisorIdByUserIdAndOrgIdAndPositionId(@RequestParam(value = "userId",required = false) String userId, @RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "positionId",required = false) String positionId) {
-        return sysUserApiProvider.getSupervisorIdByUserIdAndOrgIdAndPositionId(userId, orgId, positionId);
+    public String getSupervisorIdBySupervisorLevel(List<String> userIdList, String userId, String orgId, String supervisorLevel) {
+        return JSONUtil.toJsonStr(sysUserApiProvider.getSupervisorIdBySupervisorLevel(userIdList, userId, orgId, supervisorLevel));
+    }
+
+    /**
+     * 根据用户id和组织id和职位id和终点主管层级获取上级主管id集合
+     *
+     * @param userId
+     * @param orgId
+     * @param endLevel
+     * @author xuyuxiang
+     * @date 2022/6/6 14:50
+     */
+    @Override
+    public List<String> getMulSupervisorIdListByEndLevel(String userId, String orgId, String endLevel) {
+        return sysUserApiProvider.getMulSupervisorIdListByEndLevel(userId, orgId, endLevel);
     }
 
     /**

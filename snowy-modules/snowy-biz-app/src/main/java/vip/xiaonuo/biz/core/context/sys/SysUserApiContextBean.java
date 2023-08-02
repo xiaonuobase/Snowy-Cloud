@@ -154,17 +154,34 @@ public class SysUserApiContextBean implements SysUserApi {
     }
 
     /**
-     * 根据用户id和组织id和职位id获取上级主管id
+     * 根据用户id和组织id和职位id和主管层级获取上级主管id
      *
+     * @param userIdList
      * @param userId
      * @param orgId
-     * @param positionId
-     * @author dongxiayu
+     * @param supervisorLevel
+     * @author xuyuxiang
      * @date 2022/6/6 14:50
      */
     @Override
-    public String getSupervisorIdByUserIdAndOrgIdAndPositionId(String userId, String orgId, String positionId) {
-        return sysUserFeign.getSupervisorIdByUserIdAndOrgIdAndPositionId(userId, orgId, positionId);
+    public JSONObject getSupervisorIdBySupervisorLevel(List<String> userIdList, String userId, String orgId, String supervisorLevel) {
+        String feignResp = sysUserFeign.getSupervisorIdBySupervisorLevel(userIdList, userId, orgId, supervisorLevel);
+        JSONObject resp = JSONUtil.parseObj(feignResp);
+        return resp;
+    }
+
+    /**
+     * 根据用户id和组织id和职位id和终点主管层级获取上级主管id集合
+     *
+     * @param userId
+     * @param orgId
+     * @param endLevel
+     * @author xuyuxiang
+     * @date 2022/6/6 14:50
+     */
+    @Override
+    public List<String> getMulSupervisorIdListByEndLevel(String userId, String orgId, String endLevel) {
+        return sysUserFeign.getMulSupervisorIdListByEndLevel(userId, orgId, endLevel);
     }
 
     /**
