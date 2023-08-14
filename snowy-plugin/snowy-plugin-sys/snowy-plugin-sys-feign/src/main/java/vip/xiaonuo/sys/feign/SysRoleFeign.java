@@ -32,7 +32,7 @@ public interface SysRoleFeign {
      * @date 2022/7/22 14:49
      **/
     @RequestMapping("/feign/sys/role/roleSelector")
-    String roleSelector(@RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "category",required = false) String category, @RequestParam(value = "searchKey",required = false) String searchKey,@RequestParam(value = "dataScopeList",required = false)  List<String> dataScopeList);
+    String roleSelector(@RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "category",required = false) String category, @RequestParam(value = "searchKey",required = false) String searchKey,@RequestParam(value = "dataScopeList",required = false)  List<String> dataScopeList,@RequestParam(value = "excludeSuperAdmin",required = false) boolean excludeSuperAdmin);
 
     /**
      * 代码生成菜单按钮授权

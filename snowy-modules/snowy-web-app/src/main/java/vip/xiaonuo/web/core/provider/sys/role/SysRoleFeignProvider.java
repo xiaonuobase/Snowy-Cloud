@@ -61,8 +61,8 @@ public class SysRoleFeignProvider implements SysRoleFeign {
     @SuppressWarnings("ALL")
     @Override
     @RequestMapping("/feign/sys/role/roleSelector")
-    public String roleSelector(@RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "category",required = false) String category, @RequestParam(value = "searchKey",required = false) String searchKey,@RequestParam(value = "dataScopeList",required = false)  List<String> dataScopeList){
-        return JSONUtil.toJsonStr(sysRoleApiProvider.roleSelector(orgId, category, searchKey, dataScopeList));
+    public String roleSelector(@RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "category",required = false) String category, @RequestParam(value = "searchKey",required = false) String searchKey,@RequestParam(value = "dataScopeList",required = false)  List<String> dataScopeList,@RequestParam(value = "excludeSuperAdmin",required = false)  boolean excludeSuperAdmin){
+        return JSONUtil.toJsonStr(sysRoleApiProvider.roleSelector(orgId, category, searchKey, dataScopeList, excludeSuperAdmin));
     }
 
     /**
