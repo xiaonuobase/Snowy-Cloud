@@ -275,6 +275,7 @@ snowy:
     common:
       front-url: http://localhost:9000
       backend-url: http://localhost:9101
+      file-url: http://localhost:9003/api/webapp
 
     # plugin ten configuration
     ten:

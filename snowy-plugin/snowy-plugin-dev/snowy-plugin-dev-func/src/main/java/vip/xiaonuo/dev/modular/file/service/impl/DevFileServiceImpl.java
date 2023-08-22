@@ -205,9 +205,9 @@ public class DevFileServiceImpl extends ServiceImpl<DevFileMapper, DevFile> impl
 
         // 下载路径，注意：本地文件下载地址设置为下载接口地址 + 文件id
         if(engine.equals(DevFileEngineTypeEnum.LOCAL.getValue())) {
-            String apiUrl = commonProperties.getBackendUrl();
+            String apiUrl = commonProperties.getFileUrl();
             if(ObjectUtil.isEmpty(apiUrl)) {
-                throw new CommonException("后端域名地址未正确配置：snowy.config.common.backend-url为空");
+                throw new CommonException("后端域名地址未正确配置：snowy.config.common.file-url为空");
             }
             downloadUrl= apiUrl + "/dev/file/download?id=" + fileId;
             devFile.setDownloadPath(downloadUrl);

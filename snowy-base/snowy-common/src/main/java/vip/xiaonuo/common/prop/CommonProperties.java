@@ -34,4 +34,7 @@ public class CommonProperties {
 
     /** 后端地址 */
     private String backendUrl;
+
+    /** 文件地址 */
+    private String fileUrl;
 }
