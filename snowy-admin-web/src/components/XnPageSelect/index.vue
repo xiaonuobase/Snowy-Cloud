@@ -15,10 +15,8 @@
 </template>
 
 <script setup name="xnPageSelector">
-	import { cloneDeep } from 'lodash-es'
 	import { watch } from 'vue'
 
-	const current = ref(1) // 当前页数
 	const total = ref(0) // 数据总数
 	const initParams = ref({})
 	const options = ref([])
@@ -60,13 +58,13 @@
 	// 请求数据
 	const onPage = (param = {}) => {
 		if (props.pageFunction) {
-			initParams.value = param
-			initParams.value.size = props.pageSize
+			initParams.value = { ...initParams.value, ...param, size: props.pageSize }
 			// 加载API
 			spinning.value = true
 			props
 				.pageFunction(initParams.value)
 				.then((data) => {
+					// 更新当前页码
 					initParams.value.current = data.current
 					// 加载完后设置总数
 					total.value = data.total
@@ -89,8 +87,8 @@
 							idList: [modelValue.value]
 						}
 						props.echoFunction(param).then((data) => {
-							if (data[0]){
-								options.value.push(data[0])
+							if (data[0]) {
+								options.value.unshift(data[0])
 							}
 						})
 					}
@@ -119,20 +117,22 @@
 	const handlePagination = () => {
 		// 判断已有数量是否小于总量
 		if (options.value.length < total.value) {
-			const param = cloneDeep(initParams.value)
-			param.current = initParams.value.current + 1
+			const param = { ...initParams.value, current: initParams.value.current + 1 }
 			spinning.value = true
 			props
 				.pageFunction(param)
 				.then((data) => {
 					if (data.records.length > 0) {
-						options.value = [...cloneDeep(options.value), ...data.records].filter((item, index, self) => {
-							return (
-								self.findIndex((f) => {
-									return f.id === item.id
-								}) === index
-							)
-						})
+						// 更新当前页码
+						initParams.value.current = data.current
+						// 合并新旧数据
+						const newOptions = [...options.value, ...data.records]
+						// 使用 id 去重
+						const uniqueOptions = newOptions.reduce((acc, cur) => {
+							acc[cur.id] = cur
+							return acc
+						}, {})
+						options.value = Object.values(uniqueOptions)
 					}
 				})
 				.finally(() => {
@@ -140,6 +140,7 @@
 				})
 		}
 	}
+
 	defineExpose({
 		onPage
 	})

@@ -13,8 +13,8 @@
 				<div v-if="item.iconItem.length > 1" class="xn-icon-select-radio">
 					<a-radio-group v-model:value="iconItemDefault" @change="radioGroupChange">
 						<a-radio-button v-for="iconItem in item.iconItem" :key="iconItem.key" :value="iconItem.key">{{
-								iconItem.name
-							}}</a-radio-button>
+							iconItem.name
+						}}</a-radio-button>
 					</a-radio-group>
 				</div>
 
@@ -27,7 +27,7 @@
 								:class="icon === modelValue ? 'active' : ''"
 								@click="selectIcon(icon.font_class)"
 							>
-								<span class="snowy xn-icons" :class="icon.font_class" ></span>
+								<span class="snowy xn-icons" :class="icon.font_class"></span>
 							</li>
 						</ul>
 					</div>
