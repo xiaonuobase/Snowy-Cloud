@@ -51,20 +51,6 @@
 	<a-drawer v-model:visible="settingDialog" :closable="false" width="300">
 		<setting />
 	</a-drawer>
-	<!-- 搜索面板 -->
-	<xn-form-container
-		title="搜索"
-		:visible="searchActive"
-		:closable="false"
-		:footer="null"
-		:width="600"
-		destroyOnClose
-		dialogClass="searchModal"
-		:bodyStyle="{ maxHeight: '520px', overflow: 'auto', padding: '10px' }"
-		@close="searchPanelClose"
-	>
-		<panel-search ref="panelSearch" @close="searchPanelClose" />
-	</xn-form-container>
 </template>
 
 <script setup name="layoutUserBar">
