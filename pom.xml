@@ -87,7 +87,7 @@
         <protobuf.java.version>3.21.12</protobuf.java.version>
         <sa.token.version>1.31.0</sa.token.version>
         <smcrypto.version>0.3.2</smcrypto.version>
-        <snakeyaml.version>1.31</snakeyaml.version><!-- cloud使用2.0版本yaml存在冲突 -->
+        <snakeyaml.version>2.0</snakeyaml.version><!-- cloud使用2.0版本yaml存在冲突 -->
         <spring.context.version>5.3.19</spring.context.version>
         <spring.security.crypto.version>5.5.5</spring.security.crypto.version><!-- cloud使用6.0.2版本yaml存在冲突 -->
         <springfox.swagger2.version>2.10.5</springfox.swagger2.version>
