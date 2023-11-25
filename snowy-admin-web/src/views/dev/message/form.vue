@@ -35,9 +35,10 @@
 		</template>
 	</xn-form-container>
 	<user-selector-plus
-		ref="UserSelectorPlus"
-		page-url="/api/webapp/sys/org/userSelector"
-		org-url="/api/webapp/sys/org/orgTreeSelector"
+		ref="userSelectorPlusRef"
+		:org-tree-api="selectorApiFunction.orgTreeApi"
+		:user-page-api="selectorApiFunction.userPageApi"
+		:checked-user-list-api="selectorApiFunction.checkedUserListApi"
 		@onBack="userBack"
 	/>
 </template>
