@@ -26,11 +26,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
+import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.dev.modular.log.entity.DevLog;
 import vip.xiaonuo.dev.modular.log.enums.DevLogCategoryEnum;
 import vip.xiaonuo.dev.modular.log.mapper.DevLogMapper;
 import vip.xiaonuo.dev.modular.log.param.DevLogDeleteParam;
+import vip.xiaonuo.dev.modular.log.param.DevLogIdParam;
 import vip.xiaonuo.dev.modular.log.param.DevLogPageParam;
 import vip.xiaonuo.dev.modular.log.result.DevLogOpBarChartDataResult;
 import vip.xiaonuo.dev.modular.log.result.DevLogOpPieChartDataResult;
@@ -54,6 +56,13 @@ public class DevLogServiceImpl extends ServiceImpl<DevLogMapper, DevLog> impleme
     @Override
     public Page<DevLog> page(DevLogPageParam devLogPageParam) {
         QueryWrapper<DevLog> queryWrapper = new QueryWrapper<>();
+        // page查询中排除较大的字段（提升查询速度）
+        queryWrapper.select(DevLog.class, info ->
+                !info.getColumn().equalsIgnoreCase("param_json")
+                        && !info.getColumn().equalsIgnoreCase("result_json")
+                        && !info.getColumn().equalsIgnoreCase("exe_message")
+                        && !info.getColumn().equalsIgnoreCase("sign_data")
+        );
         if(ObjectUtil.isNotEmpty(devLogPageParam.getCategory())) {
             queryWrapper.lambda().eq(DevLog::getCategory, devLogPageParam.getCategory());
         }
@@ -68,6 +77,15 @@ public class DevLogServiceImpl extends ServiceImpl<DevLogMapper, DevLog> impleme
             queryWrapper.lambda().orderByDesc(DevLog::getCreateTime);
         }
         return this.page(CommonPageRequest.defaultPage(), queryWrapper);
+    }
+
+    @Override
+    public DevLog detail(DevLogIdParam devLogIdParam) {
+        DevLog devLog = this.getById(devLogIdParam.getId());
+        if (ObjectUtil.isEmpty(devLog)) {
+            throw new CommonException("该日志不存在，id值为：{}", devLog.getId());
+        }
+        return devLog;
     }
 
     @Override
