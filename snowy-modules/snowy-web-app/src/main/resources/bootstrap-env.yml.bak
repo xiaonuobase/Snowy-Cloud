@@ -204,6 +204,7 @@ easy-trans:
   is-enable-redis: true
   is-enable-global: true
   is-enable-tile: true
+  is-enable-cloud: false
 
 #########################################
 # sa-token configuration
