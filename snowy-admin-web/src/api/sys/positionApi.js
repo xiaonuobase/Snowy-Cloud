@@ -10,7 +10,7 @@
  */
 import { baseRequest } from '@/utils/request'
 
-const request = (url, ...arg) => baseRequest(`/api/webapp/sys/position/${url}`, ...arg)
+const request = (url, ...arg) => baseRequest(`/api/webapp/sys/position/` + url, ...arg)
 /**
  * 职位
  *

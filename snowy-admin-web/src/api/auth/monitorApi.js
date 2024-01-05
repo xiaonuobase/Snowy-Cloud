@@ -10,7 +10,7 @@
  */
 import { baseRequest } from '@/utils/request'
 
-const request = (url, ...arg) => baseRequest(`/api/webapp/auth/${url}`, ...arg)
+const request = (url, ...arg) => baseRequest(`/api/webapp/auth/` + url, ...arg)
 /**
  * 绘画
  *

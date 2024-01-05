@@ -10,7 +10,7 @@
  */
 import { baseRequest } from '@/utils/request'
 
-const request = (url, ...arg) => baseRequest(`/api/webapp/dev/sms/${url}`, ...arg)
+const request = (url, ...arg) => baseRequest(`/api/webapp/dev/sms/` + url, ...arg)
 /**
  * 短信
  *

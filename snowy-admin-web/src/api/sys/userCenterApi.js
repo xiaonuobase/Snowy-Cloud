@@ -10,7 +10,7 @@
  */
 import { baseRequest } from '@/utils/request'
 
-const request = (url, ...arg) => baseRequest(`/api/webapp/sys/userCenter/${url}`, ...arg)
+const request = (url, ...arg) => baseRequest(`/api/webapp/sys/userCenter/` + url, ...arg)
 /**
  * 用户个人控制器
  *
