@@ -65,7 +65,7 @@
 							codeTypeList: data.genBasicCodeSqlResultList
 						}
 					]
-					if (data.genBasicCodeMobileResultList){
+					if (data.genBasicCodeMobileResultList) {
 						codeTypeArray.value.push({
 							codeTypeKey: 'mobile',
 							codeTypeTitle: '移动端代码',
