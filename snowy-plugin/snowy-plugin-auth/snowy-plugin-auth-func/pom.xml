@@ -22,6 +22,11 @@
             <artifactId>snowy-plugin-auth-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>vip.xiaonuo</groupId>
+            <artifactId>snowy-plugin-auth-feign</artifactId>
+        </dependency>
+
         <!-- 引入开发工具接口，用于获取配置 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>

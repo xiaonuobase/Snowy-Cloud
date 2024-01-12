@@ -263,6 +263,66 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    /**
+     * 账号密码内部登录
+     *
+     * @param authAccountPasswordLoginParam
+     * @param type
+     * @author xuyuxiang
+     * @date 2021/12/28 14:46
+     */
+    @Override
+    public String doInnerLogin(AuthAccountPasswordLoginParam authAccountPasswordLoginParam, String type) {
+        // 判断账号是否被封禁
+        isDisableTime(authAccountPasswordLoginParam.getAccount());
+        // 获取账号
+        String account = authAccountPasswordLoginParam.getAccount();
+        // 获取密码
+        String password = authAccountPasswordLoginParam.getPassword();
+        // 获取设备
+        String device = authAccountPasswordLoginParam.getDevice();
+        // 默认指定为PC，如在小程序跟移动端的情况下，自行指定即可
+        if(ObjectUtil.isEmpty(device)) {
+            device = AuthDeviceTypeEnum.PC.getValue();
+        } else {
+            AuthDeviceTypeEnum.validate(device);
+        }
+        // SM2解密并获得前端传来的密码哈希值
+        String passwordHash;
+        try {
+            // 解密，并做哈希值
+            passwordHash = CommonCryptogramUtil.doHashValue(CommonCryptogramUtil.doSm2Decrypt(password));
+        } catch (Exception e) {
+            throw new CommonException(AuthExceptionEnum.PWD_DECRYPT_ERROR.getValue());
+        }
+        // 根据账号获取用户信息，根据B端或C端判断
+        if(SaClientTypeEnum.B.getValue().equals(type)) {
+            SaBaseLoginUser saBaseLoginUser = loginUserApi.getUserByAccount(account);
+            if(ObjectUtil.isEmpty(saBaseLoginUser)) {
+                throw new CommonException(AuthExceptionEnum.ACCOUNT_ERROR.getValue());
+            }
+            if (!saBaseLoginUser.getPassword().equals(passwordHash)) {
+                // 记录登录次数 和 过期时间
+                saveLoginTimes(account);
+                throw new CommonException(AuthExceptionEnum.PWD_ERROR.getValue());
+            }
+            // 删除redis 中的key
+            clearLoginErrorTimes(account);
+            // 执行B端登录
+            return execLoginB(saBaseLoginUser, device);
+        } else {
+            SaBaseClientLoginUser saBaseClientLoginUser = clientLoginUserApi.getClientUserByAccount(account);
+            if(ObjectUtil.isEmpty(saBaseClientLoginUser)) {
+                throw new CommonException(AuthExceptionEnum.ACCOUNT_ERROR.getValue());
+            }
+            if (!saBaseClientLoginUser.getPassword().equals(passwordHash)) {
+                throw new CommonException(AuthExceptionEnum.PWD_ERROR.getValue());
+            }
+            // 执行C端登录
+            return execLoginC(saBaseClientLoginUser, device);
+        }
+    }
+
     @Override
     public String doLoginByPhone(AuthPhoneValidCodeLoginParam authPhoneValidCodeLoginParam, String type) {
         // 手机号

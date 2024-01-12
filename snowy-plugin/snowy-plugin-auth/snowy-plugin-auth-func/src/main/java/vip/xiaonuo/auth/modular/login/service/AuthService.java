@@ -52,6 +52,14 @@ public interface AuthService {
     String doLogin(AuthAccountPasswordLoginParam authAccountPasswordLoginParam, String type);
 
     /**
+     * 账号密码内部登录
+     *
+     * @author xuyuxiang
+     * @date 2021/12/28 14:46
+     **/
+    String doInnerLogin(AuthAccountPasswordLoginParam authAccountPasswordLoginParam, String type);
+
+    /**
      * 手机验证码登录
      *
      * @author xuyuxiang
