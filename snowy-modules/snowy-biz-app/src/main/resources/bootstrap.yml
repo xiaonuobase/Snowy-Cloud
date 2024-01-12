@@ -14,17 +14,3 @@ spring:
         username: nacos
         password: nacos
 
-### xxl-job
-### xxl-job, access token
-xxl:
-  job:
-    accessToken: 123456
-    admin:
-      addresses: http://192.168.0.105:9004/xxl-job-admin
-    executor:
-      appname: snowy-biz-app
-      address: ''
-      ip: ''
-      port: -1
-      logpath: logs/snowy-biz-app-joblog
-      logretentiondays: -1
