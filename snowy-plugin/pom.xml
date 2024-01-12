@@ -36,7 +36,7 @@
         <!-- 系统功能插件 -->
         <module>snowy-plugin-sys</module>
 
-        <!-- 系统功能插件 -->
+        <!-- 模拟器插件 -->
         <module>snowy-plugin-mocker</module>
     </modules>
 
