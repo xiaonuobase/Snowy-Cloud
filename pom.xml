@@ -245,6 +245,13 @@
                 <version>${snowy.version}</version>
             </dependency>
 
+            <!-- snowy-plugin-mocker-token-func -->
+            <dependency>
+                <groupId>vip.xiaonuo</groupId>
+                <artifactId>snowy-plugin-mocker-token-func</artifactId>
+                <version>${snowy.version}</version>
+            </dependency>
+
             <!-- snowy-cloud-inner-end -->
 
 
@@ -678,6 +685,13 @@
                 <groupId>cn.dev33</groupId>
                 <artifactId>sa-token-reactor-spring-boot-starter</artifactId>
                 <version>${sa.token.version}</version>
+            </dependency>
+
+            <!-- xxl-job-core -->
+            <dependency>
+                <groupId>com.xuxueli</groupId>
+                <artifactId>xxl-job-core</artifactId>
+                <version>${xxljob.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
