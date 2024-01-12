@@ -13,7 +13,7 @@
 package vip.xiaonuo.dev.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.common.consts.FeignConstant;
 
@@ -32,7 +32,7 @@ public interface DevConfigFeign {
      * @author dongxiayu
      * @date 2022/11/12 11:11
      **/
-    @RequestMapping("/feign/dev/config/getValueByKey")
+    @PostMapping("/feign/dev/config/getValueByKey")
     String getValueByKey(@RequestParam("key") String key);
 
 }
