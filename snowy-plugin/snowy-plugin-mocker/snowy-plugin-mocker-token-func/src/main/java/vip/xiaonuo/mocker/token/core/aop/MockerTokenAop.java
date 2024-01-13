@@ -117,6 +117,7 @@ public class MockerTokenAop {
         }
 
         try {
+            CommonThreadLocalUtil.remove(MockerTokenConstant.MOCKER_TOKEN_Token);
             authInnerFeign.doLogout(token);
         }catch (Exception e){
             // 内部登录发生异常，静默记录日志处理，不参与真实业务
