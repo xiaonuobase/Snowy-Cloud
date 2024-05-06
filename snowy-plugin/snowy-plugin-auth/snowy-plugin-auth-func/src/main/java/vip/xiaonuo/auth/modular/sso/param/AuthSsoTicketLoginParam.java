@@ -12,11 +12,11 @@
  */
 package vip.xiaonuo.auth.modular.sso.param;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * ticket单点登录登录参数
@@ -29,11 +29,11 @@ import javax.validation.constraints.NotBlank;
 public class AuthSsoTicketLoginParam {
 
     /** ticket */
-    @ApiModelProperty(value = "ticket", required = true, position = 1)
+    @Schema(description = "ticket", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "ticket不能为空")
     private String ticket;
 
     /** 设备 */
-    @ApiModelProperty(value = "设备", position = 2)
+    @Schema(description = "设备")
     private String device;
 }

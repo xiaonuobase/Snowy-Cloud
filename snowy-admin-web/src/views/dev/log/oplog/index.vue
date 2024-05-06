@@ -29,7 +29,7 @@
 						</a-radio-group>
 						<a-input-search
 							v-model:value="searchFormState.searchKey"
-							placeholder="请输入名称关键字"
+							placeholder="请输入名称关键词"
 							enter-button
 							allowClear
 							@search="onSearch"
@@ -146,7 +146,7 @@
 	// 清空
 	const deleteBatchOpLog = () => {
 		const param = {
-			category: searchFormState.value.category ? searchFormState.value.category : opLogType.value
+			category: searchFormState.category ? searchFormState.category : opLogType.value
 		}
 		logApi.logDelete(param).then(() => {
 			tableRef.value.refresh(true)

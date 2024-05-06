@@ -12,12 +12,15 @@
  */
 package vip.xiaonuo.biz.core.config;
 
+import cn.dev33.satoken.config.SaTokenConfig;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.stp.StpInterface;
 import cn.dev33.satoken.stp.StpLogic;
 import cn.dev33.satoken.strategy.SaStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -55,19 +58,20 @@ public class AuthConfigure implements WebMvcConfigurer {
         registry.addInterceptor(new SaInterceptor()).addPathPatterns("/**");
     }
 
+    @Primary
     @Bean("stpLogic")
-    public StpLogic getStpLogic() {
+    public StpLogic getStpLogic(SaTokenConfig saTokenConfig) {
         // 重写Sa-Token的StpLogic，默认客户端类型为B
-        return new StpLogic(SaClientTypeEnum.B.getValue());
+        return new StpLogic(SaClientTypeEnum.B.getValue()).setConfig(saTokenConfig);
     }
 
     @Bean("stpClientLogic")
-    public StpLogic getStpClientLogic() {
+    public StpLogic getStpClientLogic(SaTokenConfig saTokenConfig) {
         // 重写Sa-Token的StpLogic，默认客户端类型为C
-        return new StpLogic(SaClientTypeEnum.C.getValue());
+        return new StpLogic(SaClientTypeEnum.C.getValue()).setConfig(saTokenConfig);
     }
 
-    @Bean
+    @Autowired
     public void rewriteSaStrategy() {
         // 重写Sa-Token的注解处理器，增加注解合并功能
         SaStrategy.me.getAnnotation = AnnotatedElementUtils::getMergedAnnotation;

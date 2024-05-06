@@ -7,12 +7,24 @@
     <parent>
         <groupId>vip.xiaonuo</groupId>
         <artifactId>snowy-server</artifactId>
-        <version>2.0.0</version>
+        <version>3.0.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>snowy-xxl-job-app</artifactId>
     <description>XxlJob分布式任务调度应用启动组件</description>
     <packaging>jar</packaging>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <spring-boot-dependencies.version>2.7.18</spring-boot-dependencies.version>
+        <spring.boot.admin-version>2.7.15</spring.boot.admin-version>
+        <spring.cloud-version>2021.0.1</spring.cloud-version>
+        <spring.cloud.bootstrap-version>3.1.8</spring.cloud.bootstrap-version>
+        <spring.cloud.alibaba-version>2021.0.1.0</spring.cloud.alibaba-version>
+        <logback.version>1.2.13</logback.version>
+        <javax.mail.version>1.6.2</javax.mail.version>
+    </properties>
 
     <dependencies>
         <!-- snowy-common -->
@@ -79,8 +91,8 @@
         </dependency>
         <!-- mysql -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
         </dependency>
 
         <!-- xxl-job-core -->
@@ -139,7 +151,97 @@
             <artifactId>spring-boot-admin-starter-client</artifactId>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>${spring-boot-dependencies.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-context</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>5.3.31</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.31</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>5.3.31</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>5.3.31</version>
+        </dependency>
+
+
+        <!-- servlet -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--java邮件发送-->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>${javax.mail.version}</version>
+        </dependency>
+
+        <!-- Logging libs -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 
 
     <build>
@@ -176,7 +278,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <fork>true</fork>
+                    <includeSystemScope>true</includeSystemScope>
                 </configuration>
             </plugin>
             <!-- docker -->

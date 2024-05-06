@@ -14,7 +14,7 @@ src/main/resources/META-INF/nacos-db.sql
 ```
 * 导入 snowy-nacos-app db 更新数据
 ```
-src/main/resources/META-INF/update/nacos-db-update-20230611.sql
+src/main/resources/META-INF/nacos-db-snowy-config-init.sql
 ```
 * 运行 com.alibaba.nacos.SnowyNacosApp 类，即可在开发环境启动 nacos 2.1.2
 

@@ -16,9 +16,14 @@
 
 package com.alibaba.nacos;
 
+import com.alibaba.nacos.sys.filter.NacosTypeExcludeFilter;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.AutoConfigurationExcludeFilter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
@@ -27,7 +32,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  *
  * @author nacos
  */
-@SpringBootApplication(scanBasePackages = "com.alibaba.nacos")
+@ComponentScan(basePackages = "com.alibaba.nacos", excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.CUSTOM, classes = {NacosTypeExcludeFilter.class}),
+        @ComponentScan.Filter(type = FilterType.CUSTOM, classes = {TypeExcludeFilter.class}),
+        @ComponentScan.Filter(type = FilterType.CUSTOM, classes = {AutoConfigurationExcludeFilter.class})})
 @ServletComponentScan
 @EnableScheduling
 public class SnowyNacosApp {

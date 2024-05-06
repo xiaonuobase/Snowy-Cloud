@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/snowy-cloud?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&useInformationSchema=true
+    url: jdbc:mysql://localhost:3306/snowy-cloud2-gitee?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&useInformationSchema=true
     username: root
     password: 123456
 
@@ -161,7 +161,7 @@ management:
 sa-token:
   token-name: token
   timeout: 2592000
-  activity-timeout: -1
+  active-timeout: -1
   is-concurrent: true
   is-share: false
   max-login-count: -1
@@ -202,8 +202,8 @@ knife4j:
     enable: true
     routes:
       - name: snowy-web-app
-        location: /api/webapp/v2/api-docs?group=snowy-web-app
+        location: /api/webapp/v3/api-docs?group=snowy-web-app
         uri: localhost:9003
       - name: snowy-biz-app
-        location: /api/bizapp/v2/api-docs?group=snowy-biz-app
+        location: /api/bizapp/v3/api-docs?group=snowy-biz-app
         uri: localhost:9003

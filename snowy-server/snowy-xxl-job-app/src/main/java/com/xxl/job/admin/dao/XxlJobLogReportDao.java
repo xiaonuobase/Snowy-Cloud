@@ -19,7 +19,7 @@ public interface XxlJobLogReportDao {
 	public int update(XxlJobLogReport xxlJobLogReport);
 
 	public List<XxlJobLogReport> queryLogReport(@Param("triggerDayFrom") Date triggerDayFrom,
-                                                @Param("triggerDayTo") Date triggerDayTo);
+												@Param("triggerDayTo") Date triggerDayTo);
 
 	public XxlJobLogReport queryLogReportTotal();
 

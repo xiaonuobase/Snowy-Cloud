@@ -6,99 +6,102 @@
     <groupId>vip.xiaonuo</groupId>
     <artifactId>snowy-cloud</artifactId>
     <name>snowy-cloud</name>
-    <version>2.0.0</version>
+    <version>3.0.0</version>
     <description>snowy-cloud快速开发平台</description>
     <packaging>pom</packaging>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.12</version>
-    </parent>
+<!--    <parent>-->
+<!--        <groupId>org.springframework.boot</groupId>-->
+<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
+<!--        <version>3.2.1</version>-->
+<!--    </parent>-->
 
     <properties>
         <!-- maven base -->
-        <java.version>1.8</java.version>
-        <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
-        <maven.source.plugin>3.0.1</maven.source.plugin>
+        <java.version>17</java.version>
+        <maven.compiler.plugin.version>3.12.1</maven.compiler.plugin.version>
+        <maven.source.plugin>3.3.0</maven.source.plugin>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skipTests>true</skipTests>
 
         <!-- snowy-base -->
-        <snowy.version>2.0.0</snowy.version>
-        <spring-framework.version>5.3.26</spring-framework.version>
-        <spring.boot-version>2.5.12</spring.boot-version>
-        <spring.cloud-version>2020.0.6</spring.cloud-version>
-        <spring.cloud.bootstrap-version>3.1.3</spring.cloud.bootstrap-version>
-        <spring.cloud.alibaba-version>2021.1</spring.cloud.alibaba-version>
-        <spring.boot.admin-version>2.5.6</spring.boot.admin-version>
+        <snowy.version>3.0.0</snowy.version>
+        <spring.boot-version>3.2.1</spring.boot-version>
+        <spring-framework.version>6.1.2</spring-framework.version>
+        <spring.cloud-version>2023.0.1</spring.cloud-version>
+        <spring.cloud.bootstrap-version>4.1.2</spring.cloud.bootstrap-version>
+        <spring.cloud.alibaba-version>2022.0.0.0</spring.cloud.alibaba-version>
+        <spring.boot.admin-version>3.2.3</spring.boot.admin-version>
+        <springfox.version>3.0.0</springfox.version>
 
         <!-- 锁定依赖版本号 -->
-        <ali.oss.version>3.14.0</ali.oss.version>
+        <ali.oss.version>3.15.1</ali.oss.version>
         <aliyun.sdk.dm.version>3.3.1</aliyun.sdk.dm.version>
-        <aliyun.sdk.dysmsapi.version>2.0.9</aliyun.sdk.dysmsapi.version>
         <aliyun.sdk.ecs.version>3.1.0</aliyun.sdk.ecs.version>
         <bcprov.jdk15on.version>1.70</bcprov.jdk15on.version>
         <beetl.version>1.2.40.Beetl.RELEASE</beetl.version>
         <checker.qual.version>3.31.0</checker.qual.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.compress.version>1.22</commons.compress.version>
-        <commons.pool2.version>2.11.1</commons.pool2.version>
-        <druid.version>1.2.9</druid.version>
-        <dynamic.datasource.version>3.5.1</dynamic.datasource.version>
-        <easy.trans.version>2.1.7</easy.trans.version>
-        <easyexcel.version>3.2.1</easyexcel.version>
-        <easypoi.version>4.3.0</easypoi.version>
+        <commons.pool2.version>2.12.0</commons.pool2.version>
+        <druid.version>1.2.21</druid.version>
+        <dynamic.datasource.version>4.3.0</dynamic.datasource.version>
+        <easy.trans.version>3.0.0</easy.trans.version>
+        <easyexcel.version>3.3.3</easyexcel.version>
+        <easypoi.version>4.4.0</easypoi.version>
         <fastjson.version>2.0.24</fastjson.version>
         <gson.version>2.8.9</gson.version>
         <guava.version>31.1-jre</guava.version>
-        <hutool.version>5.8.12</hutool.version>
-        <ip2region.version>2.6.3</ip2region.version>
+        <hutool.version>5.8.25</hutool.version>
+        <ip2region.version>2.7.0</ip2region.version>
         <jackson.annotations.version>2.14.2</jackson.annotations.version>
         <jackson.core.version>2.14.2</jackson.core.version>
         <jackson.databind.version>2.14.2</jackson.databind.version>
         <jackson.datatype.jdk8.version>2.14.2</jackson.datatype.jdk8.version>
         <jackson.datatype.jsr310.version>2.14.2</jackson.datatype.jsr310.version>
         <jackson.module.parameter.names.version>2.14.2</jackson.module.parameter.names.version>
-        <javax.mail.version>1.6.2</javax.mail.version>
+        <jakarta.mail.version>2.0.1</jakarta.mail.version>
+        <aliyun.mail.dm-version>1.0.6</aliyun.mail.dm-version>
         <jettison.version>1.5.4</jettison.version>
         <junit.version>4.13.2</junit.version>
-        <just.auth.version>1.16.5</just.auth.version>
-        <knife4j.version>2.0.9</knife4j.version>
-        <logback.classic.version>1.2.0</logback.classic.version>
-        <lombok.versin>1.18.22</lombok.versin>
+        <just.auth.version>1.16.6</just.auth.version>
+        <knife4j.version>4.5.0</knife4j.version>
+        <logback.classic.version>1.4.14</logback.classic.version>
+        <lombok.versin>1.18.30</lombok.versin>
         <minio.version>8.5.2</minio.version>
-        <mssql.connector.java.version>9.2.1.jre8</mssql.connector.java.version>
-        <mybatis.plus.version>3.5.3.1</mybatis.plus.version>
-        <mybatis.version>3.5.10</mybatis.version>
-        <mysql.connector.java.version>8.0.28</mysql.connector.java.version>
-        <netty.common.version>4.1.89.Final</netty.common.version>
-        <netty.handler.version>4.1.89.Final</netty.handler.version>
-        <okhttp3.version>4.10.0</okhttp3.version>
-        <okio.version>3.3.0</okio.version>
-        <dm.connector.java.version>8.1.2.192</dm.connector.java.version>
+        <mssql.connector.java.version>12.4.2.jre11</mssql.connector.java.version>
+        <mybatis.plus.version>3.5.5</mybatis.plus.version>
+        <mybatis.version>3.5.15</mybatis.version>
+        <mysql.connector.java.version>8.3.0</mysql.connector.java.version>
+        <nashorn-core.version>15.4</nashorn-core.version>
+        <netty.common.version>4.1.104.Final</netty.common.version>
+        <netty.handler.version>4.1.104.Final</netty.handler.version>
+        <dm.connector.java.version>8.1.3.62</dm.connector.java.version>
         <kingbase.connector.java.version>8.6.0</kingbase.connector.java.version>
-        <oracle.connector.java.version>21.5.0.0</oracle.connector.java.version>
-        <oracle.nls.orai18n.version>19.7.0.0</oracle.nls.orai18n.version>
-        <oshi.core.version>6.2.2</oshi.core.version>
+        <oracle.connector.java.version>19.21.0.0</oracle.connector.java.version>
+        <oracle.nls.orai18n.version>23.3.0.23.09</oracle.nls.orai18n.version>
+        <oshi.core.version>6.4.11</oshi.core.version>
         <pinyin.version>2.5.1</pinyin.version>
-        <postgres.connector.java.version>42.2.25</postgres.connector.java.version>
+        <postgres.connector.java.version>42.7.1</postgres.connector.java.version>
         <protobuf.java.version>3.21.12</protobuf.java.version>
-        <sa.token.version>1.31.0</sa.token.version>
+        <sa.token.version>1.37.0</sa.token.version>
         <smcrypto.version>0.3.2</smcrypto.version>
-        <snakeyaml.version>1.31</snakeyaml.version><!-- cloud使用2.0版本yaml存在冲突 -->
-        <spring.context.version>5.3.19</spring.context.version>
-        <spring.security.crypto.version>5.5.5</spring.security.crypto.version><!-- cloud使用6.0.2版本yaml存在冲突 -->
-        <springfox.swagger2.version>2.10.5</springfox.swagger2.version>
-        <ten.cos.version>5.6.68</ten.cos.version>
-        <ten.sdk.ses.version>3.1.455</ten.sdk.ses.version>
-        <ten.sdk.sms.version>3.1.455</ten.sdk.sms.version>
-        <tomcat.embed.core.version>9.0.72</tomcat.embed.core.version>
+        <snakeyaml.version>2.2</snakeyaml.version><!-- cloud使用2.0版本yaml存在冲突 -->
+        <spring.context.version>6.1.2</spring.context.version>
+        <spring.security.crypto.version>6.1.2</spring.security.crypto.version><!-- cloud使用6.0.2版本yaml存在冲突 -->
+        <ten.cos.version>5.6.199</ten.cos.version>
+        <x.file.storage.spring-version>2.1.0</x.file.storage.spring-version>
+        <ten.sdk.ses.version>3.1.944</ten.sdk.ses.version>
+        <aliyun.sdk.dysmsapi.version>2.0.24</aliyun.sdk.dysmsapi.version>
+        <ten.sdk.sms.version>3.1.893</ten.sdk.sms.version>
+        <sms4j.version>3.1.1</sms4j.version>
+        <tomcat.embed.core.version>10.1.17</tomcat.embed.core.version>
+        <kotlin.version>1.5.32</kotlin.version>
 
         <!-- snowy-xxl-job-app -->
-        <xxljob.version>2.3.1</xxljob.version>
-        <mybatis-spring-boot-starter.version>2.1.4</mybatis-spring-boot-starter.version>
+        <xxljob.version>2.4.0</xxljob.version>
+        <mybatis-spring-boot-starter.version>2.3.0</mybatis-spring-boot-starter.version>
 
     </properties>
 
@@ -256,6 +259,14 @@
 
 
             <!-- ===================== snowy-cloud-base ========================= -->
+            <!-- SpringBoot -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
             <!-- SpringCloud -->
             <dependency>
@@ -305,6 +316,19 @@
                 <version>${knife4j.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${springfox.version}</version>
+            </dependency>
+
+            <!-- nashorn-core -->
+            <dependency>
+                <groupId>org.openjdk.nashorn</groupId>
+                <artifactId>nashorn-core</artifactId>
+                <version>${nashorn-core.version}</version>
+            </dependency>
+
             <!-- lombok -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -322,7 +346,7 @@
             <!-- mybatis-plus -->
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
                 <version>${mybatis.plus.version}</version>
             </dependency>
 
@@ -371,7 +395,7 @@
             <!-- knife4j -->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
             </dependency>
 
@@ -406,14 +430,14 @@
             <!-- sa-token -->
             <dependency>
                 <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-spring-boot-starter</artifactId>
+                <artifactId>sa-token-spring-boot3-starter</artifactId>
                 <version>${sa.token.version}</version>
             </dependency>
 
             <!-- sa-token 整合 redis （使用jackson序列化方式） -->
             <dependency>
                 <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-dao-redis-jackson</artifactId>
+                <artifactId>sa-token-redis-jackson</artifactId>
                 <version>${sa.token.version}</version>
             </dependency>
 
@@ -445,6 +469,13 @@
                 <version>${beetl.version}</version>
             </dependency>
 
+            <!--x-file-storage文件sdk-->
+            <dependency>
+                <groupId>org.dromara.x-file-storage</groupId>
+                <artifactId>x-file-storage-spring</artifactId>
+                <version>${x.file.storage.spring-version}</version>
+            </dependency>
+
             <!--腾讯云上传文件客户端-->
             <dependency>
                 <groupId>com.qcloud</groupId>
@@ -466,18 +497,18 @@
                 <version>${minio.version}</version>
             </dependency>
 
-            <!--java邮件发送-->
+            <!--java邮件sdk-->
             <dependency>
                 <groupId>com.sun.mail</groupId>
-                <artifactId>javax.mail</artifactId>
-                <version>${javax.mail.version}</version>
+                <artifactId>jakarta.mail</artifactId>
+                <version>${jakarta.mail.version}</version>
             </dependency>
 
             <!--阿里云邮件发送-->
             <dependency>
                 <groupId>com.aliyun</groupId>
-                <artifactId>aliyun-java-sdk-dm</artifactId>
-                <version>${aliyun.sdk.dm.version}</version>
+                <artifactId>dm20151123</artifactId>
+                <version>${aliyun.mail.dm-version}</version>
             </dependency>
 
             <!-- 腾讯云邮件发送 -->
@@ -501,19 +532,18 @@
                 <version>${ten.sdk.sms.version}</version>
             </dependency>
 
+            <!-- sms4j短信sdk -->
+            <dependency>
+                <groupId>org.dromara.sms4j</groupId>
+                <artifactId>sms4j-javase-plugin</artifactId>
+                <version>${sms4j.version}</version>
+            </dependency>
+
             <!--系统硬件信息-->
             <dependency>
                 <groupId>com.github.oshi</groupId>
                 <artifactId>oshi-core</artifactId>
                 <version>${oshi.core.version}</version>
-            </dependency>
-
-            <!-- junit -->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
             </dependency>
 
             <!-- logback-classic -->
@@ -610,14 +640,14 @@
             <!-- dynamic-datasource -->
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
                 <version>${dynamic.datasource.version}</version>
             </dependency>
 
             <!-- mysql -->
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
                 <version>${mysql.connector.java.version}</version>
             </dependency>
 
@@ -683,7 +713,7 @@
             <!-- Sa-Token 权限认证（Reactor响应式集成）, 在线文档：https://sa-token.cc -->
             <dependency>
                 <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-reactor-spring-boot-starter</artifactId>
+                <artifactId>sa-token-reactor-spring-boot3-starter</artifactId>
                 <version>${sa.token.version}</version>
             </dependency>
 
@@ -697,12 +727,37 @@
     </dependencyManagement>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot-version}</version>
+                    <configuration>
+                        <finalName>${project.build.finalName}</finalName>
+                        <layers>
+                            <enabled>true</enabled>
+                        </layers>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.plugin.version}</version>
                 <configuration>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>

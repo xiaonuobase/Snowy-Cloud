@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.gateway.config;
 
+import cn.dev33.satoken.config.SaTokenConfig;
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.context.model.SaResponse;
 import cn.dev33.satoken.reactor.filter.SaReactorFilter;
@@ -28,6 +29,7 @@ import feign.codec.Decoder;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.openfeign.support.ResponseEntityDecoder;
@@ -35,6 +37,7 @@ import org.springframework.cloud.openfeign.support.SpringDecoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -67,7 +70,7 @@ public class GatewayConfigure {
     /**
      * 无需登录的接口地址集合
      */
-    private static final String[] NO_LOGIN_PATH_ARR = {
+    public static final String[] NO_LOGIN_PATH_ARR = {
             /* 主入口 */
             "/",
 
@@ -241,8 +244,9 @@ public class GatewayConfigure {
      * @author xuyuxiang
      * @date 2022/6/21 17:01
      **/
+    @Primary
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, Object> redisTemplate(@Autowired(required = false) RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
@@ -255,16 +259,17 @@ public class GatewayConfigure {
         return redisTemplate;
     }
 
+    @Primary
     @Bean("stpLogic")
-    public StpLogic getStpLogic() {
+    public StpLogic getStpLogic(SaTokenConfig saTokenConfig) {
         // 重写Sa-Token的StpLogic，默认客户端类型为B
-        return new StpLogic(SaClientTypeEnum.B.getValue());
+        return new StpLogic(SaClientTypeEnum.B.getValue()).setConfig(saTokenConfig);
     }
 
     @Bean("stpClientLogic")
-    public StpLogic getStpClientLogic() {
+    public StpLogic getStpClientLogic(SaTokenConfig saTokenConfig) {
         // 重写Sa-Token的StpLogic，默认客户端类型为C
-        return new StpLogic(SaClientTypeEnum.C.getValue());
+        return new StpLogic(SaClientTypeEnum.C.getValue()).setConfig(saTokenConfig);
     }
 
     /**

@@ -1,6 +1,6 @@
 <template>
 	<a-card :bordered="false" :body-style="{ 'padding-bottom': '0px' }" class="mb-2">
-		<a-form ref="formRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
+		<a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
 			<a-row :gutter="24">
 				<a-col :span="8">
 					<a-form-item label="名称关键词" name="searchKey">
@@ -9,7 +9,7 @@
 				</a-col>
 				<a-col :span="8">
 					<a-button type="primary" @click="tableRef.refresh(true)">查询</a-button>
-					<a-button style="margin: 0 8px" @click="reset">重置</a-button>
+					<a-button class="xn-mg08" @click="reset">重置</a-button>
 				</a-col>
 			</a-row>
 		</a-form>
@@ -59,9 +59,10 @@
 	import Form from './form.vue'
 	import moduleApi from '@/api/mobile/resource/moduleApi'
 	const searchFormState = ref({})
+	const searchFormRef = ref()
 	const formRef = ref()
 	const tableRef = ref()
-	const toolConfig = { refresh: true, height: true, columnSetting: false, striped: false }
+	const toolConfig = { refresh: true, height: true, columnSetting: false, striped: true }
 	const columns = [
 		{
 			title: '显示名称',
@@ -110,7 +111,7 @@
 	}
 	// 重置
 	const reset = () => {
-		formRef.value.resetFields()
+		searchFormRef.value.resetFields()
 		tableRef.value.refresh(true)
 	}
 	// 删除

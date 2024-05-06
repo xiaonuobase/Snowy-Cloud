@@ -12,7 +12,7 @@
  */
 package vip.xiaonuo.sys.modular.role.result;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,20 +28,20 @@ import java.util.List;
 @Setter
 public class SysRoleGrantResourceTreeResult {
 
-    /** 模块主键 */
-    @ApiModelProperty(value = "模块主键", position = 1)
+    /** 模块id */
+    @Schema(description = "模块id")
     private String id;
 
     /** 模块名称*/
-    @ApiModelProperty(value = "模块名称", position = 2)
+    @Schema(description = "模块名称")
     private String title;
 
     /** 模块图标 */
-    @ApiModelProperty(value = "模块图标", position = 3)
+    @Schema(description = "模块图标")
     private String icon;
 
     /** 模块下菜单集合*/
-    @ApiModelProperty(value = "模块下菜单集合", position = 4)
+    @Schema(description = "模块下菜单集合")
     private List<SysRoleGrantResourceMenuResult> menu;
 
     /**
@@ -54,28 +54,28 @@ public class SysRoleGrantResourceTreeResult {
     @Setter
     public static class SysRoleGrantResourceMenuResult {
 
-        /** id */
-        @ApiModelProperty(value = "菜单主键", position = 1)
+        /** 菜单id */
+        @Schema(description = "菜单id")
         private String id;
 
         /** 父id */
-        @ApiModelProperty(value = "菜单id", position = 2)
+        @Schema(description = "父id")
         private String parentId;
 
         /** 父名称 */
-        @ApiModelProperty(value = "菜单名称", position = 3)
+        @Schema(description = "菜单名称")
         private String parentName;
 
         /** 标题 */
-        @ApiModelProperty(value = "菜单标题", position = 4)
+        @Schema(description = "菜单标题")
         private String title;
 
         /** 模块 */
-        @ApiModelProperty(value = "菜单模块", position = 5)
+        @Schema(description = "菜单模块")
         private String module;
 
         /** 菜单下按钮集合 */
-        @ApiModelProperty(value = "菜单下按钮集合", position = 6)
+        @Schema(description = "菜单下按钮集合")
         private List<SysRoleGrantResourceButtonResult> button;
 
         /**
@@ -88,12 +88,12 @@ public class SysRoleGrantResourceTreeResult {
         @Setter
         public static class SysRoleGrantResourceButtonResult {
 
-            /** id */
-            @ApiModelProperty(value = "按钮主键", position = 1)
+            /** 按钮id */
+            @Schema(description = "按钮id")
             private String id;
 
             /** 标题 */
-            @ApiModelProperty(value = "按钮标题", position = 2)
+            @Schema(description = "按钮标题")
             private String title;
         }
     }

@@ -33,9 +33,9 @@ import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
-import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.mapping.DatabaseIdProvider;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.ReflectionException;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -44,36 +44,29 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.Contact;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
 import vip.xiaonuo.auth.core.util.StpClientUtil;
 import vip.xiaonuo.common.annotation.CommonNoRepeat;
 import vip.xiaonuo.common.annotation.CommonWrapper;
 import vip.xiaonuo.common.cache.CommonCacheOperator;
-import vip.xiaonuo.common.consts.FeignConstant;
 import vip.xiaonuo.common.enums.CommonDeleteFlagEnum;
 import vip.xiaonuo.common.enums.SysBuildInEnum;
 import vip.xiaonuo.common.exception.CommonException;
@@ -84,14 +77,8 @@ import vip.xiaonuo.common.pojo.CommonWrapperInterface;
 import vip.xiaonuo.common.util.CommonTimeFormatUtil;
 import vip.xiaonuo.web.core.handler.GlobalExceptionUtil;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -104,7 +91,7 @@ import java.util.Map;
  * @date 2021/10/9 14:24
  **/
 @Configuration
-@MapperScan(basePackages = {"vip.xiaonuo.**.mapper, com.bstek.**.mapper"})
+@MapperScan(basePackages = {"vip.xiaonuo.**.mapper"})
 public class GlobalConfigure implements WebMvcConfigurer {
 
     private static final String COMMON_REPEAT_SUBMIT_CACHE_KEY = "common-repeatSubmit:";
@@ -112,13 +99,10 @@ public class GlobalConfigure implements WebMvcConfigurer {
     @Resource
     private CommonCacheOperator commonCacheOperator;
 
-    @Resource
-    private OpenApiExtensionResolver openApiExtensionResolver;
-
     /**
      * 无需登录的接口地址集合
      */
-    private static final String[] NO_LOGIN_PATH_ARR = {
+    public static final String[] NO_LOGIN_PATH_ARR = {
             /* 主入口 */
             "/",
 
@@ -134,6 +118,8 @@ public class GlobalConfigure implements WebMvcConfigurer {
             "/ureport/**",
             "/druid/**",
             "/images/**",
+            /* 移动端静态资源 */
+            "/mobile/**",
 
             /* 认证相关 */
             "/auth/c/getPicCaptcha",
@@ -311,8 +297,9 @@ public class GlobalConfigure implements WebMvcConfigurer {
      * @author xuyuxiang
      * @date 2022/6/21 17:01
      **/
+    @Primary
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, Object> redisTemplate(@Autowired(required = false) RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
@@ -335,7 +322,6 @@ public class GlobalConfigure implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-        registry.addResourceHandler("/ureport/res/**").addResourceLocations("classpath:/META-INF/resources/ureport-asserts/");
     }
 
     /**
@@ -522,41 +508,6 @@ public class GlobalConfigure implements WebMvcConfigurer {
     }
 
     /**
-     * 数据库id选择器，用于Mapper.xml中
-     * MyBatis可以根据不同的数据库厂商执行不同的语句
-     *
-     * @author xuyuxiang
-     * @date 2022/1/8 2:16
-     */
-    @Component
-    public static class CustomDbIdProvider implements DatabaseIdProvider {
-
-        @Override
-        public String getDatabaseId(DataSource dataSource) throws SQLException {
-            Connection conn = null;
-            try {
-                conn = dataSource.getConnection();
-                String url = conn.getMetaData().getURL().toLowerCase();
-                if (url.contains("jdbc:oracle")) {
-                    return "oracle";
-                } else if (url.contains("jdbc:postgresql")) {
-                    return "pgsql";
-                } else if (url.contains("jdbc:mysql")) {
-                    return "mysql";
-                } else if (url.contains("jdbc:dm")) {
-                    return "dm";
-                } else if (url.contains("jdbc:kingbase")) {
-                    return "kingbase";
-                }  else {
-                    return "mysql";
-                }
-            } finally {
-                JdbcUtils.closeConnection(conn);
-            }
-        }
-    }
-
-    /**
      * 自定义公共字段自动注入
      *
      * @author xuyuxiang
@@ -633,32 +584,6 @@ public class GlobalConfigure implements WebMvcConfigurer {
             }
 
         }
-    }
-
-    /**
-     * 应用API文档分组配置
-     *
-     * @author dongxiayu
-     * @date 2022/7/7 16:18
-     **/
-    @Bean(value = "appApiDoc")
-    public Docket appApiDoc() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(new ApiInfoBuilder()
-                        .title(FeignConstant.WEB_APP)
-                        .description(FeignConstant.WEB_APP)
-                        .termsOfServiceUrl("https://www.xiaonuo.vip")
-                        .contact(new Contact("SNOWY_TEAM","https://www.xiaonuo.vip", "-"))
-                        .version("2.0.0")
-                        .build())
-                .globalResponseMessage(RequestMethod.GET, CommonResult.responseList())
-                .globalResponseMessage(RequestMethod.POST, CommonResult.responseList())
-                .groupName(FeignConstant.WEB_APP)
-                .select()
-                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-                .apis(RequestHandlerSelectors.basePackage("vip.xiaonuo"))
-                .paths(PathSelectors.any())
-                .build().extensions(openApiExtensionResolver.buildExtensions(FeignConstant.WEB_APP));
     }
 
     /**

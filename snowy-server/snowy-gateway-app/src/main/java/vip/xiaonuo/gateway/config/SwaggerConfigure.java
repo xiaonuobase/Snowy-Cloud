@@ -12,7 +12,6 @@
  */
 package vip.xiaonuo.gateway.config;
 
-import com.github.xiaoymin.knife4j.aggre.spring.configuration.Knife4jAggregationProperties;
 import lombok.AllArgsConstructor;
 import org.springframework.cloud.gateway.config.GatewayProperties;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -38,22 +37,22 @@ import java.util.List;
 @AllArgsConstructor
 public class SwaggerConfigure implements SwaggerResourcesProvider {
 
-    public static final String API_URI = "/v2/api-docs";
+    public static final String API_URI = "/v3/api-docs";
 
     private final RouteLocator routeLocator;
 
     private final GatewayProperties gatewayProperties;
 
-    private final Knife4jAggregationProperties knife4jAggregationProperties;
+//    private final Knife4jAggregationProperties knife4jAggregationProperties;
 
     @Override
     public List<SwaggerResource> get() {
         List<SwaggerResource> resources = new ArrayList<>();
         List<String> routes = new ArrayList<>();
         routeLocator.getRoutes().subscribe(route -> routes.add(route.getId()));
-        knife4jAggregationProperties.getCloud().getRoutes().stream().filter(routeDefinition -> routes.contains(routeDefinition.getName()))
-                .forEach(routeDefinition -> resources.add(swaggerResource(routeDefinition.getName(),
-                        routeDefinition.getLocation())));
+//        knife4jAggregationProperties.getCloud().getRoutes().stream().filter(routeDefinition -> routes.contains(routeDefinition.getName()))
+//                .forEach(routeDefinition -> resources.add(swaggerResource(routeDefinition.getName(),
+//                        routeDefinition.getLocation())));
         return resources;
     }
 
@@ -61,7 +60,7 @@ public class SwaggerConfigure implements SwaggerResourcesProvider {
         SwaggerResource swaggerResource = new SwaggerResource();
         swaggerResource.setName(name);
         swaggerResource.setLocation(location);
-        swaggerResource.setSwaggerVersion("2.0");
+        swaggerResource.setSwaggerVersion("3.0");
         return swaggerResource;
     }
 }

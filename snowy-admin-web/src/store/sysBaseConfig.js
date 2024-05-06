@@ -13,7 +13,7 @@ import { message } from 'ant-design-vue'
 
 const formData = ref({
 	SNOWY_SYS_LOGO: '',
-	SNOWY_SYS_API_URL: '',
+	SNOWY_SYS_BACK_IMAGE: '',
 	SNOWY_SYS_NAME: '',
 	SNOWY_SYS_VERSION: '',
 	SNOWY_SYS_COPYRIGHT: '',

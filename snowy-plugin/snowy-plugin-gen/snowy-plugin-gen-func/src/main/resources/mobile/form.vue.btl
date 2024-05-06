@@ -64,7 +64,7 @@
     })
     // https://www.uvui.cn/components/form.html
     // 去pages/biz/user/form.vue中寻找示例
-	const rules = reactive({
+    const rules = reactive({
         <% for(var i = 0; i < configList.~size; i++) { %>
         <% if(!configList[i].needTableId && configList[i].whetherAddUpdate && configList[i].fieldNameCamelCase != 'tenantId' && configList[i].required) { %>
         ${configList[i].fieldNameCamelCase}: [{

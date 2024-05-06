@@ -70,7 +70,7 @@ spring:
       datasource:
         master:
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://localhost:3306/snowy-cloud?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&useInformationSchema=true
+          url: jdbc:mysql://localhost:3306/snowy-cloud2-gitee?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&useInformationSchema=true
           username: root
           password: 123456
       strict: true
@@ -155,18 +155,19 @@ spring:
   #########################################
   # redis configuration
   #########################################
-  redis:
-    database: 1
-    host: 127.0.0.1
-    port: 6379
-    password:
-    timeout: 10s
-    lettuce:
-      pool:
-        max-active: 200
-        max-wait: -1ms
-        max-idle: 10
-        min-idle: 0
+  data:
+    redis:
+      database: 1
+      host: 127.0.0.1
+      port: 6379
+      password:
+      timeout: 10s
+      lettuce:
+        pool:
+          max-active: 200
+          max-wait: -1ms
+          max-idle: 10
+          min-idle: 0
 
 #########################################
 # 开放所有endpoint，实际生产根据自身需要开放，出于安全考虑不建议全部开放
@@ -211,7 +212,7 @@ easy-trans:
 sa-token:
   token-name: token
   timeout: 2592000
-  activity-timeout: -1
+  active-timeout: -1
   is-concurrent: true
   is-share: false
   max-login-count: -1
@@ -222,16 +223,16 @@ sa-token:
 # sa-token alone-redis configuration
   alone-redis:
     database: 2
-    host: ${spring.redis.host}
-    port: ${spring.redis.port}
-    password: ${spring.redis.password}
-    timeout: ${spring.redis.timeout}
+    host: ${spring.data.redis.host}
+    port: ${spring.data.redis.port}
+    password: ${spring.data.redis.password}
+    timeout: ${spring.data.redis.timeout}
     lettuce:
       pool:
-        max-active: ${spring.redis.lettuce.pool.max-active}
-        max-wait: ${spring.redis.lettuce.pool.max-wait}
-        max-idle: ${spring.redis.lettuce.pool.max-idle}
-        min-idle: ${spring.redis.lettuce.pool.min-idle}
+        max-active: ${spring.data.redis.lettuce.pool.max-active}
+        max-wait: ${spring.data.redis.lettuce.pool.max-wait}
+        max-idle: ${spring.data.redis.lettuce.pool.max-idle}
+        min-idle: ${spring.data.redis.lettuce.pool.min-idle}
 
 #########################################
 # knife4j configuration
@@ -250,35 +251,38 @@ knife4j:
     enableFooterCustom: true
     footerCustomContent: Apache License 2.0 | Copyright 2022-[SNOWY](https://www.xiaonuo.vip)
 
-#########################################
-# camunda configuration
-#########################################
-camunda:
-  bpm:
-    database:
-      schema-update: true
-    auto-deployment-enabled: false
-    job-execution:
-      enabled: false
-    eventing:
-      history: false
-    metrics:
-      enabled: false
+# knife4j doc groups
+springdoc:
+  default-flat-param-object: true
+  group-configs:
+    - group: SNOWY-PLUGIN-AUTH
+      display-name: ${springdoc.group-configs[0].group}
+      packages-to-scan: vip.xiaonuo.auth
+    - group: SNOWY-PLUGIN-BIZ
+      display-name: ${springdoc.group-configs[1].group}
+      packages-to-scan: vip.xiaonuo.biz
+    - group: SNOWY-PLUGIN-CLIENT
+      display-name: ${springdoc.group-configs[2].group}
+      packages-to-scan: vip.xiaonuo.client
+    - group: SNOWY-PLUGIN-DEV
+      display-name: ${springdoc.group-configs[3].group}
+      packages-to-scan: vip.xiaonuo.dev
+    - group: SNOWY-PLUGIN-GEN
+      display-name: ${springdoc.group-configs[4].group}
+      packages-to-scan: vip.xiaonuo.gen
+    - group: SNOWY-PLUGIN-MOBILE
+      display-name: ${springdoc.group-configs[5].group}
+      packages-to-scan: vip.xiaonuo.mobile
+    - group: SNOWY-PLUGIN-SYS
+      display-name: ${springdoc.group-configs[6].group}
+      packages-to-scan: vip.xiaonuo.sys
 
 #########################################
 # snowy configuration
 #########################################
-
-# common configuration
 snowy:
   config:
+# common configuration
     common:
       front-url: http://localhost:9000
       backend-url: http://localhost:9102
-
-    # plugin ten configuration
-    ten:
-      enabled: true
-      ignore-table-names:
-      ten-id-column-name: TENANT_ID
-      default-ten-id: -1

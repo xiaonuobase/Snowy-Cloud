@@ -20,7 +20,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.log.Log;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
@@ -28,7 +28,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import vip.xiaonuo.common.cache.CommonCacheOperator;
 import vip.xiaonuo.common.consts.CacheConstant;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,9 +61,9 @@ public class ResourceCollectListener implements CommandLineRunner {
                                 PatternsRequestCondition patternsCondition = key.getPatternsCondition();
                                 if (patternsCondition != null) {
                                     String apiName = "未定义接口名称";
-                                    ApiOperation apiOperation = value.getMethod().getAnnotation(ApiOperation.class);
+                                    Operation apiOperation = value.getMethod().getAnnotation(Operation.class);
                                     if(ObjectUtil.isNotEmpty(apiOperation)) {
-                                        String annotationValue = apiOperation.value();
+                                        String annotationValue = apiOperation.summary();
                                         if(ObjectUtil.isNotEmpty(annotationValue)) {
                                             apiName = annotationValue;
                                         }

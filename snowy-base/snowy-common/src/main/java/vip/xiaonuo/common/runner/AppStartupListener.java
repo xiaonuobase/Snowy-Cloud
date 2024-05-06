@@ -14,13 +14,13 @@ package vip.xiaonuo.common.runner;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
 import vip.xiaonuo.common.consts.AppConstant;
 
-import javax.annotation.Resource;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.util.Date;
@@ -35,12 +35,6 @@ import java.util.Date;
 public class AppStartupListener implements ApplicationRunner {
 
     /**
-     * 上下文对象实例
-     */
-    @Resource
-    private ApplicationContext ctx;
-
-    /**
      * Callback used to run the bean.
      *
      * @param args incoming application arguments
@@ -48,6 +42,7 @@ public class AppStartupListener implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        ApplicationContext ctx = SpringUtil.getApplicationContext();
         String appName = ctx.getEnvironment().getProperty("spring.application.name");
         String appJvmName = ManagementFactory.getRuntimeMXBean().getName();
         String appHost = InetAddress.getLocalHost().getHostAddress();

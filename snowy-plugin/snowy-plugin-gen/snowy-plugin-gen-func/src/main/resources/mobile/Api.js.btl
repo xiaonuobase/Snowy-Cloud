@@ -24,7 +24,7 @@ export function ${classNameFirstLower}Delete(data) {
         data: data
     })
 }
-// 获取${functionName}详情
+//  获取${functionName}详情
 export function ${classNameFirstLower}Detail(data) {
     return request({
         url: '/${moduleName}/${busName}/detail',

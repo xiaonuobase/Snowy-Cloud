@@ -17,7 +17,7 @@ import vip.xiaonuo.auth.modular.login.service.AuthService;
 import vip.xiaonuo.auth.modular.sso.param.AuthSsoTicketLoginParam;
 import vip.xiaonuo.auth.modular.sso.service.AuthSsoService;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * 单点登录Service接口实现类

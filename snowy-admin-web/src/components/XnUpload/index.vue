@@ -43,7 +43,7 @@
 	const props = defineProps({
 		action: {
 			type: String,
-			default: '/api/webapp/dev/file/uploadDynamicReturnUrl',
+			default: '/dev/file/uploadDynamicReturnUrl',
 			required: false
 		},
 		// 上传方式 defaults || drag

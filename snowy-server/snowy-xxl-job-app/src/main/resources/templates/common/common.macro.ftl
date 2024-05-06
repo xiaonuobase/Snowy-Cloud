@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="${request.contextPath}/static/adminlte/dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="${request.contextPath}/static/adminlte/dist/css/skins/_all-skins.min.css">
-      
+
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -71,14 +71,12 @@
 			<span class="logo-lg"><b>${I18n.admin_name}</b></span>
 		</a>
 		<nav class="navbar navbar-static-top" role="navigation">
-
 			<a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-
           	<div class="navbar-custom-menu">
 				<ul class="nav navbar-nav">
 					<#-- login user -->
@@ -172,7 +170,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="javascript::;"> 
+						<a href="javascript::;">
 							<i class="menu-icon fa fa-user bg-yellow"></i>
 							<div class="menu-info">
 								<h4 class="control-sidebar-subheading">Frodo 更新了资料</h4>
@@ -181,7 +179,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="javascript::;"> 
+						<a href="javascript::;">
 							<i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
 							<div class="menu-info">
 								<h4 class="control-sidebar-subheading">Nora 加入邮件列表</h4>

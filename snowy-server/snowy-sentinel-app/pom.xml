@@ -7,7 +7,8 @@
     <parent>
         <groupId>vip.xiaonuo</groupId>
         <artifactId>snowy-server</artifactId>
-        <version>2.0.0</version>
+        <version>3.0.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>snowy-sentinel-app</artifactId>
@@ -16,8 +17,17 @@
 
     <properties>
         <resource.delimiter>@</resource.delimiter>
+<!--        <spring.boot.version>2.5.12</spring.boot.version>-->
         <curator.version>4.0.1</curator.version>
-        <sentinel.version>1.8.5</sentinel.version>
+        <sentinel.version>1.8.7</sentinel.version>
+
+        <java.version>1.8</java.version>
+        <spring-boot-dependencies.version>2.7.18</spring-boot-dependencies.version>
+        <spring.boot.admin-version>2.7.15</spring.boot.admin-version>
+        <spring.cloud-version>2021.0.1</spring.cloud-version>
+        <spring.cloud.bootstrap-version>3.1.8</spring.cloud.bootstrap-version>
+        <spring.cloud.alibaba-version>2021.0.1.0</spring.cloud.alibaba-version>
+        <logback.version>1.2.13</logback.version>
     </properties>
 
     <dependencies>
@@ -49,6 +59,7 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-core</artifactId>
+            <version>${sentinel.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.csp</groupId>
@@ -58,6 +69,7 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-transport-simple-http</artifactId>
+            <version>${sentinel.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.csp</groupId>
@@ -73,14 +85,23 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot-dependencies.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-context</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
+            <version>${spring-boot-dependencies.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot-dependencies.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -88,6 +109,7 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
+            <version>${spring.cloud.bootstrap-version}</version>
         </dependency>
 
         <!-- cloud context -->
@@ -100,12 +122,14 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+            <version>${spring.cloud.alibaba-version}</version>
         </dependency>
 
         <!-- nacos 注册中心客户端 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <version>${spring.cloud.alibaba-version}</version>
         </dependency>
 
         <!-- 暴露各种指标 -->
@@ -118,6 +142,39 @@
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>${spring.boot.admin-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>${spring-boot-dependencies.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-context</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>5.3.31</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.31</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>5.3.31</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>5.3.31</version>
         </dependency>
 
         <dependency>
@@ -161,6 +218,7 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-datasource-nacos</artifactId>
+            <version>${sentinel.version}</version>
             <scope>test</scope>
         </dependency>
         <!-- for Apollo rule publisher sample -->
@@ -195,12 +253,62 @@
             <version>1.16.1</version>
             <scope>test</scope>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba</groupId>-->
+<!--            <artifactId>fastjson</artifactId>-->
+<!--            <version>1.2.83_noneautotype</version>-->
+<!--        </dependency>-->
+
+        <!-- servlet -->
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.83_noneautotype</version>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Logging libs -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <finalName>sentinel-dashboard</finalName>
@@ -222,8 +330,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot-dependencies.version}</version>
                 <configuration>
-                    <fork>true</fork>
+                    <includeSystemScope>true</includeSystemScope>
                     <mainClass>com.alibaba.csp.sentinel.dashboard.SnowySentinelApp</mainClass>
                 </configuration>
                 <executions>
@@ -238,7 +347,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.2</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>

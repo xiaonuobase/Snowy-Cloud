@@ -7,7 +7,8 @@
     <parent>
         <groupId>vip.xiaonuo</groupId>
         <artifactId>snowy-server</artifactId>
-        <version>2.0.0</version>
+        <version>3.0.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>snowy-gateway-app</artifactId>
@@ -36,13 +37,13 @@
         <!-- Sa-Token 权限认证（Reactor响应式集成）, 在线文档：https://sa-token.cc -->
         <dependency>
             <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-reactor-spring-boot-starter</artifactId>
+            <artifactId>sa-token-reactor-spring-boot3-starter</artifactId>
         </dependency>
 
         <!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） -->
         <dependency>
             <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-dao-redis-jackson</artifactId>
+            <artifactId>sa-token-redis-jackson</artifactId>
         </dependency>
 
         <!-- Sa-Token插件：权限缓存与业务缓存分离 -->
@@ -164,11 +165,10 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!-- servlet -->
+        <!-- nashorn-core -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <scope>provided</scope>
+            <groupId>org.openjdk.nashorn</groupId>
+            <artifactId>nashorn-core</artifactId>
         </dependency>
 
         <dependency>
@@ -178,12 +178,12 @@
             <optional>true</optional>
         </dependency>
 
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-reflect</artifactId>
-            <version>${kotlin.version}</version>
-            <optional>true</optional>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.jetbrains.kotlin</groupId>-->
+<!--            <artifactId>kotlin-reflect</artifactId>-->
+<!--            <version>${kotlin.version}</version>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
 
         <!-- jwt token -->
 <!--        <dependency>-->
@@ -193,8 +193,8 @@
 
         <!-- 数据库驱动,可根据自己需要自行删减 -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
         </dependency>
         <!--
         <dependency>
@@ -212,19 +212,25 @@
         <!-- mybatis-plus -->
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
         </dependency>
 
         <!-- knife4j swagger接口文档 -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- knife4j cloud模式聚合 -->
+        <!-- TODO knife4j cloud模式聚合 -->
+<!--        <dependency>-->
+<!--            <groupId>com.github.xiaoymin</groupId>-->
+<!--            <artifactId>knife4j-aggregation-spring-boot-starter</artifactId>-->
+<!--        </dependency>-->
+
+        <!-- Swagger -->
         <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-aggregation-spring-boot-starter</artifactId>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
         </dependency>
 
     </dependencies>
@@ -243,7 +249,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <fork>true</fork>
+                    <includeSystemScope>true</includeSystemScope>
                 </configuration>
             </plugin>
         </plugins>

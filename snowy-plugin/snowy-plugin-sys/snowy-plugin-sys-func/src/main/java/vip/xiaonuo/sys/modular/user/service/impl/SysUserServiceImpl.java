@@ -56,18 +56,17 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fhs.trans.service.impl.TransService;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import vip.xiaonuo.auth.core.util.StpLoginUserUtil;
-import vip.xiaonuo.auth.core.enums.SysUserStatusEnum;
 import vip.xiaonuo.auth.core.pojo.SysLoginUser;
+import vip.xiaonuo.auth.core.util.StpLoginUserUtil;
 import vip.xiaonuo.common.cache.CommonCacheOperator;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
-import vip.xiaonuo.common.enums.SysBuildInEnum;
-import vip.xiaonuo.common.enums.SysDataTypeEnum;
 import vip.xiaonuo.common.excel.CommonExcelCustomMergeStrategy;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.listener.CommonDataChangeEventCenter;
@@ -79,6 +78,8 @@ import vip.xiaonuo.dev.api.DevMessageApi;
 import vip.xiaonuo.dev.api.DevSmsApi;
 import vip.xiaonuo.mobile.vip.MobileButtonApi;
 import vip.xiaonuo.mobile.vip.MobileMenuApi;
+import vip.xiaonuo.sys.core.enums.SysBuildInEnum;
+import vip.xiaonuo.sys.core.enums.SysDataTypeEnum;
 import vip.xiaonuo.sys.modular.org.entity.SysOrg;
 import vip.xiaonuo.sys.modular.org.service.SysOrgService;
 import vip.xiaonuo.sys.modular.position.entity.SysPosition;
@@ -98,13 +99,12 @@ import vip.xiaonuo.sys.modular.role.entity.SysRole;
 import vip.xiaonuo.sys.modular.role.enums.SysRoleDataScopeCategoryEnum;
 import vip.xiaonuo.sys.modular.role.service.SysRoleService;
 import vip.xiaonuo.sys.modular.user.entity.SysUser;
+import vip.xiaonuo.sys.modular.user.enums.SysUserStatusEnum;
 import vip.xiaonuo.sys.modular.user.mapper.SysUserMapper;
 import vip.xiaonuo.sys.modular.user.param.*;
 import vip.xiaonuo.sys.modular.user.result.*;
 import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -714,8 +714,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         // 执行构造树
         List<TreeNode<String>> treeNodeList = resultJsonObjectList.stream().map(jsonObject ->
-                new TreeNode<>(jsonObject.getStr("id"), jsonObject.getStr("parentId"),
-                        jsonObject.getStr("title"), jsonObject.getInt("sortCode")).setExtra(JSONUtil.parseObj(jsonObject)))
+                        new TreeNode<>(jsonObject.getStr("id"), jsonObject.getStr("parentId"),
+                                jsonObject.getStr("title"), jsonObject.getInt("sortCode")).setExtra(JSONUtil.parseObj(jsonObject)))
                 .collect(Collectors.toList());
         return TreeUtil.build(treeNodeList, "0");
     }
@@ -847,6 +847,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (!StrUtil.equals(id,sysUserUpdateInfoParam.getId())){
             throw new CommonException("禁止修改他人信息");
         }
+
         SysUser sysUser = this.queryEntity(sysUserUpdateInfoParam.getId());
 
         if (ObjectUtil.isNotEmpty(sysUserUpdateInfoParam.getPhone())) {
@@ -893,7 +894,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public String loginWorkbench(SysUserIdParam sysUserIdParam) {
         SysUser sysUser = this.queryEntity(sysUserIdParam.getId());
-        SysRelation sysRelation = sysRelationService.getOne(new LambdaQueryWrapper<SysRelation>().eq(SysRelation::getObjectId, sysUser.getId())
+        SysRelation sysRelation = sysRelationService.getOne(new LambdaUpdateWrapper<SysRelation>().eq(SysRelation::getObjectId, sysUser.getId())
                 .eq(SysRelation::getCategory, SysRelationCategoryEnum.SYS_USER_WORKBENCH_DATA.getValue()));
         if (ObjectUtil.isNotEmpty(sysRelation)) {
             return sysRelation.getExtJson();
@@ -954,9 +955,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public List<JSONObject> getPermissionList(List<String> userAndRoleIdList, String orgId) {
         Map<String, List<SysRelation>> map = sysRelationService.list(new LambdaQueryWrapper<SysRelation>()
-                .in(SysRelation::getObjectId, userAndRoleIdList).in(SysRelation::getCategory,
-                        SysRelationCategoryEnum.SYS_USER_HAS_PERMISSION.getValue(),
-                        SysRelationCategoryEnum.SYS_ROLE_HAS_PERMISSION.getValue())).stream()
+                        .in(SysRelation::getObjectId, userAndRoleIdList).in(SysRelation::getCategory,
+                                SysRelationCategoryEnum.SYS_USER_HAS_PERMISSION.getValue(),
+                                SysRelationCategoryEnum.SYS_ROLE_HAS_PERMISSION.getValue())).stream()
                 .collect(Collectors.groupingBy(SysRelation::getTargetId));
         return getScopeListByMap(map, orgId);
     }
@@ -1431,7 +1432,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public List<Tree<String>> orgTreeSelector() {
         List<SysOrg> sysOrgList = sysOrgService.getAllOrgList();
         List<TreeNode<String>> treeNodeList = sysOrgList.stream().map(sysOrg ->
-                new TreeNode<>(sysOrg.getId(), sysOrg.getParentId(), sysOrg.getName(), sysOrg.getSortCode()))
+                        new TreeNode<>(sysOrg.getId(), sysOrg.getParentId(), sysOrg.getName(), sysOrg.getSortCode()))
                 .collect(Collectors.toList());
         return TreeUtil.build(treeNodeList, "0");
     }
@@ -1540,7 +1541,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public List<SysUser> getUserListByIdList(SysUserIdListParam sysUserIdListParam) {
         LambdaQueryWrapper<SysUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 只查询部分字段
-        lambdaQueryWrapper.select(SysUser::getId, SysUser::getOrgId, SysUser::getAccount, SysUser::getName, SysUser::getSortCode)
+        lambdaQueryWrapper.select(SysUser::getId, SysUser::getOrgId, SysUser::getAvatar, SysUser::getAccount, SysUser::getName,
+                        SysUser::getSortCode)
                 .in(SysUser::getId, sysUserIdListParam.getIdList()).orderByAsc(SysUser::getSortCode);
         return this.list(lambdaQueryWrapper);
     }
@@ -1550,7 +1552,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         LambdaQueryWrapper<SysPosition> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 查询部分字段
         lambdaQueryWrapper.select(SysPosition::getId, SysPosition::getOrgId, SysPosition::getName,
-                SysPosition::getCategory, SysPosition::getSortCode)
+                        SysPosition::getCategory, SysPosition::getSortCode)
                 .in(SysPosition::getId, sysUserIdListParam.getIdList()).orderByAsc(SysPosition::getSortCode);
         return sysPositionService.list(lambdaQueryWrapper);
     }
@@ -1560,7 +1562,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         LambdaQueryWrapper<SysRole> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 查询部分字段
         lambdaQueryWrapper.select(SysRole::getId, SysRole::getOrgId, SysRole::getName,
-                SysRole::getCategory, SysRole::getSortCode)
+                        SysRole::getCategory, SysRole::getSortCode)
                 .in(SysRole::getId, sysUserIdListParam.getIdList()).orderByAsc(SysRole::getSortCode);
         return sysRoleService.list(lambdaQueryWrapper);
     }

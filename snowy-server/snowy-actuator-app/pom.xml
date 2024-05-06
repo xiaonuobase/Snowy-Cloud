@@ -7,7 +7,8 @@
     <parent>
         <groupId>vip.xiaonuo</groupId>
         <artifactId>snowy-server</artifactId>
-        <version>2.0.0</version>
+        <version>3.0.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>snowy-actuator-app</artifactId>
@@ -103,7 +104,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <fork>true</fork>
+                    <includeSystemScope>true</includeSystemScope>
                 </configuration>
             </plugin>
         </plugins>

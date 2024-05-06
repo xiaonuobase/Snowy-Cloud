@@ -6,52 +6,52 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/snowy-cloud?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&useInformationSchema=true
+    url: jdbc:mysql://localhost:3306/snowy-cloud2-gitee?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&useInformationSchema=true
     username: root
     password: 123456
 
-# Oracle数据库
-#spring:
-#  datasource:
-#    driver-class-name: oracle.jdbc.OracleDriver
-#    url: jdbc:oracle:thin:@localhost:1521:xe
-#    username: SNOWY-CLOUD-ORACLE
-#    password: 123456
+  # Oracle数据库
+  #spring:
+  #  datasource:
+  #    driver-class-name: oracle.jdbc.OracleDriver
+  #    url: jdbc:oracle:thin:@localhost:1521:xe
+  #    username: SNOWY-CLOUD-ORACLE
+  #    password: 123456
 
-# SQLServer配置
-#spring:
-#  datasource:
-#    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-#    url: jdbc:sqlserver://localhost:1433;DatabaseName=snowy-cloud-mssql
-#    username: sa
-#    password: 123456
+  # SQLServer配置
+  #spring:
+  #  datasource:
+  #    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  #    url: jdbc:sqlserver://localhost:1433;DatabaseName=snowy-cloud-mssql
+  #    username: sa
+  #    password: 123456
 
-# PostgreSQL配置
-#spring:
-#  datasource:
-#    driverClassName: org.postgresql.Driver
-#    url: jdbc:postgresql://127.0.0.1:5432/snowy-cloud-postgresql
-#    username: postgres
-#    password: 123456
+  # PostgreSQL配置
+  #spring:
+  #  datasource:
+  #    driverClassName: org.postgresql.Driver
+  #    url: jdbc:postgresql://127.0.0.1:5432/snowy-cloud-postgresql
+  #    username: postgres
+  #    password: 123456
 
-# 达梦数据库配置
-#spring:
-#  datasource:
-#    driver-class-name: dm.jdbc.driver.DmDriver
-#    url: jdbc:dm://localhost:5236/SYSDBA
-#    username: SYSDBA
-#    password: 123456789
+  # 达梦数据库配置
+  #spring:
+  #  datasource:
+  #    driver-class-name: dm.jdbc.driver.DmDriver
+  #    url: jdbc:dm://localhost:5236/SYSDBA
+  #    username: SYSDBA
+  #    password: 123456789
 
-# 人大金仓数据库
-#spring:
-#  datasource:
-#    driver-class-name: com.kingbase8.Driver
-#    url: jdbc:kingbase8://localhost:54321/snowy-cloud-kingbase
-#    username: system
-#    password: 123456
-# #人大金仓数据库兼容问题，不需要加在sql语句中加public的解决方法：
-# #在根目录data下的kingbase.conf文档里面找到search_path = '"$user",PUBLIC,sys_catalog'进行替换放开
-# #重启数据库即可完全兼容，注意 sql中不能出现mysql中的关键字的单引号
+  # 人大金仓数据库
+  #spring:
+  #  datasource:
+  #    driver-class-name: com.kingbase8.Driver
+  #    url: jdbc:kingbase8://localhost:54321/snowy-cloud-kingbase
+  #    username: system
+  #    password: 123456
+  # #人大金仓数据库兼容问题，不需要加在sql语句中加public的解决方法：
+  # #在根目录data下的kingbase.conf文档里面找到search_path = '"$user",PUBLIC,sys_catalog'进行替换放开
+  # #重启数据库即可完全兼容，注意 sql中不能出现mysql中的关键字的单引号
 
   # redis相关配置
   redis:
@@ -161,7 +161,7 @@ management:
 sa-token:
   token-name: token
   timeout: 2592000
-  activity-timeout: -1
+  active-timeout: -1
   is-concurrent: true
   is-share: false
   max-login-count: -1
@@ -202,8 +202,8 @@ knife4j:
     enable: true
     routes:
       - name: snowy-web-app
-        location: /api/webapp/v2/api-docs?group=snowy-web-app
+        location: /api/webapp/v3/api-docs?group=snowy-web-app
         uri: localhost:9003
       - name: snowy-biz-app
-        location: /api/bizapp/v2/api-docs?group=snowy-biz-app
+        location: /api/bizapp/v3/api-docs?group=snowy-biz-app
         uri: localhost:9003

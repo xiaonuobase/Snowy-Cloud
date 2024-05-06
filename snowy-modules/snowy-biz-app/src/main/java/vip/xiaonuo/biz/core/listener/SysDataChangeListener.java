@@ -14,6 +14,7 @@ package vip.xiaonuo.biz.core.listener;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.json.JSONArray;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 import vip.xiaonuo.auth.core.pojo.SaBaseLoginUser;
 import vip.xiaonuo.auth.core.util.StpLoginUserUtil;
@@ -21,7 +22,6 @@ import vip.xiaonuo.common.cache.CommonCacheOperator;
 import vip.xiaonuo.common.enums.SysDataTypeEnum;
 import vip.xiaonuo.common.listener.CommonDataChangeListener;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**

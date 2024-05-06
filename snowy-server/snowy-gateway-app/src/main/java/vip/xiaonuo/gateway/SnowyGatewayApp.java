@@ -15,7 +15,6 @@ package vip.xiaonuo.gateway;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 import vip.xiaonuo.common.runner.AppStartupListener;
 
 /**
@@ -23,7 +22,6 @@ import vip.xiaonuo.common.runner.AppStartupListener;
  * @author dongxiayu
  * @date 2020/12/11 12:06
  */
-@EnableSwagger2WebMvc
 //@EnableFeignClients(basePackages = "vip.xiaonuo.gateway.core.consumer")
 //@EnableDiscoveryClient
 @SpringBootApplication

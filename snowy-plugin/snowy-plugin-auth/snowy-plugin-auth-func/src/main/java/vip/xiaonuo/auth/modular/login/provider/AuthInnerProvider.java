@@ -9,7 +9,7 @@ import vip.xiaonuo.auth.modular.login.param.AuthAccountPasswordLoginParam;
 import vip.xiaonuo.auth.modular.login.service.AuthService;
 import vip.xiaonuo.common.pojo.CommonResult;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 
 /**

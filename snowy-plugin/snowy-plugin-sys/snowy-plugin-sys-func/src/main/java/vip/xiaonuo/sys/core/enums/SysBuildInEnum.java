@@ -10,36 +10,34 @@
  * 5.不可二次分发开源参与同类竞品，如有想法可联系团队xiaonuobase@qq.com商议合作。
  * 6.若您的项目无法满足以上几点，需要更多功能代码，获取Snowy商业授权许可，请在官网购买授权，地址为 https://www.xiaonuo.vip
  */
-package vip.xiaonuo.biz.core.context.dev;
+package vip.xiaonuo.sys.core.enums;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-import vip.xiaonuo.dev.api.DevConfigApi;
-import vip.xiaonuo.dev.feign.DevConfigFeign;
+import lombok.Getter;
 
 /**
- * 配置APi上下文Bean
+ * 系统内置的不可删除的标识枚举
  *
- * @author dongxiayu
- * @date 2022/11/22 14:12
- */
-@Slf4j
-@RequiredArgsConstructor
-@Component
-public class DevConfigApiContenxtBean implements DevConfigApi {
+ * @author xuyuxiang
+ * @date 2022/4/21 19:56
+ **/
+@Getter
+public enum SysBuildInEnum {
 
-    private final DevConfigFeign devConfigFeign;
+    /** 超管用户账号 */
+    BUILD_IN_USER_ACCOUNT("superAdmin", "超管"),
 
-    /**
-     * 根据键获取值
-     *
-     * @param key
-     * @author dongxiayu
-     * @date 2022/6/17 11:11
-     */
-    @Override
-    public String getValueByKey(String key) {
-        return devConfigFeign.getValueByKey(key);
+    /** 超管角色编码 */
+    BUILD_IN_ROLE_CODE("superAdmin", "超管"),
+
+    /** 系统内置模块编码 */
+    BUILD_IN_MODULE_CODE("system", "系统内置");
+
+    private final String value;
+
+    private final String name;
+
+    SysBuildInEnum(String value, String name) {
+        this.value = value;
+        this.name = name;
     }
 }

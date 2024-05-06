@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.web;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,7 +21,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 import vip.xiaonuo.common.runner.AppStartupListener;
 
 /**
@@ -30,7 +30,6 @@ import vip.xiaonuo.common.runner.AppStartupListener;
  * @date 2021/12/18 16:57
  */
 @Slf4j
-@EnableSwagger2WebMvc
 @RestController
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = "vip.xiaonuo")
@@ -48,6 +47,7 @@ public class SnowyWebApp {
      * @author xuyuxiang
      * @date 2022/7/30 21:42
      */
+    @SneakyThrows
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(SnowyWebApp.class);
         springApplication.run(args);
