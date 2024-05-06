@@ -146,7 +146,7 @@
 	// 清空
 	const deleteBatchOpLog = () => {
 		const param = {
-			category: searchFormState.category ? searchFormState.category : opLogType.value
+			category: searchFormState.value.category ? searchFormState.value.category : opLogType.value
 		}
 		logApi.logDelete(param).then(() => {
 			tableRef.value.refresh(true)
