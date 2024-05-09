@@ -143,8 +143,11 @@ public class DevLogServiceImpl extends ServiceImpl<DevLogMapper, DevLog> impleme
     public List<DevLogOpBarChartDataResult> opLogBarChartData() {
         DateTime lastWeek = DateUtil.lastWeek();
         DateTime now = DateTime.now();
-        Map<String, List<JSONObject>> listMap = this.list(new LambdaQueryWrapper<DevLog>().in(DevLog::getCategory, DevLogCategoryEnum.OPERATE.getValue(),
-                DevLogCategoryEnum.EXCEPTION.getValue()).between(DevLog::getOpTime, lastWeek, now).orderByAsc(DevLog::getOpTime))
+        Map<String, List<JSONObject>> listMap = this.list(new LambdaQueryWrapper<DevLog>().select(DevLog::getId,
+                                DevLog::getName,DevLog::getOpIp, DevLog::getOpAddress, DevLog::getCategory, DevLog::getClassName,
+                                DevLog::getMethodName, DevLog::getOpTime, DevLog::getOpUser)
+                        .in(DevLog::getCategory, DevLogCategoryEnum.OPERATE.getValue(),
+                                DevLogCategoryEnum.EXCEPTION.getValue()).between(DevLog::getOpTime, lastWeek, now).orderByAsc(DevLog::getOpTime))
                 .stream().map(devLog -> JSONUtil.parseObj(devLog).set("date", DateUtil.formatDate(devLog.getOpTime())))
                 .collect(Collectors.groupingBy(jsonObject -> jsonObject.getStr("date")));
         long between = DateUtil.between(lastWeek, now, DateUnit.DAY);
