@@ -46,14 +46,16 @@ public class DevLogUtil {
     public static void executeOperationLog(CommonLog commonLog, String userName, JoinPoint joinPoint, String resultJson) {
         HttpServletRequest request = CommonServletUtil.getRequest();
         DevLog devLog = genBasOpLog();
+        String method = request.getMethod();
+        String requestURI = request.getRequestURI();
         ThreadUtil.execute(() -> {
             devLog.setCategory(DevLogCategoryEnum.OPERATE.getValue());
             devLog.setName(commonLog.value());
             devLog.setExeStatus(DevLogExeStatusEnum.SUCCESS.getValue());
             devLog.setClassName(joinPoint.getTarget().getClass().getName());
             devLog.setMethodName(joinPoint.getSignature().getName());
-            devLog.setReqMethod(request.getMethod());
-            devLog.setReqUrl(request.getRequestURI());
+            devLog.setReqMethod(method);
+            devLog.setReqUrl(requestURI);
             devLog.setParamJson(CommonJoinPointUtil.getArgsJsonString(joinPoint));
             devLog.setResultJson(resultJson);
             devLog.setOpTime(DateTime.now());
