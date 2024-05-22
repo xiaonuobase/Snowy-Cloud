@@ -16,6 +16,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
@@ -37,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import vip.xiaonuo.common.cache.CommonCacheOperator;
+import vip.xiaonuo.common.consts.CacheConstant;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.enums.SysBuildInEnum;
 import vip.xiaonuo.common.enums.SysDataTypeEnum;
@@ -64,10 +66,7 @@ import vip.xiaonuo.sys.modular.role.service.SysRoleService;
 import vip.xiaonuo.sys.modular.user.entity.SysUser;
 import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -415,26 +414,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public List<String> permissionTreeSelector() {
         List<String> permissionResult = CollectionUtil.newArrayList();
-        SpringUtil.getApplicationContext().getBeansOfType(RequestMappingHandlerMapping.class).values()
-                .forEach(requestMappingHandlerMapping -> requestMappingHandlerMapping.getHandlerMethods()
-                        .forEach((key, value) -> {
-                            SaCheckPermission saCheckPermission = value.getMethod().getAnnotation(SaCheckPermission.class);
-                            if(ObjectUtil.isNotEmpty(saCheckPermission)) {
-                                PathPatternsRequestCondition pathPatternsCondition = key.getPathPatternsCondition();
-                                if (pathPatternsCondition != null) {
-                                    String apiName = "未定义接口名称";
-                                    Operation apiOperation = value.getMethod().getAnnotation(Operation.class);
-                                    if(ObjectUtil.isNotEmpty(apiOperation)) {
-                                        String annotationValue = apiOperation.summary();
-                                        if(ObjectUtil.isNotEmpty(annotationValue)) {
-                                            apiName = annotationValue;
-                                        }
-                                    }
-                                    String nm = StrUtil.BRACKET_START + apiName + StrUtil.BRACKET_END;
-                                    pathPatternsCondition.getPatterns().forEach(pt -> permissionResult.add(pt + nm));
-                                }
-                            }
-                        }));
+
+        Object permissionResourceObject = commonCacheOperator.get(CacheConstant.PERMISSION_RESOURCE_CACHE_KEY);
+        if(Objects.nonNull(permissionResourceObject)){
+            permissionResult = Convert.toList(String.class,permissionResourceObject);
+        }
+
         return CollectionUtil.sortByPinyin(permissionResult.stream().filter(api ->
                 !api.startsWith("/" + StrUtil.BRACKET_START)
                         && !api.startsWith("/error")
