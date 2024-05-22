@@ -70,7 +70,7 @@ spring:
       datasource:
         master:
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://localhost:3306/snowy-cloud2-gitee?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&useInformationSchema=true
+          url: jdbc:mysql://localhost:3306/snowy-cloud?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&useInformationSchema=true
           username: root
           password: 123456
       strict: true
@@ -257,25 +257,19 @@ springdoc:
   default-flat-param-object: true
   group-configs:
     - group: SNOWY-PLUGIN-AUTH
-      display-name: ${springdoc.group-configs[0].group}
+      display-name: SNOWY-PLUGIN-AUTH
       packages-to-scan: vip.xiaonuo.auth
-    - group: SNOWY-PLUGIN-BIZ
-      display-name: ${springdoc.group-configs[1].group}
-      packages-to-scan: vip.xiaonuo.biz
-    - group: SNOWY-PLUGIN-CLIENT
-      display-name: ${springdoc.group-configs[2].group}
-      packages-to-scan: vip.xiaonuo.client
     - group: SNOWY-PLUGIN-DEV
-      display-name: ${springdoc.group-configs[3].group}
+      display-name: SNOWY-PLUGIN-DEV
       packages-to-scan: vip.xiaonuo.dev
     - group: SNOWY-PLUGIN-GEN
-      display-name: ${springdoc.group-configs[4].group}
+      display-name: SNOWY-PLUGIN-GEN
       packages-to-scan: vip.xiaonuo.gen
     - group: SNOWY-PLUGIN-MOBILE
-      display-name: ${springdoc.group-configs[5].group}
+      display-name: SNOWY-PLUGIN-MOBILE
       packages-to-scan: vip.xiaonuo.mobile
     - group: SNOWY-PLUGIN-SYS
-      display-name: ${springdoc.group-configs[6].group}
+      display-name: SNOWY-PLUGIN-SYS
       packages-to-scan: vip.xiaonuo.sys
 
 

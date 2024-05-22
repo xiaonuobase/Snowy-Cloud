@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/snowy-cloud2-gitee?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&useInformationSchema=true
+    url: jdbc:mysql://localhost:3306/snowy-cloud?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&useInformationSchema=true
     username: root
     password: 123456
 
@@ -173,16 +173,16 @@ sa-token:
   # sa-token alone-redis configuration
   alone-redis:
     database: 2
-    host: ${spring.redis.host}
-    port: ${spring.redis.port}
-    password: ${spring.redis.password}
-    timeout: ${spring.redis.timeout}
+    host: ${spring.data.redis.host}
+    port: ${spring.data.redis.port}
+    password: ${spring.data.redis.password}
+    timeout: ${spring.data.redis.timeout}
     lettuce:
       pool:
-        max-active: ${spring.redis.lettuce.pool.max-active}
-        max-wait: ${spring.redis.lettuce.pool.max-wait}
-        max-idle: ${spring.redis.lettuce.pool.max-idle}
-        min-idle: ${spring.redis.lettuce.pool.min-idle}
+        max-active: ${spring.data.redis.lettuce.pool.max-active}
+        max-wait: ${spring.data.redis.lettuce.pool.max-wait}
+        max-idle: ${spring.data.redis.lettuce.pool.max-idle}
+        min-idle: ${spring.data.redis.lettuce.pool.min-idle}
 
 # knife4j 文档聚合
 knife4j:
@@ -198,13 +198,41 @@ knife4j:
     enableFooter: false
     enableFooterCustom: true
     footerCustomContent: Apache License 2.0 | Copyright 2022-[SNOWY](https://www.xiaonuo.vip)
-  enableAggregation: true
-  cloud:
-    enable: true
+  # gateway聚合swagger文档
+  gateway:
+    enabled: true
+    # 排序规则(tag/operation排序自4.2.0版本新增)
+    # 取值：alpha-默认排序规则，官方swagger-ui默认实现,order-Knife4j提供的增强排序规则，开发者可扩展x-order，根据数值来自定义排序
+    tags-sorter: order
+    operations-sorter: order
+     # 指定手动配置的模式(默认为该模式)
+    strategy: manual
     routes:
-      - name: snowy-web-app
-        location: /api/webapp/v3/api-docs?group=snowy-web-app
-        uri: localhost:9003
-      - name: snowy-biz-app
-        location: /api/bizapp/v3/api-docs?group=snowy-biz-app
-        uri: localhost:9003
+      - name: SNOWY-PLUGIN-AUTH
+        url: /api/webapp/v3/api-docs/SNOWY-PLUGIN-AUTH
+        service-name: snowy-web-app
+        context-path: /
+      - name: SNOWY-PLUGIN-BIZ
+        url: /api/bizapp/v3/api-docs/SNOWY-PLUGIN-BIZ
+        service-name: snowy-biz-app
+        context-path: /
+      - name: SNOWY-PLUGIN-CLIENT
+        url: /api/bizapp/v3/api-docs/SNOWY-PLUGIN-CLIENT
+        service-name: snowy-biz-app
+        context-path: /
+      - name: SNOWY-PLUGIN-DEV
+        url: /api/webapp/v3/api-docs/SNOWY-PLUGIN-DEV
+        service-name: snowy-web-app
+        context-path: /
+      - name: SNOWY-PLUGIN-GEN
+        url: /api/webapp/v3/api-docs/SNOWY-PLUGIN-GEN
+        service-name: snowy-web-app
+        context-path: /
+      - name: SNOWY-PLUGIN-MOBILE
+        url: /api/webapp/v3/api-docs/SNOWY-PLUGIN-MOBILE
+        service-name: snowy-web-app
+        context-path: /
+      - name: SNOWY-PLUGIN-SYS
+        url: /api/webapp/v3/api-docs/SNOWY-PLUGIN-SYS
+        service-name: snowy-web-app
+        context-path: /

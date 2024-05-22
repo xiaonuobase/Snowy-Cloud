@@ -221,11 +221,11 @@
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- TODO knife4j cloud模式聚合 -->
-<!--        <dependency>-->
-<!--            <groupId>com.github.xiaoymin</groupId>-->
-<!--            <artifactId>knife4j-aggregation-spring-boot-starter</artifactId>-->
-<!--        </dependency>-->
+        <!-- knife4j gateway聚合 -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-gateway-spring-boot-starter</artifactId>
+        </dependency>
 
         <!-- Swagger -->
         <dependency>

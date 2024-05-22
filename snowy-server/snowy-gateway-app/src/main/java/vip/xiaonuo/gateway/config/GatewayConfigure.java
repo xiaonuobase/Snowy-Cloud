@@ -78,17 +78,14 @@ public class GatewayConfigure {
             "/favicon.ico",
             "/doc.html",
             "/webjars/**",
-            "/swagger-resources/**",
-            "/v2/api-docs",
-            "/v2/api-docs-ext",
+            "/v3/api-docs/**",
+            "/api/webapp/v3/api-docs/**",
+            "/api/bizapp/v3/api-docs/**",
             "/configuration/ui",
             "/configuration/security",
             "/ureport/**",
             "/druid/**",
             "/images/**",
-
-            "/api/webapp/v2/api-docs",
-            "/api/bizapp/v2/api-docs",
 
             /* 认证相关 */
             "/api/webapp/auth/c/getPicCaptcha",
