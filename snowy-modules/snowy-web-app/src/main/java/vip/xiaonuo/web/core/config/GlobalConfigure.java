@@ -571,11 +571,20 @@ public class GlobalConfigure implements WebMvcConfigurer {
          */
         private String getUserId() {
             try {
-                String loginId = StpUtil.getLoginIdAsString();
-                if (ObjectUtil.isNotEmpty(loginId)) {
-                    return loginId;
-                } else {
-                    return "-1";
+                try {
+                    String loginId = StpUtil.getLoginIdAsString();
+                    if (ObjectUtil.isNotEmpty(loginId)) {
+                        return loginId;
+                    } else {
+                        return "-1";
+                    }
+                } catch (Exception e) {
+                    String clientLoginId = StpClientUtil.getLoginIdAsString();
+                    if (ObjectUtil.isNotEmpty(clientLoginId)) {
+                        return clientLoginId;
+                    } else {
+                        return "-1";
+                    }
                 }
             } catch (Exception e) {
                 return "-1";
