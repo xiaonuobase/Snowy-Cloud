@@ -5,7 +5,6 @@
 		:mask-closable="false"
 		:width="800"
 		:destroy-on-close="true"
-		:footer="null"
 		@cancel="onCancel"
 	>
 		<a-tabs v-model:activeKey="activeKey" tab-position="left" size="small" @change="paneChange">
@@ -17,7 +16,6 @@
 						}}</a-radio-button>
 					</a-radio-group>
 				</div>
-
 				<div :key="iconItemIns" v-for="iconItemIns in item.iconItem">
 					<div v-if="iconItemIns.key === iconItemDefault" class="xn-icon-select-list">
 						<ul>
@@ -27,7 +25,9 @@
 								:class="icon === modelValue ? 'active' : ''"
 								@click="selectIcon(icon)"
 							>
-								<component :is="icon" class="xn-icons" />
+								<div :id="icon" @mouseover="iconInfo = icon">
+									<component :is="icon" class="xn-icons" />
+								</div>
 							</li>
 						</ul>
 					</div>
@@ -43,6 +43,7 @@
 	const modelValue = ref('')
 	const activeKey = ref('default')
 	const iconItemDefault = ref('default')
+	const iconInfo = ref()
 
 	onMounted(() => {
 		iconData.value.push(...config.icons)
@@ -52,6 +53,7 @@
 	const showIconModal = (value) => {
 		visible.value = true
 		defaultSetting(value)
+		autoSwitchTab(value)
 	}
 
 	// 暴露子组件的方法
@@ -82,11 +84,24 @@
 
 	// 切换标签页，如果是切换到了没用额外的标签页的地方，我们将其置为默认
 	const paneChange = (e) => {
-		if (e.indexOf('default') === -1) {
-			iconItemDefault.value = 'default'
-		}
+		iconData.value
+			.find((tabItem) => tabItem.key === e)
+			?.iconItem.some((groupItem) => groupItem.key === iconItemDefault.value) || (iconItemDefault.value = 'default')
 	}
 
+	function autoSwitchTab(val) {
+		if (val) {
+			iconData.value.some(
+				(tabItem) =>
+					tabItem.iconItem.some(
+						(groupItem) => groupItem.item.some((icon) => icon === val) && (iconItemDefault.value = groupItem.key)
+					) && (activeKey.value = tabItem.key)
+			)
+			nextTick(() => {
+				document.getElementById(val)?.scrollIntoView({ block: 'center' })
+			})
+		}
+	}
 	// 切换icon风格
 	const radioGroupChange = (e) => {
 		iconItemDefault.value = e.target.value

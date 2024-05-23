@@ -81,9 +81,9 @@
 
 	// 切换标签页，如果是切换到了没用额外的标签页的地方，我们将其置为默认
 	const paneChange = (e) => {
-		if (e.indexOf('default') === -1) {
-			iconItemDefault.value = 'default'
-		}
+		iconData.value
+			.find((tabItem) => tabItem.key === e)
+			?.iconItem.some((groupItem) => groupItem.key === iconItemDefault.value) || (iconItemDefault.value = 'default')
 	}
 
 	// 切换icon风格
