@@ -73,6 +73,8 @@ public class DevLogUtil {
      */
     public static void executeExceptionLog(CommonLog commonLog, String userName, JoinPoint joinPoint, Exception exception) {
         HttpServletRequest request = CommonServletUtil.getRequest();
+        String requestURI = request.getRequestURI();
+        String method = request.getMethod();
         DevLog devLog = genBasOpLog();
         ThreadUtil.execute(() -> {
             devLog.setCategory(DevLogCategoryEnum.EXCEPTION.getValue());
@@ -81,8 +83,8 @@ public class DevLogUtil {
             devLog.setExeMessage(ExceptionUtil.stacktraceToString(exception, Integer.MAX_VALUE));
             devLog.setClassName(joinPoint.getTarget().getClass().getName());
             devLog.setMethodName(joinPoint.getSignature().getName());
-            devLog.setReqMethod(request.getMethod());
-            devLog.setReqUrl(request.getRequestURI());
+            devLog.setReqMethod(method);
+            devLog.setReqUrl(requestURI);
             devLog.setParamJson(CommonJoinPointUtil.getArgsJsonString(joinPoint));
             devLog.setOpTime(DateTime.now());
             devLog.setOpUser(userName);
