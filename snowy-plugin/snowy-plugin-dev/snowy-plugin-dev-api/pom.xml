@@ -55,7 +55,7 @@
         <!--java邮件发送-->
         <dependency>
             <groupId>com.sun.mail</groupId>
-            <artifactId>jakarta.mail</artifactId>
+            <artifactId>javax.mail</artifactId>
         </dependency>
 
         <!--阿里云邮件发送-->

@@ -61,7 +61,7 @@
         <jackson.datatype.jdk8.version>2.14.2</jackson.datatype.jdk8.version>
         <jackson.datatype.jsr310.version>2.14.2</jackson.datatype.jsr310.version>
         <jackson.module.parameter.names.version>2.14.2</jackson.module.parameter.names.version>
-        <jakarta.mail.version>2.0.1</jakarta.mail.version>
+        <javax.mail.version>1.5.4</javax.mail.version>
         <aliyun.mail.dm-version>1.0.6</aliyun.mail.dm-version>
         <jettison.version>1.5.4</jettison.version>
         <junit.version>4.13.2</junit.version>
@@ -500,8 +500,8 @@
             <!--java邮件sdk-->
             <dependency>
                 <groupId>com.sun.mail</groupId>
-                <artifactId>jakarta.mail</artifactId>
-                <version>${jakarta.mail.version}</version>
+                <artifactId>javax.mail</artifactId>
+                <version>${javax.mail.version}</version>
             </dependency>
 
             <!--阿里云邮件发送-->
