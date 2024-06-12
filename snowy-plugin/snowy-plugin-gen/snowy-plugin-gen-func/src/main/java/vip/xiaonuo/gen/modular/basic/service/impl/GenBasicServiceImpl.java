@@ -330,6 +330,9 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
             }
             List<GenBasicTableColumnResult> columns = new ArrayList<>();
             rs = metaData.getColumns(null, schema, genBasicTableColumnParam.getTableName(), "%");
+            if(!rs.isBeforeFirst()) {
+                rs = metaData.getColumns(null, schema, genBasicTableColumnParam.getTableName().toLowerCase(), "%");
+            }
             while (rs.next()) {
                 String columnName = rs.getString("COLUMN_NAME").toUpperCase();
                 GenBasicTableColumnResult genBasicTableColumnResult = new GenBasicTableColumnResult();
