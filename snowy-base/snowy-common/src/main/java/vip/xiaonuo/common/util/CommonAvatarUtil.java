@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
  * 通用头像工具类，生成文字头像
  *
  * @author xuyuxiang
- * @since 2022/7/5 17:36
+ * @date 2022/7/5 17:36
  **/
 public class CommonAvatarUtil {
 
@@ -57,7 +57,7 @@ public class CommonAvatarUtil {
      * 返回图片base64
      *
      * @author xuyuxiang
-     * @since 2022/7/5 17:36
+     * @date 2022/7/5 17:36
      **/
     public static String generateImg(final String name) {
         final int width = 100;
@@ -116,7 +116,7 @@ public class CommonAvatarUtil {
      * 获得随机颜色
      *
      * @author xuyuxiang
-     * @since 2022/7/5 17:41
+     * @date 2022/7/5 17:41
      **/
     private static Color getRandomColor() {
         return new Color(BEAUTIFUL_COLORS[RandomUtil.randomInt(BEAUTIFUL_COLORS.length)]);
@@ -126,7 +126,7 @@ public class CommonAvatarUtil {
      * 判断字符串是否为中文
      *
      * @author xuyuxiang
-     * @since 2022/7/5 17:41
+     * @date 2022/7/5 17:41
      **/
     private static boolean isChinese(String str) {
         return CHINESE_PATTERN.matcher(str).find();
