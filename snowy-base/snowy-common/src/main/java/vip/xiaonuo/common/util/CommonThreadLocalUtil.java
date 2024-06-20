@@ -12,7 +12,10 @@
  */
 package vip.xiaonuo.common.util;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ThreadLocal工具类
@@ -20,87 +23,72 @@ import java.util.*;
  * @author dongxiayu
  * @date 2020/3/30 15:09
  */
-public class CommonThreadLocalUtil<T> {
+public class CommonThreadLocalUtil {
 
-    private static final ThreadLocal<Map<String, Object>> THREAD_LOCAL = new ThreadLocal() {
-        @Override
-        protected Map<String, Object> initialValue() {
-            return new HashMap<>(4);
-        }
-    };
+    private static final ThreadLocal<Map<String, Object>> THREAD_LOCAL =
+            ThreadLocal.withInitial(() -> new HashMap<>(4));
 
+    private CommonThreadLocalUtil() {
+    }
 
     public static Map<String, Object> getThreadLocal(){
         return THREAD_LOCAL.get();
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T get(String key) {
-        Map map = (Map) THREAD_LOCAL.get();
-        return (T)map.get(key);
+        return (T) THREAD_LOCAL.get().get(key);
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T get(String key,T defaultValue) {
-        Map map = (Map) THREAD_LOCAL.get();
-        return (T)map.get(key) == null ? defaultValue : (T)map.get(key);
+        Object value = THREAD_LOCAL.get().get(key);
+        return value == null ? defaultValue : (T) value;
     }
 
     public static void set(String key, Object value) {
-        Map map = (Map) THREAD_LOCAL.get();
-        map.put(key, value);
+        THREAD_LOCAL.get().put(key, value);
     }
 
     public static void set(Map<String, Object> keyValueMap) {
-        Map map = (Map) THREAD_LOCAL.get();
-        map.putAll(keyValueMap);
+        THREAD_LOCAL.get().putAll(keyValueMap);
     }
 
     public static void remove() {
         THREAD_LOCAL.remove();
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> Map<String,T> fetchVarsByPrefix(String prefix) {
         Map<String,T> vars = new HashMap<>();
         if( prefix == null ){
             return vars;
         }
-        Map map = (Map) THREAD_LOCAL.get();
-        Set<Map.Entry> set = map.entrySet();
-
-        for( Map.Entry entry : set){
-            Object key = entry.getKey();
-            if( key instanceof String ){
-                if( ((String) key).startsWith(prefix) ){
-                    vars.put((String)key,(T)entry.getValue());
-                }
+        Map<String, Object> map = THREAD_LOCAL.get();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            String key = entry.getKey();
+            if (null != key && (key.startsWith(prefix))) {
+                vars.put(key, (T) entry.getValue());
             }
         }
         return vars;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T remove(String key) {
-        Map map = (Map) THREAD_LOCAL.get();
-        return (T)map.remove(key);
+        return (T) (THREAD_LOCAL.get().remove(key));
     }
 
     public static void clear(String prefix) {
         if( prefix == null ){
             return;
         }
-        Map map = (Map) THREAD_LOCAL.get();
-        Set<Map.Entry> set = map.entrySet();
-        List<String> removeKeys = new ArrayList<>();
-
-        for( Map.Entry entry : set ){
-            Object key = entry.getKey();
-            if( key instanceof String ){
-                if( ((String) key).startsWith(prefix) ){
-                    removeKeys.add((String)key);
-                }
-            }
-        }
-        for( String key : removeKeys ){
-            map.remove(key);
-        }
+        Map<String, Object> map = THREAD_LOCAL.get();
+        Set<String> removeKeys = map.keySet()
+                .stream()
+                .filter(key -> null != key && (key.startsWith(prefix)))
+                .collect(Collectors.toSet());
+        removeKeys.forEach(map::remove);
     }
 
 }
