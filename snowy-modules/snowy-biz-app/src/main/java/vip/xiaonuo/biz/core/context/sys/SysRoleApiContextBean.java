@@ -63,8 +63,7 @@ public class SysRoleApiContextBean implements SysRoleApi {
     @Override
     public Page<JSONObject> roleSelector(String orgId, String category, String searchKey, List<String> dataScopeList, boolean excludeSuperAdmin) {
         String feignResp = sysRoleFeign.roleSelector(orgId, category, searchKey, dataScopeList, excludeSuperAdmin);
-        Page<JSONObject> resp =  (Page<JSONObject>)JSONUtil.toBean(feignResp,Page.class);
-        return resp;
+        return JSONUtil.toBean(feignResp,Page.class);
     }
 
     /**

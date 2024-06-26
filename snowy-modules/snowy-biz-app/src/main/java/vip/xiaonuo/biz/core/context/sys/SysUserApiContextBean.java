@@ -47,8 +47,7 @@ public class SysUserApiContextBean implements SysUserApi {
     @Override
     public JSONObject getUserByIdWithoutException(String userId) {
         String feignResp = sysUserFeign.getUserByIdWithoutException(userId);
-        JSONObject resp = JSONUtil.parseObj(feignResp);
-        return resp;
+        return JSONUtil.parseObj(feignResp);
     }
 
     /**
@@ -62,8 +61,7 @@ public class SysUserApiContextBean implements SysUserApi {
     public List<JSONObject> getUserListByIdListWithoutException(List<String> userIdList) {
         String feignResp = sysUserFeign.getUserListByIdListWithoutException(userIdList);
         JSONArray jsonArray = new JSONArray(feignResp);
-        List<JSONObject> resp = jsonArray.toList(JSONObject.class);
-        return resp;
+        return jsonArray.toList(JSONObject.class);
     }
 
     /**
@@ -76,8 +74,7 @@ public class SysUserApiContextBean implements SysUserApi {
     @Override
     public JSONObject getUserByIdWithException(String userId) {
         String feignResp = sysUserFeign.getUserByIdWithoutException(userId);
-        JSONObject resp = JSONUtil.parseObj(feignResp);
-        return resp;
+        return JSONUtil.parseObj(feignResp);
     }
 
     /**
@@ -91,8 +88,7 @@ public class SysUserApiContextBean implements SysUserApi {
     public List<JSONObject> getUserListByIdWithException(List<String> userIdList) {
         String feignResp = sysUserFeign.getUserListByIdWithException(userIdList);
         JSONArray jsonArray = new JSONArray(feignResp);
-        List<JSONObject> resp = jsonArray.toList(JSONObject.class);
-        return resp;
+        return jsonArray.toList(JSONObject.class);
     }
 
     /**
@@ -106,8 +102,7 @@ public class SysUserApiContextBean implements SysUserApi {
     public List<String> ownRole(String userId) {
         String feignResp = sysUserFeign.ownRole(userId);
         JSONArray jsonArray = new JSONArray(feignResp);
-        List<String> resp = jsonArray.toList(String.class);
-        return resp;
+        return jsonArray.toList(String.class);
     }
 
     /**
@@ -134,8 +129,7 @@ public class SysUserApiContextBean implements SysUserApi {
     public List<String> getUserIdListByOrgIdList(List<String> orgIdList) {
         String feignResp = sysUserFeign.getUserIdListByOrgIdList(orgIdList);
         JSONArray jsonArray = new JSONArray(feignResp);
-        List<String> resp = jsonArray.toList(String.class);
-        return resp;
+        return jsonArray.toList(String.class);
     }
 
     /**
@@ -149,8 +143,7 @@ public class SysUserApiContextBean implements SysUserApi {
     public List<String> getUserIdListByPositionIdList(List<String> positionIdList) {
         String feignResp = sysUserFeign.getUserIdListByPositionIdList(positionIdList);
         JSONArray jsonArray = new JSONArray(feignResp);
-        List<String> resp = jsonArray.toList(String.class);
-        return resp;
+        return jsonArray.toList(String.class);
     }
 
     /**
@@ -166,8 +159,7 @@ public class SysUserApiContextBean implements SysUserApi {
     @Override
     public JSONObject getSupervisorIdBySupervisorLevel(List<String> userIdList, String userId, String orgId, String supervisorLevel) {
         String feignResp = sysUserFeign.getSupervisorIdBySupervisorLevel(userIdList, userId, orgId, supervisorLevel);
-        JSONObject resp = JSONUtil.parseObj(feignResp);
-        return resp;
+        return JSONUtil.parseObj(feignResp);
     }
 
     /**
@@ -192,10 +184,10 @@ public class SysUserApiContextBean implements SysUserApi {
      * @author dongxiayu
      * @date 2022/4/24 20:08
      */
+    @SuppressWarnings("unchecked")
     @Override
     public Page<JSONObject> userSelector(String orgId, String searchKey) {
         String feignResp = sysUserFeign.userSelector(orgId, searchKey);
-        Page<JSONObject> resp =  (Page<JSONObject>)JSONUtil.toBean(feignResp,Page.class);
-        return resp;
+        return JSONUtil.toBean(feignResp, Page.class);
     }
 }
