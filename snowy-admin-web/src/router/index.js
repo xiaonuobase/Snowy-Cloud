@@ -20,6 +20,7 @@ import tool from '@/utils/tool'
 import { cloneDeep } from 'lodash-es'
 const modules = import.meta.glob('/src/views/**/**.vue')
 import { globalStore, searchStore } from '@/store'
+import { NextLoading } from '@/utils/loading'
 
 // 进度条配置
 NProgress.configure({ showSpinner: false, speed: 500 })
@@ -72,6 +73,12 @@ router.beforeEach(async (to, from, next) => {
 	}
 
 	const token = tool.data.get('TOKEN')
+
+	// 页面刷新，加载loading
+	if (from.path === '/' && to.path !== '/login' && !window.nextLoading && token) {
+		NextLoading.start()
+	}
+
 	if (to.path === '/login') {
 		// 当用户输入了login路由，将其跳转首页即可
 		if (token) {
@@ -129,10 +136,12 @@ router.beforeEach(async (to, from, next) => {
 router.afterEach((to, from) => {
 	afterEach(to, from)
 	NProgress.done()
+	window.nextLoading && NextLoading.done()
 })
 
 router.onError((error) => {
 	NProgress.done()
+	window.nextLoading && NextLoading.done()
 	notification.error({
 		message: '路由错误',
 		description: error.message
@@ -156,18 +165,18 @@ const filterUrl = (map) => {
 	const newMap = []
 	const traverse = (maps) => {
 		maps &&
-			maps.forEach((item) => {
-				item.meta = item.meta ? item.meta : {}
-				// 处理iframe
-				if (item.meta.type === 'iframe') {
-					item.path = `/${item.name}`
-				}
-				// 递归循环
-				if (item.children && item.children.length > 0) {
-					item.children = filterUrl(item.children)
-				}
-				newMap.push(item)
-			})
+		maps.forEach((item) => {
+			item.meta = item.meta ? item.meta : {}
+			// 处理iframe
+			if (item.meta.type === 'iframe') {
+				item.path = `/${item.name}`
+			}
+			// 递归循环
+			if (item.children && item.children.length > 0) {
+				item.children = filterUrl(item.children)
+			}
+			newMap.push(item)
+		})
 	}
 	traverse(map)
 	return newMap
