@@ -103,7 +103,7 @@
 		// 当上传接口为id的情况下，配置下载接口
 		uploadIdDownloadUrl: {
 			type: String,
-			default: '/dev/file/download?id=',
+			default: '/api/webapp/dev/file/download?id=',
 			required: false
 		},
 		// 上传样式或图片方式 file || drag || image
