@@ -73,4 +73,5 @@ public class BizNotice extends CommonEntity {
     /** 扩展信息 */
     @Schema(description = "扩展信息")
     private String extJson;
+
 }
