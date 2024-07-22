@@ -165,18 +165,18 @@ const filterUrl = (map) => {
 	const newMap = []
 	const traverse = (maps) => {
 		maps &&
-		maps.forEach((item) => {
-			item.meta = item.meta ? item.meta : {}
-			// 处理iframe
-			if (item.meta.type === 'iframe') {
-				item.path = `/${item.name}`
-			}
-			// 递归循环
-			if (item.children && item.children.length > 0) {
-				item.children = filterUrl(item.children)
-			}
-			newMap.push(item)
-		})
+			maps.forEach((item) => {
+				item.meta = item.meta ? item.meta : {}
+				// 处理iframe
+				if (item.meta.type === 'iframe') {
+					item.path = `/${item.name}`
+				}
+				// 递归循环
+				if (item.children && item.children.length > 0) {
+					item.children = filterUrl(item.children)
+				}
+				newMap.push(item)
+			})
 	}
 	traverse(map)
 	return newMap

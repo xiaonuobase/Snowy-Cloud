@@ -33,8 +33,8 @@
 									:getPopupContainer="(trigger) => trigger.parentNode"
 								>
 									<a-select-option v-for="item in statusData" :key="item.value" :value="item.value">{{
-											item.label
-										}}</a-select-option>
+										item.label
+									}}</a-select-option>
 								</a-select>
 							</a-form-item>
 						</a-col>
@@ -106,8 +106,8 @@
 							<a-divider type="vertical" v-if="hasPerm(['bizUserEdit', 'bizUserDelete'], 'and')" />
 							<a-popconfirm :title="$t('user.popconfirmDeleteUser')" @confirm="removeUser(record)">
 								<a-button type="link" danger size="small" v-if="hasPerm('bizUserDelete')">{{
-										$t('common.removeButton')
-									}}</a-button>
+									$t('common.removeButton')
+								}}</a-button>
 							</a-popconfirm>
 							<a-divider
 								type="vertical"
@@ -155,271 +155,271 @@
 	/>
 </template>
 <script setup name="bizUser">
-import { message, Empty } from 'ant-design-vue'
-import { isEmpty } from 'lodash-es'
-import tool from '@/utils/tool'
-import downloadUtil from '@/utils/downloadUtil'
-import bizUserApi from '@/api/biz/bizUserApi'
-import bizOrgApi from '@/api/biz/bizOrgApi'
-import Form from './form.vue'
+	import { message, Empty } from 'ant-design-vue'
+	import { isEmpty } from 'lodash-es'
+	import tool from '@/utils/tool'
+	import downloadUtil from '@/utils/downloadUtil'
+	import bizUserApi from '@/api/biz/bizUserApi'
+	import bizOrgApi from '@/api/biz/bizOrgApi'
+	import Form from './form.vue'
 
-const columns = [
-	{
-		title: '头像',
-		dataIndex: 'avatar',
-		align: 'center',
-		width: '80px'
-	},
-	{
-		title: '账号',
-		dataIndex: 'account',
-		ellipsis: true
-	},
-	{
-		title: '姓名',
-		dataIndex: 'name'
-	},
-	{
-		title: '性别',
-		dataIndex: 'gender',
-		width: '50px'
-	},
-	{
-		title: '手机',
-		dataIndex: 'phone',
-		ellipsis: true
-	},
-	{
-		title: '机构',
-		dataIndex: 'orgName',
-		ellipsis: true
-	},
-	{
-		title: '职位',
-		dataIndex: 'positionName',
-		ellipsis: true
-	},
-	{
-		title: '状态',
-		dataIndex: 'userStatus',
-		width: '80px'
-	}
-]
-if (hasPerm(['bizUserEdit', 'bizUserGrantRole', 'bizUserPwdReset', 'bizUserExportUserInfo', 'bizUserDelete'])) {
-	columns.push({
-		title: '操作',
-		dataIndex: 'action',
-		align: 'center',
-		width: '220px'
-	})
-}
-const toolConfig = { refresh: true, height: true, columnSetting: true }
-const statusData = tool.dictList('COMMON_STATUS')
-const searchFormRef = ref()
-const defaultExpandedKeys = ref([])
-const searchFormState = ref({})
-const tableRef = ref(null)
-const treeData = ref([])
-const selectedRowKeys = ref([])
-const treeFieldNames = { children: 'children', title: 'name', key: 'id' }
-const formRef = ref(null)
-const RoleSelectorPlusRef = ref()
-const selectedRecord = ref({})
-const loading = ref(false)
-const cardLoading = ref(true)
-// 表格查询 返回 Promise 对象
-const loadData = (parameter) => {
-	return bizUserApi.userPage(Object.assign(parameter, searchFormState.value)).then((res) => {
-		return res
-	})
-}
-// 重置
-const reset = () => {
-	searchFormRef.value.resetFields()
-	tableRef.value.refresh(true)
-}
-// 左侧树查询
-bizOrgApi
-	.orgTree()
-	.then((res) => {
-		cardLoading.value = false
-		if (res !== null) {
-			treeData.value = res
-			if (isEmpty(defaultExpandedKeys.value)) {
-				// 默认展开2级
-				treeData.value.forEach((item) => {
-					// 因为0的顶级
-					if (item.parentId === '0') {
-						defaultExpandedKeys.value.push(item.id)
-						// 取到下级ID
-						if (item.children) {
-							item.children.forEach((items) => {
-								defaultExpandedKeys.value.push(items.id)
-							})
-						}
-					}
-				})
-			}
-		}
-	})
-	.finally(() => {
-		cardLoading.value = false
-	})
-// 列表选择配置
-const options = {
-	alert: {
-		show: false,
-		clear: () => {
-			selectedRowKeys.value = ref([])
-		}
-	},
-	rowSelection: {
-		onChange: (selectedRowKey, selectedRows) => {
-			selectedRowKeys.value = selectedRowKey
-		}
-	}
-}
-// 点击树查询
-const treeSelect = (selectedKeys) => {
-	if (selectedKeys.length > 0) {
-		searchFormState.value.orgId = selectedKeys.toString()
-	} else {
-		delete searchFormState.value.orgId
-	}
-	tableRef.value.refresh(true)
-}
-// 修改状态
-const editStatus = (record) => {
-	loading.value = true
-	if (record.userStatus === 'ENABLE') {
-		bizUserApi
-			.userDisableUser(record)
-			.then(() => {
-				tableRef.value.refresh()
-			})
-			.finally(() => {
-				loading.value = false
-			})
-	} else {
-		bizUserApi
-			.userEnableUser(record)
-			.then(() => {
-				tableRef.value.refresh()
-			})
-			.finally(() => {
-				loading.value = false
-			})
-	}
-}
-// 删除人员
-const removeUser = (record) => {
-	let params = [
+	const columns = [
 		{
-			id: record.id
+			title: '头像',
+			dataIndex: 'avatar',
+			align: 'center',
+			width: '80px'
+		},
+		{
+			title: '账号',
+			dataIndex: 'account',
+			ellipsis: true
+		},
+		{
+			title: '姓名',
+			dataIndex: 'name'
+		},
+		{
+			title: '性别',
+			dataIndex: 'gender',
+			width: '50px'
+		},
+		{
+			title: '手机',
+			dataIndex: 'phone',
+			ellipsis: true
+		},
+		{
+			title: '机构',
+			dataIndex: 'orgName',
+			ellipsis: true
+		},
+		{
+			title: '职位',
+			dataIndex: 'positionName',
+			ellipsis: true
+		},
+		{
+			title: '状态',
+			dataIndex: 'userStatus',
+			width: '80px'
 		}
 	]
-	bizUserApi.userDelete(params).then(() => {
-		tableRef.value.refresh()
-	})
-}
-// 批量导出校验并加参数
-const exportBatchUserVerify = () => {
-	if ((selectedRowKeys.value.length < 1) & !searchFormState.value.searchKey & !searchFormState.value.userStatus) {
-		message.warning('请输入查询条件或勾选要导出的信息')
+	if (hasPerm(['bizUserEdit', 'bizUserGrantRole', 'bizUserPwdReset', 'bizUserExportUserInfo', 'bizUserDelete'])) {
+		columns.push({
+			title: '操作',
+			dataIndex: 'action',
+			align: 'center',
+			width: '220px'
+		})
 	}
-	if (selectedRowKeys.value.length > 0) {
-		const params = {
-			userIds: selectedRowKeys.value
-				.map((m) => {
-					return m
+	const toolConfig = { refresh: true, height: true, columnSetting: true }
+	const statusData = tool.dictList('COMMON_STATUS')
+	const searchFormRef = ref()
+	const defaultExpandedKeys = ref([])
+	const searchFormState = ref({})
+	const tableRef = ref(null)
+	const treeData = ref([])
+	const selectedRowKeys = ref([])
+	const treeFieldNames = { children: 'children', title: 'name', key: 'id' }
+	const formRef = ref(null)
+	const RoleSelectorPlusRef = ref()
+	const selectedRecord = ref({})
+	const loading = ref(false)
+	const cardLoading = ref(true)
+	// 表格查询 返回 Promise 对象
+	const loadData = (parameter) => {
+		return bizUserApi.userPage(Object.assign(parameter, searchFormState.value)).then((res) => {
+			return res
+		})
+	}
+	// 重置
+	const reset = () => {
+		searchFormRef.value.resetFields()
+		tableRef.value.refresh(true)
+	}
+	// 左侧树查询
+	bizOrgApi
+		.orgTree()
+		.then((res) => {
+			cardLoading.value = false
+			if (res !== null) {
+				treeData.value = res
+				if (isEmpty(defaultExpandedKeys.value)) {
+					// 默认展开2级
+					treeData.value.forEach((item) => {
+						// 因为0的顶级
+						if (item.parentId === '0') {
+							defaultExpandedKeys.value.push(item.id)
+							// 取到下级ID
+							if (item.children) {
+								item.children.forEach((items) => {
+									defaultExpandedKeys.value.push(items.id)
+								})
+							}
+						}
+					})
+				}
+			}
+		})
+		.finally(() => {
+			cardLoading.value = false
+		})
+	// 列表选择配置
+	const options = {
+		alert: {
+			show: false,
+			clear: () => {
+				selectedRowKeys.value = ref([])
+			}
+		},
+		rowSelection: {
+			onChange: (selectedRowKey, selectedRows) => {
+				selectedRowKeys.value = selectedRowKey
+			}
+		}
+	}
+	// 点击树查询
+	const treeSelect = (selectedKeys) => {
+		if (selectedKeys.length > 0) {
+			searchFormState.value.orgId = selectedKeys.toString()
+		} else {
+			delete searchFormState.value.orgId
+		}
+		tableRef.value.refresh(true)
+	}
+	// 修改状态
+	const editStatus = (record) => {
+		loading.value = true
+		if (record.userStatus === 'ENABLE') {
+			bizUserApi
+				.userDisableUser(record)
+				.then(() => {
+					tableRef.value.refresh()
 				})
-				.join()
+				.finally(() => {
+					loading.value = false
+				})
+		} else {
+			bizUserApi
+				.userEnableUser(record)
+				.then(() => {
+					tableRef.value.refresh()
+				})
+				.finally(() => {
+					loading.value = false
+				})
 		}
-		exportBatchUser(params)
-		return
 	}
-	if (searchFormState.value.searchKey || searchFormState.value.userStatus) {
+	// 删除人员
+	const removeUser = (record) => {
+		let params = [
+			{
+				id: record.id
+			}
+		]
+		bizUserApi.userDelete(params).then(() => {
+			tableRef.value.refresh()
+		})
+	}
+	// 批量导出校验并加参数
+	const exportBatchUserVerify = () => {
+		if ((selectedRowKeys.value.length < 1) & !searchFormState.value.searchKey & !searchFormState.value.userStatus) {
+			message.warning('请输入查询条件或勾选要导出的信息')
+		}
+		if (selectedRowKeys.value.length > 0) {
+			const params = {
+				userIds: selectedRowKeys.value
+					.map((m) => {
+						return m
+					})
+					.join()
+			}
+			exportBatchUser(params)
+			return
+		}
+		if (searchFormState.value.searchKey || searchFormState.value.userStatus) {
+			const params = {
+				searchKey: searchFormState.value.searchKey,
+				userStatus: searchFormState.value.userStatus
+			}
+			exportBatchUser(params)
+		}
+	}
+	// 批量导出
+	const exportBatchUser = (params) => {
+		bizUserApi.userExport(params).then((res) => {
+			downloadUtil.resultDownload(res)
+			tableRef.value.clearSelected()
+		})
+	}
+	// 批量删除
+	const deleteBatchUser = (params) => {
+		bizUserApi.userDelete(params).then(() => {
+			tableRef.value.clearRefreshSelected()
+		})
+	}
+	// 打开角色选择器
+	const selectRole = (record) => {
+		selectedRecord.value = record
+		// 查询到已有角色，并转为ids的格式，给角色选择器
+		const param = {
+			id: record.id
+		}
+		bizUserApi.userOwnRole(param).then((data) => {
+			RoleSelectorPlusRef.value.showModel(data)
+		})
+	}
+	// 角色选择回调
+	const roleBack = (value) => {
+		let params = {
+			id: selectedRecord.value.id,
+			roleIdList: []
+		}
+		if (value.length > 0) {
+			value.forEach((item) => {
+				params.roleIdList.push(item)
+			})
+		}
+		bizUserApi.grantRole(params).then(() => {})
+	}
+	// 重置人员密码
+	const resetPassword = (record) => {
+		bizUserApi.userResetPassword(record).then(() => {})
+	}
+	// 导出用户信息
+	const exportUserInfo = (record) => {
 		const params = {
-			searchKey: searchFormState.value.searchKey,
-			userStatus: searchFormState.value.userStatus
+			id: record.id
 		}
-		exportBatchUser(params)
-	}
-}
-// 批量导出
-const exportBatchUser = (params) => {
-	bizUserApi.userExport(params).then((res) => {
-		downloadUtil.resultDownload(res)
-		tableRef.value.clearSelected()
-	})
-}
-// 批量删除
-const deleteBatchUser = (params) => {
-	bizUserApi.userDelete(params).then(() => {
-		tableRef.value.clearRefreshSelected()
-	})
-}
-// 打开角色选择器
-const selectRole = (record) => {
-	selectedRecord.value = record
-	// 查询到已有角色，并转为ids的格式，给角色选择器
-	const param = {
-		id: record.id
-	}
-	bizUserApi.userOwnRole(param).then((data) => {
-		RoleSelectorPlusRef.value.showModel(data)
-	})
-}
-// 角色选择回调
-const roleBack = (value) => {
-	let params = {
-		id: selectedRecord.value.id,
-		roleIdList: []
-	}
-	if (value.length > 0) {
-		value.forEach((item) => {
-			params.roleIdList.push(item)
+		bizUserApi.userExportUserInfo(params).then((res) => {
+			downloadUtil.resultDownload(res)
 		})
 	}
-	bizUserApi.grantRole(params).then(() => {})
-}
-// 重置人员密码
-const resetPassword = (record) => {
-	bizUserApi.userResetPassword(record).then(() => {})
-}
-// 导出用户信息
-const exportUserInfo = (record) => {
-	const params = {
-		id: record.id
+	// 传递设计器需要的API
+	const selectorApiFunction = {
+		orgTreeApi: (param) => {
+			return bizUserApi.userOrgTreeSelector(param).then((orgTree) => {
+				return Promise.resolve(orgTree)
+			})
+		},
+		rolePageApi: (param) => {
+			return bizUserApi.userRoleSelector(param).then((data) => {
+				return Promise.resolve(data)
+			})
+		}
 	}
-	bizUserApi.userExportUserInfo(params).then((res) => {
-		downloadUtil.resultDownload(res)
-	})
-}
-// 传递设计器需要的API
-const selectorApiFunction = {
-	orgTreeApi: (param) => {
-		return bizUserApi.userOrgTreeSelector(param).then((orgTree) => {
-			return Promise.resolve(orgTree)
-		})
-	},
-	rolePageApi: (param) => {
-		return bizUserApi.userRoleSelector(param).then((data) => {
-			return Promise.resolve(data)
-		})
-	}
-}
 </script>
 
 <style scoped>
-.ant-form-item {
-	margin-bottom: 0 !important;
-}
-.snowy-table-avatar {
-	margin-top: -10px;
-	margin-bottom: -10px;
-}
-.snowy-button-left {
-	margin-left: 8px;
-}
+	.ant-form-item {
+		margin-bottom: 0 !important;
+	}
+	.snowy-table-avatar {
+		margin-top: -10px;
+		margin-bottom: -10px;
+	}
+	.snowy-button-left {
+		margin-left: 8px;
+	}
 </style>

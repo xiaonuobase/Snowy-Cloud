@@ -33,8 +33,8 @@
 									:getPopupContainer="(trigger) => trigger.parentNode"
 								>
 									<a-select-option v-for="item in statusData" :key="item.value" :value="item.value">{{
-											item.label
-										}}</a-select-option>
+										item.label
+									}}</a-select-option>
 								</a-select>
 							</a-form-item>
 						</a-col>
@@ -154,269 +154,269 @@
 </template>
 
 <script setup name="sysUser">
-import { message, Empty } from 'ant-design-vue'
-import { isEmpty } from 'lodash-es'
-import tool from '@/utils/tool'
-import downloadUtil from '@/utils/downloadUtil'
-import userApi from '@/api/sys/userApi'
-import orgApi from '@/api/sys/orgApi'
-import Form from './form.vue'
-import ImpExp from './impExp.vue'
-import GrantResourceForm from './grantResourceForm.vue'
-import GrantPermissionForm from './grantPermissionForm.vue'
+	import { message, Empty } from 'ant-design-vue'
+	import { isEmpty } from 'lodash-es'
+	import tool from '@/utils/tool'
+	import downloadUtil from '@/utils/downloadUtil'
+	import userApi from '@/api/sys/userApi'
+	import orgApi from '@/api/sys/orgApi'
+	import Form from './form.vue'
+	import ImpExp from './impExp.vue'
+	import GrantResourceForm from './grantResourceForm.vue'
+	import GrantPermissionForm from './grantPermissionForm.vue'
 
-const columns = [
-	{
-		title: '头像',
-		dataIndex: 'avatar',
-		align: 'center',
-		width: '80px'
-	},
-	{
-		title: '账号',
-		dataIndex: 'account',
-		ellipsis: true
-	},
-	{
-		title: '姓名',
-		dataIndex: 'name'
-	},
-	{
-		title: '性别',
-		dataIndex: 'genderName',
-		width: '50px'
-	},
-	{
-		title: '手机',
-		dataIndex: 'phone',
-		ellipsis: true
-	},
-	{
-		title: '机构',
-		dataIndex: 'orgName',
-		ellipsis: true
-	},
-	{
-		title: '职位',
-		dataIndex: 'positionName',
-		ellipsis: true
-	},
-	{
-		title: '状态',
-		dataIndex: 'userStatus',
-		width: '80px'
-	},
-	{
-		title: '操作',
-		dataIndex: 'action',
-		align: 'center',
-		width: '220px'
-	}
-]
-const statusData = tool.dictList('COMMON_STATUS')
-const searchFormRef = ref()
-const defaultExpandedKeys = ref([])
-const searchFormState = ref({})
-const tableRef = ref(null)
-const treeData = ref([])
-const selectedRowKeys = ref([])
-const treeFieldNames = { children: 'children', title: 'name', key: 'id' }
-const formRef = ref(null)
-const RoleSelectorPlusRef = ref()
-const selectedRecord = ref({})
-const loading = ref(false)
-const cardLoading = ref(true)
-const ImpExpRef = ref()
-const grantResourceFormRef = ref()
-const grantPermissionFormRef = ref()
-// 表格查询 返回 Promise 对象
-const loadData = (parameter) => {
-	return userApi.userPage(Object.assign(parameter, searchFormState.value)).then((res) => {
-		return res
-	})
-}
-// 左侧树查询
-orgApi.orgTree().then((res) => {
-	cardLoading.value = false
-	if (res !== null) {
-		treeData.value = res
-		if (isEmpty(defaultExpandedKeys.value)) {
-			// 默认展开2级
-			treeData.value.forEach((item) => {
-				// 因为0的顶级
-				if (item.parentId === '0') {
-					defaultExpandedKeys.value.push(item.id)
-					// 取到下级ID
-					if (item.children) {
-						item.children.forEach((items) => {
-							defaultExpandedKeys.value.push(items.id)
-						})
-					}
-				}
-			})
-		}
-	}
-})
-// 列表选择配置
-const options = {
-	alert: {
-		show: false,
-		clear: () => {
-			selectedRowKeys.value = ref([])
-		}
-	},
-	rowSelection: {
-		onChange: (selectedRowKey, selectedRows) => {
-			selectedRowKeys.value = selectedRowKey
-		}
-	}
-}
-// 重置
-const reset = () => {
-	searchFormRef.value.resetFields()
-	tableRef.value.refresh(true)
-}
-// 点击树查询
-const treeSelect = (selectedKeys) => {
-	if (selectedKeys.length > 0) {
-		searchFormState.value.orgId = selectedKeys.toString()
-	} else {
-		delete searchFormState.value.orgId
-	}
-	tableRef.value.refresh(true)
-}
-// 修改状态
-const editStatus = (record) => {
-	loading.value = true
-	if (record.userStatus === 'ENABLE') {
-		userApi
-			.userDisableUser(record)
-			.then(() => {
-				tableRef.value.refresh()
-			})
-			.finally(() => {
-				loading.value = false
-			})
-	} else {
-		userApi
-			.userEnableUser(record)
-			.then(() => {
-				tableRef.value.refresh()
-			})
-			.finally(() => {
-				loading.value = false
-			})
-	}
-}
-// 删除用户
-const removeUser = (record) => {
-	let params = [
+	const columns = [
 		{
-			id: record.id
+			title: '头像',
+			dataIndex: 'avatar',
+			align: 'center',
+			width: '80px'
+		},
+		{
+			title: '账号',
+			dataIndex: 'account',
+			ellipsis: true
+		},
+		{
+			title: '姓名',
+			dataIndex: 'name'
+		},
+		{
+			title: '性别',
+			dataIndex: 'genderName',
+			width: '50px'
+		},
+		{
+			title: '手机',
+			dataIndex: 'phone',
+			ellipsis: true
+		},
+		{
+			title: '机构',
+			dataIndex: 'orgName',
+			ellipsis: true
+		},
+		{
+			title: '职位',
+			dataIndex: 'positionName',
+			ellipsis: true
+		},
+		{
+			title: '状态',
+			dataIndex: 'userStatus',
+			width: '80px'
+		},
+		{
+			title: '操作',
+			dataIndex: 'action',
+			align: 'center',
+			width: '220px'
 		}
 	]
-	userApi.userDelete(params).then(() => {
-		tableRef.value.refresh()
-	})
-}
-// 批量导出校验并加参数
-const exportBatchUserVerify = () => {
-	if ((selectedRowKeys.value.length < 1) & !searchFormState.value.searchKey & !searchFormState.value.userStatus) {
-		message.warning('请输入查询条件或勾选要导出的信息')
+	const statusData = tool.dictList('COMMON_STATUS')
+	const searchFormRef = ref()
+	const defaultExpandedKeys = ref([])
+	const searchFormState = ref({})
+	const tableRef = ref(null)
+	const treeData = ref([])
+	const selectedRowKeys = ref([])
+	const treeFieldNames = { children: 'children', title: 'name', key: 'id' }
+	const formRef = ref(null)
+	const RoleSelectorPlusRef = ref()
+	const selectedRecord = ref({})
+	const loading = ref(false)
+	const cardLoading = ref(true)
+	const ImpExpRef = ref()
+	const grantResourceFormRef = ref()
+	const grantPermissionFormRef = ref()
+	// 表格查询 返回 Promise 对象
+	const loadData = (parameter) => {
+		return userApi.userPage(Object.assign(parameter, searchFormState.value)).then((res) => {
+			return res
+		})
 	}
-	if (selectedRowKeys.value.length > 0) {
-		const params = {
-			userIds: selectedRowKeys.value
-				.map((m) => {
-					return m
+	// 左侧树查询
+	orgApi.orgTree().then((res) => {
+		cardLoading.value = false
+		if (res !== null) {
+			treeData.value = res
+			if (isEmpty(defaultExpandedKeys.value)) {
+				// 默认展开2级
+				treeData.value.forEach((item) => {
+					// 因为0的顶级
+					if (item.parentId === '0') {
+						defaultExpandedKeys.value.push(item.id)
+						// 取到下级ID
+						if (item.children) {
+							item.children.forEach((items) => {
+								defaultExpandedKeys.value.push(items.id)
+							})
+						}
+					}
 				})
-				.join()
+			}
 		}
-		exportBatchUser(params)
-		return
+	})
+	// 列表选择配置
+	const options = {
+		alert: {
+			show: false,
+			clear: () => {
+				selectedRowKeys.value = ref([])
+			}
+		},
+		rowSelection: {
+			onChange: (selectedRowKey, selectedRows) => {
+				selectedRowKeys.value = selectedRowKey
+			}
+		}
 	}
-	if (searchFormState.value.searchKey || searchFormState.value.userStatus) {
+	// 重置
+	const reset = () => {
+		searchFormRef.value.resetFields()
+		tableRef.value.refresh(true)
+	}
+	// 点击树查询
+	const treeSelect = (selectedKeys) => {
+		if (selectedKeys.length > 0) {
+			searchFormState.value.orgId = selectedKeys.toString()
+		} else {
+			delete searchFormState.value.orgId
+		}
+		tableRef.value.refresh(true)
+	}
+	// 修改状态
+	const editStatus = (record) => {
+		loading.value = true
+		if (record.userStatus === 'ENABLE') {
+			userApi
+				.userDisableUser(record)
+				.then(() => {
+					tableRef.value.refresh()
+				})
+				.finally(() => {
+					loading.value = false
+				})
+		} else {
+			userApi
+				.userEnableUser(record)
+				.then(() => {
+					tableRef.value.refresh()
+				})
+				.finally(() => {
+					loading.value = false
+				})
+		}
+	}
+	// 删除用户
+	const removeUser = (record) => {
+		let params = [
+			{
+				id: record.id
+			}
+		]
+		userApi.userDelete(params).then(() => {
+			tableRef.value.refresh()
+		})
+	}
+	// 批量导出校验并加参数
+	const exportBatchUserVerify = () => {
+		if ((selectedRowKeys.value.length < 1) & !searchFormState.value.searchKey & !searchFormState.value.userStatus) {
+			message.warning('请输入查询条件或勾选要导出的信息')
+		}
+		if (selectedRowKeys.value.length > 0) {
+			const params = {
+				userIds: selectedRowKeys.value
+					.map((m) => {
+						return m
+					})
+					.join()
+			}
+			exportBatchUser(params)
+			return
+		}
+		if (searchFormState.value.searchKey || searchFormState.value.userStatus) {
+			const params = {
+				searchKey: searchFormState.value.searchKey,
+				userStatus: searchFormState.value.userStatus
+			}
+			exportBatchUser(params)
+		}
+	}
+	// 批量导出
+	const exportBatchUser = (params) => {
+		userApi.userExport(params).then((res) => {
+			downloadUtil.resultDownload(res)
+			tableRef.value.clearSelected()
+		})
+	}
+	// 批量删除
+	const deleteBatchUser = (params) => {
+		userApi.userDelete(params).then(() => {
+			tableRef.value.clearRefreshSelected()
+		})
+	}
+	// 打开角色选择器
+	const selectRole = (record) => {
+		selectedRecord.value = record
+		// 查询到已有角色，并转为ids的格式，给角色选择器
+		const param = {
+			id: record.id
+		}
+		userApi.userOwnRole(param).then((data) => {
+			RoleSelectorPlusRef.value.showModel(data)
+		})
+	}
+	// 角色选择回调
+	const roleBack = (value) => {
+		let params = {
+			id: selectedRecord.value.id,
+			roleIdList: []
+		}
+		if (value.length > 0) {
+			value.forEach((item) => {
+				params.roleIdList.push(item)
+			})
+		}
+		userApi.grantRole(params).then(() => {})
+	}
+	// 重置用户密码
+	const resetPassword = (record) => {
+		userApi.userResetPassword(record).then(() => {})
+	}
+	// 导出用户信息
+	const exportUserInfo = (record) => {
 		const params = {
-			searchKey: searchFormState.value.searchKey,
-			userStatus: searchFormState.value.userStatus
+			id: record.id
 		}
-		exportBatchUser(params)
-	}
-}
-// 批量导出
-const exportBatchUser = (params) => {
-	userApi.userExport(params).then((res) => {
-		downloadUtil.resultDownload(res)
-		tableRef.value.clearSelected()
-	})
-}
-// 批量删除
-const deleteBatchUser = (params) => {
-	userApi.userDelete(params).then(() => {
-		tableRef.value.clearRefreshSelected()
-	})
-}
-// 打开角色选择器
-const selectRole = (record) => {
-	selectedRecord.value = record
-	// 查询到已有角色，并转为ids的格式，给角色选择器
-	const param = {
-		id: record.id
-	}
-	userApi.userOwnRole(param).then((data) => {
-		RoleSelectorPlusRef.value.showModel(data)
-	})
-}
-// 角色选择回调
-const roleBack = (value) => {
-	let params = {
-		id: selectedRecord.value.id,
-		roleIdList: []
-	}
-	if (value.length > 0) {
-		value.forEach((item) => {
-			params.roleIdList.push(item)
+		userApi.userExportUserInfo(params).then((res) => {
+			downloadUtil.resultDownload(res)
 		})
 	}
-	userApi.grantRole(params).then(() => {})
-}
-// 重置用户密码
-const resetPassword = (record) => {
-	userApi.userResetPassword(record).then(() => {})
-}
-// 导出用户信息
-const exportUserInfo = (record) => {
-	const params = {
-		id: record.id
+	// 传递设计器需要的API
+	const selectorApiFunction = {
+		orgTreeApi: (param) => {
+			return userApi.userOrgTreeSelector(param).then((data) => {
+				return Promise.resolve(data)
+			})
+		},
+		rolePageApi: (param) => {
+			return userApi.userRoleSelector(param).then((data) => {
+				return Promise.resolve(data)
+			})
+		}
 	}
-	userApi.userExportUserInfo(params).then((res) => {
-		downloadUtil.resultDownload(res)
-	})
-}
-// 传递设计器需要的API
-const selectorApiFunction = {
-	orgTreeApi: (param) => {
-		return userApi.userOrgTreeSelector(param).then((data) => {
-			return Promise.resolve(data)
-		})
-	},
-	rolePageApi: (param) => {
-		return userApi.userRoleSelector(param).then((data) => {
-			return Promise.resolve(data)
-		})
-	}
-}
 </script>
 
 <style scoped>
-.ant-form-item {
-	margin-bottom: 0 !important;
-}
-.snowy-table-avatar {
-	margin-top: -10px;
-	margin-bottom: -10px;
-}
-.snowy-button-left {
-	margin-left: 8px;
-}
+	.ant-form-item {
+		margin-bottom: 0 !important;
+	}
+	.snowy-table-avatar {
+		margin-top: -10px;
+		margin-bottom: -10px;
+	}
+	.snowy-button-left {
+		margin-left: 8px;
+	}
 </style>

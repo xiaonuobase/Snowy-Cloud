@@ -1,10 +1,5 @@
 <template>
-	<a-popconfirm
-		title="删除此信息？"
-		:open="deleteVisible"
-		@openChange="deleteVisibleChange"
-		@confirm="deleteBatch"
-	>
+	<a-popconfirm title="删除此信息？" :open="deleteVisible" @openChange="deleteVisibleChange" @confirm="deleteBatch">
 		<a-button danger>
 			<template #icon><delete-outlined /></template>
 			{{ props.buttonName }}
