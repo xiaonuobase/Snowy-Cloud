@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.biz.core.context.sys;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -20,6 +21,7 @@ import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.sys.api.SysRoleApi;
 import vip.xiaonuo.sys.feign.SysRoleFeign;
 
@@ -62,7 +64,9 @@ public class SysRoleApiContextBean implements SysRoleApi {
     @SuppressWarnings("ALL")
     @Override
     public Page<JSONObject> roleSelector(String orgId, String category, String searchKey, List<String> dataScopeList, boolean excludeSuperAdmin) {
-        String feignResp = sysRoleFeign.roleSelector(orgId, category, searchKey, dataScopeList, excludeSuperAdmin);
+        long current = CommonPageRequest.defaultPage().getCurrent();
+        long size = CommonPageRequest.defaultPage().getSize();
+        String feignResp = sysRoleFeign.roleSelector(Convert.toInt(current), Convert.toInt(size), orgId, category, searchKey,dataScopeList,excludeSuperAdmin);
         return JSONUtil.toBean(feignResp,Page.class);
     }
 
