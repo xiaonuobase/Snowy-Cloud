@@ -30,5 +30,5 @@ public interface SysPositionFeign {
      * @date 2022/7/22 14:47
      **/
     @RequestMapping("/feign/sys/position/positionSelector")
-    String positionSelector(@RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "searchKey",required = false) String searchKey);
+    String positionSelector(@RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size,@RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "searchKey",required = false) String searchKey);
 }
