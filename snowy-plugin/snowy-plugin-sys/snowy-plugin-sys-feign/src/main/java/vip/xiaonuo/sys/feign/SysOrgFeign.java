@@ -48,6 +48,6 @@ public interface SysOrgFeign {
      * @date 2022/7/22 14:45
      **/
     @RequestMapping("/feign/sys/org/orgListSelector")
-    String orgListSelector(@RequestParam(value = "parentId",required = false) String parentId);
+    String orgListSelector(@RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size,@RequestParam(value = "parentId",required = false) String parentId);
 
 }

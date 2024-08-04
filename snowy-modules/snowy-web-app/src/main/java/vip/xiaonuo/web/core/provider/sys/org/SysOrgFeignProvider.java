@@ -81,7 +81,7 @@ public class SysOrgFeignProvider implements SysOrgFeign {
      */
     @Override
     @RequestMapping("/feign/sys/org/orgListSelector")
-    public String orgListSelector(@RequestParam(value = "parentId",required = false) String parentId) {
+    public String orgListSelector(@RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size,@RequestParam(value = "parentId",required = false) String parentId) {
         return JSONUtil.toJsonStr(sysOrgApiProvider.orgListSelector(parentId));
     }
 }
