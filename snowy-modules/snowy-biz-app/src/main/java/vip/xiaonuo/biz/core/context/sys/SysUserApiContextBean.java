@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.biz.core.context.sys;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -19,6 +20,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.sys.api.SysUserApi;
 import vip.xiaonuo.sys.feign.SysUserFeign;
 
@@ -187,7 +189,9 @@ public class SysUserApiContextBean implements SysUserApi {
     @SuppressWarnings("unchecked")
     @Override
     public Page<JSONObject> userSelector(String orgId, String searchKey) {
-        String feignResp = sysUserFeign.userSelector(orgId, searchKey);
+        long current = CommonPageRequest.defaultPage().getCurrent();
+        long size = CommonPageRequest.defaultPage().getSize();
+        String feignResp = sysUserFeign.userSelector(Convert.toInt(current), Convert.toInt(size), orgId, searchKey);
         return JSONUtil.toBean(feignResp, Page.class);
     }
 }

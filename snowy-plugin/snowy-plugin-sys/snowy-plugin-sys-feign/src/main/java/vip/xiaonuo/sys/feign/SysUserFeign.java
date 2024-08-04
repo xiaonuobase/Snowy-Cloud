@@ -113,6 +113,6 @@ public interface SysUserFeign {
      * @date 2022/4/24 20:08
      */
     @RequestMapping("/feign/sys/user/userSelector")
-    String userSelector(@RequestParam("orgId") String orgId, @RequestParam("searchKey") String searchKey);
+    String userSelector(@RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size,@RequestParam("orgId") String orgId, @RequestParam("searchKey") String searchKey);
 
 }

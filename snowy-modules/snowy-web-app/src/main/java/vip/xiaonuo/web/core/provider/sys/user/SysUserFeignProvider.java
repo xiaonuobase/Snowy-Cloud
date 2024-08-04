@@ -180,7 +180,7 @@ public class SysUserFeignProvider implements SysUserFeign {
      */
     @Override
     @RequestMapping("/feign/sys/user/userSelector")
-    public String userSelector(@RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "searchKey",required = false) String searchKey) {
+    public String userSelector(@RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size,@RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "searchKey",required = false) String searchKey) {
         return JSONUtil.toJsonStr(sysUserApiProvider.userSelector(orgId, searchKey));
     }
 }
