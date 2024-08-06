@@ -16,6 +16,7 @@ import cn.hutool.core.util.StrUtil;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import vip.xiaonuo.common.util.CommonThreadLocalUtil;
 import vip.xiaonuo.mocker.token.core.consts.MockerTokenConstant;
 
@@ -28,6 +29,7 @@ import vip.xiaonuo.mocker.token.core.consts.MockerTokenConstant;
  * @Slf4j: 2021/3/28 17:26
  */
 @Slf4j
+@Configuration
 public class MockerTokenFeignAddInterceptor implements RequestInterceptor {
 
     private static final String GLOBAL_TOKEN_KEY = "Token";

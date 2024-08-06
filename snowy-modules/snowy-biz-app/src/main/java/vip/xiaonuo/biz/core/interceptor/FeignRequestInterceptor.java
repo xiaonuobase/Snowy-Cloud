@@ -15,6 +15,7 @@ package vip.xiaonuo.biz.core.interceptor;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -29,6 +30,7 @@ import java.util.Optional;
  * @date : 2021/3/28 17:26
  */
 @Slf4j
+@Configuration
 public class FeignRequestInterceptor implements RequestInterceptor {
 
     @Override
