@@ -49,6 +49,8 @@ gitee下载地址：[https://gitee.com/xiaonuobase/snowy-cloud](https://gitee.co
 
 github下载地址（镜像）：[https://github.com/xiaonuobase/Snowy-Cloud](https://github.com/xiaonuobase/Snowy-Cloud)
 
+gitcode下载地址：[https://gitcode.com/xiaonuobase/Snowy-Cloud](https://gitcode.com/xiaonuobase/Snowy-Cloud)
+
 演示地址：[https://snowy.xiaonuo.vip](https://snowy.xiaonuo.vip)
 
 文档地址：[https://xiaonuo.vip/doc](https://xiaonuo.vip/doc)

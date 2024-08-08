@@ -11,7 +11,7 @@
 			:showSearch="props.showSearch"
 			:filterOption="!props.showSearch"
 			@change="handleChange"
-			@search="handleSearch"
+			@onSearch="handleSearch"
 			@popupScroll="handlePopupScroll"
 		/>
 	</a-spin>
