@@ -1,6 +1,6 @@
 import { baseRequest } from '@/utils/request'
 
-const request = (url, ...arg) => baseRequest(`/api/bizapp/biz/notice/` + url, ...arg)
+const request = (url, ...arg) => baseRequest(`/biz/notice/` + url, ...arg)
 
 /**
  * 通知公告Api接口管理器

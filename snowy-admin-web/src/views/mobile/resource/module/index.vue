@@ -28,10 +28,18 @@
 			<template #operator class="table-operator">
 				<a-space>
 					<a-button type="primary" @click="formRef.onOpen()">
-						<template #icon><plus-outlined /></template>
+						<template #icon>
+							<plus-outlined />
+						</template>
 						新增模块
 					</a-button>
-					<xn-batch-delete :selectedRowKeys="selectedRowKeys" @batchDelete="deleteBatchModule" />
+					<xn-batch-button
+						buttonName="批量删除"
+						icon="DeleteOutlined"
+						buttonDanger
+						:selectedRowKeys="selectedRowKeys"
+						@batchCallBack="deleteBatchModule"
+					/>
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
@@ -58,6 +66,7 @@
 <script setup name="mobileModule">
 	import Form from './form.vue'
 	import moduleApi from '@/api/mobile/resource/moduleApi'
+
 	const searchFormState = ref({})
 	const searchFormRef = ref()
 	const formRef = ref()

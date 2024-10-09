@@ -10,21 +10,25 @@
  * 5.不可二次分发开源参与同类竞品，如有想法可联系团队xiaonuobase@qq.com商议合作。
  * 6.若您的项目无法满足以上几点，需要更多功能代码，获取Snowy商业授权许可，请在官网购买授权，地址为 https://www.xiaonuo.vip
  */
-package vip.xiaonuo.common.timer;
+package vip.xiaonuo.gen.modular.basic.param;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * 定时器执行者，定时器都要实现本接口，并需要把实现类加入到spring容器中
+ * 菜单选择器参数
  *
- * @author xuyuxiang
- * @date 2022/8/15 16:09
+ * @author yubaoshan
+ * @date 2024/9/6 01:24
  **/
-public interface CommonTimerTaskRunner {
+@Getter
+@Setter
+public class GenBasicSelectorMenuParam {
 
-    /**
-     * 任务执行的具体内容
-     *
-     * @author xuyuxiang
-     * @date 2022/8/15 16:09
-     **/
-    void action(String extJson);
+    /** 模块 */
+    @Schema(description = "模块")
+    @NotBlank(message = "module不能为空")
+    private String module;
 }

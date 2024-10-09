@@ -30,10 +30,10 @@
 </template>
 
 <script setup name="indexHome">
-// 轮播图配置
-const slideshowConfig = {
-	options: {
-		place: 'BACK_SYS_INDEX'
+	// 轮播图配置
+	const slideshowConfig = {
+		options: {
+			place: 'BACK_SYS_INDEX'
+		}
 	}
-}
 </script>

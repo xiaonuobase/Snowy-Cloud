@@ -39,6 +39,7 @@
 				@keypress.up="handleKeyUp"
 				@keypress.down="handleKeyDown"
 				class="xn-mn10p0"
+
 			>
 				<div ref="cardListRef" class="search-card beauty-scroll">
 					<a-list size="small" :data-source="resultsList">
@@ -46,7 +47,7 @@
 							<a-list-item
 								@click="handleSelect(item.fullPath)"
 								@mouseover="onCardItemHover(index)"
-								:class="({ active: index === cardIndex }, 'xn-pr10')"
+								:class="{ active: index === cardIndex },'xn-pr10'"
 							>
 								<template #actions>
 									<a>

@@ -10,21 +10,24 @@
  * 5.不可二次分发开源参与同类竞品，如有想法可联系团队xiaonuobase@qq.com商议合作。
  * 6.若您的项目无法满足以上几点，需要更多功能代码，获取Snowy商业授权许可，请在官网购买授权，地址为 https://www.xiaonuo.vip
  */
-package vip.xiaonuo.common.timer;
+package vip.xiaonuo.sys.api;
+
+import cn.hutool.json.JSONObject;
+import java.util.List;
 
 /**
- * 定时器执行者，定时器都要实现本接口，并需要把实现类加入到spring容器中
+ * 模块API
  *
- * @author xuyuxiang
- * @date 2022/8/15 16:09
+ * @author yubaoshan
+ * @date 2024/9/6 01:24
  **/
-public interface CommonTimerTaskRunner {
+public interface SysModuleApi {
 
     /**
-     * 任务执行的具体内容
+     * 获取所有模块
      *
-     * @author xuyuxiang
-     * @date 2022/8/15 16:09
+     * @author yubaoshan
+     * @date 2024/9/6 01:24
      **/
-    void action(String extJson);
+    List<JSONObject> moduleSelector();
 }

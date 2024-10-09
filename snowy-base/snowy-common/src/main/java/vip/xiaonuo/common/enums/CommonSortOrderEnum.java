@@ -33,7 +33,7 @@ public enum CommonSortOrderEnum {
     private final String value;
 
     CommonSortOrderEnum(String value) {
-        this.value = value.toUpperCase();
+        this.value = value.toLowerCase();
     }
 
     public static void validate(String value) {

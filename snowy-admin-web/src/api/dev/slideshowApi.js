@@ -1,6 +1,6 @@
 import { baseRequest } from '@/utils/request'
 
-const request = (url, ...arg) => baseRequest(`/api/webapp/dev/slideshow/` + url, ...arg)
+const request = (url, ...arg) => baseRequest(`/dev/slideshow/` + url, ...arg)
 
 /**
  * 轮播图Api接口管理器

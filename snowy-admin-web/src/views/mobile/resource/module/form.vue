@@ -61,7 +61,7 @@
 	// 图标选择器回调
 	const iconCallBack = (value) => {
 		if (value) {
-			formRef.value.clearValidate("icon")
+			formRef.value.clearValidate('icon')
 		}
 		formData.value.icon = value
 	}

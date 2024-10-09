@@ -55,7 +55,11 @@
 						</a-input>
 					</a-col>
 					<a-col :span="7">
-						<img :src="validCodeBase64" class="xn-findform-line" @click="getPhonePicCaptcha" />
+						<img
+							:src="validCodeBase64"
+							class="xn-findform-line"
+							@click="getPhonePicCaptcha"
+						/>
 					</a-col>
 				</a-row>
 			</a-form-item>
@@ -103,14 +107,11 @@
 		// delete phoneFormData.value.phoneValidCode
 		phoneFormData.value.validCodeReqNo = phoneValidCodeReqNo.value
 		loading.value = true
-		loginApi
-			.loginByPhone(phoneFormData.value)
-			.then((token) => {
-				afterLogin(token)
-			})
-			.catch((err) => {
-				loading.value = false
-			})
+		loginApi.loginByPhone(phoneFormData.value).then((token) => {
+			afterLogin(token)
+		}).catch((err) => {
+			loading.value = false
+		})
 	}
 
 	// 弹框的

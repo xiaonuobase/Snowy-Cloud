@@ -10,7 +10,7 @@
  */
 import { baseRequest } from '@/utils/request'
 
-const request = (url, ...arg) => baseRequest(`/api/bizapp/biz/dict/` + url, ...arg)
+const request = (url, ...arg) => baseRequest(`/biz/dict/` + url, ...arg)
 /**
  * 字典
  *

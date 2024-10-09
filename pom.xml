@@ -46,7 +46,7 @@
         <commons.compress.version>1.22</commons.compress.version>
         <commons.pool2.version>2.12.0</commons.pool2.version>
         <druid.version>1.2.21</druid.version>
-        <dynamic.datasource.version>4.3.0</dynamic.datasource.version>
+        <dynamic.datasource.version>4.3.1</dynamic.datasource.version>
         <easy.trans.version>3.0.0</easy.trans.version>
         <easyexcel.version>3.3.3</easyexcel.version>
         <easypoi.version>4.4.0</easypoi.version>

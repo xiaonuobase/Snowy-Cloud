@@ -1,6 +1,6 @@
 import { baseRequest } from '@/utils/request'
 
-const request = (url, ...arg) => baseRequest(`/api/bizapp/biz/index/` + url, ...arg)
+const request = (url, ...arg) => baseRequest(`/biz/index/` + url, ...arg)
 
 /**
  * 业务主页Api接口管理器

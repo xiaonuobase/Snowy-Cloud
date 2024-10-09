@@ -1,6 +1,6 @@
 import { baseRequest } from '@/utils/request'
 
-const request = (url, ...arg) => baseRequest(`/api/webapp/mobile/menu/` + url, ...arg)
+const request = (url, ...arg) => baseRequest(`/mobile/menu/` + url, ...arg)
 
 /**
  * 移动端菜单Api接口管理器
@@ -12,10 +12,6 @@ export default {
 	// 获取移动端菜单tree
 	mobileMenuTree(data) {
 		return request('tree', data, 'get')
-	},
-	// 获取移动端菜单列表
-	mobileMenuList(data) {
-		return request('list', data, 'get')
 	},
 	// 提交移动端菜单表单 edit为true时为编辑，默认为新增
 	mobileMenuSubmitForm(data, edit = false) {
