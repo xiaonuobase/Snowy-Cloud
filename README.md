@@ -64,28 +64,33 @@ gitcode下载地址：[https://gitcode.com/xiaonuobase/Snowy-Cloud](https://gitc
 全栈工程师推荐idea
 
 ### 前端支撑
-| 插件 | 版本  | 用途 |
-|--- |-----| ----- |
-| node.js | ≥18 |  JavaScript运行环境 |
+
+| 插件      | 版本  | 用途             |
+|---------|-----|----------------|
+| node.js | ≥18 | JavaScript运行环境 |
 
 ### 启动前端
 
 ```
 npm install
 ```
+
 ```
 npm run dev
 ```
+
 ### 后端支撑
-| 插件 | 版本        | 用途 |
-| --- |-----------|  ----- |
-| jdk | 17        |java环境 |
-| lombok | idea内     |代码简化插件 |
-| maven | 最新版       |包管理工具 |
-| redis | 最新版       | 缓存库 |
-| mysql | 8.0 / 5.7 | 数据库 |
+
+| 插件     | 版本        | 用途     |
+|--------|-----------|--------|
+| jdk    | 17        | java环境 |
+| lombok | idea内     | 代码简化插件 |
+| maven  | 最新版       | 包管理工具  |
+| redis  | 最新版       | 缓存库    |
+| mysql  | 8.0 / 5.7 | 数据库    |
 
 ### 启动后端
+
 开发工具内配置好maven并在代码中配置数据库，按顺序以此即可启动
 
 |         应用         |       启动类        | 端口号  |
@@ -95,7 +100,7 @@ npm run dev
 | snowy-sentinel-app | SnowySentinelApp | 9002 |
 | snowy-gateway-app  | SnowyGatewayApp  | 9003 |
 | snowy-xxl-job-app  |  SnowyXxlJobApp  | 9004 |
-|   snowy-web-app   |   SnowyWebApp   | 9101 |
+|   snowy-web-app    |   SnowyWebApp    | 9101 |
 |   snowy-biz-app    |   SnowyBizApp    | 9102 |
 
 ## 代码结构
@@ -157,7 +162,6 @@ snowy-cloud
 
 ```
 
-
 ## 分支说明
 
 - master
@@ -180,80 +184,82 @@ snowy-cloud
 
 教程地址（免费开放）：[https://space.bilibili.com/50101698/channel/collectiondetail?sid=739071](https://space.bilibili.com/50101698/channel/collectiondetail?sid=739071)
 
-<img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=8nOccuKg&path=%7BshareItemLink%3A8nOccuKg%7D%2F"/>
+<img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9mhLatA%7D%2F&_etag=1730700699-816553&shareID=-9mhLatA"/>
 
 作者也在上班工作，所以在利用休息时间为大家创作，录制视频的目的也是为各位小伙伴提供文档跟技术交流群聊之外的上手学习资料
 
 ## 架构原理图
+
 * 业务架构
+
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=9Mor3UYA&path=%7BshareItemLink%3A9Mor3UYA%7D%2F"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9mQYKqQ%7D%2F&_etag=1730691771-199603&shareID=-9mQYKqQ"/>
 </p>
 
 * 应用架构
+
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=9MosIA7A&path=%7BshareItemLink%3A9MosIA7A%7D%2F"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9mQl1yQ%7D%2F&_etag=1730691771-325352&shareID=-9mQl1yQ"/>
 </p>
 
 * 数据架构
+
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=9MoseTCw&path=%7BshareItemLink%3A9MoseTCw%7D%2F"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9mQz_8w%7D%2F&_etag=1730691771-337804&shareID=-9mQz_8w"/>
 </p>
 
 * 技术架构
+
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=9MospSEQ&path=%7BshareItemLink%3A9MospSEQ%7D%2F"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9mRCSoA%7D%2F&_etag=1730691771-114558&shareID=-9mRCSoA"/>
 </p>
 
 * 部署架构
-<p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=9Mos0iCg&path=%7BshareItemLink%3A9Mos0iCg%7D%2F"/>
-</p>
 
+<p align="center">
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9mROhLg%7D%2F&_etag=1730691771-235717&shareID=-9mROhLg"/>
+</p>
 
 ## 效果图例
 
 <table>
     <tr>
-        <td><img src="https://pan.xiaonuo.vip/?explorer/share/file&hash=a938SjhgZ5ayRmNxjyvqNeG4piLbdyB39rdXaFyKsqCVrkmwLRyBcBc&name=/%E7%99%BB%E5%BD%95%E9%A1%B5%E9%9D%A2.png"/></td>
-        <td><img src="https://pan.xiaonuo.vip/?explorer/share/file&hash=b5e9VS9CKAeez01eHUfUdGyzm9eRSvtPrw9AF90mt_vPImvieiU9BR0&name=/%E7%B3%BB%E7%BB%9F%E9%A6%96%E9%A1%B5.png"/></td>
+        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9lSg_Dw%7D%2F&_etag=1730384489-1272624&shareID=-9lSg_Dw"/></td>
+        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9lTCIQQ%7D%2F&_etag=1730384527-354571&shareID=-9lTCIQQ"/></td>
     </tr>
     <tr>
-        <td><img src="https://pan.xiaonuo.vip/?explorer/share/file&hash=d173c7qJ7dgrK3vN1ovs55qtuDGW6bFOdiYglAsDNCJbI1LDifNuu_E&name=/%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86.png"/></td>
-        <td><img src="https://pan.xiaonuo.vip/?explorer/share/file&hash=0086BVQAINW_1mFSSz3Of4gsyreG3fX-6BZqiqLb0kWSXA-6ff6dD4Y&name=/%E6%9C%8D%E5%8A%A1%E7%9B%91%E6%8E%A7.png"/></td>
+        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9lTUROA%7D%2F&_etag=1730384568-327201&shareID=-9lTUROA"/></td>
+        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9lTdB3A%7D%2F&_etag=1730384595-160612&shareID=-9lTdB3A"/></td>
     </tr>
     <tr>
-        <td><img src="https://pan.xiaonuo.vip/?explorer/share/file&hash=1b72cVKHNtArl1A7qTeaAMicO1Pcv99U9PrPn4ESfwgk1VqCRmEIVqc&name=/%E6%8E%88%E6%9D%83%E6%9D%83%E9%99%90.png"/></td>
-        <td><img src="https://pan.xiaonuo.vip/?explorer/share/file&hash=1cc4CdKq2y5-hjuCfBLe5QiydnJMJfHWiM25mbobRsDBD7LK2Czkl3g&name=/%E6%93%8D%E4%BD%9C%E6%97%A5%E5%BF%97.png"/></td>
+        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9lTp1iw%7D%2F&_etag=1730384617-182491&shareID=-9lTp1iw"/></td>
+        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9lTyI5g%7D%2F&_etag=1730384636-144484&shareID=-9lTyI5g"/></td>
     </tr>
     <tr>
-        <td><img src="https://pan.xiaonuo.vip/?explorer/share/file&hash=f923EqvOkfbhNtN2pXA0Z55I5fRX4-_XWTmiGA8QBM_JJyIELv7ugLM&name=/EC%E6%95%A3%E7%82%B9%E5%9B%BE.png"/></td>
-        <td><img src="https://pan.xiaonuo.vip/?explorer/share/file&hash=e43fxc4TEVvJCZNuBNcueFAh5Mi9CDwnc25v25krItJ0iKj1wKBnqfY&name=/%E8%8F%9C%E5%8D%95%E7%AE%A1%E7%90%86.png"/></td>
+        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9lUAj9A%7D%2F&_etag=1730384732-148422&shareID=-9lUAj9A"/></td>
+        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9lUWvfg%7D%2F&_etag=1730384836-112114&shareID=-9lUWvfg"/></td>
     </tr>
     <tr>
-        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=8zRcAr9w&path=%7BshareItemLink%3A8zRcAr9w%7D%2F"/></td>
-        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=8zRbwyCA&path=%7BshareItemLink%3A8zRbwyCA%7D%2F"/></td>
+        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9lUuk7g%7D%2F&_etag=1730384925-320963&shareID=-9lUuk7g"/></td>
+        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9mJCOTw%7D%2F&_etag=1730385032-172917&shareID=-9mJCOTw"/></td>
     </tr>
     <tr>
-        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=8zRcC1AQ&path=%7BshareItemLink%3A8zRcC1AQ%7D%2F"/></td>
-        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=8zRb-YPw&path=%7BshareItemLink%3A8zRb-YPw%7D%2F"/></td>
+        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9mJSKTQ%7D%2F&_etag=1730385077-142012&shareID=-9mJSKTQ"/></td>
+        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9mJfjcg%7D%2F&_etag=1730385168-168192&shareID=-9mJfjcg"/></td>
     </tr>
-
 </table>
-
 
 ## 密码分步
 
-| 功能                        | 算法类型          |
-| ----------------------      | ------------- |
-| 登录        | SM2前端加密，后端解密 |
-| 登录登出日志        | SM2对登录登出日志做签名完整性保护存储    |
-| 操作日志        | SM2对操作日志做签名完整性保护存储    |
-| 用户密码        | SM3完整性保护存储，登录时做完整性校验    |
-| 用户手机号        | SM4（cbc模式）加解密使用字段脱敏    |
+| 功能     | 算法类型                 |
+|--------|----------------------|
+| 登录     | SM2前端加密，后端解密         |
+| 登录登出日志 | SM2对登录登出日志做签名完整性保护存储 |
+| 操作日志   | SM2对操作日志做签名完整性保护存储   |
+| 用户密码   | SM3完整性保护存储，登录时做完整性校验 |
+| 用户手机号  | SM4（cbc模式）加解密使用字段脱敏  |
 
 ## 官方群聊
-
 
 QQ技术群：732230670（已满）、685395081
 
@@ -262,7 +268,7 @@ QQ技术群：732230670（已满）、685395081
 <table>
     <tr>
         <td>微信群</td>
-        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&shareID=7qwFVcdA&path=%7BshareItemLink%3A7qwFVcdA%7D%2F" width="120"/></td>
+        <td><img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9mUnPEw%7D%2F&_etag=1730699307-193261&shareID=-9mUnPEw" width="120"/></td>
     </tr>
 </table>
 
@@ -290,18 +296,21 @@ QQ技术群：732230670（已满）、685395081
 
 ## 团队成员
 
-| 成员 | 技术 | 昵称 | 
-|:--:| :---: | :---: | 
-| 俞宝山 | 全栈 | 俞宝山 | 
+| 成员  | 技术 |  昵称   | 
+|:---:|:--:|:-----:| 
+| 俞宝山 | 全栈 |  俞宝山  | 
 | 徐玉祥 | 全栈 | 就是那个锅 | 
-| 董夏雨 | 全栈 | 阿董 | 
-| 王 鹏 | 全栈 | 每天一点 |
-| 陈心雨 | 前端 | . |
+| 董夏雨 | 全栈 |  阿董   | 
+| 王 鹏 | 全栈 | 每天一点  |
+| 陈心雨 | 前端 |   .   |
 
 ## 曾获荣誉
 
 <p align="center">
-    <img src="https://pan.xiaonuo.vip/?explorer/share/file&hash=dbb3FuNNxaLbVqqyPAU5uGmVZfExktgLQCnmK76Oy7PocjmFHr12ob-x&name=/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20230423085040.jpg"/>
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9mLM-zg%7D%2F&_etag=1730698398-294375&shareID=-9mLM-zg"/>
+</p>
+<p align="center">
+    <img src="https://pan.xiaonuo.vip/?explorer/share/fileOut&path=%7BshareItemLink%3A-9mLtqmQ%7D%2F&_etag=1730698444-77496&shareID=-9mLtqmQ"/>
 </p>
 
 ## 版权说明
