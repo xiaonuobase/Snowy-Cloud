@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.biz.core.context.sys;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
@@ -193,5 +194,29 @@ public class SysUserApiContextBean implements SysUserApi {
         long size = CommonPageRequest.defaultPage().getSize();
         String feignResp = sysUserFeign.userSelector(Convert.toInt(current), Convert.toInt(size), orgId, searchKey);
         return JSONUtil.toBean(feignResp, Page.class);
+    }
+
+    /**
+     * 获取用户列表（排除当前用户）
+     *
+     * @author xuyuxiang
+     * @date 2024/9/30 09:44
+     **/
+    @Override
+    public List<JSONObject> listUserWithoutCurrent() {
+        String feignResp = sysUserFeign.listUserWithoutCurrent();
+        return (List<JSONObject>) BeanUtil.toBean(feignResp, List.class);
+    }
+
+    /**
+     * 获取用户的职位列表
+     *
+     * @author xuyuxiang
+     * @date 2024/9/30 09:44
+     **/
+    @Override
+    public List<JSONObject> getPositionListByUserId(String userId) {
+        String feignResp = sysUserFeign.getPositionListByUserId(userId);
+        return (List<JSONObject>) BeanUtil.toBean(feignResp, List.class);
     }
 }

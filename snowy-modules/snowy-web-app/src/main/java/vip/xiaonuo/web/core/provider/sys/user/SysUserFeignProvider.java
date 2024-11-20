@@ -183,4 +183,28 @@ public class SysUserFeignProvider implements SysUserFeign {
     public String userSelector(@RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size,@RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "searchKey",required = false) String searchKey) {
         return JSONUtil.toJsonStr(sysUserApiProvider.userSelector(orgId, searchKey));
     }
+
+    /**
+     * 获取用户列表（排除当前用户）
+     *
+     * @author xuyuxiang
+     * @date 2024/9/30 09:39
+     **/
+    @RequestMapping("/feign/sys/user/listUserWithoutCurrent")
+    @Override
+    public String listUserWithoutCurrent() {
+        return JSONUtil.toJsonStr(sysUserApiProvider.listUserWithoutCurrent());
+    }
+
+    /**
+     * 获取用户的职位列表
+     *
+     * @author xuyuxiang
+     * @date 2024/9/30 09:39
+     **/
+    @RequestMapping("/feign/sys/user/getPositionListByUserId")
+    @Override
+    public String getPositionListByUserId(@RequestParam(value = "userId") String userId) {
+        return JSONUtil.toJsonStr(sysUserApiProvider.getPositionListByUserId(userId));
+    }
 }

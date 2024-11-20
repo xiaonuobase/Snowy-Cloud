@@ -115,4 +115,21 @@ public interface SysUserFeign {
     @RequestMapping("/feign/sys/user/userSelector")
     String userSelector(@RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size,@RequestParam("orgId") String orgId, @RequestParam("searchKey") String searchKey);
 
+    /**
+     * 获取用户列表（排除当前用户）
+     *
+     * @author dongxiayu
+     * @date 2022/6/20 18:19
+     **/
+    @RequestMapping("/feign/sys/user/listUserWithoutCurrent")
+    String listUserWithoutCurrent();
+
+    /**
+     * 获取用户的职位列表
+     *
+     * @author dongxiayu
+     * @date 2022/6/20 18:19
+     **/
+    @RequestMapping("/feign/sys/user/getPositionListByUserId")
+    String getPositionListByUserId(@RequestParam(value = "userId") String userId);
 }
