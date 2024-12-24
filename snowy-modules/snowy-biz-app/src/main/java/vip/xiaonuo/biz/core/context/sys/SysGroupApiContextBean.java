@@ -10,32 +10,35 @@
  * 5.不可二次分发开源参与同类竞品，如有想法可联系团队xiaonuobase@qq.com商议合作。
  * 6.若您的项目无法满足以上几点，需要更多功能代码，获取Snowy商业授权许可，请在官网购买授权，地址为 https://www.xiaonuo.vip
  */
-package vip.xiaonuo.sys.api;
+package vip.xiaonuo.biz.core.context.sys;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import vip.xiaonuo.sys.api.SysGroupApi;
+import vip.xiaonuo.sys.feign.SysGroupFeign;
 import java.util.List;
 
 /**
- * 用户组Api
+ * 用户组API上下文Bean
  *
  * @author yubaoshan
  * @date 2022/12/25 01:03
- **/
-public interface SysGroupApi {
+ */
+@Slf4j
+@RequiredArgsConstructor
+@Component
+public class SysGroupApiContextBean implements SysGroupApi {
 
+    private final SysGroupFeign sysGroupFeign;
 
-    /**
-     * 获取用户组拥有人员
-     *
-     * @author xuyuxiang
-     * @date 2022/5/13 21:00
-     */
-    List<String> ownUser(String userId);
+    @Override
+    public List<String> ownUser(String userId) {
+        return sysGroupFeign.ownUser(userId);
+    }
 
-    /**
-     * 给用户组授权用户
-     *
-     * @author xuyuxiang
-     * @date 2022/8/1 18:28
-     */
-    void grantUser(String groupId, List<String> userIdList);
+    @Override
+    public void grantUser(String groupId, List<String> userIdList) {
+        sysGroupFeign.grantUser(groupId, userIdList);
+    }
 }

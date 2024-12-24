@@ -11,7 +11,7 @@ import java.util.List;
  * 用户组Feign
  *
  * @author yubaoshan
- * @date 2022/11/22 23:51
+ * @date 2022/12/25 01:03
  */
 @FeignClient(name= FeignConstant.WEB_APP, contextId = "SysGroupFeign")
 public interface SysGroupFeign {
@@ -19,8 +19,8 @@ public interface SysGroupFeign {
     /**
      * 根据id获取名称
      *
-     * @author dongxiayu
-     * @date 2022/8/4 10:12
+     * @author yubaoshan
+     * @date 2022/12/25 01:03
      **/
     @RequestMapping("/feign/sys/group/ownUser")
     List<String> ownUser(@RequestParam(value = "userId",required = false) String userId);
@@ -28,9 +28,9 @@ public interface SysGroupFeign {
     /**
      * 根据组织id获取部门主管id
      *
-     * @author dongxiayu
-     * @date 2022/6/6 14:50
+     * @author yubaoshan
+     * @date 2022/12/25 01:03
      **/
     @RequestMapping("/feign/sys/group/grantUser")
-    void grantUser(@RequestParam(value = "userId",required = false) String userId, @RequestParam(value = "roleIdList",required = false) List<String> roleIdList);
+    void grantUser(@RequestParam(value = "groupId",required = false) String groupId, @RequestParam(value = "userIdList",required = false) List<String> userIdList);
 }
