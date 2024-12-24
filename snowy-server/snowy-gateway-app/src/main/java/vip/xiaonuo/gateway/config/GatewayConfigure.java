@@ -131,6 +131,7 @@ public class GatewayConfigure {
             "/api/webapp/auth/third/page",
             "/api/webapp/client/user/**",
             "/api/webapp/sys/org/**",
+            "/api/webapp/sys/group/**",
             "/api/webapp/sys/position/**",
             "/api/webapp/sys/button/**",
             "/api/webapp/sys/menu/**",
