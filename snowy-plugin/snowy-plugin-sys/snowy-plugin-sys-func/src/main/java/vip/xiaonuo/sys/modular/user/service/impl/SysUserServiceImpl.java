@@ -80,6 +80,8 @@ import vip.xiaonuo.mobile.vip.MobileButtonApi;
 import vip.xiaonuo.mobile.vip.MobileMenuApi;
 import vip.xiaonuo.sys.core.enums.SysBuildInEnum;
 import vip.xiaonuo.sys.core.enums.SysDataTypeEnum;
+import vip.xiaonuo.sys.modular.group.entity.SysGroup;
+import vip.xiaonuo.sys.modular.group.service.SysGroupService;
 import vip.xiaonuo.sys.modular.org.entity.SysOrg;
 import vip.xiaonuo.sys.modular.org.service.SysOrgService;
 import vip.xiaonuo.sys.modular.position.entity.SysPosition;
@@ -174,6 +176,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Resource
     private MobileButtonApi mobileButtonApi;
+
+    @Resource
+    private SysGroupService sysGroupService;
 
     @Override
     public SysLoginUser getUserById(String id) {
@@ -1567,6 +1572,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public List<SysGroup> getGroupListByIdList(SysUserGroupIdListParam sysUserGroupIdListParam) {
+        if (ObjectUtil.isEmpty(sysUserGroupIdListParam.getIdList())) {
+            return CollectionUtil.newArrayList();
+        }
+        LambdaQueryWrapper<SysGroup> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        // 查询部分字段
+        lambdaQueryWrapper.select(SysGroup::getId, SysGroup::getName, SysGroup::getRemark, SysGroup::getSortCode)
+                .in(SysGroup::getId, sysUserGroupIdListParam.getIdList()).orderByAsc(SysGroup::getSortCode);
+        return sysGroupService.list(lambdaQueryWrapper);
+    }
+
+    @Override
     public List<SysRole> getRoleListByIdList(SysUserIdListParam sysUserIdListParam) {
         if (ObjectUtil.isEmpty(sysUserIdListParam.getIdList())) {
             return CollectionUtil.newArrayList();
@@ -1577,5 +1594,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                         SysRole::getCategory, SysRole::getSortCode)
                 .in(SysRole::getId, sysUserIdListParam.getIdList()).orderByAsc(SysRole::getSortCode);
         return sysRoleService.list(lambdaQueryWrapper);
+    }
+
+    @Override
+    public String getAvatarById(SysUserIdParam sysUserIdParam) {
+        return this.detail(sysUserIdParam).getAvatar();
     }
 }

@@ -12,6 +12,8 @@
  */
 package vip.xiaonuo.biz.core.context.sys;
 
+import cn.hutool.json.JSONObject;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -40,5 +42,19 @@ public class SysGroupApiContextBean implements SysGroupApi {
     @Override
     public void grantUser(String groupId, List<String> userIdList) {
         sysGroupFeign.grantUser(groupId, userIdList);
+    }
+
+    /**
+     * 获取用户组选择器
+     *
+     * @param searchKey
+     * @param current
+     * @param size
+     * @author yubaoshan
+     * @date 2025/1/12 02:36
+     */
+    @Override
+    public Page<JSONObject> groupSelector(String searchKey, int current, int size) {
+        return null;
     }
 }
