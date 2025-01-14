@@ -277,7 +277,8 @@ public class GlobalConfigure implements WebMvcConfigurer {
                     // 如果是预检请求，则立即返回到前端
                     SaRouter.match(SaHttpMethod.OPTIONS)
                             // OPTIONS预检请求，不做处理
-                            .free(r -> {})
+                            .free(r -> {
+                            })
                             .back();
                 })
 
@@ -286,7 +287,7 @@ public class GlobalConfigure implements WebMvcConfigurer {
                     // 由于过滤器中抛出的异常不进入全局异常处理，所以必须提供[异常处理函数]来处理[认证函数]里抛出的异常
                     // 在[异常处理函数]里的返回值，将作为字符串输出到前端，此处统一转为JSON输出前端
                     SaResponse saResponse = SaHolder.getResponse();
-                    saResponse.setHeader(Header.CONTENT_TYPE.getValue(), ContentType.JSON + ";charset=" +  CharsetUtil.UTF_8);
+                    saResponse.setHeader(Header.CONTENT_TYPE.getValue(), ContentType.JSON + ";charset=" + CharsetUtil.UTF_8);
                     return GlobalExceptionUtil.getCommonResult((Exception) e);
                 });
     }
@@ -365,7 +366,7 @@ public class GlobalConfigure implements WebMvcConfigurer {
             // 获取该接口缓存的限流数据，跟当前ip以及登录用户有关
             String cacheKey = COMMON_REPEAT_SUBMIT_CACHE_KEY + CommonIpAddressUtil.getIp(request) + StrUtil.COLON;
             Object loginId = StpUtil.getLoginIdDefaultNull();
-            if(ObjectUtil.isNotEmpty(loginId)) {
+            if (ObjectUtil.isNotEmpty(loginId)) {
                 cacheKey = cacheKey + Convert.toStr(loginId) + StrUtil.COLON + url;
             } else {
                 cacheKey = cacheKey + url;
@@ -373,14 +374,14 @@ public class GlobalConfigure implements WebMvcConfigurer {
             Object cacheObj = commonCacheOperator.get(cacheKey);
             if (ObjectUtil.isNotEmpty(cacheObj)) {
                 JSONObject cacheJsonObject = JSONUtil.parseObj(cacheObj);
-                if(cacheJsonObject.containsKey(url)) {
+                if (cacheJsonObject.containsKey(url)) {
                     JSONObject existRepeatJsonObject = cacheJsonObject.getJSONObject(url);
                     // 如果与上次参数一致，且时间间隔小于要求的限流时长，则判定为重复提交
                     if (jsonObject.getStr("repeatParam").equals(existRepeatJsonObject.getStr("repeatParam"))) {
                         long interval = jsonObject.getLong("repeatTime") - existRepeatJsonObject.getLong("repeatTime");
-                        if(interval < commonNoRepeat.interval()) {
+                        if (interval < commonNoRepeat.interval()) {
                             long secondsParam = (commonNoRepeat.interval() - interval) / 1000;
-                            if(secondsParam > 0) {
+                            if (secondsParam > 0) {
                                 throw new CommonException("请求过于频繁，请" + CommonTimeFormatUtil.formatSeconds(secondsParam) + "后再试");
                             }
                         }
@@ -540,7 +541,7 @@ public class GlobalConfigure implements WebMvcConfigurer {
                     return "dm";
                 } else if (url.contains("jdbc:kingbase")) {
                     return "kingbase";
-                }  else {
+                } else {
                     return "mysql";
                 }
             } finally {
@@ -558,19 +559,29 @@ public class GlobalConfigure implements WebMvcConfigurer {
     @Component
     public static class CustomMetaObjectHandler implements MetaObjectHandler {
 
-        /** 删除标志 */
+        /**
+         * 删除标志
+         */
         private static final String DELETE_FLAG = "deleteFlag";
 
-        /** 创建人 */
+        /**
+         * 创建人
+         */
         private static final String CREATE_USER = "createUser";
 
-        /** 创建时间 */
+        /**
+         * 创建时间
+         */
         private static final String CREATE_TIME = "createTime";
 
-        /** 更新人 */
+        /**
+         * 更新人
+         */
         private static final String UPDATE_USER = "updateUser";
 
-        /** 更新时间 */
+        /**
+         * 更新时间
+         */
         private static final String UPDATE_TIME = "updateTime";
 
         @Override
@@ -588,14 +599,16 @@ public class GlobalConfigure implements WebMvcConfigurer {
                 if (ObjectUtil.isNull(createUser)) {
                     setFieldValByName(CREATE_USER, this.getUserId(), metaObject);
                 }
-            } catch (ReflectionException ignored) { }
+            } catch (ReflectionException ignored) {
+            }
             try {
                 //为空则设置createTime
                 Object createTime = metaObject.getValue(CREATE_TIME);
                 if (ObjectUtil.isNull(createTime)) {
                     setFieldValByName(CREATE_TIME, DateTime.now(), metaObject);
                 }
-            } catch (ReflectionException ignored) { }
+            } catch (ReflectionException ignored) {
+            }
         }
 
         @Override
@@ -603,11 +616,13 @@ public class GlobalConfigure implements WebMvcConfigurer {
             try {
                 //设置updateUser
                 setFieldValByName(UPDATE_USER, this.getUserId(), metaObject);
-            } catch (ReflectionException ignored) { }
+            } catch (ReflectionException ignored) {
+            }
             try {
                 //设置updateTime
                 setFieldValByName(UPDATE_TIME, DateTime.now(), metaObject);
-            } catch (ReflectionException ignored) { }
+            } catch (ReflectionException ignored) {
+            }
         }
 
         /**
