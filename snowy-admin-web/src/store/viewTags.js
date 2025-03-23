@@ -9,10 +9,23 @@
  *	6.若您的项目无法满足以上几点，需要更多功能代码，获取Snowy商业授权许可，请在官网购买授权，地址为 https://www.xiaonuo.vip
  */
 import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router'
 
 export const viewTagsStore = defineStore('viewTags', () => {
 	// 定义state
 	const viewTags = ref([])
+	const router = useRouter()
+	// 监听路由变化
+	watch(
+		() => router.currentRoute.value,
+		(newRoute) => {
+			const viewTag = viewTags.value.find((item) => item.path === newRoute.path)
+			if (viewTag) {
+				Object.assign(viewTag, newRoute)
+			}
+		},
+		{ immediate: true }
+	)
 
 	// 定义action
 	const pushViewTags = (route) => {
@@ -22,17 +35,12 @@ export const viewTagsStore = defineStore('viewTags', () => {
 			viewTags.value.push(route)
 		}
 		if (target) {
-			viewTags.value.forEach((item, index) => {
-				if (item.path === route.path) {
-					viewTags.value[index] = { ...route, ...item }
-					// Object.assign(item, route)
-				}
-			})
+			updateViewTags(route)
 		}
 	}
 	const removeViewTags = (route) => {
 		viewTags.value.forEach((item, index) => {
-			if (item.fullPath === route.fullPath) {
+			if (item.path === route.path) {
 				viewTags.value.splice(index, 1)
 			}
 		})
@@ -41,7 +49,6 @@ export const viewTagsStore = defineStore('viewTags', () => {
 		viewTags.value.forEach((item, index) => {
 			if (item.fullPath === route.fullPath) {
 				viewTags.value[index] = { ...route, ...item }
-				// Object.assign(item, route)
 			}
 		})
 	}
@@ -49,18 +56,14 @@ export const viewTagsStore = defineStore('viewTags', () => {
 	const updateOrRemoveViewTags = (routes) => {
 		if (routes && routes.length > 0) {
 			viewTags.value.forEach((item, index) => {
-				const target = routes.find((route) => route.path === item.fullPath)
+				// 使用path进行比较，忽略参数部分
+				const target = routes.find((route) => route.path === item.path)
 				if (!target) {
 					// 路由不存在，删除
 					viewTags.value.splice(index, 1)
 				} else {
 					// 路由存在，更新
-					viewTags.value = viewTags.value.map((item) => {
-						if (item.fullPath === target.path) {
-							return { ...item, meta: target.meta }
-						}
-						return item
-					})
+					updateViewTags(target)
 				}
 			})
 		}

@@ -69,7 +69,8 @@
 	import { globalStore, iframeStore, keepAliveStore, viewTagsStore } from '@/store'
 	import routerUtil from '@/utils/routerUtil'
 	import { useRoute, useRouter } from 'vue-router'
-	import { watch } from 'vue'
+	import { watch, ref, computed, nextTick, onMounted } from 'vue'
+	import { useMenuStore } from '@/store/menu'
 
 	const route = useRoute()
 	const router = useRouter()
@@ -83,6 +84,7 @@
 	const contextMenuTarget = ref(null)
 	const contextMenuVisible = ref(false)
 	const currentContextMenuTabIndex = ref(0)
+	const menuStore = useMenuStore()
 
 	const viewTags = computed(() => {
 		return vStore.viewTags
@@ -100,7 +102,6 @@
 	})
 	watch(route, (to) => {
 		addViewTags(to)
-		activeKey.value = to.fullPath
 	})
 	watch(layoutTagsOpen, () => {
 		// closeOtherCacheTabs()
@@ -113,7 +114,8 @@
 	})
 	// 增加tag
 	const addViewTags = (to) => {
-		activeKey.value = to.fullPath
+		const viewTag = viewTags.value.find((tag) => tag.path === to.path)
+		activeKey.value = viewTag ? viewTag.fullPath : to.fullPath
 		if (to.name && !to.meta.fullpage) {
 			vStore.pushViewTags(to)
 			kStore.pushKeepLive(to.name)
@@ -123,7 +125,6 @@
 			vStore.removeViewTags(firstTag)
 		}
 	}
-
 	// 查找树
 	const treeFind = (tree, func) => {
 		for (const data of tree) {
@@ -261,7 +262,6 @@
 
 	const module = router.getMenu()
 	const indexMenu = routerUtil.getIndexMenu(module).path
-	// eslint-disable-next-line eqeqeq
 	const dashboardRoute = treeFind(module, (node) => node.path === indexMenu)
 	if (dashboardRoute) {
 		dashboardRoute.fullPath = dashboardRoute.path
@@ -324,7 +324,6 @@
 					.ant-tabs-tab {
 						background: none;
 						height: 40px;
-						line-height: 40px;
 						transition:
 							background-color 0.3s,
 							color 0.3s;
@@ -334,7 +333,7 @@
 						margin: 0;
 						.ant-tabs-tab-remove {
 							margin: 0;
-							padding: 0 5px;
+							padding: 0 0 0 5px;
 						}
 					}
 					.ant-tabs-tab-active {
@@ -447,7 +446,7 @@
 	.snowy-radius .ant-tabs-tab-active {
 		position: relative;
 		z-index: 1;
-		border-radius: 10px 10px 0 0 !important;
+		border-radius: 6px 6px 0 0 !important;
 		box-shadow:
 			12px 15px 0 0 var(--primary-1),
 			-12px 15px 0 0 var(--primary-1);
@@ -460,7 +459,7 @@
 		width: 13px;
 		height: 40px;
 		background: var(--primary-radius);
-		border-radius: 0 0 20px 0;
+		border-radius: 0 0 8px 0;
 	}
 	.snowy-radius .ant-tabs-tab-active::after {
 		content: '';
@@ -470,7 +469,7 @@
 		width: 13px;
 		height: 40px;
 		background: var(--primary-radius);
-		border-radius: 0 0 0 20px;
+		border-radius: 0 0 0 8px;
 	}
 
 	.snowy-radius .ant-tabs-ink-bar {
