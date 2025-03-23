@@ -144,20 +144,6 @@
             <version>${project.parent.version}</version>
         </dependency>
 
-        <!-- 开发工具插件 -->
-        <dependency>
-            <groupId>vip.xiaonuo</groupId>
-            <artifactId>snowy-plugin-dev-func</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
-        <!-- C端功能插件 -->
-        <dependency>
-            <groupId>vip.xiaonuo</groupId>
-            <artifactId>snowy-plugin-client-func</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
         <!-- bootstrap 配置加载 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
