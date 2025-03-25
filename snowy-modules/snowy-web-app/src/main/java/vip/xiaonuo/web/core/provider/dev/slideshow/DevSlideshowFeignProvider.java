@@ -15,7 +15,7 @@ package vip.xiaonuo.web.core.provider.dev.slideshow;
 import cn.hutool.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vip.xiaonuo.dev.feign.DevSlideshowFeign;
@@ -43,7 +43,7 @@ public class DevSlideshowFeignProvider implements DevSlideshowFeign {
      * @date  2024/07/13 00:31
      **/
     @Override
-    @PostMapping("/feign/dev/slideshow/getFileListByIds")
+    @RequestMapping("/feign/dev/slideshow/getListByPlace")
     public List<JSONObject> getListByPlace(@RequestParam("place") String place) {
         return devSlideshowApiProvider.getListByPlace(place);
     }

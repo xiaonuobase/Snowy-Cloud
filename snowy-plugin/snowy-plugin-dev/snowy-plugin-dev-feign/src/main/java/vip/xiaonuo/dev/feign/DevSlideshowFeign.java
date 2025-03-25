@@ -30,10 +30,10 @@ import java.util.List;
 public interface DevSlideshowFeign {
 
     /**
-     * 根据文件id集合获取文件集合
+     * 通过位置获得轮播图列表
      *
      * @author yubaoshan
-     * @date 2024/6/9 23:52
+     * @date  2024/07/13 00:31
      **/
     @RequestMapping("/feign/dev/slideshow/getListByPlace")
     List<JSONObject> getListByPlace(@RequestParam("place") String place);
