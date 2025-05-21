@@ -15,19 +15,19 @@ package vip.xiaonuo.biz.modular.user.service;
 import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import jakarta.servlet.http.HttpServletResponse;
 import vip.xiaonuo.biz.modular.org.entity.BizOrg;
 import vip.xiaonuo.biz.modular.position.entity.BizPosition;
 import vip.xiaonuo.biz.modular.user.entity.BizUser;
 import vip.xiaonuo.biz.modular.user.param.*;
 import vip.xiaonuo.biz.modular.user.result.BizUserRoleResult;
 
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
 /**
  * 人员Service接口
- *O
+ *
  * @author xuyuxiang
  * @date 2022/4/21 18:35
  **/
@@ -47,7 +47,7 @@ public interface BizUserService extends IService<BizUser> {
      * @author xuyuxiang
      * @date 2022/4/24 20:48
      */
-    void add(BizUserAddParam bizUserAddParam);
+    void add(BizUserAddParam bizUserAddParam, String sourceFromType);
 
     /**
      * 编辑人员

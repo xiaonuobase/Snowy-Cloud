@@ -16,6 +16,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -28,10 +29,10 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
-import vip.xiaonuo.common.enums.SysDataTypeEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.listener.CommonDataChangeEventCenter;
 import vip.xiaonuo.common.page.CommonPageRequest;
+import vip.xiaonuo.sys.core.enums.SysDataTypeEnum;
 import vip.xiaonuo.sys.modular.relation.entity.SysRelation;
 import vip.xiaonuo.sys.modular.relation.enums.SysRelationCategoryEnum;
 import vip.xiaonuo.sys.modular.relation.service.SysRelationService;
@@ -96,6 +97,9 @@ public class SysButtonServiceImpl extends ServiceImpl<SysButtonMapper, SysButton
         if(repeatCode) {
             throw new CommonException("存在重复的按钮，编码为：{}", sysButton.getCode());
         }
+        if(ObjectUtil.isEmpty(sysButton.getCode())) {
+            sysButton.setCode(RandomUtil.randomString(10));
+        }
         sysButton.setCategory(SysResourceCategoryEnum.BUTTON.getValue());
         this.save(sysButton);
 
@@ -103,6 +107,7 @@ public class SysButtonServiceImpl extends ServiceImpl<SysButtonMapper, SysButton
         CommonDataChangeEventCenter.doAddWithData(SysDataTypeEnum.RESOURCE.getValue(), JSONUtil.createArray().put(sysButton));
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void addForGenButton(String menuId, String className, String functionName) {
         SysMenu sysMenu = sysMenuService.queryEntity(menuId);
@@ -111,10 +116,10 @@ public class SysButtonServiceImpl extends ServiceImpl<SysButtonMapper, SysButton
                 JSONUtil.createObj().set("title", "编辑" + functionName).set("code", classNameFirstLower + "Edit").set("sortCode", 2),
                 JSONUtil.createObj().set("title", "删除" + functionName).set("code", classNameFirstLower + "Delete").set("sortCode", 3),
                 JSONUtil.createObj().set("title", "批量删除").set("code", classNameFirstLower + "BatchDelete").set("sortCode", 4)).forEach(jsonObject -> {
-            SysButtonAddParam sysButtonAddParam = new SysButtonAddParam();
-            BeanUtil.copyProperties(jsonObject, sysButtonAddParam);
-            sysButtonAddParam.setParentId(sysMenu.getId());
-            this.add(sysButtonAddParam);
+                    SysButtonAddParam sysButtonAddParam = new SysButtonAddParam();
+                    BeanUtil.copyProperties(jsonObject, sysButtonAddParam);
+                    sysButtonAddParam.setParentId(sysMenu.getId());
+                    this.add(sysButtonAddParam);
         });
     }
 
@@ -136,6 +141,7 @@ public class SysButtonServiceImpl extends ServiceImpl<SysButtonMapper, SysButton
         CommonDataChangeEventCenter.doUpdateWithData(SysDataTypeEnum.RESOURCE.getValue(), JSONUtil.createArray().put(sysButton));
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(List<SysButtonIdParam> sysButtonIdParamList) {
         List<String> buttonIdList = CollStreamUtil.toList(sysButtonIdParamList, SysButtonIdParam::getId);

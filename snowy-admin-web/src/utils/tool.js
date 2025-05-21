@@ -99,6 +99,9 @@ tool.dictTypeData = (dictValue, value) => {
 		return '无此字典'
 	}
 	const children = tree.children
+	if (!tree.children) {
+		return '无此字典'
+	}
 	const dict = children.find((item) => item.dictValue === value)
 	return dict ? dict.dictLabel : '无此字典项'
 }
@@ -123,15 +126,18 @@ tool.dictList = (dictValue) => {
 		return []
 	}
 	const tree = dictTypeTree.find((item) => item.dictValue === dictValue)
-	if (tree) {
-		return tree.children.map((item) => {
-			return {
-				value: item['dictValue'],
-				label: item['name']
-			}
-		})
+	if (!tree) {
+		return []
 	}
-	return []
+	if (!tree.children) {
+		return []
+	}
+	return tree.children.map((item) => {
+		return {
+			value: item['dictValue'],
+			label: item['name']
+		}
+	})
 }
 
 // 树形翻译 需要指定最顶级的 parentValue  和当级的value
@@ -179,41 +185,58 @@ tool.generateString = (length = 8) => {
 
 tool.parseTime = (time, cFormat) => {
 	if (time == null || time.length === 0) {
-	  return ''
+		return ''
 	}
 
 	const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
 	let date
 	if (typeof time === 'object') {
-	  date = time
+		date = time
 	} else {
-	  if ((typeof time === 'string') && (/^[0-9]+$/.test(time))) {
-		time = parseInt(time)
-	  }
-	  if ((typeof time === 'number') && (time.toString().length === 10)) {
-		time = time * 1000
-	  }
-	  date = new Date(time)
+		if (typeof time === 'string' && /^[0-9]+$/.test(time)) {
+			time = parseInt(time)
+		}
+		if (typeof time === 'number' && time.toString().length === 10) {
+			time = time * 1000
+		}
+		date = new Date(time)
 	}
 	const formatObj = {
-	  y: date.getFullYear(),
-	  m: date.getMonth() + 1,
-	  d: date.getDate(),
-	  h: date.getHours(),
-	  i: date.getMinutes(),
-	  s: date.getSeconds(),
-	  a: date.getDay()
+		y: date.getFullYear(),
+		m: date.getMonth() + 1,
+		d: date.getDate(),
+		h: date.getHours(),
+		i: date.getMinutes(),
+		s: date.getSeconds(),
+		a: date.getDay()
 	}
 	const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
-	  let value = formatObj[key]
-	  // Note: getDay() returns 0 on Sunday
-	  if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
-	  if (result.length > 0 && value < 10) {
-		value = '0' + value
-	  }
-	  return value || 0
+		let value = formatObj[key]
+		// Note: getDay() returns 0 on Sunday
+		if (key === 'a') {
+			return ['日', '一', '二', '三', '四', '五', '六'][value]
+		}
+		if (result.length > 0 && value < 10) {
+			value = '0' + value
+		}
+		return value || 0
 	})
 	return time_str
+}
+
+// 判断不为空
+tool.isNotEmpty = (value) => {
+	if (typeof value === 'object') {
+		for (const key in value) {
+			return true
+		}
+		return false
+	}
+	return !(value === null || value === undefined || value === 'undefined' || value === '')
+}
+// 判断为空
+tool.isEmpty = (value) => {
+	return !tool.isNotEmpty(value)
 }
 
 export default tool

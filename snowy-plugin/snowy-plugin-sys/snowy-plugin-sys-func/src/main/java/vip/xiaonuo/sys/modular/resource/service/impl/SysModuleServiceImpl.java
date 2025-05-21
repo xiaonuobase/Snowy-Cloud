@@ -29,11 +29,11 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
-import vip.xiaonuo.common.enums.SysBuildInEnum;
-import vip.xiaonuo.common.enums.SysDataTypeEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.listener.CommonDataChangeEventCenter;
 import vip.xiaonuo.common.page.CommonPageRequest;
+import vip.xiaonuo.sys.core.enums.SysBuildInEnum;
+import vip.xiaonuo.sys.core.enums.SysDataTypeEnum;
 import vip.xiaonuo.sys.modular.relation.entity.SysRelation;
 import vip.xiaonuo.sys.modular.relation.enums.SysRelationCategoryEnum;
 import vip.xiaonuo.sys.modular.relation.service.SysRelationService;
@@ -92,10 +92,11 @@ public class SysModuleServiceImpl extends ServiceImpl<SysModuleMapper, SysModule
         if(repeatTitle) {
             throw new CommonException("存在重复的模块，名称为：{}", sysModule.getTitle());
         }
-        sysModule.setCode(RandomUtil.randomString(10));
+        if(ObjectUtil.isEmpty(sysModule.getCode())) {
+            sysModule.setCode(RandomUtil.randomString(10));
+        }
         sysModule.setCategory(SysResourceCategoryEnum.MODULE.getValue());
         this.save(sysModule);
-
         // 发布增加事件
         CommonDataChangeEventCenter.doAddWithData(SysDataTypeEnum.RESOURCE.getValue(), JSONUtil.createArray().put(sysModule));
     }
@@ -117,6 +118,7 @@ public class SysModuleServiceImpl extends ServiceImpl<SysModuleMapper, SysModule
         CommonDataChangeEventCenter.doUpdateWithData(SysDataTypeEnum.RESOURCE.getValue(), JSONUtil.createArray().put(sysModule));
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(List<SysModuleIdParam> sysModuleIdParamList) {
         List<String> sysModuleIdList = CollStreamUtil.toList(sysModuleIdParamList, SysModuleIdParam::getId);

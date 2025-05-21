@@ -12,10 +12,11 @@
  */
 package vip.xiaonuo.sys.modular.index.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ import vip.xiaonuo.sys.modular.index.param.*;
 import vip.xiaonuo.sys.modular.index.result.*;
 import vip.xiaonuo.sys.modular.index.service.SysIndexService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -38,6 +40,7 @@ import java.util.List;
  * @date 2022/9/2 10:44
  */
 @Tag(name = "系统首页控制器")
+@ApiSupport(author = "SNOWY_TEAM", order = 0)
 @RestController
 @Validated
 public class SysIndexController {
@@ -51,6 +54,7 @@ public class SysIndexController {
      * @author xuyuxiang
      * @date 2022/4/24 20:47
      */
+    @ApiOperationSupport(order = 1)
     @Operation(summary = "添加日程")
     @CommonLog("添加日程")
     @PostMapping("/sys/index/schedule/add")
@@ -65,6 +69,7 @@ public class SysIndexController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
+    @ApiOperationSupport(order = 2)
     @Operation(summary = "删除日程")
     @CommonLog("删除日程")
     @PostMapping("/sys/index/schedule/deleteSchedule")
@@ -80,6 +85,7 @@ public class SysIndexController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
+    @ApiOperationSupport(order = 3)
     @Operation(summary = "获取日程列表")
     @GetMapping("/sys/index/schedule/list")
     public CommonResult<List<SysIndexScheduleListResult>> scheduleList(@Valid SysIndexScheduleListParam sysIndexScheduleListParam) {
@@ -92,6 +98,7 @@ public class SysIndexController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
+    @ApiOperationSupport(order = 4)
     @Operation(summary = "获取当前用户站内信列表")
     @GetMapping("/sys/index/message/list")
     public CommonResult<List<SysIndexMessageListResult>> messageList(SysIndexMessageListParam sysIndexMessageListParam) {
@@ -104,6 +111,7 @@ public class SysIndexController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
+    @ApiOperationSupport(order = 5)
     @Operation(summary = "获取站内信详情")
     @GetMapping("/sys/index/message/detail")
     public CommonResult<SysIndexMessageDetailResult> messageDetail(@Valid SysIndexMessageIdParam sysIndexMessageIdParam) {
@@ -116,6 +124,7 @@ public class SysIndexController {
      * @author diantu
      * @date 2023/7/10
      */
+    @ApiOperationSupport(order = 6)
     @Operation(summary = "站内信全部标记已读")
     @PostMapping("/sys/index/message/allMessageMarkRead")
     public CommonResult<String> allMessageMarkRead() {
@@ -129,6 +138,7 @@ public class SysIndexController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
+    @ApiOperationSupport(order = 7)
     @Operation(summary = "获取当前用户访问日志列表")
     @GetMapping("/sys/index/visLog/list")
     public CommonResult<List<SysIndexVisLogListResult>> visLogList() {
@@ -141,6 +151,7 @@ public class SysIndexController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
+    @ApiOperationSupport(order = 8)
     @Operation(summary = "获取当前用户操作日志列表")
     @GetMapping("/sys/index/opLog/list")
     public CommonResult<List<SysIndexOpLogListResult>> opLogList() {
@@ -153,6 +164,7 @@ public class SysIndexController {
      * @author diantu
      * @date 2023/7/10
      **/
+    @ApiOperationSupport(order = 9)
     @Operation(summary = "创建sse连接")
     @GetMapping("/dev/message/createSseConnect")
     public SseEmitter createSseConnect(String clientId){
@@ -165,6 +177,7 @@ public class SysIndexController {
      * @author xuyuxiang、yubaoshan
      * @date 2024/7/18 17:35
      */
+    @ApiOperationSupport(order = 10)
     @Operation(summary = "获取基础系统业务数据")
     @GetMapping("/sys/index/bizDataCount")
     public CommonResult<SysBizDataCountResult> getBizDataCount() {
@@ -177,6 +190,7 @@ public class SysIndexController {
      * @author yubaoshan
      * @date 2024/7/18 17:35
      */
+    @ApiOperationSupport(order = 11)
     @Operation(summary = "获取运维一览数据")
     @GetMapping("/sys/index/opDataCount")
     public CommonResult<SysOpDataCountResult> getOpDataCount() {
@@ -189,6 +203,7 @@ public class SysIndexController {
      * @author yubaoshan
      * @date 2024/7/18 17:35
      */
+    @ApiOperationSupport(order = 12)
     @Operation(summary = "获取基础工具数据")
     @GetMapping("/sys/index/toolDataCount")
     public CommonResult<SysToolDataCountResult> getToolDataCount() {

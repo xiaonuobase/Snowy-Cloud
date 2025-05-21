@@ -51,7 +51,7 @@ public interface SysOrgService extends IService<SysOrg> {
      * @author xuyuxiang
      * @date 2022/4/24 20:48
      */
-    void add(SysOrgAddParam sysOrgAddParam);
+    void add(SysOrgAddParam sysOrgAddParam, String sourceFromType);
 
     /**
      * 编辑组织
@@ -101,7 +101,6 @@ public interface SysOrgService extends IService<SysOrg> {
      **/
     String getOrgIdByOrgFullNameWithCreate(String orgFullName);
 
-
     /**
      * 根据id获取父子数据列表
      *
@@ -109,7 +108,6 @@ public interface SysOrgService extends IService<SysOrg> {
      * @date 2022/8/15 14:55
      **/
     List<SysOrg> getParentAndChildListById(List<SysOrg> originDataList, String id, boolean includeSelf);
-
 
     /**
      * 根据id获取所有的子数据列表
@@ -174,4 +172,12 @@ public interface SysOrgService extends IService<SysOrg> {
      * @date 2022/4/24 20:08
      */
     Page<SysUser> userSelector(SysOrgSelectorUserParam sysOrgSelectorUserParam);
+
+    /**
+     * 获取某组织的所有父级id集合
+     *
+     * @author yubaoshan
+     * @date 2025/5/10 12:13
+     */
+    List<String> getParentIdListByOrgId(String orgId);
 }

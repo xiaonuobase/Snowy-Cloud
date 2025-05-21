@@ -30,7 +30,7 @@ import vip.xiaonuo.common.pojo.CommonEntity;
 public class DevFile extends CommonEntity {
 
     /** id */
-    @Schema(description = "id")
+    @Schema(description = "主键")
     private String id;
 
     /** 存储引擎 */
@@ -40,6 +40,10 @@ public class DevFile extends CommonEntity {
     /** 存储桶 */
     @Schema(description = "存储桶")
     private String bucket;
+
+    /** 文件Key */
+    @Schema(description = "文件Key")
+    private String fileKey;
 
     /** 文件名称 */
     @Schema(description = "文件名称")

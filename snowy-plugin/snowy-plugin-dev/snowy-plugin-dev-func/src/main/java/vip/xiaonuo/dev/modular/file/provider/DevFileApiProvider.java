@@ -12,12 +12,18 @@
  */
 package vip.xiaonuo.dev.modular.file.provider;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import vip.xiaonuo.dev.api.DevConfigApi;
 import vip.xiaonuo.dev.api.DevFileApi;
 import vip.xiaonuo.dev.modular.file.enums.DevFileEngineTypeEnum;
+import vip.xiaonuo.dev.modular.file.param.DevFileIdParam;
 import vip.xiaonuo.dev.modular.file.service.DevFileService;
+
+import java.util.Optional;
 
 /**
  * 文件API接口提供者
@@ -28,8 +34,24 @@ import vip.xiaonuo.dev.modular.file.service.DevFileService;
 @Service
 public class DevFileApiProvider implements DevFileApi {
 
+    /** 默认文件引擎 */
+    private static final String SNOWY_SYS_DEFAULT_FILE_ENGINE_KEY = "SNOWY_SYS_DEFAULT_FILE_ENGINE";
+
+    @Resource
+    private DevConfigApi devConfigApi;
+
     @Resource
     private DevFileService devFileService;
+
+    @Override
+    public String uploadDynamicReturnId(MultipartFile file) {
+        return devFileService.uploadReturnId(devConfigApi.getValueByKey(SNOWY_SYS_DEFAULT_FILE_ENGINE_KEY), file);
+    }
+
+    @Override
+    public String uploadDynamicReturnUrl(MultipartFile file) {
+        return devFileService.uploadReturnUrl(devConfigApi.getValueByKey(SNOWY_SYS_DEFAULT_FILE_ENGINE_KEY), file);
+    }
 
     @Override
     public String storageFileWithReturnUrlLocal(MultipartFile file) {
@@ -69,5 +91,19 @@ public class DevFileApiProvider implements DevFileApi {
     @Override
     public String storageFileWithReturnIdMinio(MultipartFile file) {
         return devFileService.uploadReturnId(DevFileEngineTypeEnum.MINIO.getValue(), file);
+    }
+
+    @Override
+    public JSONObject getFileInfoById(String id) {
+        return Optional.ofNullable(devFileService.getById(id))
+                .map(JSONUtil::parseObj)
+                .orElse(new JSONObject());
+    }
+
+    @Override
+    public void deleteAbsoluteById(String id) {
+        DevFileIdParam devFileIdParam = new DevFileIdParam();
+        devFileIdParam.setId(id);
+        devFileService.deleteAbsolute(devFileIdParam);
     }
 }

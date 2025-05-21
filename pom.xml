@@ -518,25 +518,18 @@
                 <version>${ten.sdk.ses.version}</version>
             </dependency>
 
-            <!--阿里云短信发送-->
-            <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>dysmsapi20170525</artifactId>
-                <version>${aliyun.sdk.dysmsapi.version}</version>
-            </dependency>
-
-            <!--腾讯云短信发送-->
-            <dependency>
-                <groupId>com.tencentcloudapi</groupId>
-                <artifactId>tencentcloud-sdk-java-sms</artifactId>
-                <version>${ten.sdk.sms.version}</version>
-            </dependency>
-
-            <!-- sms4j短信sdk -->
+            <!--sms4j短信sdk-->
             <dependency>
                 <groupId>org.dromara.sms4j</groupId>
                 <artifactId>sms4j-javase-plugin</artifactId>
-                <version>${sms4j.version}</version>
+                <version>3.3.4</version>
+            </dependency>
+
+            <!-- sms4j消息推送sdk -->
+            <dependency>
+                <groupId>org.dromara.sms4j</groupId>
+                <artifactId>sms4j-oa-core</artifactId>
+                <version>3.3.4</version>
             </dependency>
 
             <!--系统硬件信息-->
@@ -635,6 +628,14 @@
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>${commons.beanutils.version}</version>
+            </dependency>
+
+            <!-- junit -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>5.10.1</version>
+                <scope>test</scope>
             </dependency>
 
             <!-- dynamic-datasource -->

@@ -28,7 +28,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
@@ -60,6 +62,7 @@ import java.util.List;
  * @author xuyuxiang
  * @date 2022/2/23 18:43
  **/
+@Slf4j
 @Service
 public class DevFileServiceImpl extends ServiceImpl<DevFileMapper, DevFile> implements DevFileService {
 
@@ -121,9 +124,39 @@ public class DevFileServiceImpl extends ServiceImpl<DevFileMapper, DevFile> impl
         CommonDownloadUtil.download(devFile.getName(), IoUtil.readBytes(FileUtil.getInputStream(file)), response);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(List<DevFileIdParam> devFileIdParamList) {
         this.removeByIds(CollStreamUtil.toList(devFileIdParamList, DevFileIdParam::getId));
+    }
+
+    @Override
+    public void deleteAbsolute(DevFileIdParam devFileIdParam) {
+        DevFile devFile = this.queryEntity(devFileIdParam.getId());
+        try {
+            // 存储引擎
+            String engine = devFile.getEngine();
+            // 存储桶名称
+            String bucketName = devFile.getBucket();
+            // 文件key
+            String fileKey = devFile.getFileKey();
+            // 根据存储引擎删除文件
+            if (DevFileEngineTypeEnum.LOCAL.getValue().equals(engine)) {
+                DevFileLocalUtil.deleteFile(bucketName, fileKey);
+            } else if (DevFileEngineTypeEnum.ALIYUN.getValue().equals(engine)) {
+                DevFileAliyunUtil.deleteFile(bucketName, fileKey);
+            } else if (DevFileEngineTypeEnum.TENCENT.getValue().equals(engine)) {
+                DevFileTencentUtil.deleteFile(bucketName, fileKey);
+            } else if (DevFileEngineTypeEnum.MINIO.getValue().equals(engine)) {
+                DevFileMinIoUtil.deleteFile(bucketName, fileKey);
+            } else {
+                log.error("未知存储引擎：{}", engine);
+            }
+        } catch (Exception e) {
+            log.error("文件删除失败：{}，路径：{}", devFile.getName(), devFile.getStoragePath(), e);
+            throw new CommonException("文件删除失败"); // 触发事务回滚
+        }
+        this.baseMapper.deleteAbsoluteById(devFile.getId());
     }
 
     /**
@@ -145,6 +178,8 @@ public class DevFileServiceImpl extends ServiceImpl<DevFileMapper, DevFile> impl
         // 存储桶名称
         String bucketName;
 
+        String fileKey = genFileKey(fileId, file);
+
         // 定义存储的url，本地文件返回文件实际路径，其他引擎返回网络地址
         String storageUrl;
 
@@ -153,22 +188,22 @@ public class DevFileServiceImpl extends ServiceImpl<DevFileMapper, DevFile> impl
 
             // 使用固定名称defaultBucketName
             bucketName = "defaultBucketName";
-            storageUrl = DevFileLocalUtil.storageFileWithReturnUrl(bucketName, genFileKey(fileId, file), file);
+            storageUrl = DevFileLocalUtil.storageFileWithReturnUrl(bucketName, fileKey, file);
         } else if(engine.equals(DevFileEngineTypeEnum.ALIYUN.getValue())) {
 
             // 使用阿里云默认配置的bucketName
             bucketName = DevFileAliyunUtil.getDefaultBucketName();
-            storageUrl = DevFileAliyunUtil.storageFileWithReturnUrl(bucketName, genFileKey(fileId, file), file);
+            storageUrl = DevFileAliyunUtil.storageFileWithReturnUrl(bucketName, fileKey, file);
         } else if(engine.equals(DevFileEngineTypeEnum.TENCENT.getValue())) {
 
             // 使用腾讯云默认配置的bucketName
             bucketName = DevFileTencentUtil.getDefaultBucketName();
-            storageUrl = DevFileTencentUtil.storageFileWithReturnUrl(bucketName, genFileKey(fileId, file), file);
+            storageUrl = DevFileTencentUtil.storageFileWithReturnUrl(bucketName, fileKey, file);
         } else if(engine.equals(DevFileEngineTypeEnum.MINIO.getValue())) {
 
             // 使用MINIO默认配置的bucketName
             bucketName = DevFileMinIoUtil.getDefaultBucketName();
-            storageUrl = DevFileMinIoUtil.storageFileWithReturnUrl(bucketName, genFileKey(fileId, file), file);
+            storageUrl = DevFileMinIoUtil.storageFileWithReturnUrl(bucketName, fileKey, file);
         } else {
             throw new CommonException("不支持的文件引擎：{}", engine);
         }
@@ -182,12 +217,13 @@ public class DevFileServiceImpl extends ServiceImpl<DevFileMapper, DevFile> impl
         // 设置存储引擎类型
         devFile.setEngine(engine);
         devFile.setBucket(bucketName);
+        devFile.setFileKey(fileKey);
         devFile.setName(file.getOriginalFilename());
         String suffix = ObjectUtil.isNotEmpty(file.getOriginalFilename())?StrUtil.subAfter(file.getOriginalFilename(),
                 StrUtil.DOT, true):null;
         devFile.setSuffix(suffix);
         devFile.setSizeKb(Convert.toStr(NumberUtil.div(new BigDecimal(file.getSize()), BigDecimal.valueOf(1024))
-                .setScale(0, RoundingMode.HALF_UP)));
+                .setScale(0,  RoundingMode.HALF_UP )));
         devFile.setSizeInfo(FileUtil.readableFileSize(file.getSize()));
         devFile.setObjName(ObjectUtil.isNotEmpty(devFile.getSuffix())?fileId + StrUtil.DOT + devFile.getSuffix():null);
         // 如果是图片，则压缩生成缩略图

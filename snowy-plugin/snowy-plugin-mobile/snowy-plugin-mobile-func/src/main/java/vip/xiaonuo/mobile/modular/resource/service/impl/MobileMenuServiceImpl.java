@@ -24,6 +24,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -61,16 +62,16 @@ public class MobileMenuServiceImpl extends ServiceImpl<MobileMenuMapper, MobileM
 
     @Override
     public List<Tree<String>> tree(MobileMenuTreeParam mobileMenuTreeParam) {
-        LambdaQueryWrapper<MobileMenu> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        QueryWrapper<MobileMenu> queryWrapper = new QueryWrapper<MobileMenu>().checkSqlInjection();
         if(ObjectUtil.isNotEmpty(mobileMenuTreeParam.getModule())) {
-            lambdaQueryWrapper.eq(MobileMenu::getModule, mobileMenuTreeParam.getModule());
+            queryWrapper.lambda().eq(MobileMenu::getModule, mobileMenuTreeParam.getModule());
         }
         if(ObjectUtil.isNotEmpty(mobileMenuTreeParam.getSearchKey())) {
-            lambdaQueryWrapper.like(MobileMenu::getTitle, mobileMenuTreeParam.getSearchKey());
+            queryWrapper.lambda().like(MobileMenu::getTitle, mobileMenuTreeParam.getSearchKey());
         }
-        lambdaQueryWrapper.eq(MobileMenu::getCategory, MobileResourceCategoryEnum.MENU.getValue());
-        lambdaQueryWrapper.orderByDesc(MobileMenu::getSortCode);
-        List<MobileMenu> mobileMenuList = this.list(lambdaQueryWrapper);
+        queryWrapper.lambda().eq(MobileMenu::getCategory, MobileResourceCategoryEnum.MENU.getValue());
+        queryWrapper.lambda().orderByDesc(MobileMenu::getSortCode);
+        List<MobileMenu> mobileMenuList = this.list(queryWrapper.lambda());
         List<TreeNode<String>> treeNodeList = mobileMenuList.stream().map(mobileMenu ->
                         new TreeNode<>(mobileMenu.getId(), mobileMenu.getParentId(),
                                 mobileMenu.getTitle(), mobileMenu.getSortCode()).setExtra(JSONUtil.parseObj(mobileMenu)))
@@ -98,6 +99,9 @@ public class MobileMenuServiceImpl extends ServiceImpl<MobileMenuMapper, MobileM
                 throw new CommonException("module与上级菜单不一致");
             }
         }
+        if(ObjectUtil.isEmpty(mobileMenu.getCode())) {
+            mobileMenu.setCode(RandomUtil.randomString(10));
+        }
         mobileMenu.setCategory(MobileResourceCategoryEnum.MENU.getValue());
         this.save(mobileMenu);
     }
@@ -116,7 +120,7 @@ public class MobileMenuServiceImpl extends ServiceImpl<MobileMenuMapper, MobileM
         List<MobileMenu> originDataList = this.list(new LambdaQueryWrapper<MobileMenu>().eq(MobileMenu::getCategory,
                 MobileResourceCategoryEnum.MENU.getValue()));
         boolean errorLevel = this.getChildListById(originDataList, mobileMenu.getId(), true).stream()
-                .map(MobileMenu::getId).collect(Collectors.toList()).contains(mobileMenu.getParentId());
+                .map(MobileMenu::getId).toList().contains(mobileMenu.getParentId());
         if(errorLevel) {
             throw new CommonException("不可选择上级菜单：{}", this.getById(originDataList, mobileMenu.getParentId()).getTitle());
         }
@@ -132,6 +136,7 @@ public class MobileMenuServiceImpl extends ServiceImpl<MobileMenuMapper, MobileM
         this.updateById(mobileMenu);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void changeModule(MobileMenuChangeModuleParam mobileMenuChangeModuleParam) {
         MobileMenu mobileMenu = this.queryEntity(mobileMenuChangeModuleParam.getId());
@@ -164,7 +169,7 @@ public class MobileMenuServiceImpl extends ServiceImpl<MobileMenuMapper, MobileM
                     .in(MobileMenu::getCategory, CollectionUtil.newArrayList(MobileResourceCategoryEnum.MENU.getValue())));
             List<String> toDeleteMenuIdList = CollectionUtil.newArrayList();
             mobileMenuIdList.forEach(menuId -> toDeleteMenuIdList.addAll(this.getChildListById(allMenuList, menuId, true).stream()
-                    .map(MobileMenu::getId).collect(Collectors.toList())));
+                    .map(MobileMenu::getId).toList()));
             if(ObjectUtil.isNotEmpty(toDeleteMenuIdList)) {
                 // 清除对应的角色与移动端资源信息
                 sysRelationApi.removeRoleHasMobileMenuRelation(toDeleteMenuIdList);
@@ -190,12 +195,12 @@ public class MobileMenuServiceImpl extends ServiceImpl<MobileMenuMapper, MobileM
 
     @Override
     public List<MobileModule> moduleSelector(MobileMenuSelectorModuleParam mobileMenuSelectorModuleParam) {
-        LambdaQueryWrapper<MobileModule> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        QueryWrapper<MobileModule> queryWrapper = new QueryWrapper<MobileModule>().checkSqlInjection();
         if(ObjectUtil.isNotEmpty(mobileMenuSelectorModuleParam.getSearchKey())) {
-            lambdaQueryWrapper.like(MobileModule::getTitle, mobileMenuSelectorModuleParam.getSearchKey());
+            queryWrapper.lambda().like(MobileModule::getTitle, mobileMenuSelectorModuleParam.getSearchKey());
         }
-        lambdaQueryWrapper.eq(MobileModule::getCategory, MobileResourceCategoryEnum.MODULE.getValue());
-        return mobileModuleService.list(lambdaQueryWrapper);
+        queryWrapper.lambda().eq(MobileModule::getCategory, MobileResourceCategoryEnum.MODULE.getValue());
+        return mobileModuleService.list(queryWrapper.lambda());
     }
 
     @Override
@@ -216,16 +221,19 @@ public class MobileMenuServiceImpl extends ServiceImpl<MobileMenuMapper, MobileM
 
     @Override
     public List<JSONObject> mobileMenuTreeSelector() {
-        // 模块、菜单、按钮，应该查所有的，当然这里没有已经删除过的
-        List<MobileMenu> allModuleAndMenuList = this.list();
+        return this.mobileMenuTreeSelector(this.list());
+    }
+
+    @Override
+    public List<JSONObject> mobileMenuTreeSelector(List<MobileMenu> originDataList) {
         List<MobileMenu> mobileModuleList = CollectionUtil.newArrayList();
         List<MobileMenu> mobileMenuList = CollectionUtil.newArrayList();
         List<MobileMenu> mobileButtonList = CollectionUtil.newArrayList();
-        if (ObjectUtil.isEmpty(allModuleAndMenuList)) {
+        if (ObjectUtil.isEmpty(originDataList)) {
             // 返回空列表
             return CollectionUtil.newArrayList();
         }
-        allModuleAndMenuList.forEach(mobileMenu -> {
+        originDataList.forEach(mobileMenu -> {
             if (mobileMenu.getCategory().equals(MobileResourceCategoryEnum.MODULE.getValue())) {
                 mobileModuleList.add(mobileMenu);
             }
@@ -237,12 +245,17 @@ public class MobileMenuServiceImpl extends ServiceImpl<MobileMenuMapper, MobileM
             }
         });
         List<JSONObject> leafMenuList = CollectionUtil.newArrayList();
+        MobileMenu rootMobileMenu = new MobileMenu();
+        rootMobileMenu.setId("0");
+        rootMobileMenu.setParentId("-1");
+        rootMobileMenu.setSortCode(-1);
+        mobileMenuList.add(rootMobileMenu);
         List<TreeNode<String>> treeNodeList = mobileMenuList.stream().map(mobileMenu ->
                 new TreeNode<>(mobileMenu.getId(), mobileMenu.getParentId(),
                         mobileMenu.getTitle(), mobileMenu.getSortCode())).collect(Collectors.toList());
         List<Tree<String>> treeList = TreeUtil.build(treeNodeList, "0");
         mobileMenuList.forEach(mobileMenu -> {
-            boolean isLeafMenu = this.getChildListById(mobileMenuList, mobileMenu.getId(), false).size() == 0;
+            boolean isLeafMenu = this.getChildListById(mobileMenuList, mobileMenu.getId(), false).isEmpty();
             if(isLeafMenu) {
                 JSONObject mobileRoleGrantResourceMenuResult = JSONUtil.createObj();
                 BeanUtil.copyProperties(mobileMenu, mobileRoleGrantResourceMenuResult);
@@ -261,7 +274,7 @@ public class MobileMenuServiceImpl extends ServiceImpl<MobileMenuMapper, MobileM
                     mobileRoleGrantResourceMenuResult.set("parentName", parentJsonObject.getStr("parentName"));
                 }
                 mobileRoleGrantResourceMenuResult.set("button", this.getChildListById(mobileButtonList, mobileMenu.getId(), false)
-                        .stream().map(sysMenuItem -> JSONUtil.createObj().set("id", sysMenuItem.getId()).set("title", sysMenuItem.getTitle()))
+                        .stream().map(tempMobileMenu -> JSONUtil.createObj().set("id", tempMobileMenu.getId()).set("title", tempMobileMenu.getTitle()))
                         .collect(Collectors.toList()));
                 leafMenuList.add(mobileRoleGrantResourceMenuResult);
             }
@@ -306,7 +319,7 @@ public class MobileMenuServiceImpl extends ServiceImpl<MobileMenuMapper, MobileM
 
         // 获取拥有的菜单列表
         List<MobileMenu> menuList = allMenuList.stream().filter(mobileMenu ->
-                menuIdList.contains(mobileMenu.getId())).collect(Collectors.toList());
+                menuIdList.contains(mobileMenu.getId())).toList();
 
         // 对获取到的角色对应的菜单列表进行处理，获取父列表
         menuList.forEach(mobileMenu -> execRecursionFindParent(allMenuList, mobileMenu.getId(), resultList));
@@ -355,7 +368,7 @@ public class MobileMenuServiceImpl extends ServiceImpl<MobileMenuMapper, MobileM
             }
             menuJsonObject.set("meta", metaJsonObject);
             return menuJsonObject;
-        }).collect(Collectors.toList());
+        }).toList();
 
         // 执行构造树
         List<TreeNode<String>> treeNodeList = resultJsonObjectList.stream().map(jsonObject ->

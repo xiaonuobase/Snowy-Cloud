@@ -65,6 +65,7 @@ public class DevMessageServiceImpl extends ServiceImpl<DevMessageMapper, DevMess
     @Resource
     private DevRelationService devRelationService;
 
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void send(DevMessageSendParam devMessageSendParam) {
@@ -139,7 +140,7 @@ public class DevMessageServiceImpl extends ServiceImpl<DevMessageMapper, DevMess
         if(ObjectUtil.isNotEmpty(devMessageListParam.getReceiverIdList())) {
             List<String> messageIdList = devRelationService
                     .getRelationListByTargetIdListAndCategory(devMessageListParam.getReceiverIdList(),
-                            DevRelationCategoryEnum.MSG_TO_USER.getValue()).stream().filter(devRelation -> JSONUtil
+                    DevRelationCategoryEnum.MSG_TO_USER.getValue()).stream().filter(devRelation -> JSONUtil
                             .parseObj(devRelation.getExtJson()).getBool("read").equals(false))
                     .map(DevRelation::getObjectId).collect(Collectors.toList());
             if(ObjectUtil.isNotEmpty(messageIdList)) {
@@ -191,13 +192,7 @@ public class DevMessageServiceImpl extends ServiceImpl<DevMessageMapper, DevMess
         List<DevMessageResult.DevReceiveInfo> receiveInfoList = devRelationService.getRelationListByObjectIdAndCategory(devMessage.getId(),
                 DevRelationCategoryEnum.MSG_TO_USER.getValue()).stream().map(devRelation -> {
             DevMessageResult.DevReceiveInfo devReceiveInfo = new DevMessageResult.DevReceiveInfo();
-            JSONObject userObj = null;
-            try {
-                userObj = sysUserApi.getUserByIdWithException(devRelation.getTargetId());
-            }
-            catch (Exception e) {
-                // 收件人中包含删除用户 在此处做处理
-            }
+            JSONObject userObj = sysUserApi.getUserByIdWithException(devRelation.getTargetId());
             String userName = "未知用户";
             if(ObjectUtil.isNotEmpty(userObj)) {
                 userName = userObj.getStr("name");
@@ -219,4 +214,5 @@ public class DevMessageServiceImpl extends ServiceImpl<DevMessageMapper, DevMess
         }
         return devMessage;
     }
+
 }

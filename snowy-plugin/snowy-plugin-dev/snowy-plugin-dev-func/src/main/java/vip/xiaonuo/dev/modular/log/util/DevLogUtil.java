@@ -12,11 +12,9 @@
  */
 package vip.xiaonuo.dev.modular.log.util;
 
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.thread.ThreadUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
@@ -45,9 +43,9 @@ public class DevLogUtil {
      */
     public static void executeOperationLog(CommonLog commonLog, String userName, JoinPoint joinPoint, String resultJson) {
         HttpServletRequest request = CommonServletUtil.getRequest();
-        DevLog devLog = genBasOpLog();
-        String method = request.getMethod();
         String requestURI = request.getRequestURI();
+        String method = request.getRequestURI();
+        DevLog devLog = genBasOpLog();
         ThreadUtil.execute(() -> {
             devLog.setCategory(DevLogCategoryEnum.OPERATE.getValue());
             devLog.setName(commonLog.value());
@@ -74,7 +72,7 @@ public class DevLogUtil {
     public static void executeExceptionLog(CommonLog commonLog, String userName, JoinPoint joinPoint, Exception exception) {
         HttpServletRequest request = CommonServletUtil.getRequest();
         String requestURI = request.getRequestURI();
-        String method = request.getMethod();
+        String method = request.getRequestURI();
         DevLog devLog = genBasOpLog();
         ThreadUtil.execute(() -> {
             devLog.setCategory(DevLogCategoryEnum.EXCEPTION.getValue());
@@ -140,21 +138,11 @@ public class DevLogUtil {
     private static DevLog genBasOpLog() {
         HttpServletRequest request = CommonServletUtil.getRequest();
         String ip = CommonIpAddressUtil.getIp(request);
-        String loginId;
-        try {
-            loginId = StpUtil.getLoginIdAsString();
-            if (ObjectUtil.isEmpty(loginId)) {
-                loginId = "-1";
-            }
-        } catch (Exception e) {
-            loginId = "-1";
-        }
         DevLog devLog = new DevLog();
         devLog.setOpIp(CommonIpAddressUtil.getIp(request));
         devLog.setOpAddress(CommonIpAddressUtil.getCityInfo(ip));
         devLog.setOpBrowser(CommonUaUtil.getBrowser(request));
         devLog.setOpOs(CommonUaUtil.getOs(request));
-        devLog.setCreateUser(loginId);
         return devLog;
     }
 

@@ -22,8 +22,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.xiaonuo.common.enums.SysBuildInEnum;
 import vip.xiaonuo.sys.api.SysRoleApi;
+import vip.xiaonuo.sys.core.enums.SysBuildInEnum;
 import vip.xiaonuo.sys.modular.relation.entity.SysRelation;
 import vip.xiaonuo.sys.modular.relation.enums.SysRelationCategoryEnum;
 import vip.xiaonuo.sys.modular.relation.service.SysRelationService;
@@ -106,5 +106,15 @@ public class SysRoleApiProvider implements SysRoleApi {
                     .eq(SysRelation::getCategory, SysRelationCategoryEnum.SYS_ROLE_HAS_RESOURCE.getValue()).notIn(SysRelation::getTargetId, existMenuIdList));
         }
         sysRelationService.saveRelationBatchWithAppend(superAdminRoleId, menuIdList, SysRelationCategoryEnum.SYS_ROLE_HAS_RESOURCE.getValue(), extJsonList);
+    }
+
+    @Override
+    public List<JSONObject> resourceTreeSelector() {
+        return sysRoleService.resourceTreeSelector(false).stream().map(JSONUtil::parseObj).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> permissionTreeSelector() {
+        return sysRoleService.permissionTreeSelector();
     }
 }

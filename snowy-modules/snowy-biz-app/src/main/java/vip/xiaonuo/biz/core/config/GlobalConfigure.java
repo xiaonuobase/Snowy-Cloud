@@ -29,13 +29,22 @@ import cn.hutool.http.ContentType;
 import cn.hutool.http.Header;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.enums.SqlMethod;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.baomidou.mybatisplus.core.injector.AbstractMethod;
+import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
+import com.baomidou.mybatisplus.core.injector.ISqlInjector;
+import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.ReflectionException;
 import org.aspectj.lang.JoinPoint;
@@ -139,9 +148,6 @@ public class GlobalConfigure implements WebMvcConfigurer {
 
             /* 系统字典树 */
             "/dev/dict/tree",
-
-            /* 文件下载 */
-            "/dev/file/download",
 
             /* 用户个人中心相关 */
             "/sys/userCenter/getPicCaptcha",
@@ -288,7 +294,10 @@ public class GlobalConfigure implements WebMvcConfigurer {
                     // 在[异常处理函数]里的返回值，将作为字符串输出到前端，此处统一转为JSON输出前端
                     SaResponse saResponse = SaHolder.getResponse();
                     saResponse.setHeader(Header.CONTENT_TYPE.getValue(), ContentType.JSON + ";charset=" + CharsetUtil.UTF_8);
-                    return GlobalExceptionUtil.getCommonResult((Exception) e);
+                    // result是字符串，需要手动转为json格式。全局异常处理中的字符串返回信息（ommonResult<String>）已经被@ResponseBody进行json格式化了
+                    CommonResult<String> result = GlobalExceptionUtil.getCommonResult((Exception) e);
+                    Gson g = new GsonBuilder().serializeNulls().create();
+                    return g.toJson(result);
                 });
     }
 
@@ -559,29 +568,19 @@ public class GlobalConfigure implements WebMvcConfigurer {
     @Component
     public static class CustomMetaObjectHandler implements MetaObjectHandler {
 
-        /**
-         * 删除标志
-         */
+        /** 删除标志 */
         private static final String DELETE_FLAG = "deleteFlag";
 
-        /**
-         * 创建人
-         */
+        /** 创建人 */
         private static final String CREATE_USER = "createUser";
 
-        /**
-         * 创建时间
-         */
+        /** 创建时间 */
         private static final String CREATE_TIME = "createTime";
 
-        /**
-         * 更新人
-         */
+        /** 更新人 */
         private static final String UPDATE_USER = "updateUser";
 
-        /**
-         * 更新时间
-         */
+        /** 更新时间 */
         private static final String UPDATE_TIME = "updateTime";
 
         @Override
@@ -599,16 +598,14 @@ public class GlobalConfigure implements WebMvcConfigurer {
                 if (ObjectUtil.isNull(createUser)) {
                     setFieldValByName(CREATE_USER, this.getUserId(), metaObject);
                 }
-            } catch (ReflectionException ignored) {
-            }
+            } catch (ReflectionException ignored) { }
             try {
                 //为空则设置createTime
                 Object createTime = metaObject.getValue(CREATE_TIME);
                 if (ObjectUtil.isNull(createTime)) {
                     setFieldValByName(CREATE_TIME, DateTime.now(), metaObject);
                 }
-            } catch (ReflectionException ignored) {
-            }
+            } catch (ReflectionException ignored) { }
         }
 
         @Override
@@ -660,6 +657,45 @@ public class GlobalConfigure implements WebMvcConfigurer {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
         return interceptor;
+    }
+
+    /**
+     *  物理删除
+     *  @author xuyuxiang
+     *  @date 2025/4/06 1:20
+     */
+    public static class DeleteAbsoluteById extends AbstractMethod {
+        /**
+         * @param methodName 方法名
+         * @since 3.5.0
+         */
+        protected DeleteAbsoluteById(String methodName) {
+            super(methodName);
+        }
+
+        @Override
+        public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
+            String method = "deleteAbsoluteById";
+            SqlMethod sqlMethod = SqlMethod.DELETE_BY_ID;
+            String sql = String.format(sqlMethod.getSql(), tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty());
+            SqlSource sqlSource = this.languageDriver.createSqlSource(this.configuration, sql, Object.class);
+            return this.addDeleteMappedStatement(mapperClass, method, sqlSource);
+        }
+    }
+
+
+    public static class MpSqlInjector extends DefaultSqlInjector {
+        @Override
+        public List<AbstractMethod> getMethodList(Class<?> mapperClass, TableInfo tableInfo) {
+            List<AbstractMethod> methodList = super.getMethodList(mapperClass, tableInfo);
+            methodList.add(new DeleteAbsoluteById("deleteAbsoluteById"));
+            return methodList;
+        }
+    }
+
+    @Bean
+    public ISqlInjector sqlInjector() {
+        return new MpSqlInjector();
     }
 
     /**

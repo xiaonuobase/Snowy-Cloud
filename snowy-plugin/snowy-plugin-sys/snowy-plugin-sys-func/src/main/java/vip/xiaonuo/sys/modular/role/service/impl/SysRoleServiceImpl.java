@@ -21,7 +21,6 @@ import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONObject;
@@ -40,12 +39,12 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import vip.xiaonuo.common.cache.CommonCacheOperator;
 import vip.xiaonuo.common.consts.CacheConstant;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
-import vip.xiaonuo.common.enums.SysBuildInEnum;
-import vip.xiaonuo.common.enums.SysDataTypeEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.listener.CommonDataChangeEventCenter;
 import vip.xiaonuo.common.page.CommonPageRequest;
-import vip.xiaonuo.mobile.vip.MobileMenuApi;
+import vip.xiaonuo.mobile.api.MobileMenuApi;
+import vip.xiaonuo.sys.core.enums.SysBuildInEnum;
+import vip.xiaonuo.sys.core.enums.SysDataTypeEnum;
 import vip.xiaonuo.sys.modular.org.entity.SysOrg;
 import vip.xiaonuo.sys.modular.org.service.SysOrgService;
 import vip.xiaonuo.sys.modular.relation.entity.SysRelation;
@@ -64,6 +63,7 @@ import vip.xiaonuo.sys.modular.role.param.*;
 import vip.xiaonuo.sys.modular.role.result.*;
 import vip.xiaonuo.sys.modular.role.service.SysRoleService;
 import vip.xiaonuo.sys.modular.user.entity.SysUser;
+import vip.xiaonuo.sys.modular.user.enums.SysUserStatusEnum;
 import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
 import java.util.*;
@@ -94,16 +94,13 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     private SysUserService sysUserService;
 
     @Resource
-    private CommonCacheOperator commonCacheOperator;
-
-    @Resource
     private MobileMenuApi mobileMenuApi;
 
     @Override
     public Page<SysRole> page(SysRolePageParam sysRolePageParam) {
         QueryWrapper<SysRole> queryWrapper = new QueryWrapper<SysRole>().checkSqlInjection();
         // 查询部分字段
-        queryWrapper.lambda().select(SysRole::getId, SysRole::getOrgId, SysRole::getName,
+        queryWrapper.lambda().select(SysRole::getId, SysRole::getOrgId, SysRole::getName, SysRole::getCode,
                 SysRole::getCategory, SysRole::getSortCode);
         if(ObjectUtil.isNotEmpty(sysRolePageParam.getOrgId())) {
             queryWrapper.lambda().eq(SysRole::getOrgId, sysRolePageParam.getOrgId());
@@ -127,6 +124,15 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void add(SysRoleAddParam sysRoleAddParam) {
+        checkParam(sysRoleAddParam);
+        SysRole sysRole = BeanUtil.toBean(sysRoleAddParam, SysRole.class);
+        this.save(sysRole);
+
+        // 发布增加事件
+        CommonDataChangeEventCenter.doAddWithData(SysDataTypeEnum.ROLE.getValue(), JSONUtil.createArray().put(sysRole));
+    }
+
+    private void checkParam(SysRoleAddParam sysRoleAddParam) {
         SysRoleCategoryEnum.validate(sysRoleAddParam.getCategory());
         if(SysRoleCategoryEnum.ORG.getValue().equals(sysRoleAddParam.getCategory())) {
             if(ObjectUtil.isEmpty(sysRoleAddParam.getOrgId())) {
@@ -135,46 +141,34 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         } else {
             sysRoleAddParam.setOrgId(null);
         }
-        SysRole sysRole = BeanUtil.toBean(sysRoleAddParam, SysRole.class);
-        boolean repeatName = this.count(new LambdaQueryWrapper<SysRole>().eq(SysRole::getOrgId, sysRole.getOrgId())
-                .eq(SysRole::getName, sysRole.getName())) > 0;
+        boolean repeatName = this.count(new LambdaQueryWrapper<SysRole>().eq(SysRole::getOrgId, sysRoleAddParam.getOrgId())
+                .eq(SysRole::getName, sysRoleAddParam.getName())) > 0;
         if(repeatName) {
-            if(ObjectUtil.isEmpty(sysRole.getOrgId())) {
-                throw new CommonException("存在重复的全局角色，名称为：{}", sysRole.getName());
+            if(ObjectUtil.isEmpty(sysRoleAddParam.getOrgId())) {
+                throw new CommonException("存在重复的全局角色，名称为：{}", sysRoleAddParam.getName());
             } else {
-                throw new CommonException("同组织下存在重复的角色，名称为：{}", sysRole.getName());
+                throw new CommonException("同组织下存在重复的角色，名称为：{}", sysRoleAddParam.getName());
             }
         }
-        sysRole.setCode(RandomUtil.randomString(10));
-        this.save(sysRole);
-
-        // 发布增加事件
-        CommonDataChangeEventCenter.doAddWithData(SysDataTypeEnum.ROLE.getValue(), JSONUtil.createArray().put(sysRole));
+        boolean repeatCode = this.count(new LambdaQueryWrapper<SysRole>().eq(SysRole::getOrgId, sysRoleAddParam.getOrgId())
+                .eq(SysRole::getCode, sysRoleAddParam.getCode())) > 0;
+        if(repeatCode) {
+            if(ObjectUtil.isEmpty(sysRoleAddParam.getOrgId())) {
+                throw new CommonException("存在重复的全局角色，编码为：{}", sysRoleAddParam.getCode());
+            } else {
+                throw new CommonException("同组织下存在重复的角色，编码为：{}", sysRoleAddParam.getCode());
+            }
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void edit(SysRoleEditParam sysRoleEditParam) {
         SysRole sysRole = this.queryEntity(sysRoleEditParam.getId());
+        checkParam(sysRoleEditParam);
         boolean superRole = sysRole.getCode().equals(SysBuildInEnum.BUILD_IN_ROLE_CODE.getValue());
         if(superRole) {
             throw new CommonException("不可编辑超管角色");
-        }
-        if(SysRoleCategoryEnum.ORG.getValue().equals(sysRoleEditParam.getCategory())) {
-            if (ObjectUtil.isEmpty(sysRoleEditParam.getOrgId())) {
-                throw new CommonException("orgId不能为空");
-            }
-        } else {
-            sysRoleEditParam.setOrgId(null);
-        }
-        boolean repeatName = this.count(new LambdaQueryWrapper<SysRole>().eq(SysRole::getOrgId, sysRole.getOrgId())
-                .eq(SysRole::getName, sysRole.getName()).ne(SysRole::getId, sysRole.getId())) > 0;
-        if(repeatName) {
-            if(ObjectUtil.isEmpty(sysRole.getOrgId())) {
-                throw new CommonException("存在重复的全局角色，名称为：{}", sysRole.getName());
-            } else {
-                throw new CommonException("同组织下存在重复的角色，名称为：{}", sysRole.getName());
-            }
         }
         BeanUtil.copyProperties(sysRoleEditParam, sysRole);
         this.updateById(sysRole);
@@ -182,6 +176,36 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 发布更新事件
         CommonDataChangeEventCenter.doUpdateWithData(SysDataTypeEnum.ROLE.getValue(), JSONUtil.createArray().put(sysRole));
     }
+
+    private void checkParam(SysRoleEditParam sysRoleEditParam) {
+        SysRoleCategoryEnum.validate(sysRoleEditParam.getCategory());
+        if(SysRoleCategoryEnum.ORG.getValue().equals(sysRoleEditParam.getCategory())) {
+            if(ObjectUtil.isEmpty(sysRoleEditParam.getOrgId())) {
+                throw new CommonException("orgId不能为空");
+            }
+        } else {
+            sysRoleEditParam.setOrgId(null);
+        }
+        boolean repeatName = this.count(new LambdaQueryWrapper<SysRole>().eq(SysRole::getOrgId, sysRoleEditParam.getOrgId())
+                .eq(SysRole::getName, sysRoleEditParam.getName()).ne(SysRole::getId, sysRoleEditParam.getId())) > 0;
+        if(repeatName) {
+            if(ObjectUtil.isEmpty(sysRoleEditParam.getOrgId())) {
+                throw new CommonException("存在重复的全局角色，名称为：{}", sysRoleEditParam.getName());
+            } else {
+                throw new CommonException("同组织下存在重复的角色，名称为：{}", sysRoleEditParam.getName());
+            }
+        }
+        boolean repeatCode = this.count(new LambdaQueryWrapper<SysRole>().eq(SysRole::getOrgId, sysRoleEditParam.getOrgId())
+                .eq(SysRole::getCode, sysRoleEditParam.getCode()).ne(SysRole::getId, sysRoleEditParam.getId())) > 0;
+        if(repeatCode) {
+            if(ObjectUtil.isEmpty(sysRoleEditParam.getOrgId())) {
+                throw new CommonException("存在重复的全局角色，编码为：{}", sysRoleEditParam.getCode());
+            } else {
+                throw new CommonException("同组织下存在重复的角色，编码为：{}", sysRoleEditParam.getCode());
+            }
+        }
+    }
+
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -199,6 +223,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             // 级联删除角色与资源关系
             sysRelationService.remove(new LambdaUpdateWrapper<SysRelation>().in(SysRelation::getObjectId, sysRoleIdList)
                     .eq(SysRelation::getCategory, SysRelationCategoryEnum.SYS_ROLE_HAS_RESOURCE.getValue()));
+            // 级联删除角色与移动端资源关系
+            sysRelationService.remove(new LambdaUpdateWrapper<SysRelation>().in(SysRelation::getObjectId, sysRoleIdList)
+                    .eq(SysRelation::getCategory, SysRelationCategoryEnum.SYS_ROLE_HAS_MOBILE_MENU.getValue()));
             // 级联删除角色与权限关系
             sysRelationService.remove(new LambdaUpdateWrapper<SysRelation>().in(SysRelation::getObjectId, sysRoleIdList)
                     .eq(SysRelation::getCategory, SysRelationCategoryEnum.SYS_ROLE_HAS_PERMISSION.getValue()));
@@ -331,15 +358,22 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public List<SysRoleGrantResourceTreeResult> resourceTreeSelector() {
+    public List<SysRoleGrantResourceTreeResult> resourceTreeSelector(boolean containsTen) {
         LambdaQueryWrapper<SysMenu> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.in(SysMenu::getCategory, SysResourceCategoryEnum.MODULE.getValue(), SysResourceCategoryEnum.MENU.getValue(),
                 SysResourceCategoryEnum.BUTTON.getValue());
-        List<SysMenu> allMenuAndButtonAndFieldList = sysMenuService.list(lambdaQueryWrapper);
+        if(!containsTen) {
+            lambdaQueryWrapper.ne(SysMenu::getCode, SysBuildInEnum.BUILD_IN_NO_TEN_MENU_CODE.getValue());
+        }
+        return this.resourceTreeSelector(sysMenuService.list(lambdaQueryWrapper));
+    }
+
+    @Override
+    public List<SysRoleGrantResourceTreeResult> resourceTreeSelector(List<SysMenu> originDataList) {
         List<SysMenu> sysModuleList = CollectionUtil.newArrayList();
         List<SysMenu> sysMenuList = CollectionUtil.newArrayList();
         List<SysMenu> sysButtonList = CollectionUtil.newArrayList();
-        allMenuAndButtonAndFieldList.forEach(sysMenu -> {
+        originDataList.forEach(sysMenu -> {
             if (sysMenu.getCategory().equals(SysResourceCategoryEnum.MODULE.getValue())) {
                 sysModuleList.add(sysMenu);
             }
@@ -412,6 +446,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
+    public List<SysRoleGrantMobileMenuTreeResult> mobileMenuTreeSelector(List<JSONObject> originDataList) {
+        return BeanUtil.copyToList(mobileMenuApi.mobileMenuTreeSelector(originDataList), SysRoleGrantMobileMenuTreeResult.class);
+    }
+
+    @Override
     public List<String> permissionTreeSelector() {
         List<String> permissionResult = CollectionUtil.newArrayList();
 
@@ -429,35 +468,37 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public Page<SysRole> roleSelector(SysRoleSelectorRoleParam sysRoleSelectorRoleParam) {
-        LambdaQueryWrapper<SysRole> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        QueryWrapper<SysRole> queryWrapper = new QueryWrapper<SysRole>().checkSqlInjection();
         // 查询部分字段
-        lambdaQueryWrapper.select(SysRole::getId, SysRole::getOrgId, SysRole::getName,
+        queryWrapper.lambda().select(SysRole::getId, SysRole::getOrgId, SysRole::getName, SysRole::getCode,
                 SysRole::getCategory, SysRole::getSortCode);
         if(ObjectUtil.isNotEmpty(sysRoleSelectorRoleParam.getOrgId())) {
-            lambdaQueryWrapper.eq(SysRole::getOrgId, sysRoleSelectorRoleParam.getOrgId());
+            queryWrapper.lambda().eq(SysRole::getOrgId, sysRoleSelectorRoleParam.getOrgId());
         }
         if(ObjectUtil.isNotEmpty(sysRoleSelectorRoleParam.getCategory())) {
-            lambdaQueryWrapper.eq(SysRole::getCategory, sysRoleSelectorRoleParam.getCategory());
+            queryWrapper.lambda().eq(SysRole::getCategory, sysRoleSelectorRoleParam.getCategory());
         }
         if(ObjectUtil.isNotEmpty(sysRoleSelectorRoleParam.getSearchKey())) {
-            lambdaQueryWrapper.like(SysRole::getName, sysRoleSelectorRoleParam.getSearchKey());
+            queryWrapper.lambda().like(SysRole::getName, sysRoleSelectorRoleParam.getSearchKey());
         }
         if(ObjectUtil.isNotEmpty(sysRoleSelectorRoleParam.getDataScopeList())) {
-            lambdaQueryWrapper.in(SysRole::getOrgId, sysRoleSelectorRoleParam.getDataScopeList());
+            queryWrapper.lambda().in(SysRole::getOrgId, sysRoleSelectorRoleParam.getDataScopeList());
         }
         // 排除超管角色
         if(sysRoleSelectorRoleParam.isExcludeSuperAdmin()) {
-            lambdaQueryWrapper.ne(SysRole::getCode, SysBuildInEnum.BUILD_IN_ROLE_CODE.getValue());
+            queryWrapper.lambda().ne(SysRole::getCode, SysBuildInEnum.BUILD_IN_ROLE_CODE.getValue());
         }
-        lambdaQueryWrapper.orderByAsc(SysRole::getSortCode);
-        return this.page(CommonPageRequest.defaultPage(), lambdaQueryWrapper);
+        queryWrapper.lambda().orderByAsc(SysRole::getSortCode);
+        return this.page(CommonPageRequest.defaultPage(), queryWrapper.lambda());
     }
 
     @Override
     public Page<SysUser> userSelector(SysRoleSelectorUserParam sysRoleSelectorUserParam) {
-        LambdaQueryWrapper<SysUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<SysUser>().checkSqlInjection();
+        // 只查询状态为正常的
+        queryWrapper.lambda().eq(SysUser::getUserStatus, SysUserStatusEnum.ENABLE.getValue());
         // 只查询部分字段
-        lambdaQueryWrapper.select(SysUser::getId, SysUser::getAvatar, SysUser::getOrgId, SysUser::getPositionId, SysUser::getAccount,
+        queryWrapper.lambda().select(SysUser::getId, SysUser::getAvatar, SysUser::getOrgId, SysUser::getPositionId, SysUser::getAccount,
                 SysUser::getName, SysUser::getSortCode, SysUser::getGender, SysUser::getEntryDate);
         // 如果查询条件为空，则直接查询
         if(ObjectUtil.isAllEmpty(sysRoleSelectorUserParam.getOrgId(), sysRoleSelectorUserParam.getSearchKey())) {
@@ -468,16 +509,16 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 List<String> childOrgIdList = CollStreamUtil.toList(sysOrgService.getChildListById(sysOrgService
                         .getAllOrgList(), sysRoleSelectorUserParam.getOrgId(), true), SysOrg::getId);
                 if (ObjectUtil.isNotEmpty(childOrgIdList)) {
-                    lambdaQueryWrapper.in(SysUser::getOrgId, childOrgIdList);
+                    queryWrapper.lambda().in(SysUser::getOrgId, childOrgIdList);
                 } else {
                     return new Page<>();
                 }
             }
             if (ObjectUtil.isNotEmpty(sysRoleSelectorUserParam.getSearchKey())) {
-                lambdaQueryWrapper.like(SysUser::getName, sysRoleSelectorUserParam.getSearchKey());
+                queryWrapper.lambda().like(SysUser::getName, sysRoleSelectorUserParam.getSearchKey());
             }
-            lambdaQueryWrapper.orderByAsc(SysUser::getSortCode);
-            return sysUserService.page(CommonPageRequest.defaultPage(), lambdaQueryWrapper);
+            queryWrapper.lambda().orderByAsc(SysUser::getSortCode);
+            return sysUserService.page(CommonPageRequest.defaultPage(), queryWrapper.lambda());
         }
     }
 
