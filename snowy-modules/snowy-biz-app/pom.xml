@@ -120,28 +120,52 @@
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-auth-api</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- 业务功能插件 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-biz-func</artifactId>
-            <version>${project.parent.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>sms4j-javase-plugin</artifactId>
+                    <groupId>org.dromara.sms4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>sms4j-oa-core</artifactId>
+                    <groupId>org.dromara.sms4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>x-file-storage-spring</artifactId>
+                    <groupId>org.dromara.x-file-storage</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- 系统功能插件Feign接口 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-sys-feign</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- 开发工具插件Feign接口 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-dev-feign</artifactId>
-            <version>${project.parent.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>sms4j-javase-plugin</artifactId>
+                    <groupId>org.dromara.sms4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>sms4j-oa-core</artifactId>
+                    <groupId>org.dromara.sms4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>x-file-storage-spring</artifactId>
+                    <groupId>org.dromara.x-file-storage</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- bootstrap 配置加载 -->

@@ -10,25 +10,32 @@
  * 5.不可二次分发开源参与同类竞品，如有想法可联系团队xiaonuobase@qq.com商议合作。
  * 6.若您的项目无法满足以上几点，需要更多功能代码，获取Snowy商业授权许可，请在官网购买授权，地址为 https://www.xiaonuo.vip
  */
-package vip.xiaonuo.mobile.vip;
+package vip.xiaonuo.client.modular.user.service;
 
-import cn.hutool.json.JSONObject;
-
-import java.util.List;
+import com.baomidou.mybatisplus.extension.service.IService;
+import vip.xiaonuo.client.modular.user.entity.ClientUserExt;
 
 /**
- * 移动端菜单API
+ * C端用户扩展Service接口
  *
- * @author xuyuxiang
- * @date 2023/1/31 10:09
+ * @author yubaoshan
+ * @date  2024/12/21 01:25
  **/
-public interface MobileModuleApi {
+public interface ClientUserExtService extends IService<ClientUserExt> {
 
     /**
-     * 获取移动端模块选择器
+     * 更新用户最新修改密码时间
      *
-     * @author 每天一点
-     * @date 2023/7/15 22:01
-     **/
-    List<JSONObject> mobileModuleSelector();
+     * @author xuyuxiang
+     * @date 2022/4/27 21:38
+     */
+    void updatePasswordLastTime(String userId);
+
+    /**
+     * 插入扩展信息
+     *
+     * @author xuyuxiang
+     * @date 2022/4/27 21:38
+     */
+    void createExtInfo(String userId, String sourceFromType);
 }

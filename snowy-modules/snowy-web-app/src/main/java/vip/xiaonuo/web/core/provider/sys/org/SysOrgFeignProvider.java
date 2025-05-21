@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.web.core.provider.sys.org;
 
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vip.xiaonuo.sys.feign.SysOrgFeign;
 import vip.xiaonuo.sys.modular.org.provider.SysOrgApiProvider;
+
+import java.util.List;
 
 /**
  * 组织Feign提供者
@@ -83,5 +86,29 @@ public class SysOrgFeignProvider implements SysOrgFeign {
     @RequestMapping("/feign/sys/org/orgListSelector")
     public String orgListSelector(@RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size,@RequestParam(value = "parentId",required = false) String parentId) {
         return JSONUtil.toJsonStr(sysOrgApiProvider.orgListSelector(parentId));
+    }
+
+    /**
+     * 根据机构id获取父id集合
+     *
+     * @author dongxiayu
+     * @date 2022/9/26 14:25
+     */
+    @Override
+    @RequestMapping("/feign/sys/org/getParentIdListByOrgId")
+    public List<String> getParentIdListByOrgId(@RequestParam(value = "orgId",required = false) String orgId) {
+        return sysOrgApiProvider.getParentIdListByOrgId(orgId);
+    }
+
+    /**
+     * 根据机构id集合获取机构数据集合
+     *
+     * @author dongxiayu
+     * @date 2022/9/26 14:25
+     */
+    @RequestMapping("/feign/sys/org/getOrgListByIdListWithoutException")
+    @Override
+    public List<JSONObject> getOrgListByIdListWithoutException(@RequestParam(value = "orgIdList",required = false) List<String> orgIdList) {
+        return sysOrgApiProvider.getOrgListByIdListWithoutException(orgIdList);
     }
 }

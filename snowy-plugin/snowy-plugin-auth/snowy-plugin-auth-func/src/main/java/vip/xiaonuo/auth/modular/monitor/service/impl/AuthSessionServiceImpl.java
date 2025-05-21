@@ -200,7 +200,7 @@ public class AuthSessionServiceImpl implements AuthSessionService {
                         tokenSignInfo.setTokenValue(tokenSign.getValue());
                         tokenSignInfo.setTokenDevice(tokenSign.getDevice());
                         long tokenTimeout = SaManager.getSaTokenDao().getTimeout(StpClientUtil.stpLogic.splicingKeyTokenValue(tokenSign.getValue()));
-                        long tokenTimeoutConfig = StpClientUtil.stpLogic.getConfig().getTimeout();
+                        long tokenTimeoutConfig = StpClientUtil.stpLogic.getConfigOrGlobal().getTimeout();
                         if (tokenTimeout == -1) {
                             tokenSignInfo.setTokenTimeout("永久");
                             tokenSignInfo.setTokenTimeoutPercent(100d);

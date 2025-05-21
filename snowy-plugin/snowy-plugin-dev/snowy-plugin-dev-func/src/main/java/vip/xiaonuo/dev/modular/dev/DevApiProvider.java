@@ -78,5 +78,4 @@ public class DevApiProvider implements DevApi {
         json.set("messageCount", devMessageService.count());
         return json;
     }
-
 }

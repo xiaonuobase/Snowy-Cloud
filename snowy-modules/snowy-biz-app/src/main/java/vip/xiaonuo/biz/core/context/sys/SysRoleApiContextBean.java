@@ -81,4 +81,26 @@ public class SysRoleApiContextBean implements SysRoleApi {
     public void grantForGenMenuAndButton(String menuId) {
         sysRoleFeign.grantForGenMenuAndButton(menuId);
     }
+
+    /**
+     * 获取资源授权树
+     *
+     * @author xuyuxiang
+     * @date 2022/4/24 20:00
+     */
+    @Override
+    public List<JSONObject> resourceTreeSelector() {
+        return sysRoleFeign.resourceTreeSelector();
+    }
+
+    /**
+     * 获取权限授权树
+     *
+     * @author xuyuxiang
+     * @date 2022/4/24 20:00
+     */
+    @Override
+    public List<String> permissionTreeSelector() {
+        return sysRoleFeign.permissionTreeSelector();
+    }
 }

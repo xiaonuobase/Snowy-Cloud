@@ -10,23 +10,35 @@
  * 5.不可二次分发开源参与同类竞品，如有想法可联系团队xiaonuobase@qq.com商议合作。
  * 6.若您的项目无法满足以上几点，需要更多功能代码，获取Snowy商业授权许可，请在官网购买授权，地址为 https://www.xiaonuo.vip
  */
-package vip.xiaonuo.mobile.vip;
+package vip.xiaonuo.dev.modular.email.param;
 
-import java.util.List;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * 移动端按钮API
+ * 邮件发送——本地HTML参数
  *
  * @author xuyuxiang
- * @date 2023/2/1 9:52
+ * @date 2022/6/21 15:38
  **/
-public interface MobileButtonApi {
+@Getter
+@Setter
+public class DevEmailSendDynamicHtmlParam {
 
-    /**
-     * 根据按钮id集合获取按钮码列表
-     *
-     * @author 每天一点
-     * @date 2023/2/5 13:26
-     **/
-    List<String> listByIds(List<String> idList);
+    /** 接收人 */
+    @Schema(description = "接收人邮箱地址，多个逗号拼接")
+    @NotBlank(message = "receiveAccounts不能为空")
+    private String receiveAccounts;
+
+    /** 邮件主题 */
+    @Schema(description = "邮件主题")
+    @NotBlank(message = "subject不能为空")
+    private String subject;
+
+    /** 邮件正文 */
+    @Schema(description = "邮件正文")
+    @NotBlank(message = "content不能为空")
+    private String content;
 }

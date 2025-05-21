@@ -1,9 +1,12 @@
 package vip.xiaonuo.sys.feign;
 
+import cn.hutool.json.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.common.consts.FeignConstant;
+
+import java.util.List;
 
 /**
  * 组织Feign
@@ -50,4 +53,21 @@ public interface SysOrgFeign {
     @RequestMapping("/feign/sys/org/orgListSelector")
     String orgListSelector(@RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size,@RequestParam(value = "parentId",required = false) String parentId);
 
+    /**
+     * 根据机构id获取父id集合
+     *
+     * @author dongxiayu
+     * @date 2022/6/6 14:50
+     **/
+    @RequestMapping("/feign/sys/org/getParentIdListByOrgId")
+    List<String> getParentIdListByOrgId(@RequestParam(value = "orgId",required = false) String orgId);
+
+    /**
+     * 根据机构id集合获取机构数据集合
+     *
+     * @author dongxiayu
+     * @date 2022/6/6 14:50
+     **/
+    @RequestMapping("/feign/sys/org/getOrgListByIdListWithoutException")
+    List<JSONObject> getOrgListByIdListWithoutException(@RequestParam(value = "orgIdList",required = false) List<String> orgIdList);
 }

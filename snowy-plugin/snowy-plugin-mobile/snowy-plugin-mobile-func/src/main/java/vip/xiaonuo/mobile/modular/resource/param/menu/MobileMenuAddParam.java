@@ -48,12 +48,12 @@ public class MobileMenuAddParam {
     private String module;
 
     /** 菜单类型 */
-    @Schema(description = "菜单类型")
+    @Schema(description = "菜单类型", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "menuType不能为空")
     private String menuType;
 
     /** 路径 */
-    @Schema(description = "路径")
+    @Schema(description = "路径", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "path不能为空")
     private String path;
 

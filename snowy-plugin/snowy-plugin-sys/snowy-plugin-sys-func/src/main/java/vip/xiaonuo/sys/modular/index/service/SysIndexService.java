@@ -96,7 +96,7 @@ public interface SysIndexService {
      * @author diantu
      * @date 2023/7/10
      **/
-    public SseEmitter createSseConnect(String clientId);
+    SseEmitter createSseConnect(String clientId);
 
     /**
      * 获取基础系统业务数据

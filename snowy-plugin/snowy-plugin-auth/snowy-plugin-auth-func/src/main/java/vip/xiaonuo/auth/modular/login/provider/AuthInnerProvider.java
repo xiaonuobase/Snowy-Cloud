@@ -2,14 +2,13 @@ package vip.xiaonuo.auth.modular.login.provider;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import vip.xiaonuo.auth.api.AuthInnerApi;
 import vip.xiaonuo.auth.core.enums.SaClientTypeEnum;
 import vip.xiaonuo.auth.modular.login.param.AuthAccountPasswordLoginParam;
 import vip.xiaonuo.auth.modular.login.service.AuthService;
 import vip.xiaonuo.common.pojo.CommonResult;
-
-import jakarta.annotation.Resource;
 
 
 /**
@@ -37,7 +36,7 @@ public class AuthInnerProvider implements AuthInnerApi {
         AuthAccountPasswordLoginParam authAccountPasswordLoginParam = new AuthAccountPasswordLoginParam();
         authAccountPasswordLoginParam.setAccount(username);
         authAccountPasswordLoginParam.setPassword(password);
-        return CommonResult.data(authService.doInnerLogin(authAccountPasswordLoginParam, SaClientTypeEnum.B.getValue()));
+        return CommonResult.data(authService.doLogin(authAccountPasswordLoginParam, SaClientTypeEnum.B.getValue()));
     }
 
     /**

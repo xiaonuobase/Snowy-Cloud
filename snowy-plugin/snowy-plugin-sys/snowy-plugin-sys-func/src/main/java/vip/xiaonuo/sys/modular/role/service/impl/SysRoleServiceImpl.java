@@ -96,6 +96,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Resource
     private MobileMenuApi mobileMenuApi;
 
+    @Resource
+    private CommonCacheOperator commonCacheOperator;
+
     @Override
     public Page<SysRole> page(SysRolePageParam sysRolePageParam) {
         QueryWrapper<SysRole> queryWrapper = new QueryWrapper<SysRole>().checkSqlInjection();

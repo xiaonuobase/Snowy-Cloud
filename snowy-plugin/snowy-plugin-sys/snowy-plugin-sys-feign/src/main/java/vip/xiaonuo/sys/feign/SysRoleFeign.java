@@ -1,5 +1,6 @@
 package vip.xiaonuo.sys.feign;
 
+import cn.hutool.json.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,4 +44,21 @@ public interface SysRoleFeign {
     @RequestMapping("/feign/sys/role/grantForGenMenuAndButton")
     void grantForGenMenuAndButton(@RequestParam(value = "menuId",required = false) String menuId);
 
+    /**
+     * 获取资源授权树
+     *
+     * @author xuyuxiang
+     * @date 2022/4/24 20:00
+     */
+    @RequestMapping("/feign/sys/role/resourceTreeSelector")
+    List<JSONObject> resourceTreeSelector();
+
+    /**
+     * 获取权限授权树
+     *
+     * @author xuyuxiang
+     * @date 2022/4/24 20:00
+     */
+    @RequestMapping("/feign/sys/role/permissionTreeSelector")
+    List<String> permissionTreeSelector();
 }

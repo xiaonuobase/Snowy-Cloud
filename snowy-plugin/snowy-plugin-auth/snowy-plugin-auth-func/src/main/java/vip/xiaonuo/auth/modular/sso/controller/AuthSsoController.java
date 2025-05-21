@@ -14,8 +14,9 @@ package vip.xiaonuo.auth.modular.sso.controller;
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,8 +26,7 @@ import vip.xiaonuo.auth.modular.sso.param.AuthSsoTicketLoginParam;
 import vip.xiaonuo.auth.modular.sso.service.AuthSsoService;
 import vip.xiaonuo.common.pojo.CommonResult;
 
-import jakarta.annotation.Resource;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
 /**
  * 单点登录控制器

@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import vip.xiaonuo.mobile.api.MobileMenuApi;
 import vip.xiaonuo.mobile.modular.resource.entity.MobileMenu;
 import vip.xiaonuo.mobile.modular.resource.service.MobileMenuService;
-import vip.xiaonuo.mobile.vip.MobileMenuApi;
 
 import java.util.List;
 

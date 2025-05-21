@@ -58,6 +58,6 @@ public class SysPositionFeignProvider implements SysPositionFeign {
     @Override
     @RequestMapping("/feign/sys/position/positionSelector")
     public String positionSelector(@RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size,@RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "searchKey",required = false) String searchKey) {
-        return JSONUtil.toJsonStr(sysPositionApiProvider.positionSelector(orgId, searchKey));
+        return JSONUtil.toJsonStr(sysPositionApiProvider.positionSelector(orgId, searchKey, current, size));
     }
 }

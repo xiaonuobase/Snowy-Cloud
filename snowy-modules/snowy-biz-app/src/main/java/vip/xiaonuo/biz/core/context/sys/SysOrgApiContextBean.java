@@ -110,4 +110,28 @@ public class SysOrgApiContextBean implements SysOrgApi {
         Page<JSONObject> resp = (Page<JSONObject>)JSONUtil.toBean(feignResp,Page.class);
         return resp;
     }
+
+    /**
+     * 获取某组织的所有父级id集合
+     *
+     * @param orgId
+     * @author yubaoshan
+     * @date 2025/5/10 12:13
+     */
+    @Override
+    public List<String> getParentIdListByOrgId(String orgId) {
+        return this.sysOrgFeign.getParentIdListByOrgId(orgId);
+    }
+
+    /**
+     * 根据组织id获取组织列表
+     *
+     * @param orgIdList
+     * @author wangshuo
+     * @date 2025/01/10 14:45
+     */
+    @Override
+    public List<JSONObject> getOrgListByIdListWithoutException(List<String> orgIdList) {
+        return this.sysOrgFeign.getOrgListByIdListWithoutException(orgIdList);
+    }
 }

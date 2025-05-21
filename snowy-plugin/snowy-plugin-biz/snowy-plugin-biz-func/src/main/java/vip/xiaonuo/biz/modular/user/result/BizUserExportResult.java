@@ -23,7 +23,7 @@ import lombok.Setter;
 import java.util.Date;
 
 /**
- * 用户导出结果集
+ * 人员导出结果集
  *
  * @author xuyuxiang
  * @date 2022/7/8 13:22

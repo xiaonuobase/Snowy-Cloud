@@ -13,10 +13,9 @@
 package vip.xiaonuo.auth.modular.sso.param;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
-
-import jakarta.validation.constraints.NotBlank;
 
 /**
  * ticket单点登录登录参数

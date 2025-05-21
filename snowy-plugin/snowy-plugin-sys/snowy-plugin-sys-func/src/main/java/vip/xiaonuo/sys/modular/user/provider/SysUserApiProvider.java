@@ -233,8 +233,8 @@ public class SysUserApiProvider implements SysUserApi {
     @Override
     public List<JSONObject> listUserWithoutCurrent() {
         return sysUserService.list(new LambdaQueryWrapper<SysUser>()
-                        .select(SysUser::getId, SysUser::getAccount, SysUser::getName, SysUser::getAvatar)
-                        .ne(SysUser::getId, StpUtil.getLoginId()))
+                .select(SysUser::getId, SysUser::getAccount, SysUser::getName, SysUser::getAvatar)
+                .ne(SysUser::getId, StpUtil.getLoginId()))
                 .stream().map(JSONUtil::parseObj).collect(Collectors.toList());
     }
 

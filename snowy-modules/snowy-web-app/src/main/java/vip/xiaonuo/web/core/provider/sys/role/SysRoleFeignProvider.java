@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.web.core.provider.sys.role;
 
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,5 +77,29 @@ public class SysRoleFeignProvider implements SysRoleFeign {
     @RequestMapping("/feign/sys/role/grantForGenMenuAndButton")
     public void grantForGenMenuAndButton(@RequestParam(value = "menuId",required = false) String menuId) {
         sysRoleApiProvider.grantForGenMenuAndButton(menuId);
+    }
+
+    /**
+     * 获取资源授权树
+     *
+     * @author xuyuxiang
+     * @date 2022/4/24 20:00
+     */
+    @Override
+    @RequestMapping("/feign/sys/role/resourceTreeSelector")
+    public List<JSONObject> resourceTreeSelector() {
+        return sysRoleApiProvider.resourceTreeSelector();
+    }
+
+    /**
+     * 获取权限授权树
+     *
+     * @author xuyuxiang
+     * @date 2022/4/24 20:00
+     */
+    @Override
+    @RequestMapping("/feign/sys/role/permissionTreeSelector")
+    public List<String> permissionTreeSelector() {
+        return sysRoleApiProvider.permissionTreeSelector();
     }
 }

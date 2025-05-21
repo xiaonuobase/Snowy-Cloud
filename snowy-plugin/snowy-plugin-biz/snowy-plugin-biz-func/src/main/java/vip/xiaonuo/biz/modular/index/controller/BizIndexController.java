@@ -29,6 +29,7 @@ import vip.xiaonuo.biz.modular.index.result.BizIndexSlideshowDetailResult;
 import vip.xiaonuo.biz.modular.index.result.BizIndexSlideshowListResult;
 import vip.xiaonuo.biz.modular.index.service.BizIndexService;
 import vip.xiaonuo.common.pojo.CommonResult;
+
 import java.util.List;
 
 /**

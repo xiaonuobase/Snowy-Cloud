@@ -57,7 +57,7 @@ import vip.xiaonuo.gen.modular.basic.service.GenBasicService;
 import vip.xiaonuo.gen.modular.config.entity.GenConfig;
 import vip.xiaonuo.gen.modular.config.param.GenConfigAddParam;
 import vip.xiaonuo.gen.modular.config.service.GenConfigService;
-import vip.xiaonuo.mobile.vip.MobileModuleApi;
+import vip.xiaonuo.mobile.api.MobileModuleApi;
 import vip.xiaonuo.sys.api.SysButtonApi;
 import vip.xiaonuo.sys.api.SysMenuApi;
 import vip.xiaonuo.sys.api.SysModuleApi;
