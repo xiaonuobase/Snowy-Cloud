@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.biz.core.interceptor;
 
+import cn.hutool.core.util.StrUtil;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
+import vip.xiaonuo.common.consts.AppConstant;
+import vip.xiaonuo.common.util.CommonTraceIdUtil;
+
 import java.util.Enumeration;
 import java.util.Optional;
 
@@ -53,6 +57,13 @@ public class FeignRequestInterceptor implements RequestInterceptor {
                     log.info(">>> feign header set key:{}, value:{}", name, value);
                 }
             });
+        }
+
+        // add traceId
+        String traceId = CommonTraceIdUtil.getTraceId();
+        if(StrUtil.isNotBlank(traceId)){
+            requestTemplate.header(AppConstant.TRACE_ID_STRING, traceId);
+            log.info(">>> feign header traceId set key:{}, value:{}", AppConstant.TRACE_ID_STRING, traceId);
         }
     }
 }
