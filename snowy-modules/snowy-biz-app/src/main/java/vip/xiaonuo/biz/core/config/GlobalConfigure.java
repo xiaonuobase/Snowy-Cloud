@@ -159,6 +159,12 @@ public class GlobalConfigure implements WebMvcConfigurer {
             /* actuator */
             "/actuator",
             "/actuator/**",
+
+            /* easyTrans */
+            "/easyTrans/proxy/**",
+
+            /* 业务服务feign接口 */
+            "/feign/**",
     };
 
     /**

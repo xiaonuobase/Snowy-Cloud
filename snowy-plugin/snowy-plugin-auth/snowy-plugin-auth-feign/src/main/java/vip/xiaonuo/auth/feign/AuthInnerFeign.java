@@ -21,7 +21,7 @@ public interface AuthInnerFeign {
      * @author dongxiayu
      * @date 2021/10/15 13:12
      **/
-    @PostMapping("/auth/b/inner/doLogin")
+    @PostMapping("/feign/auth/b/inner/doLogin")
     CommonResult<String> doLogin(@RequestParam("username") String username,@RequestParam("password") String password);
 
     /**
@@ -30,7 +30,7 @@ public interface AuthInnerFeign {
      * @author dongxiayu
      * @date 2021/10/15 13:12
      **/
-    @PostMapping("/auth/b/inner/doLogout")
+    @PostMapping("/feign/auth/b/inner/doLogout")
     CommonResult<String> doLogout(@RequestParam("token") String token);
 
 }

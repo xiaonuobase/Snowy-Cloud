@@ -158,6 +158,9 @@ public class GlobalConfigure implements WebMvcConfigurer {
 
             /* easyTrans */
             "/easyTrans/proxy/**",
+
+            /* 业务服务feign接口 */
+            "/feign/**",
     };
 
     /**
