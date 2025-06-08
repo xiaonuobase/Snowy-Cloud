@@ -43,4 +43,9 @@ public class AppConstant {
             "\tURLs:\thttp://{}:{}{}\n"+
             "==============================================================";
 
+    /**
+     * TraceId Key
+     */
+    public static final String TRACE_ID_STRING = "traceId";
+
 }
