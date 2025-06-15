@@ -96,7 +96,7 @@ import java.util.Map;
 @MapperScan(basePackages = {"vip.xiaonuo.**.mapper"})
 public class GlobalConfigure implements WebMvcConfigurer {
 
-    @Autowired
+    @Resource
     private SaTokenConfig saTokenConfig;
 
     private static final String COMMON_REPEAT_SUBMIT_CACHE_KEY = "common-repeatSubmit:";
