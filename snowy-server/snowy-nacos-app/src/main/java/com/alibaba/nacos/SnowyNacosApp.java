@@ -45,7 +45,7 @@ public class SnowyNacosApp {
         // 注意：工程目录不要使用中文
         // 环境变量设置 单机模式 启动
         System.setProperty("nacos.standalone", "true");
-        System.setProperty("nacos.core.auth.enabled", "true");
+        System.setProperty("nacos.core.auth.enabled", "false");
         System.setProperty("server.tomcat.basedir", "logs/snowy-nacos-app-log");
 
         SpringApplication.run(SnowyNacosApp.class, args);
