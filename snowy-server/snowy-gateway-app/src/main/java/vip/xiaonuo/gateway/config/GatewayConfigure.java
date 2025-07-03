@@ -26,10 +26,10 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.http.ContentType;
 import cn.hutool.http.Header;
 import feign.codec.Decoder;
+import jakarta.annotation.Resource;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.openfeign.support.ResponseEntityDecoder;
@@ -66,6 +66,9 @@ import java.util.stream.Collectors;
 @Import({cn.hutool.extra.spring.SpringUtil.class})
 @Configuration
 public class GatewayConfigure {
+
+    @Resource
+    private SaTokenConfig saTokenConfig;
 
     /**
      * 无需登录的接口地址集合
@@ -111,12 +114,19 @@ public class GatewayConfigure {
             /* 文件下载 */
             "/api/webapp/dev/file/download",
 
-            /* 用户个人中心相关 */
+            /* B端用户个人中心相关 */
             "/api/webapp/sys/userCenter/getPicCaptcha",
             "/api/webapp/sys/userCenter/findPasswordGetPhoneValidCode",
             "/api/webapp/sys/userCenter/findPasswordGetEmailValidCode",
             "/api/webapp/sys/userCenter/findPasswordByPhone",
             "/api/webapp/sys/userCenter/findPasswordByEmail",
+
+            /* C端用户个人中心相关 */
+            "/api/webapp/client/userCenter/getPicCaptcha",
+            "/api/webapp/client/userCenter/findPasswordGetPhoneValidCode",
+            "/api/webapp/client/userCenter/findPasswordGetEmailValidCode",
+            "/api/webapp/client/userCenter/findPasswordByPhone",
+            "/api/webapp/client/userCenter/findPasswordByEmail",
 
             /* actuator */
             "/actuator",
@@ -247,7 +257,7 @@ public class GatewayConfigure {
      **/
     @Primary
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(@Autowired(required = false) RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
@@ -328,7 +338,11 @@ public class GatewayConfigure {
                             // 排除C端认证接口
                             .notMatch(CollectionUtil.newArrayList(CLIENT_USER_PERMISSION_PATH_ARR))
                             // 校验B端登录
-                            .check(r1 -> StpUtil.checkLogin());
+                            .check(r1 -> {
+                                StpUtil.checkLogin();
+                                // 更新过期时间
+                                StpUtil.renewTimeout(saTokenConfig.getTimeout());
+                            });
 
                     // C端的接口校验C端登录
                     SaRouter.match("/**")

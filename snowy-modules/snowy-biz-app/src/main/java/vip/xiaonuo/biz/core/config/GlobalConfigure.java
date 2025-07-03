@@ -55,7 +55,6 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -156,12 +155,19 @@ public class GlobalConfigure implements WebMvcConfigurer {
             /* 系统字典树 */
             "/dev/dict/tree",
 
-            /* 用户个人中心相关 */
+            /* B端用户个人中心相关 */
             "/sys/userCenter/getPicCaptcha",
             "/sys/userCenter/findPasswordGetPhoneValidCode",
             "/sys/userCenter/findPasswordGetEmailValidCode",
             "/sys/userCenter/findPasswordByPhone",
             "/sys/userCenter/findPasswordByEmail",
+
+            /* C端用户个人中心相关 */
+            "/client/userCenter/getPicCaptcha",
+            "/client/userCenter/findPasswordGetPhoneValidCode",
+            "/client/userCenter/findPasswordGetEmailValidCode",
+            "/client/userCenter/findPasswordByPhone",
+            "/client/userCenter/findPasswordByEmail",
 
             /* actuator */
             "/actuator",
@@ -325,7 +331,7 @@ public class GlobalConfigure implements WebMvcConfigurer {
      **/
     @Primary
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(@Autowired(required = false) RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
