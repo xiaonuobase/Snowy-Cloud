@@ -12,8 +12,9 @@
  */
 package vip.xiaonuo.dev.feign;
 
+import cn.hutool.json.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.common.consts.FeignConstant;
 
@@ -27,21 +28,20 @@ import vip.xiaonuo.common.consts.FeignConstant;
 public interface DevFeign {
 
     /**
-     * 初始化ID类型的租户开发工具模块数据
+     * 获得dev模块运维数据
      *
-     * @author dongxiayu
-     * @date 2022/9/26 14:25
+     * @author yubaoshan
+     * @date 2024/7/18 17:35
      **/
-    @RequestMapping("/feign/dev/initTenDataForCategoryId")
-    void initTenDataForCategoryId(@RequestParam("tenId") String tenId, @RequestParam("tenName") String tenName);
+    @PostMapping("/feign/dev/getDevOpCount")
+    JSONObject getDevOpCount();
 
     /**
-     * 删除ID类型的租户开发工具模块数据
+     * 获得dev工具数量（短信、邮件、文件、消息）
      *
-     * @author dongxiayu
-     * @date 2022/9/26 14:25
+     * @author yubaoshan
+     * @date 2024/7/18 17:35
      **/
-    @RequestMapping("/feign/dev/removeTenDataForCategoryId")
-    void removeTenDataForCategoryId(@RequestParam("tenId") String tenId);
-
+    @PostMapping("/feign/dev/getToolDataCount")
+    JSONObject getToolDataCount();
 }

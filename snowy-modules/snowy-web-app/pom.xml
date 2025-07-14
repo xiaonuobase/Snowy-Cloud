@@ -79,6 +79,18 @@
             <version>${project.parent.version}</version>
         </dependency>
 
+        <!-- 登录鉴权插件Feign接口 -->
+        <dependency>
+            <groupId>vip.xiaonuo</groupId>
+            <artifactId>snowy-plugin-auth-feign</artifactId>
+        </dependency>
+
+        <!-- 登录鉴权插件Feign接口实现 -->
+        <dependency>
+            <groupId>vip.xiaonuo</groupId>
+            <artifactId>snowy-plugin-auth-feign-provider</artifactId>
+        </dependency>
+
         <!-- 登录鉴权插件 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
@@ -107,6 +119,12 @@
             <version>${project.parent.version}</version>
         </dependency>
 
+        <!-- snowy-plugin-dev-feign-provider，向外暴露feign接口实现 -->
+        <dependency>
+            <groupId>vip.xiaonuo</groupId>
+            <artifactId>snowy-plugin-dev-feign-provider</artifactId>
+        </dependency>
+
         <!-- 代码生成插件 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
@@ -121,6 +139,18 @@
             <version>${project.parent.version}</version>
         </dependency>
 
+        <!-- snowy-plugin-mobile-feign，向外暴露feign接口 -->
+        <dependency>
+            <groupId>vip.xiaonuo</groupId>
+            <artifactId>snowy-plugin-mobile-feign</artifactId>
+        </dependency>
+
+        <!-- snowy-plugin-mobile-feign-provider，向外暴露feign接口 -->
+        <dependency>
+            <groupId>vip.xiaonuo</groupId>
+            <artifactId>snowy-plugin-mobile-feign-provider</artifactId>
+        </dependency>
+
         <!-- 系统功能插件 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
@@ -133,6 +163,12 @@
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-sys-feign</artifactId>
             <version>${project.parent.version}</version>
+        </dependency>
+
+        <!-- snowy-plugin-sys-feign-provider，向外暴露feign接口实现 -->
+        <dependency>
+            <groupId>vip.xiaonuo</groupId>
+            <artifactId>snowy-plugin-sys-feign-provider</artifactId>
         </dependency>
 
         <!-- bootstrap 配置加载 -->

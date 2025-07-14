@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.common.consts.FeignConstant;
 
 /**
- * 字典Feign接口
+ * 字典API Feign
  *
- * @author yubaoshan
- * @date 2022/11/22 11:10
+ * @author dongxiayu
+ * @date 2022/11/22 22:46
  */
 @FeignClient(name= FeignConstant.WEB_APP, contextId = "DevDictFeign")
 public interface DevDictFeign {

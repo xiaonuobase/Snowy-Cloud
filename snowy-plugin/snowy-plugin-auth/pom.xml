@@ -19,11 +19,17 @@
         <!-- 登录鉴权插件api接口 -->
         <module>snowy-plugin-auth-api</module>
 
+        <!-- 登录鉴权插件api接口实现 -->
+        <module>snowy-plugin-auth-api-context</module>
+
         <!-- 登录鉴权插件feign接口 -->
         <module>snowy-plugin-auth-feign</module>
 
         <!-- 登录鉴权插件func实现 -->
         <module>snowy-plugin-auth-func</module>
+
+        <!-- 登录鉴权插件feign接口实现 -->
+        <module>snowy-plugin-auth-feign-provider</module>
     </modules>
 
 </project>

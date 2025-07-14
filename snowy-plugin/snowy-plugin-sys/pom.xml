@@ -19,11 +19,17 @@
         <!-- 系统功能插件api接口 -->
         <module>snowy-plugin-sys-api</module>
 
+        <!-- 系统功能插件api接口context -->
+        <module>snowy-plugin-sys-api-context</module>
+
         <!-- 系统功能插件feign接口 -->
         <module>snowy-plugin-sys-feign</module>
 
         <!-- 系统功能插件func实现 -->
         <module>snowy-plugin-sys-func</module>
+
+        <!-- 系统功能插件feign接口实现 -->
+        <module>snowy-plugin-sys-feign-provider</module>
     </modules>
 
 </project>

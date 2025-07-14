@@ -19,11 +19,17 @@
         <!-- 开发工具插件api接口 -->
         <module>snowy-plugin-dev-api</module>
 
+        <!-- 开发工具插件api接口context -->
+        <module>snowy-plugin-dev-api-context</module>
+
         <!-- 开发工具插件feign接口 -->
         <module>snowy-plugin-dev-feign</module>
 
         <!-- 开发工具插件func实现 -->
         <module>snowy-plugin-dev-func</module>
+
+        <!-- 开发工具插件feign接口实现 -->
+        <module>snowy-plugin-dev-feign-provider</module>
     </modules>
 
 </project>

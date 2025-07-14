@@ -19,8 +19,17 @@
         <!-- 移动端管理功能插件api接口 -->
         <module>snowy-plugin-mobile-api</module>
 
+        <!-- 移动端管理功能插件api接口context -->
+        <module>snowy-plugin-mobile-api-context</module>
+
+        <!-- 移动端管理功能插件feign接口 -->
+        <module>snowy-plugin-mobile-feign</module>
+
         <!-- 移动端管理功能插件func实现 -->
         <module>snowy-plugin-mobile-func</module>
+
+        <!-- 移动端管理功能插件feign接口实现 -->
+        <module>snowy-plugin-mobile-feign-provider</module>
     </modules>
 
 </project>

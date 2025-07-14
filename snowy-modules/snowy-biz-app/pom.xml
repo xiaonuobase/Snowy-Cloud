@@ -148,6 +148,12 @@
             <artifactId>snowy-plugin-sys-feign</artifactId>
         </dependency>
 
+        <!-- 系统功能插件Api接口context -->
+        <dependency>
+            <groupId>vip.xiaonuo</groupId>
+            <artifactId>snowy-plugin-sys-api-context</artifactId>
+        </dependency>
+
         <!-- 开发工具插件Feign接口 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
@@ -166,6 +172,38 @@
                     <groupId>org.dromara.x-file-storage</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <!-- 开发工具功能插件Api接口Context -->
+        <dependency>
+            <groupId>vip.xiaonuo</groupId>
+            <artifactId>snowy-plugin-dev-api-context</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>sms4j-javase-plugin</artifactId>
+                    <groupId>org.dromara.sms4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>sms4j-oa-core</artifactId>
+                    <groupId>org.dromara.sms4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>x-file-storage-spring</artifactId>
+                    <groupId>org.dromara.x-file-storage</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- 移动端管理功能插件Feign接口 -->
+        <dependency>
+            <groupId>vip.xiaonuo</groupId>
+            <artifactId>snowy-plugin-mobile-feign</artifactId>
+        </dependency>
+
+        <!-- 移动端管理功能插件api接口context -->
+        <dependency>
+            <groupId>vip.xiaonuo</groupId>
+            <artifactId>snowy-plugin-mobile-api-context</artifactId>
         </dependency>
 
         <!-- bootstrap 配置加载 -->

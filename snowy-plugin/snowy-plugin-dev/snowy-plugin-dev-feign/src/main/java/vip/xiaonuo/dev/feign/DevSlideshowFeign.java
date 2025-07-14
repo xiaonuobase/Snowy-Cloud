@@ -14,19 +14,19 @@ package vip.xiaonuo.dev.feign;
 
 import cn.hutool.json.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.common.consts.FeignConstant;
 
 import java.util.List;
 
 /**
- * 轮播图综合Feign
+ * 轮播图API Feign
  *
- * @author yubaoshan
- * @date 2025/3/24 02:39
+ * @author dongxiayu
+ * @date 2022/11/22 22:46
  */
-@FeignClient(name= FeignConstant.WEB_APP, contextId = "DevSlideshowFeign")
+@FeignClient(name= FeignConstant.WEB_APP, contextId = "DevSlideShowFeign")
 public interface DevSlideshowFeign {
 
     /**
@@ -35,6 +35,6 @@ public interface DevSlideshowFeign {
      * @author yubaoshan
      * @date  2024/07/13 00:31
      **/
-    @RequestMapping("/feign/dev/slideshow/getListByPlace")
-    List<JSONObject> getListByPlace(@RequestParam("place") String place);
+    @PostMapping("/feign/dev/slideshow/getListByPlace")
+    List<JSONObject> getListByPlace(@RequestParam(value = "place",required = false) String place);
 }

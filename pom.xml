@@ -136,10 +136,24 @@
                 <version>${snowy.version}</version>
             </dependency>
 
+            <!-- snowy-plugin-auth-api-context -->
+            <dependency>
+                <groupId>vip.xiaonuo</groupId>
+                <artifactId>snowy-plugin-auth-api-context</artifactId>
+                <version>${snowy.version}</version>
+            </dependency>
+
             <!-- snowy-plugin-auth-feign -->
             <dependency>
                 <groupId>vip.xiaonuo</groupId>
                 <artifactId>snowy-plugin-auth-feign</artifactId>
+                <version>${snowy.version}</version>
+            </dependency>
+
+            <!-- snowy-plugin-auth-feign-provider -->
+            <dependency>
+                <groupId>vip.xiaonuo</groupId>
+                <artifactId>snowy-plugin-auth-feign-provider</artifactId>
                 <version>${snowy.version}</version>
             </dependency>
 
@@ -185,10 +199,24 @@
                 <version>${snowy.version}</version>
             </dependency>
 
+            <!-- snowy-plugin-dev-api-context -->
+            <dependency>
+                <groupId>vip.xiaonuo</groupId>
+                <artifactId>snowy-plugin-dev-api-context</artifactId>
+                <version>${snowy.version}</version>
+            </dependency>
+
             <!-- snowy-plugin-dev-feign -->
             <dependency>
                 <groupId>vip.xiaonuo</groupId>
                 <artifactId>snowy-plugin-dev-feign</artifactId>
+                <version>${snowy.version}</version>
+            </dependency>
+
+            <!-- snowy-plugin-dev-feign-provider -->
+            <dependency>
+                <groupId>vip.xiaonuo</groupId>
+                <artifactId>snowy-plugin-dev-feign-provider</artifactId>
                 <version>${snowy.version}</version>
             </dependency>
 
@@ -220,6 +248,27 @@
                 <version>${snowy.version}</version>
             </dependency>
 
+            <!-- snowy-plugin-mobile-api-context -->
+            <dependency>
+                <groupId>vip.xiaonuo</groupId>
+                <artifactId>snowy-plugin-mobile-api-context</artifactId>
+                <version>${snowy.version}</version>
+            </dependency>
+
+            <!-- snowy-plugin-mobile-feign -->
+            <dependency>
+                <groupId>vip.xiaonuo</groupId>
+                <artifactId>snowy-plugin-mobile-feign</artifactId>
+                <version>${snowy.version}</version>
+            </dependency>
+
+            <!-- snowy-plugin-mobile-feign-provider -->
+            <dependency>
+                <groupId>vip.xiaonuo</groupId>
+                <artifactId>snowy-plugin-mobile-feign-provider</artifactId>
+                <version>${snowy.version}</version>
+            </dependency>
+
             <!-- snowy-plugin-mobile-func -->
             <dependency>
                 <groupId>vip.xiaonuo</groupId>
@@ -234,10 +283,24 @@
                 <version>${snowy.version}</version>
             </dependency>
 
+            <!-- snowy-plugin-sys-api-context -->
+            <dependency>
+                <groupId>vip.xiaonuo</groupId>
+                <artifactId>snowy-plugin-sys-api-context</artifactId>
+                <version>${snowy.version}</version>
+            </dependency>
+
             <!-- snowy-plugin-sys-feign -->
             <dependency>
                 <groupId>vip.xiaonuo</groupId>
                 <artifactId>snowy-plugin-sys-feign</artifactId>
+                <version>${snowy.version}</version>
+            </dependency>
+
+            <!-- snowy-plugin-sys-feign-provider -->
+            <dependency>
+                <groupId>vip.xiaonuo</groupId>
+                <artifactId>snowy-plugin-sys-feign-provider</artifactId>
                 <version>${snowy.version}</version>
             </dependency>
 
