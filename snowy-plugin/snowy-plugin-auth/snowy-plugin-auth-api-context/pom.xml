@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>vip.xiaonuo</groupId>
-        <artifactId>snowy-plugin</artifactId>
+        <artifactId>snowy-plugin-auth</artifactId>
         <version>3.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
