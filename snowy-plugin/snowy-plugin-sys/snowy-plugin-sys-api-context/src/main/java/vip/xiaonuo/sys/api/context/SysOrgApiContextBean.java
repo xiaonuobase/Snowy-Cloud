@@ -59,9 +59,8 @@ public class SysOrgApiContextBean implements SysOrgApi {
      **/
     @Override
     public List<Tree<String>> orgTreeSelector() {
-        String feignResp = this.sysOrgFeign.orgTreeSelector();
-        List<Tree<String>> resp = (List<Tree<String>>) JSONUtil.toBean(feignResp,List.class);
-        return resp;
+        List<Tree<String>> orgTreeSelectorList = this.sysOrgFeign.orgTreeSelector();
+        return orgTreeSelectorList;
     }
 
     /**

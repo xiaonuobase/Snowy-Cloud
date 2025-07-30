@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.sys.feign;
 
+import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.json.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,7 +55,7 @@ public interface SysOrgFeign {
      * @date 2022/7/22 14:46
      **/
     @RequestMapping("/feign/sys/org/orgTreeSelector")
-    String orgTreeSelector();
+    List<Tree<String>> orgTreeSelector();
 
     /**
      * 获取组织列表选择器

@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.sys.feign.provider.org;
 
+import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
@@ -71,8 +72,8 @@ public class SysOrgFeignProvider implements SysOrgFeign {
      **/
     @Override
     @RequestMapping("/feign/sys/org/orgTreeSelector")
-    public String orgTreeSelector() {
-        return JSONUtil.toJsonStr(sysOrgApi.orgTreeSelector());
+    public List<Tree<String>> orgTreeSelector() {
+        return sysOrgApi.orgTreeSelector();
     }
 
     /**
