@@ -169,6 +169,14 @@ public class GlobalConfigure implements WebMvcConfigurer {
 
             /* 业务服务feign接口 */
             "/feign/**",
+
+            /* 可视化大屏 */
+            "/screen/project/release-detail",
+            "/screen/project/verify-access-password",
+
+            /* 数据集 */
+            "/dbs/application/getAuth",
+            "/dbs/dataSet/invoke",
     };
 
     /**
