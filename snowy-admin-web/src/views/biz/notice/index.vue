@@ -198,7 +198,7 @@
 			searchFormParam.endCreateTime = searchFormParam.createTime[1]
 			delete searchFormParam.createTime
 		}
-		return bizNoticeApi.bizNoticePage(Object.assign(parameter, searchFormParam)).then((data) => {
+		return bizNoticeApi.noticePage(Object.assign(parameter, searchFormParam)).then((data) => {
 			return data
 		})
 	}
