@@ -347,6 +347,26 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    @Override
+    public boolean getDefaultCaptchaOpenForB() {
+        String defaultCaptchaOpen = devConfigApi.getValueByKey(SNOWY_SYS_DEFAULT_CAPTCHA_OPEN_FLAG_FOR_B_KEY);
+        if(ObjectUtil.isNotEmpty(defaultCaptchaOpen)) {
+            return Convert.toBool(defaultCaptchaOpen);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean getDefaultCaptchaOpenForC() {
+        String defaultCaptchaOpen = devConfigApi.getValueByKey(SNOWY_SYS_DEFAULT_CAPTCHA_OPEN_FLAG_FOR_C_KEY);
+        if(ObjectUtil.isNotEmpty(defaultCaptchaOpen)) {
+            return Convert.toBool(defaultCaptchaOpen);
+        } else {
+            return false;
+        }
+    }
+
     /**
      * 校验手机号与验证码等参数
      *
