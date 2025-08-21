@@ -121,7 +121,7 @@
 	}
 	const loadData = (parameter) => {
 		const searchFormParam = cloneDeep(searchFormState.value)
-		return bizGroupApi.bizGroupPage(Object.assign(parameter, searchFormParam)).then((data) => {
+		return bizGroupApi.groupPage(Object.assign(parameter, searchFormParam)).then((data) => {
 			return data
 		})
 	}

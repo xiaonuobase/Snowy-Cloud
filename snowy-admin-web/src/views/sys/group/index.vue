@@ -117,7 +117,7 @@
 	}
 	const loadData = (parameter) => {
 		const searchFormParam = cloneDeep(searchFormState.value)
-		return sysGroupApi.sysGroupPage(Object.assign(parameter, searchFormParam)).then((data) => {
+		return sysGroupApi.groupPage(Object.assign(parameter, searchFormParam)).then((data) => {
 			return data
 		})
 	}
