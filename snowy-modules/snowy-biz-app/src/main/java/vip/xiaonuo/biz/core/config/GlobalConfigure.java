@@ -182,13 +182,16 @@ public class GlobalConfigure implements WebMvcConfigurer {
             /* 文件下载 */
             "/dev/file/download",
 
-            /* 可视化大屏 */
-            "/screen/project/release-detail",
-            "/screen/project/verify-access-password",
-
-            /* 数据集 */
+            /* 可视化大屏插件放行 */
+            "/screen/project/releaseDetail",
+            "/screen/project/verifyAccessPassword",
             "/dbs/application/getAuth",
             "/dbs/dataSet/invoke",
+
+            /* 知识库插件放行 */
+            "/wiki/wikidocumentshare/getInfoByCode",
+            "/wiki/wikidocument/getInfoById",
+            "/wiki/wikidocumentfile/pdfProxy",
     };
 
     /**
