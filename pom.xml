@@ -85,7 +85,7 @@
         <pinyin.version>2.5.1</pinyin.version>
         <postgres.connector.java.version>42.7.1</postgres.connector.java.version>
         <protobuf.java.version>3.21.12</protobuf.java.version>
-        <sa.token.version>1.37.0</sa.token.version>
+        <sa.token.version>1.44.0</sa.token.version>
         <smcrypto.version>0.3.2</smcrypto.version>
         <snakeyaml.version>2.2</snakeyaml.version><!-- cloud使用2.0版本yaml存在冲突 -->
         <spring.context.version>6.1.2</spring.context.version>
