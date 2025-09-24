@@ -155,6 +155,9 @@ public class GlobalConfigure implements WebMvcConfigurer {
             /* 系统字典树 */
             "/dev/dict/tree",
 
+            /* 文件下载 */
+            "/dev/file/download",
+
             /* B端用户个人中心相关 */
             "/sys/userCenter/getPicCaptcha",
             "/sys/userCenter/findPasswordGetPhoneValidCode",
@@ -179,14 +182,13 @@ public class GlobalConfigure implements WebMvcConfigurer {
             /* 业务服务feign接口 */
             "/feign/**",
 
-            /* 文件下载 */
-            "/dev/file/download",
-
             /* 可视化大屏插件放行 */
             "/screen/project/releaseDetail",
             "/screen/project/verifyAccessPassword",
-            "/dbs/application/getAuth",
-            "/dbs/dataSet/invoke",
+
+            /* 数据集插件放行 */
+            "/dataset/application/getAuth",
+            "/dataset/dataSet/invoke",
 
             /* 知识库插件放行 */
             "/wiki/wikidocumentshare/getInfoByCode",
