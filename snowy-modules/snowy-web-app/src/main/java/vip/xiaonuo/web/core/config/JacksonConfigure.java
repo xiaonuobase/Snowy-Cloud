@@ -1,4 +1,4 @@
-package vip.xiaonuo.core.config;
+package vip.xiaonuo.web.core.config;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonStreamContext;
