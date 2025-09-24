@@ -1,18 +1,34 @@
 <template>
-	<a-card :bordered="false">
-		<a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
-			<a-row :gutter="24">
-				<a-col :span="6">
-					<a-form-item label="名称" name="name">
-						<a-input v-model:value="searchFormState.name" placeholder="请输入名称" />
+	<a-card :bordered="false" class="xn-mb10">
+		<a-form ref="searchFormRef" :model="searchFormState">
+			<a-row :gutter="10">
+				<a-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
+					<a-form-item label="关键词" name="name">
+						<a-input v-model:value="searchFormState.name" placeholder="请输入名称关键词"/>
 					</a-form-item>
 				</a-col>
-				<a-col :span="6">
-					<a-button type="primary" @click="tableRef.refresh()">查询</a-button>
-					<a-button style="margin: 0 8px" @click="reset">重置</a-button>
+				<a-col :xs="24" :sm="16" :md="16" :lg="16" :xl="16">
+					<a-form-item>
+						<a-space>
+							<a-button type="primary" @click="tableRef.refresh(true)">
+								<template #icon>
+									<SearchOutlined/>
+								</template>
+								查询
+							</a-button>
+							<a-button @click="reset">
+								<template #icon>
+									<redo-outlined/>
+								</template>
+								重置
+							</a-button>
+						</a-space>
+					</a-form-item>
 				</a-col>
 			</a-row>
 		</a-form>
+	</a-card>
+	<a-card :bordered="false">
 		<s-table
 			ref="tableRef"
 			:columns="columns"
@@ -22,11 +38,14 @@
 			:row-key="(record) => record.id"
 			:tool-config="toolConfig"
 			:row-selection="options.rowSelection"
+			:scroll="{ x: 'max-content' }"
 		>
 			<template #operator class="table-operator">
 				<a-space>
 					<a-button type="primary" @click="formRef.onOpen()">
-						<template #icon><plus-outlined /></template>
+						<template #icon>
+							<plus-outlined/>
+						</template>
 						新增
 					</a-button>
 					<xn-batch-button
@@ -42,9 +61,9 @@
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(record)">编辑</a>
-						<a-divider type="vertical" />
+						<a-divider type="vertical"/>
 						<a @click="openGroupUserSelector(record)">授权用户</a>
-						<a-divider type="vertical" />
+						<a-divider type="vertical"/>
 						<a-popconfirm title="确定要删除吗？" @confirm="deleteSysGroup(record)">
 							<a-button type="link" danger size="small">删除</a-button>
 						</a-popconfirm>
@@ -53,7 +72,7 @@
 			</template>
 		</s-table>
 	</a-card>
-	<Form ref="formRef" @successful="tableRef.refresh()" />
+	<Form ref="formRef" @successful="tableRef.refresh()"/>
 	<xn-user-selector
 		ref="userSelectorRef"
 		:org-tree-api="selectorApiFunction.orgTreeApi"

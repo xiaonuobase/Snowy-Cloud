@@ -227,4 +227,11 @@ public class SysUserApiContextBean implements SysUserApi {
         String feignResp = sysUserFeign.getPositionListByUserId(userId);
         return (List<JSONObject>) BeanUtil.toBean(feignResp, List.class);
     }
+
+    @Override
+    public JSONObject getOrCreateSysUserExt(String userId) {
+        String feignResp = sysUserFeign.getOrCreateSysUserExt(userId);
+        JSONObject resp = JSONUtil.parseObj(feignResp);
+        return resp;
+    }
 }

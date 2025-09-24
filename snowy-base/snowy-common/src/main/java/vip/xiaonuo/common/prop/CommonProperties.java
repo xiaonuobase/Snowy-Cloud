@@ -33,6 +33,11 @@ import java.util.Map;
 public class CommonProperties {
 
     /**
+     * 前端地址
+     */
+    private String frontUrl;
+
+    /**
      * 后端地址
      */
     private String backendUrl;

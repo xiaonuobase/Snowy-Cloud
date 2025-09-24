@@ -21,6 +21,7 @@
 				:row-key="(record) => record.api"
 				:pagination="pagination"
 				@change="handleTableChange"
+				:scroll="{ x: 'max-content' }"
 				bordered
 			>
 				<template #headerCell="{ column }">
@@ -167,7 +168,7 @@
 			key: 'prefix',
 			title: '接口前缀',
 			dataIndex: 'prefix',
-			width: 140,
+			fixed: 'left',
 			customCell: (row, index) => {
 				const indexArr = firstShowMap.value[row.prefix]
 				if (index === indexArr[0]) {
@@ -180,7 +181,6 @@
 			key: 'suffix',
 			title: '接口',
 			dataIndex: 'suffix',
-			width: 290,
 			customFilterDropdown: true,
 			onFilter: (value, record) => record.api.includes(value),
 			onFilterDropdownOpenChange: (visible) => {

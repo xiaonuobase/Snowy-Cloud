@@ -114,16 +114,18 @@ public class BizOrgServiceImpl extends ServiceImpl<BizOrgMapper, BizOrg> impleme
         } else {
             return CollectionUtil.newArrayList();
         }
-        // 先根据排序码排序
-        List<BizOrg> bizOrgArrayList = CollectionUtil.sort(bizOrgSet, Comparator.comparingInt(BizOrg::getSortCode));
-        // 再重置排序码，解决每次相同排序码顺序不一致的问题
-        for (int i = 0; i < bizOrgArrayList.size(); i++) {
-            bizOrgArrayList.get(i).setSortCode(i);
-        }
+
+        // 修复：使用稳定的排序方式，首先按排序码排序，然后按机构ID排序作为次级条件
+        List<BizOrg> bizOrgArrayList = new ArrayList<>(bizOrgSet);
+        bizOrgArrayList.sort(Comparator.comparingInt(BizOrg::getSortCode)
+                .thenComparing(BizOrg::getId)); // 添加ID作为次级排序条件
+
+        // 转换为TreeNode并构建树
         List<TreeNode<String>> treeNodeList = bizOrgArrayList.stream().map(bizOrg ->
-                new TreeNode<>(bizOrg.getId(), bizOrg.getParentId(),
-                        bizOrg.getName(), bizOrg.getSortCode()).setExtra(JSONUtil.parseObj(bizOrg)))
+                        new TreeNode<>(bizOrg.getId(), bizOrg.getParentId(),
+                                bizOrg.getName(), bizOrg.getSortCode()).setExtra(JSONUtil.parseObj(bizOrg)))
                 .collect(Collectors.toList());
+
         return TreeUtil.build(treeNodeList, "0");
     }
 
@@ -341,14 +343,14 @@ public class BizOrgServiceImpl extends ServiceImpl<BizOrgMapper, BizOrg> impleme
     }
 
     @Override
-    public List<BizOrg> orgListSelector(BizOrgSelectorOrgListParam bizOrgSelectorOrgListParam) {
+    public Page<BizOrg> orgListSelector(BizOrgSelectorOrgListParam bizOrgSelectorOrgListParam) {
         QueryWrapper<BizOrg> queryWrapper = new QueryWrapper<BizOrg>().checkSqlInjection();
         // 校验数据范围
         List<String> loginUserDataScope = StpLoginUserUtil.getLoginUserDataScope();
         if(ObjectUtil.isNotEmpty(loginUserDataScope)) {
             queryWrapper.lambda().in(BizOrg::getId, loginUserDataScope);
         } else {
-            return CollectionUtil.newArrayList();
+            return new Page<>();
         }
         // 查询部分字段
         queryWrapper.lambda().select(BizOrg::getId, BizOrg::getParentId, BizOrg::getName,
@@ -360,7 +362,7 @@ public class BizOrgServiceImpl extends ServiceImpl<BizOrgMapper, BizOrg> impleme
             queryWrapper.lambda().like(BizOrg::getName, bizOrgSelectorOrgListParam.getSearchKey());
         }
         queryWrapper.lambda().orderByAsc(BizOrg::getSortCode);
-        return this.list(queryWrapper.lambda());
+        return this.page(CommonPageRequest.defaultPage(), queryWrapper.lambda());
     }
 
     @Override

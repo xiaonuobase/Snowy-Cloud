@@ -12,12 +12,14 @@
  */
 package vip.xiaonuo.sys.api.context;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.sys.api.SysGroupApi;
 import vip.xiaonuo.sys.feign.SysGroupFeign;
 
@@ -50,14 +52,14 @@ public class SysGroupApiContextBean implements SysGroupApi {
      * 获取用户组选择器
      *
      * @param searchKey
-     * @param current
-     * @param size
      * @author yubaoshan
      * @date 2025/1/12 02:36
      */
     @Override
-    public Page<JSONObject> groupSelector(String searchKey, int current, int size) {
-        String feignResp = sysGroupFeign.groupSelector(searchKey,current,size);
+    public Page<JSONObject> groupSelector(String searchKey) {
+        long current = CommonPageRequest.defaultPage().getCurrent();
+        long size = CommonPageRequest.defaultPage().getSize();
+        String feignResp = sysGroupFeign.groupSelector(searchKey, Convert.toInt(current), Convert.toInt(size));
         Page<JSONObject> resp = (Page<JSONObject>) JSONUtil.toBean(feignResp,Page.class);
         return resp;
     }

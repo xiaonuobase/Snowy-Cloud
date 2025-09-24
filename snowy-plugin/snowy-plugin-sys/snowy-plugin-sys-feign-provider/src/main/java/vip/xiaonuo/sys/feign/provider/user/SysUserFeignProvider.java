@@ -207,4 +207,16 @@ public class SysUserFeignProvider implements SysUserFeign {
     public String getPositionListByUserId(@RequestParam(value = "userId") String userId) {
         return JSONUtil.toJsonStr(sysUserApi.getPositionListByUserId(userId));
     }
+
+    /**
+     * 获取或创建用户扩展信息
+     *
+     * @author xuyuxiang
+     * @date 2022/6/20 18:19
+     **/
+    @RequestMapping("/feign/sys/user/getOrCreateSysUserExt")
+    @Override
+    public String getOrCreateSysUserExt(@RequestParam(value = "userId") String userId) {
+        return JSONUtil.toJsonStr(sysUserApi.getOrCreateSysUserExt(userId));
+    }
 }

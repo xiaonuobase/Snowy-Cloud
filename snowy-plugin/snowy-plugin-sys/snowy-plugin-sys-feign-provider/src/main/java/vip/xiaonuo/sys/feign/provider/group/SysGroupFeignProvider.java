@@ -65,9 +65,9 @@ public class SysGroupFeignProvider implements SysGroupFeign {
     @Override
     @RequestMapping("/feign/sys/group/groupSelector")
     public String groupSelector(@RequestParam(value = "searchKey", required = false) String searchKey,
-                                @RequestParam(value = "current", required = false) int current,
-                                @RequestParam(value = "size", required = false) int size) {
-        Page<JSONObject> jsonObjectPage = sysGroupApi.groupSelector(searchKey, current, size);
+                                @RequestParam(value = "current", required = false) Integer current,
+                                @RequestParam(value = "size", required = false) Integer size) {
+        Page<JSONObject> jsonObjectPage = sysGroupApi.groupSelector(searchKey);
         String resp = JSONUtil.toJsonStr(jsonObjectPage);
         return resp;
     }

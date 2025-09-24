@@ -48,5 +48,5 @@ public interface SysGroupApi {
      * @author yubaoshan
      * @date 2025/1/12 02:36
      */
-    Page<JSONObject> groupSelector(String searchKey, int current, int size);
+    Page<JSONObject> groupSelector(String searchKey);
 }

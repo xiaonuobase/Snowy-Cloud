@@ -25,6 +25,11 @@ import vip.xiaonuo.common.exception.CommonException;
 public enum AuthThirdPlatformEnum {
 
     /**
+     * IAM
+     */
+    IAM("IAM"),
+
+    /**
      * GITEE
      */
     GITEE("GITEE"),
@@ -41,7 +46,7 @@ public enum AuthThirdPlatformEnum {
     }
 
     public static void validate(String value) {
-        boolean flag = GITEE.getValue().equals(value) || WECHAT.getValue().equals(value);
+        boolean flag = IAM.getValue().equals(value) || GITEE.getValue().equals(value) || WECHAT.getValue().equals(value);
         if(!flag) {
             throw new CommonException("不支持的第三方平台：{}", value);
         }

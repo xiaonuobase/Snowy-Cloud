@@ -47,6 +47,15 @@ public interface SysRelationFeign {
     List<String> getUserIdListByGroupIdList(@RequestParam("groupIdList") List<String> groupIdList);
 
     /**
+     * 根据用户id集合获取用户授权的用户组id集合
+     *
+     * @author xuyuxiang
+     * @date 2022/6/6 11:43
+     **/
+    @RequestMapping("/feign/sys/relation/getGroupIdListByUserIdList")
+    List<String> getGroupIdListByUserIdList(@RequestParam("userIdList") List<String> userIdList);
+
+    /**
      * 根据移动端菜单Id集合移除角色和移动端菜单关系
      *
      * @author xuyuxiang

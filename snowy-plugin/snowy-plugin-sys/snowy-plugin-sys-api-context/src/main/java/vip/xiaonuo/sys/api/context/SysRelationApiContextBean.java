@@ -51,6 +51,11 @@ public class SysRelationApiContextBean implements SysRelationApi {
     }
 
     @Override
+    public List<String> getGroupIdListByUserIdList(List<String> userIdList) {
+        return sysRelationFeign.getGroupIdListByUserIdList(userIdList);
+    }
+
+    @Override
     public void removeRoleHasMobileMenuRelation(List<String> targetIdList) {
         sysRelationFeign.removeRoleHasMobileMenuRelation(targetIdList);
     }

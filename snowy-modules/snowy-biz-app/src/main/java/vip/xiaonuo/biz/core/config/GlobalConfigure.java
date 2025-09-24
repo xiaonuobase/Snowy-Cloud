@@ -90,10 +90,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Snowy配置
@@ -136,6 +133,8 @@ public class GlobalConfigure implements WebMvcConfigurer {
             "/auth/c/register",
             "/auth/c/getEmailValidCode",
             "/auth/c/doLoginByEmail",
+            "/auth/c/doLoginByOtp",
+            "/auth/c/isLogin",
 
             "/auth/b/getPicCaptcha",
             "/auth/b/getPhoneValidCode",
@@ -144,10 +143,14 @@ public class GlobalConfigure implements WebMvcConfigurer {
             "/auth/b/register",
             "/auth/b/getEmailValidCode",
             "/auth/b/doLoginByEmail",
+            "/auth/b/doLoginByOtp",
+            "/auth/b/isLogin",
+            "/auth/sso/b/**",
 
             /* 三方登录相关 */
             "/auth/third/render",
             "/auth/third/callback",
+            "/auth/third/bindAccount",
 
             /* 系统基础配置 */
             "/dev/config/sysBaseList",
@@ -194,6 +197,13 @@ public class GlobalConfigure implements WebMvcConfigurer {
             "/wiki/wikidocumentshare/getInfoByCode",
             "/wiki/wikidocument/getInfoById",
             "/wiki/wikidocumentfile/pdfProxy",
+
+            /* 统一认证插件放行 */
+            "/iam/auth/login/**",
+            "/iam/auth/protocol/**",
+            "/iam/auth/source/render",
+            "/iam/auth/source/callback/**",
+            "/iam/id/source/eventCallback/**",
     };
 
     /**

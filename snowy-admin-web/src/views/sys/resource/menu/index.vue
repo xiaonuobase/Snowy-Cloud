@@ -1,25 +1,33 @@
 <template>
 	<a-card :bordered="false">
-		<a-space>
-			<a-radio-group v-model:value="moduleType" button-style="solid">
-				<a-radio-button
-					v-for="module in moduleTypeList"
-					:key="module.id"
-					:value="module.id"
-					@click="moduleClock(module.id)"
-				>
-					<component :is="module.icon" />
-					{{ module.title }}</a-radio-button
-				>
-			</a-radio-group>
-			<a-input-search
-				v-model:value="searchFormState.searchKey"
-				placeholder="请输入菜单名称关键词"
-				enter-button
-				allowClear
-				@search="onSearch"
-			/>
-		</a-space>
+		<a-form ref="searchFormRef" :model="searchFormState">
+			<a-row :gutter="10">
+				<a-col :xs="24" :sm="16" :md="16" :lg="16" :xl="16">
+					<a-form-item>
+						<a-radio-group v-model:value="moduleType" button-style="solid">
+							<a-radio-button v-for="module in moduleTypeList"
+											:key="module.id"
+											:value="module.id"
+											@click="moduleClick(module.id)">
+								<component :is="module.icon" />
+								{{ module.title }}
+							</a-radio-button>
+						</a-radio-group>
+					</a-form-item>
+				</a-col>
+				<a-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
+					<a-form-item>
+						<a-input-search
+							v-model:value="searchFormState.searchKey"
+							placeholder="请输入菜单名称关键词"
+							enter-button
+							allowClear
+							@search="onSearch"
+						/>
+					</a-form-item>
+				</a-col>
+			</a-row>
+		</a-form>
 	</a-card>
 	<a-card :bordered="false" class="mt-2">
 		<s-table
@@ -149,13 +157,11 @@
 		{
 			title: '显示名称',
 			dataIndex: 'title',
-			ellipsis: true,
-			width: 300
+			ellipsis: true
 		},
 		{
 			title: '类型',
-			dataIndex: 'menuType',
-			width: 100
+			dataIndex: 'menuType'
 		},
 		{
 			title: '路由地址',
@@ -167,19 +173,17 @@
 		},
 		{
 			title: '是否可见',
-			dataIndex: 'visible',
-			width: 120
+			dataIndex: 'visible'
 		},
 		{
 			title: '排序',
 			dataIndex: 'sortCode',
-			sorter: true,
-			width: 100
+			sorter: true
 		},
 		{
 			title: '操作',
 			dataIndex: 'action',
-			width: '200px',
+			fixed: 'right',
 			scopedSlots: { customRender: 'action' }
 		}
 	]
@@ -223,7 +227,7 @@
 		}
 	}
 	// 切换应用标签查询菜单列表
-	const moduleClock = (value) => {
+	const moduleClick = (value) => {
 		searchFormState.value.module = value
 		tableRef.value.refresh(true)
 	}

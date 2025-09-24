@@ -41,5 +41,5 @@ public interface SysGroupFeign {
      * @date 2025/1/12 02:36
      */
     @RequestMapping("/feign/sys/group/groupSelector")
-    String groupSelector(@RequestParam(value = "searchKey",required = false) String searchKey, @RequestParam(value = "current",required = false) int current, @RequestParam(value = "size",required = false) int size);
+    String groupSelector(@RequestParam(value = "searchKey",required = false) String searchKey, @RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size);
 }

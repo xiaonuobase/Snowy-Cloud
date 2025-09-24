@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<a-card :bordered="false" style="margin-bottom: 10px">
-			<a-form ref="searchFormRef" name="advanced_search" class="ant-advanced-search-form" :model="searchFormState">
-				<a-row :gutter="24">
+			<a-form ref="searchFormRef" :model="searchFormState">
+				<a-row :gutter="10">
 					<a-col :span="8">
 						<a-form-item name="searchKey" label="用户关键词">
 							<a-input v-model:value="searchFormState.searchKey" placeholder="请输入用户关键词" />
@@ -13,7 +13,7 @@
 							<template #icon><SearchOutlined /></template>
 							查询
 						</a-button>
-						<a-button class="snowy-button-left" @click="reset">
+						<a-button @click="reset">
 							<template #icon><redo-outlined /></template>
 							重置
 						</a-button>
@@ -32,6 +32,7 @@
 				:tool-config="toolConfig"
 				:row-key="(record) => record.id"
 				:row-selection="options.rowSelection"
+				:scroll="{ x: 'max-content' }"
 			>
 				<template #operator class="table-operator">
 					<a-space>
@@ -79,8 +80,7 @@
 		{
 			title: '头像',
 			dataIndex: 'avatar',
-			align: 'center',
-			width: '80px'
+			align: 'center'
 		},
 		{
 			title: '账号',
@@ -93,8 +93,7 @@
 		},
 		{
 			title: '性别',
-			dataIndex: 'gender',
-			width: 100
+			dataIndex: 'gender'
 		},
 		{
 			title: '手机',
@@ -103,14 +102,12 @@
 		},
 		{
 			title: '状态',
-			dataIndex: 'userStatus',
-			width: 100
+			dataIndex: 'userStatus'
 		},
 		{
 			title: '操作',
 			dataIndex: 'action',
-			align: 'center',
-			width: '220px'
+			align: 'center'
 		}
 	]
 	const toolConfig = { refresh: true, height: true, columnSetting: true }

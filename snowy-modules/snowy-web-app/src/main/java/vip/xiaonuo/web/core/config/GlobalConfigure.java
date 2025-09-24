@@ -106,7 +106,6 @@ public class GlobalConfigure implements WebMvcConfigurer {
     public static final String[] NO_LOGIN_PATH_ARR = {
             /* 主入口 */
             "/",
-
             /* 静态资源 */
             "/favicon.ico",
             "/doc.html",
@@ -116,7 +115,6 @@ public class GlobalConfigure implements WebMvcConfigurer {
             "/configuration/security",
             "/ureport/**",
             "/druid/**",
-            "/images/**",
             /* 移动端静态资源 */
             "/mobile/**",
 
@@ -125,17 +123,27 @@ public class GlobalConfigure implements WebMvcConfigurer {
             "/auth/c/getPhoneValidCode",
             "/auth/c/doLogin",
             "/auth/c/doLoginByPhone",
+            "/auth/c/register",
+            "/auth/c/getEmailValidCode",
+            "/auth/c/doLoginByEmail",
+            "/auth/c/doLoginByOtp",
+            "/auth/c/isLogin",
 
             "/auth/b/getPicCaptcha",
             "/auth/b/getPhoneValidCode",
             "/auth/b/doLogin",
             "/auth/b/doLoginByPhone",
-            "/auth/b/inner/doLogin",
-            "/auth/b/inner/doLogout",
+            "/auth/b/register",
+            "/auth/b/getEmailValidCode",
+            "/auth/b/doLoginByEmail",
+            "/auth/b/doLoginByOtp",
+            "/auth/b/isLogin",
+            "/auth/sso/b/**",
 
             /* 三方登录相关 */
             "/auth/third/render",
             "/auth/third/callback",
+            "/auth/third/bindAccount",
 
             /* 系统基础配置 */
             "/dev/config/sysBaseList",
@@ -182,6 +190,13 @@ public class GlobalConfigure implements WebMvcConfigurer {
             "/wiki/wikidocumentshare/getInfoByCode",
             "/wiki/wikidocument/getInfoById",
             "/wiki/wikidocumentfile/pdfProxy",
+
+            /* 统一认证插件放行 */
+            "/iam/auth/login/**",
+            "/iam/auth/protocol/**",
+            "/iam/auth/source/render",
+            "/iam/auth/source/callback/**",
+            "/iam/id/source/eventCallback/**",
     };
 
     /**

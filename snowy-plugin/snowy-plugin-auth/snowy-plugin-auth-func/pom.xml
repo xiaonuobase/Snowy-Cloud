@@ -28,6 +28,18 @@
             <artifactId>snowy-plugin-auth-feign</artifactId>
         </dependency>
 
+        <!-- 引入系统接口 -->
+        <dependency>
+            <groupId>vip.xiaonuo</groupId>
+            <artifactId>snowy-plugin-sys-api</artifactId>
+        </dependency>
+
+        <!-- 引入C端接口 -->
+        <dependency>
+            <groupId>vip.xiaonuo</groupId>
+            <artifactId>snowy-plugin-client-api</artifactId>
+        </dependency>
+
         <!-- 引入开发工具接口，用于获取配置 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>

@@ -144,4 +144,13 @@ public interface SysUserFeign {
      **/
     @RequestMapping("/feign/sys/user/getPositionListByUserId")
     String getPositionListByUserId(@RequestParam(value = "userId") String userId);
+
+    /**
+     * 获取或创建用户扩展信息
+     *
+     * @author xuyuxiang
+     * @date 2022/6/20 18:19
+     **/
+    @RequestMapping("/feign/sys/user/getOrCreateSysUserExt")
+    String getOrCreateSysUserExt(@RequestParam(value = "userId") String userId);
 }

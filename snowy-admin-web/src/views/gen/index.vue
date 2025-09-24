@@ -10,6 +10,7 @@
 			:row-key="(record) => record.id"
 			:row-selection="options.rowSelection"
 			:toolConfig="{ refresh: true, height: true, columnSetting: true, striped: false }"
+			:scroll="{ x: 'max-content' }"
 		>
 			<template #operator class="table-operator">
 				<a-space>
@@ -105,7 +106,7 @@
 			title: '操作',
 			dataIndex: 'action',
 			align: 'center',
-			width: '220px'
+			fixed: 'right'
 		}
 	]
 	// 表格查询 返回 Promise 对象

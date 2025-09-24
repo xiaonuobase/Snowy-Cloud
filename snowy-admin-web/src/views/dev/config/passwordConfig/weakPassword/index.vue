@@ -9,6 +9,7 @@
 			:row-key="(record) => record.id"
 			:tool-config="toolConfig"
 			:row-selection="options.rowSelection"
+			:scroll="{ x: 'max-content' }"
 		>
 			<template #operator class="table-operator">
 				<a-space>
@@ -63,13 +64,12 @@
 			title: '操作',
 			dataIndex: 'action',
 			align: 'center',
-			width: '150px'
+			fixed: 'right'
 		}
 	]
 	const selectedRowKeys = ref([])
 	// 列表选择配置
 	const options = {
-		// columns数字类型字段加入 needTotal: true 可以勾选自动算账
 		alert: {
 			show: false,
 			clear: () => {
