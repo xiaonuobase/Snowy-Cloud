@@ -234,6 +234,14 @@ sa-token:
         max-idle: ${spring.data.redis.lettuce.pool.max-idle}
         min-idle: ${spring.data.redis.lettuce.pool.min-idle}
 
+  # sso configuration
+  sso-client:
+    client:
+    auth-url:
+    signout-url:
+    push-url:
+    secret-key:
+
 #########################################
 # knife4j configuration
 #########################################

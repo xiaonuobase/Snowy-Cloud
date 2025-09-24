@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/snowy-cloud?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&useInformationSchema=true
+    url: jdbc:mysql://localhost:3306/snowy-cloud?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&useInformationSchema=true&rewriteBatchedStatements=true
     username: root
     password: 123456
 
@@ -183,6 +183,14 @@ sa-token:
         max-wait: ${spring.data.redis.lettuce.pool.max-wait}
         max-idle: ${spring.data.redis.lettuce.pool.max-idle}
         min-idle: ${spring.data.redis.lettuce.pool.min-idle}
+
+  # sso configuration
+  sso-client:
+    client:
+    auth-url:
+    signout-url:
+    push-url:
+    secret-key:
 
 # knife4j 文档聚合
 knife4j:
