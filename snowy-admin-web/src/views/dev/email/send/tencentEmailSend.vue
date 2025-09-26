@@ -47,78 +47,78 @@
 </template>
 
 <script setup name="tencentEmailSend">
-import { message } from 'ant-design-vue'
-import XnEditor from '@/components/XnEditor/index.vue'
-import { required } from '@/utils/formRules'
-import emailApi from '@/api/dev/emailApi'
-import fileApi from '@/api/dev/fileApi'
+	import { message } from 'ant-design-vue'
+	import XnEditor from '@/components/XnEditor/index.vue'
+	import { required } from '@/utils/formRules'
+	import emailApi from '@/api/dev/emailApi'
+	import fileApi from '@/api/dev/fileApi'
 
-// 发送文本方式
-const sendType = ref('TXT')
-// 定义emit事件
-const emit = defineEmits({ loadingStart: null, loadingEnd: null })
-const formRef = ref()
-// 表单数据
-const formData = ref({})
+	// 发送文本方式
+	const sendType = ref('TXT')
+	// 定义emit事件
+	const emit = defineEmits({ loadingStart: null, loadingEnd: null })
+	const formRef = ref()
+	// 表单数据
+	const formData = ref({})
 
-// 默认要校验的
-const formRules = {
-	sendAccount: [required('请输入发件人邮箱，即管理控制台中配置的发信地址')],
-	receiveAccounts: [required('请输入接收人邮箱，多个逗号拼接')],
-	subject: [required('请输入邮件主题')],
-	templateName: [required('请输入预先创建且通过审核的模板名称')],
-	content: [required('请输入邮件正文')]
-}
-
-// 发送
-const send = () => {
-	formRef.value
-		.validate()
-		.then(() => {
-			emit('loadingStart')
-			if (sendType.value === 'TXT') {
-				emailApi
-					.emailSendTencentTxt(formData.value)
-					.then(() => {
-						message.success('发送成功')
-					})
-					.finally(() => {
-						emit('loadingEnd')
-					})
-			}
-			if (sendType.value === 'HTML') {
-				emailApi
-					.emailSendTencentHtml(formData.value)
-					.then(() => {
-						message.success('发送成功')
-					})
-					.finally(() => {
-						emit('loadingEnd')
-					})
-			}
-			if (sendType.value === 'TMP') {
-				emailApi
-					.emailSendTencentTmp(formData.value)
-					.then(() => {
-						message.success('发送成功')
-					})
-					.finally(() => {
-						emit('loadingEnd')
-					})
-			}
-		})
-		.catch(() => {})
-}
-// 传递文件上传需要的API
-const apiFunction = {
-	fileUploadApi: (param) => {
-		return fileApi.fileUploadDynamicReturnUrl(param).then((data) => {
-			return Promise.resolve(data)
-		})
+	// 默认要校验的
+	const formRules = {
+		sendAccount: [required('请输入发件人邮箱，即管理控制台中配置的发信地址')],
+		receiveAccounts: [required('请输入接收人邮箱，多个逗号拼接')],
+		subject: [required('请输入邮件主题')],
+		templateName: [required('请输入预先创建且通过审核的模板名称')],
+		content: [required('请输入邮件正文')]
 	}
-}
-// 调用这个函数将子组件的一些数据和方法暴露出去
-defineExpose({
-	send
-})
+
+	// 发送
+	const send = () => {
+		formRef.value
+			.validate()
+			.then(() => {
+				emit('loadingStart')
+				if (sendType.value === 'TXT') {
+					emailApi
+						.emailSendTencentTxt(formData.value)
+						.then(() => {
+							message.success('发送成功')
+						})
+						.finally(() => {
+							emit('loadingEnd')
+						})
+				}
+				if (sendType.value === 'HTML') {
+					emailApi
+						.emailSendTencentHtml(formData.value)
+						.then(() => {
+							message.success('发送成功')
+						})
+						.finally(() => {
+							emit('loadingEnd')
+						})
+				}
+				if (sendType.value === 'TMP') {
+					emailApi
+						.emailSendTencentTmp(formData.value)
+						.then(() => {
+							message.success('发送成功')
+						})
+						.finally(() => {
+							emit('loadingEnd')
+						})
+				}
+			})
+			.catch(() => {})
+	}
+	// 传递文件上传需要的API
+	const apiFunction = {
+		fileUploadApi: (param) => {
+			return fileApi.fileUploadDynamicReturnUrl(param).then((data) => {
+				return Promise.resolve(data)
+			})
+		}
+	}
+	// 调用这个函数将子组件的一些数据和方法暴露出去
+	defineExpose({
+		send
+	})
 </script>

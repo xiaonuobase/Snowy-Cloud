@@ -5,5 +5,5 @@
 </template>
 
 <script setup name="exmEditor">
-const html = ref('')
+	const html = ref('')
 </script>

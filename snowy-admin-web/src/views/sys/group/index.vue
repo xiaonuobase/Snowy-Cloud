@@ -84,115 +84,116 @@
 </template>
 
 <script setup name="sysGroupIndex">
-	import { cloneDeep } from 'lodash-es'
-	import Form from './form.vue'
-	import sysGroupApi from '@/api/sys/groupApi'
-	const searchFormState = ref({})
-	const searchFormRef = ref()
-	const tableRef = ref()
-	const formRef = ref()
-	const toolConfig = { refresh: true, height: true, columnSetting: true, striped: false }
-	const recordCacheData = ref()
-	const userSelectorRef = ref()
-	const columns = [
-		{
-			title: '名称',
-			dataIndex: 'name'
-		},
-		{
-			title: '备注',
-			dataIndex: 'remark'
-		},
-		{
-			title: '排序码',
-			dataIndex: 'sortCode'
-		},
-		{
-			title: '创建时间',
-			dataIndex: 'createTime'
-		},
-		{
-			title: '操作',
-			dataIndex: 'action',
-			align: 'center',
-			width: 220
+import {cloneDeep} from 'lodash-es'
+import Form from './form.vue'
+import sysGroupApi from '@/api/sys/groupApi'
+
+const searchFormState = ref({})
+const searchFormRef = ref()
+const tableRef = ref()
+const formRef = ref()
+const toolConfig = {refresh: true, height: true, columnSetting: true, striped: false}
+const recordCacheData = ref()
+const userSelectorRef = ref()
+const columns = [
+	{
+		title: '名称',
+		dataIndex: 'name'
+	},
+	{
+		title: '备注',
+		dataIndex: 'remark'
+	},
+	{
+		title: '排序码',
+		dataIndex: 'sortCode'
+	},
+	{
+		title: '创建时间',
+		dataIndex: 'createTime'
+	},
+	{
+		title: '操作',
+		dataIndex: 'action',
+		align: 'center',
+		fixed: 'right'
+	}
+]
+const selectedRowKeys = ref([])
+// 列表选择配置
+const options = {
+	alert: {
+		show: false,
+		clear: () => {
+			selectedRowKeys.value = ref([])
 		}
-	]
-	const selectedRowKeys = ref([])
-	// 列表选择配置
-	const options = {
-		// columns数字类型字段加入 needTotal: true 可以勾选自动算账
-		alert: {
-			show: false,
-			clear: () => {
-				selectedRowKeys.value = ref([])
-			}
-		},
-		rowSelection: {
-			onChange: (selectedRowKey, selectedRows) => {
-				selectedRowKeys.value = selectedRowKey
-			}
+	},
+	rowSelection: {
+		onChange: (selectedRowKey, selectedRows) => {
+			selectedRowKeys.value = selectedRowKey
 		}
 	}
-	const loadData = (parameter) => {
-		const searchFormParam = cloneDeep(searchFormState.value)
-		return sysGroupApi.groupPage(Object.assign(parameter, searchFormParam)).then((data) => {
-			return data
-		})
-	}
-	// 重置
-	const reset = () => {
-		searchFormRef.value.resetFields()
-		tableRef.value.refresh(true)
-	}
-	// 删除
-	const deleteSysGroup = (record) => {
-		let params = [
-			{
-				id: record.id
-			}
-		]
-		sysGroupApi.sysGroupDelete(params).then(() => {
-			tableRef.value.refresh(true)
-		})
-	}
-	// 批量删除
-	const deleteBatchSysGroup = (params) => {
-		sysGroupApi.sysGroupDelete(params).then(() => {
-			tableRef.value.clearRefreshSelected()
-		})
-	}
-	// 打开用户选择器
-	const openGroupUserSelector = (record) => {
-		// 打开人员选择器的时候，缓存一个记录数据
-		recordCacheData.value = record
-		// 查询接口，查到这个角色是多少个用户都有它
-		const param = {
+}
+const loadData = (parameter) => {
+	const searchFormParam = cloneDeep(searchFormState.value)
+	return sysGroupApi.groupPage(Object.assign(parameter, searchFormParam)).then((data) => {
+		return data
+	})
+}
+// 重置
+const reset = () => {
+	searchFormRef.value.resetFields()
+	tableRef.value.refresh(true)
+}
+// 删除
+const deleteSysGroup = (record) => {
+	let params = [
+		{
 			id: record.id
 		}
-		sysGroupApi.sysGroupOwnUser(param).then((data) => {
-			userSelectorRef.value.showUserPlusModal(data)
+	]
+	sysGroupApi.groupDelete(params).then(() => {
+		tableRef.value.refresh(true)
+	})
+}
+// 批量删除
+const deleteBatchSysGroup = (params) => {
+	sysGroupApi.groupDelete(params).then(() => {
+		tableRef.value.clearRefreshSelected()
+	})
+}
+// 打开用户选择器
+const openGroupUserSelector = (record) => {
+	// 打开人员选择器的时候，缓存一个记录数据
+	recordCacheData.value = record
+	// 查询接口，查到这个角色是多少个用户都有它
+	const param = {
+		id: record.id
+	}
+	sysGroupApi.groupOwnUser(param).then((data) => {
+		userSelectorRef.value.showUserPlusModal(data)
+	})
+}
+// 人员选择器回调
+const userCallBack = (value) => {
+	const param = {
+		id: recordCacheData.value.id,
+		grantInfoList: value
+	}
+	sysGroupApi.groupGrantUser(param).then(() => {
+	})
+}
+// 传递设计器需要的API
+const selectorApiFunction = {
+	orgTreeApi: (param) => {
+		return sysGroupApi.groupOrgTreeSelector(param).then((data) => {
+			return Promise.resolve(data)
+		})
+	},
+	userPageApi: (param) => {
+		return sysGroupApi.groupUserSelector(param).then((data) => {
+			return Promise.resolve(data)
 		})
 	}
-	// 人员选择器回调
-	const userCallBack = (value) => {
-		const param = {
-			id: recordCacheData.value.id,
-			grantInfoList: value
-		}
-		sysGroupApi.sysGroupGrantUser(param).then(() => {})
-	}
-	// 传递设计器需要的API
-	const selectorApiFunction = {
-		orgTreeApi: (param) => {
-			return sysGroupApi.sysGroupOrgTreeSelector(param).then((data) => {
-				return Promise.resolve(data)
-			})
-		},
-		userPageApi: (param) => {
-			return sysGroupApi.sysGroupUserSelector(param).then((data) => {
-				return Promise.resolve(data)
-			})
-		}
-	}
+}
 </script>
