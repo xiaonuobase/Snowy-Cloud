@@ -89,17 +89,32 @@ public class GatewayConfigure {
             "/ureport/**",
             "/druid/**",
             "/images/**",
+            /* 移动端静态资源 */
+            "/api/webapp/images/**",
 
             /* 认证相关 */
             "/api/webapp/auth/c/getPicCaptcha",
             "/api/webapp/auth/c/getPhoneValidCode",
             "/api/webapp/auth/c/doLogin",
             "/api/webapp/auth/c/doLoginByPhone",
+            "/api/webapp/auth/c/register",
+            "/api/webapp/auth/c/getEmailValidCode",
+            "/api/webapp/auth/c/doLoginByEmail",
+            "/api/webapp/auth/c/doLoginByOtp",
+            "/api/webapp/auth/c/isLogin",
 
             "/api/webapp/auth/b/getPicCaptcha",
             "/api/webapp/auth/b/getPhoneValidCode",
             "/api/webapp/auth/b/doLogin",
             "/api/webapp/auth/b/doLoginByPhone",
+            "/api/webapp/auth/b/register",
+            "/api/webapp/auth/b/getEmailValidCode",
+            "/api/webapp/auth/b/doLoginByEmail",
+            "/api/webapp/auth/b/doLoginByOtp",
+            "/api/webapp/auth/b/isLogin",
+
+            /* 单点登录相关 */
+            "/api/webapp/auth/sso/b/**",
 
             /* 三方登录相关 */
             "/api/webapp/auth/third/render",
