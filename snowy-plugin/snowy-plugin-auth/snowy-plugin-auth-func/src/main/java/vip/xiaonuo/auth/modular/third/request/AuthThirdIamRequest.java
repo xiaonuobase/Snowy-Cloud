@@ -54,7 +54,7 @@ public class AuthThirdIamRequest extends AuthDefaultRequest {
     @Override
     public AuthToken getAccessToken(AuthCallback authCallback) {
         String response = this.doPostAuthorizationCode(authCallback.getCode());
-        JSONObject accessTokenObject = JSONObject.parseObject(response);
+        com.alibaba.fastjson.JSONObject accessTokenObject = com.alibaba.fastjson.JSONObject.parseObject(response);
         this.checkResponse(accessTokenObject);
         return AuthToken.builder()
                 .accessToken(accessTokenObject.getString("access_token"))
@@ -68,7 +68,7 @@ public class AuthThirdIamRequest extends AuthDefaultRequest {
     @Override
     public AuthUser getUserInfo(AuthToken authToken) {
         String userInfo = this.doGetUserInfo(authToken);
-        JSONObject userInfoObject = JSONObject.parseObject(userInfo);
+        com.alibaba.fastjson.JSONObject userInfoObject = com.alibaba.fastjson.JSONObject.parseObject(userInfo);
         this.checkResponse(userInfoObject);
         return AuthUser.builder().rawUserInfo(userInfoObject)
                 .uuid(userInfoObject.getString("sub"))
