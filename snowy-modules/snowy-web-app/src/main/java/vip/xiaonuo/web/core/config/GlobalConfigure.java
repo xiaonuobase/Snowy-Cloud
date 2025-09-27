@@ -178,6 +178,13 @@ public class GlobalConfigure implements WebMvcConfigurer {
             /* 业务服务feign接口 */
             "/feign/**",
 
+            /* 支付相关回调通知 */
+            "/pay/ali/notifyUrl",
+            "/pay/wx/notifyUrl",
+            "/pay/wx/authNotifyUrl",
+            "/pay/wx/jsPay",
+            "/pay/order/sample/doCreateOrder",
+
             /* 可视化大屏插件放行 */
             "/screen/project/releaseDetail",
             "/screen/project/verifyAccessPassword",

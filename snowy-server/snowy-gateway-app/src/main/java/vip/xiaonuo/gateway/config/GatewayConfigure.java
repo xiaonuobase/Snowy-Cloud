@@ -146,6 +146,37 @@ public class GatewayConfigure {
             /* actuator */
             "/actuator",
             "/actuator/**",
+
+            /* 租户选择器 */
+            "/api/tenapp/ten/storage/tenSelector",
+
+
+            /* 支付相关回调通知 */
+            "/api/bizapp/pay/ali/notifyUrl",
+            "/api/bizapp/pay/wx/notifyUrl",
+            "/api/bizapp/pay/wx/authNotifyUrl",
+            "/api/bizapp/pay/wx/jsPay",
+            "/api/bizapp/pay/order/sample/doCreateOrder",
+
+            /* 统一认证插件放行 */
+            "/api/bizapp/iam/auth/login/**",
+            "/api/bizapp/iam/auth/protocol/**",
+            "/api/bizapp/iam/auth/source/render",
+            "/api/bizapp/iam/auth/source/callback/**",
+            "/api/bizapp/iam/id/source/eventCallback/**",
+
+            /* 可视化大屏插件放行 */
+            "/api/bizapp/screen/project/releaseDetail",
+            "/api/bizapp/screen/project/verifyAccessPassword",
+
+            /* 数据集插件放行 */
+            "/api/bizapp/dataset/application/getAuth",
+            "/api/bizapp/dataset/dataSet/invoke",
+
+            /* 知识库插件放行 */
+            "/api/bizapp/wiki/wikidocumentshare/getInfoByCode",
+            "/api/bizapp/wiki/wikidocument/getInfoById",
+            "/api/bizapp/wiki/wikidocumentfile/pdfProxy",
     };
 
     /**
