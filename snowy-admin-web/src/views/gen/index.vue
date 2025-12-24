@@ -1,5 +1,5 @@
 <template>
-	<a-card :bordered="false" v-if="indexShow">
+	<xn-panel v-if="indexShow" style="height: 100%">
 		<s-table
 			ref="tableRef"
 			:columns="columns"
@@ -12,7 +12,7 @@
 			:toolConfig="{ refresh: true, height: true, columnSetting: true, striped: false }"
 			:scroll="{ x: 'max-content' }"
 		>
-			<template #operator class="table-operator">
+			<template #operator>
 				<a-space>
 					<a-button type="primary" @click="openConfig()">
 						<template #icon><plus-outlined /></template>
@@ -49,7 +49,7 @@
 				</template>
 			</template>
 		</s-table>
-	</a-card>
+	</xn-panel>
 	<steps v-else ref="stepsRef" @successful="tableRef.refresh(true)" @closed="closeConfig()" />
 	<genPreview ref="genPreviewRef" />
 </template>
@@ -60,7 +60,6 @@
 	import Steps from './steps.vue'
 	import GenPreview from './preview.vue'
 	import genBasicApi from '@/api/gen/genBasicApi'
-
 	const tableRef = ref()
 	const indexShow = ref(true)
 	const stepsRef = ref()

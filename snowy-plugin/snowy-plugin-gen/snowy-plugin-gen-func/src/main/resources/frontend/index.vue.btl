@@ -6,7 +6,7 @@
 	<% for(var i = 0; i < configList.~size; i++) { %>
 		<% if(!configList[i].needTableId && configList[i].needPage) { searchCount ++; }%>
 	<% } %>
-	<a-card :bordered="false" style="width: 100%">
+	<xn-panel>
 		<% if (searchCount > 0) { %>
 		<a-form ref="searchFormRef" :model="searchFormState">
 			<a-row :gutter="10">
@@ -97,7 +97,7 @@
 			:row-selection="options.rowSelection"
 			:scroll="{ x: 'max-content' }"
 		>
-			<template #operator class="table-operator">
+			<template #operator>
 				<a-space>
 					<a-button type="primary" @click="formRef.onOpen()" v-if="hasPerm('${classNameFirstLower}Add')">
 						<template #icon><plus-outlined /></template>
@@ -154,7 +154,7 @@
 				</template>
 			</template>
 		</s-table>
-	</a-card>
+	</xn-panel>
 	<ImportModel ref="importModelRef" />
 	<Form ref="formRef" @successful="tableRef.refresh()" />
 </template>

@@ -122,6 +122,8 @@ public class GatewayConfigure {
 
             /* 系统基础配置 */
             "/api/webapp/dev/config/sysBaseList",
+            /* 系统三方登录开关配置 */
+            "/api/webapp/dev/config/sysThirdAllowFlagList",
 
             /* 系统字典树 */
             "/api/webapp/dev/dict/tree",

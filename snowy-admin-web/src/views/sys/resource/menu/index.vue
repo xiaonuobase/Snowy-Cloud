@@ -1,14 +1,16 @@
 <template>
-	<a-card :bordered="false">
+	<xn-panel>
 		<a-form ref="searchFormRef" :model="searchFormState">
 			<a-row :gutter="10">
 				<a-col :xs="24" :sm="16" :md="16" :lg="16" :xl="16">
 					<a-form-item>
 						<a-radio-group v-model:value="moduleType" button-style="solid">
-							<a-radio-button v-for="module in moduleTypeList"
-											:key="module.id"
-											:value="module.id"
-											@click="moduleClick(module.id)">
+							<a-radio-button
+								v-for="module in moduleTypeList"
+								:key="module.id"
+								:value="module.id"
+								@click="moduleClick(module.id)"
+							>
 								<component :is="module.icon" />
 								{{ module.title }}
 							</a-radio-button>
@@ -28,8 +30,6 @@
 				</a-col>
 			</a-row>
 		</a-form>
-	</a-card>
-	<a-card :bordered="false" class="mt-2">
 		<s-table
 			ref="tableRef"
 			:columns="columns"
@@ -42,7 +42,7 @@
 			:row-selection="options.rowSelection"
 			:scroll="{ x: 'max-content' }"
 		>
-			<template #operator class="table-operator">
+			<template #operator>
 				<a-space>
 					<a-button type="primary" @click="formRef.onOpen(undefined, moduleType)">
 						<template #icon><plus-outlined /></template>
@@ -133,7 +133,7 @@
 				</template>
 			</template>
 		</s-table>
-	</a-card>
+	</xn-panel>
 	<Form ref="formRef" @successful="handleSuccess" />
 	<changeModuleForm ref="changeModuleFormRef" @successful="handleSuccess" />
 	<Button ref="buttonRef" />

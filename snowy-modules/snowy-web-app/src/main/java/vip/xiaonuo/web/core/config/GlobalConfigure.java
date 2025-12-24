@@ -147,6 +147,8 @@ public class GlobalConfigure implements WebMvcConfigurer {
 
             /* 系统基础配置 */
             "/dev/config/sysBaseList",
+            /* 系统三方登录开关配置 */
+            "/dev/config/sysThirdAllowFlagList",
 
             /* 系统字典树 */
             "/dev/dict/tree",
@@ -204,6 +206,9 @@ public class GlobalConfigure implements WebMvcConfigurer {
             "/iam/auth/source/render",
             "/iam/auth/source/callback/**",
             "/iam/id/source/eventCallback/**",
+
+            /* 仪表盘放行 */
+            "/dashboard/dashboardList/shareDetail",
     };
 
     /**

@@ -1,5 +1,5 @@
 <template>
-	<a-card :bordered="false">
+	<xn-panel>
 		<a-form ref="searchFormRef" :model="searchFormState">
 			<a-row :gutter="10">
 				<a-col :xs="24" :sm="6" :md="6" :lg="6" :xl="6">
@@ -22,13 +22,13 @@
 						<a-space>
 							<a-button type="primary" @click="tableRef.refresh(true)">
 								<template #icon>
-									<SearchOutlined/>
+									<SearchOutlined />
 								</template>
 								查询
 							</a-button>
 							<a-button @click="reset">
 								<template #icon>
-									<redo-outlined/>
+									<redo-outlined />
 								</template>
 								重置
 							</a-button>
@@ -75,7 +75,7 @@
 					</template>
 				</a-table>
 			</template>
-			<template #operator class="table-operator">
+			<template #operator>
 				<a-space>
 					<a-button type="primary" @click="formRef.onOpen()">
 						<template #icon><plus-outlined /></template>
@@ -118,7 +118,7 @@
 				</template>
 			</template>
 		</s-table>
-	</a-card>
+	</xn-panel>
 	<Form ref="formRef" @successful="tableRef.refresh()" />
 </template>
 
