@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: snowy-gateway-app
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
+  config:
+    import:
+      - optional:nacos:${spring.application.name}-${spring.profiles.active}.yaml
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        namespace: snowy-cloud-${spring.profiles.active}
+        group: ${spring.profiles.active}
+        prefix: ${spring.application.name}
+        file-extension: yaml
+        username: nacos
+        password: nacos
+    # gateway配置
+    gateway:
+      server:
+        webflux:
+          default-filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin
+          globalcors:
+            add-to-simple-url-handler-mapping: true
+            cors-configurations:
+              '[/**]':
+                allow-credentials: true
+                allowed-origin-patterns:
+                  - "*"
+                allowed-methods:
+                  - "*"
+                allowed-headers:
+                  - "*"
