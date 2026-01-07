@@ -233,8 +233,8 @@ public class GatewayConfigure {
      * B端要排除的，相当于C端要认证的
      */
     private static final String[] CLIENT_USER_PERMISSION_PATH_ARR = {
-            "/auth/c/**",
-            "/client/c/**"
+            "/api/webapp/auth/c/**",
+            "/api/webapp/client/c/**"
     };
 
 
