@@ -95,8 +95,14 @@ public class SysOrgApiContextBean implements SysOrgApi {
         return this.sysOrgFeign.getOrgListByIdListWithoutException(orgIdList);
     }
 
+    /**
+     * 清空缓存
+     *
+     * @author yubaoshan
+     * @date 2026/3/8 14:50
+     **/
     @Override
     public void clearOrgCache() {
-        // this.sysOrgFeign.clearOrgCache();
+        this.sysOrgFeign.clearOrgCache();
     }
 }

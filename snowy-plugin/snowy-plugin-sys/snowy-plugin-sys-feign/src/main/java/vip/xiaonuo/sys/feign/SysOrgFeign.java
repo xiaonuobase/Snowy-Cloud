@@ -81,4 +81,13 @@ public interface SysOrgFeign {
      **/
     @RequestMapping("/feign/sys/org/getOrgListByIdListWithoutException")
     List<JSONObject> getOrgListByIdListWithoutException(@RequestParam(value = "orgIdList",required = false) List<String> orgIdList);
+
+    /**
+     * 清空缓存
+     *
+     * @author yubaoshan
+     * @date 2026/3/8 14:50
+     **/
+    @RequestMapping("/feign/sys/org/clearOrgCache")
+    void clearOrgCache();
 }

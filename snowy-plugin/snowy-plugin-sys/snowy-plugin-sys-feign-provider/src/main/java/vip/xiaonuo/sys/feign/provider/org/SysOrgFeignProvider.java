@@ -14,7 +14,6 @@ package vip.xiaonuo.sys.feign.provider.org;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -109,5 +108,17 @@ public class SysOrgFeignProvider implements SysOrgFeign {
     @Override
     public List<JSONObject> getOrgListByIdListWithoutException(@RequestParam(value = "orgIdList",required = false) List<String> orgIdList) {
         return sysOrgApi.getOrgListByIdListWithoutException(orgIdList);
+    }
+
+    /**
+     * 清空缓存
+     *
+     * @author yubaoshan
+     * @date 2026/3/8 14:50
+     **/
+    @RequestMapping("/feign/sys/org/clearOrgCache")
+    @Override
+    public void clearOrgCache() {
+        sysOrgApi.clearOrgCache();
     }
 }
