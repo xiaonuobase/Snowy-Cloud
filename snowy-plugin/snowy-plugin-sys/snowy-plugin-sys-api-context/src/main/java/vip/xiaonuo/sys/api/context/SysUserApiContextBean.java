@@ -134,8 +134,8 @@ public class SysUserApiContextBean implements SysUserApi {
      * @date 2022/6/6 11:40
      */
     @Override
-    public List<String> getUserIdListByOrgIdList(List<String> orgIdList) {
-        String feignResp = sysUserFeign.getUserIdListByOrgIdList(orgIdList);
+    public List<String> getUserIdListByOrgIdList(String initiator, List<String> orgIdList) {
+        String feignResp = sysUserFeign.getUserIdListByOrgIdList(initiator, orgIdList);
         JSONArray jsonArray = new JSONArray(feignResp);
         List<String> resp = jsonArray.toList(String.class);
         return resp;
@@ -149,8 +149,8 @@ public class SysUserApiContextBean implements SysUserApi {
      * @date 2022/6/6 11:44
      */
     @Override
-    public List<String> getUserIdListByPositionIdList(List<String> positionIdList) {
-        String feignResp = sysUserFeign.getUserIdListByPositionIdList(positionIdList);
+    public List<String> getUserIdListByPositionIdList(String initiator, List<String> positionIdList) {
+        String feignResp = sysUserFeign.getUserIdListByPositionIdList(initiator, positionIdList);
         JSONArray jsonArray = new JSONArray(feignResp);
         List<String> resp = jsonArray.toList(String.class);
         return resp;
@@ -160,15 +160,14 @@ public class SysUserApiContextBean implements SysUserApi {
      * 根据用户id和组织id和职位id和主管层级获取上级主管id
      *
      * @param userIdList
-     * @param userId
      * @param orgId
      * @param supervisorLevel
      * @author xuyuxiang
      * @date 2022/6/6 14:50
      */
     @Override
-    public JSONObject getSupervisorIdBySupervisorLevel(List<String> userIdList, String userId, String orgId, String supervisorLevel) {
-        String feignResp = sysUserFeign.getSupervisorIdBySupervisorLevel(userIdList, userId, orgId, supervisorLevel);
+    public JSONObject getSupervisorIdBySupervisorLevel(String initiator, List<String> userIdList, String orgId, String supervisorLevel) {
+        String feignResp = sysUserFeign.getSupervisorIdBySupervisorLevel(initiator, userIdList, orgId, supervisorLevel);
         JSONObject resp = JSONUtil.parseObj(feignResp);
         return resp;
     }

@@ -41,18 +41,18 @@ public class SysRelationApiContextBean implements SysRelationApi {
      * @date 2022/11/22 10:55
      */
     @Override
-    public List<String> getUserIdListByRoleIdList(List<String> roleIdList) {
-        return sysRelationFeign.getUserIdListByRoleIdList(roleIdList);
+    public List<String> getUserIdListByRoleIdList(String initiator, List<String> roleIdList) {
+        return sysRelationFeign.getUserIdListByRoleIdList(initiator, roleIdList);
     }
 
     @Override
-    public List<String> getUserIdListByGroupIdList(List<String> groupIdList) {
-        return sysRelationFeign.getUserIdListByGroupIdList(groupIdList);
+    public List<String> getUserIdListByGroupIdList(String initiator, List<String> groupIdList) {
+        return sysRelationFeign.getUserIdListByGroupIdList(initiator, groupIdList);
     }
 
     @Override
-    public List<String> getGroupIdListByUserIdList(List<String> userIdList) {
-        return sysRelationFeign.getGroupIdListByUserIdList(userIdList);
+    public List<String> getGroupIdListByUserIdList(String initiator, List<String> userIdList) {
+        return sysRelationFeign.getGroupIdListByUserIdList(initiator, userIdList);
     }
 
     @Override

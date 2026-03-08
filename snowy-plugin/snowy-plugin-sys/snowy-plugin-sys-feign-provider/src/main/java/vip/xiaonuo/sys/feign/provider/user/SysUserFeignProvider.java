@@ -124,8 +124,8 @@ public class SysUserFeignProvider implements SysUserFeign {
      */
     @Override
     @RequestMapping("/feign/sys/user/getUserIdListByOrgIdList")
-    public String getUserIdListByOrgIdList(@RequestParam(value = "orgIdList",required = false) List<String> orgIdList) {
-        return JSONUtil.toJsonStr(sysUserApi.getUserIdListByOrgIdList(orgIdList));
+    public String getUserIdListByOrgIdList(@RequestParam(value = "orgIdList",required = false) String initiator, @RequestParam(value = "orgIdList",required = false) List<String> orgIdList) {
+        return JSONUtil.toJsonStr(sysUserApi.getUserIdListByOrgIdList(initiator, orgIdList));
     }
 
     /**
@@ -137,23 +137,22 @@ public class SysUserFeignProvider implements SysUserFeign {
      */
     @Override
     @RequestMapping("/feign/sys/user/getUserIdListByPositionIdList")
-    public String getUserIdListByPositionIdList(@RequestParam(value = "positionIdList",required = false) List<String> positionIdList) {
-        return JSONUtil.toJsonStr(sysUserApi.getUserIdListByPositionIdList(positionIdList));
+    public String getUserIdListByPositionIdList(@RequestParam(value = "orgIdList",required = false) String initiator, @RequestParam(value = "positionIdList",required = false) List<String> positionIdList) {
+        return JSONUtil.toJsonStr(sysUserApi.getUserIdListByPositionIdList(initiator, positionIdList));
     }
 
     /**
-     * 根据用户id和组织id和职位id和主管层级获取上级主管id
+     * 根据用户id和组织id和主管层级获取上级主管id
      *
      * @param userIdList
-     * @param userId
      * @param orgId
      * @param supervisorLevel
      * @author dongxiayu
      * @date 2022/6/6 14:50
      */
     @Override
-    public String getSupervisorIdBySupervisorLevel(List<String> userIdList, String userId, String orgId, String supervisorLevel) {
-        return JSONUtil.toJsonStr(sysUserApi.getSupervisorIdBySupervisorLevel(userIdList, userId, orgId, supervisorLevel));
+    public String getSupervisorIdBySupervisorLevel(String initiator, List<String> userIdList, String orgId, String supervisorLevel) {
+        return JSONUtil.toJsonStr(sysUserApi.getSupervisorIdBySupervisorLevel(initiator, userIdList, orgId, supervisorLevel));
     }
 
     /**
