@@ -46,7 +46,7 @@ export default {
 	userResetPassword(data) {
 		return request('resetPassword', data)
 	},
-	// 获取组织选择器
+	// 获取组织树选择器（懒加载）
 	userOrgTreeSelector(data) {
 		return request('orgTreeSelector', data, 'get')
 	},

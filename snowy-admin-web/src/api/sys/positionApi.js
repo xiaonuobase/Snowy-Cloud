@@ -38,7 +38,7 @@ export default {
 	positionDetail(data) {
 		return request('detail', data, 'get')
 	},
-	// 获取组织树选择器
+	// 获取组织树选择器（懒加载）
 	positionOrgTreeSelector(data) {
 		return request('orgTreeSelector', data, 'get')
 	},

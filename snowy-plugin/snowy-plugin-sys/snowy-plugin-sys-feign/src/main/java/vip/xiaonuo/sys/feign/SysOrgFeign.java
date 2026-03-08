@@ -12,13 +12,11 @@
  */
 package vip.xiaonuo.sys.feign;
 
-import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.json.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.common.consts.FeignConstant;
-
 import java.util.List;
 
 /**
@@ -49,13 +47,13 @@ public interface SysOrgFeign {
     String getSupervisorIdByOrgId(@RequestParam(value = "orgId",required = false) String orgId);
 
     /**
-     * 获取组织树选择器
+     * 获取组织树选择器（懒加载）
      *
      * @author dongxiayu
      * @date 2022/7/22 14:46
      **/
     @RequestMapping("/feign/sys/org/orgTreeSelector")
-    List<Tree<String>> orgTreeSelector();
+    List<JSONObject> orgTreeSelector(@RequestParam(value = "parentId",required = false) String parentId);
 
     /**
      * 获取组织列表选择器
@@ -64,7 +62,7 @@ public interface SysOrgFeign {
      * @date 2022/7/22 14:45
      **/
     @RequestMapping("/feign/sys/org/orgListSelector")
-    String orgListSelector(@RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size,@RequestParam(value = "parentId",required = false) String parentId);
+    String orgListSelector(@RequestParam(value = "parentId",required = false) String parentId);
 
     /**
      * 根据机构id获取父id集合

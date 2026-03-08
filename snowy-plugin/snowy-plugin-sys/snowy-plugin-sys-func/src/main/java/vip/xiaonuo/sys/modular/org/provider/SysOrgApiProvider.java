@@ -13,7 +13,6 @@
 package vip.xiaonuo.sys.modular.org.provider;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -23,6 +22,7 @@ import org.springframework.stereotype.Service;
 import vip.xiaonuo.sys.api.SysOrgApi;
 import vip.xiaonuo.sys.modular.org.entity.SysOrg;
 import vip.xiaonuo.sys.modular.org.param.SysOrgSelectorOrgListParam;
+import vip.xiaonuo.sys.modular.org.param.SysOrgSelectorTreeParam;
 import vip.xiaonuo.sys.modular.org.service.SysOrgService;
 
 import java.util.List;
@@ -55,8 +55,10 @@ public class SysOrgApiProvider implements SysOrgApi {
     }
 
     @Override
-    public List<Tree<String>> orgTreeSelector() {
-        return sysOrgService.orgTreeSelector();
+    public List<JSONObject> orgTreeSelector(String parentId) {
+        SysOrgSelectorTreeParam sysOrgSelectorTreeParam = new SysOrgSelectorTreeParam();
+        sysOrgSelectorTreeParam.setParentId(parentId);
+        return sysOrgService.orgTreeSelector(sysOrgSelectorTreeParam);
     }
 
     @SuppressWarnings("ALL")
@@ -75,5 +77,10 @@ public class SysOrgApiProvider implements SysOrgApi {
     @Override
     public List<JSONObject> getOrgListByIdListWithoutException(List<String> orgIdList) {
         return sysOrgService.listByIds(orgIdList).stream().map(JSONUtil::parseObj).collect(Collectors.toList());
+    }
+
+    @Override
+    public void clearOrgCache() {
+        sysOrgService.clearOrgCache();
     }
 }

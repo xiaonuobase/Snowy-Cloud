@@ -12,9 +12,9 @@
  */
 package vip.xiaonuo.sys.feign.provider.org;
 
-import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vip.xiaonuo.sys.api.SysOrgApi;
 import vip.xiaonuo.sys.feign.SysOrgFeign;
-
 import java.util.List;
 
 /**
@@ -65,27 +64,26 @@ public class SysOrgFeignProvider implements SysOrgFeign {
     }
 
     /**
-     * 获取组织树选择器
+     * 获取组织树选择器（懒加载）
      *
      * @author dongxiayu
      * @date 2022/7/22 14:46
      **/
     @Override
     @RequestMapping("/feign/sys/org/orgTreeSelector")
-    public List<Tree<String>> orgTreeSelector() {
-        return sysOrgApi.orgTreeSelector();
+    public List<JSONObject> orgTreeSelector(@RequestParam(value = "parentId",required = false) String parentId) {
+        return sysOrgApi.orgTreeSelector(parentId);
     }
 
     /**
-     * 获取组织列表选择器
+     * 获取组织树选择器
      *
-     * @param parentId
      * @author dongxiayu
-     * @date 2022/7/22 14:45
-     */
+     * @date 2022/7/22 14:46
+     **/
     @Override
     @RequestMapping("/feign/sys/org/orgListSelector")
-    public String orgListSelector(@RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size,@RequestParam(value = "parentId",required = false) String parentId) {
+    public String orgListSelector(@RequestParam(value = "parentId",required = false) String parentId) {
         return JSONUtil.toJsonStr(sysOrgApi.orgListSelector(parentId));
     }
 

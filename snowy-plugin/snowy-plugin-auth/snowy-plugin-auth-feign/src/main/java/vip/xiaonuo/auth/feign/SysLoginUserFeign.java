@@ -16,6 +16,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.auth.core.pojo.ClientLoginUser;
+import vip.xiaonuo.auth.core.pojo.SaBaseLoginUser;
 import vip.xiaonuo.auth.core.pojo.SysLoginUser;
 import vip.xiaonuo.common.consts.FeignConstant;
 
@@ -203,5 +204,15 @@ public interface SysLoginUserFeign {
     @PostMapping("/feign/sys/login/user/doRegister")
     void doRegister(@RequestParam("account") String account,
                     @RequestParam("password") String password);
+
+    /**
+     * 刷新用户数据范围预计算表
+     *
+     * @author yubaoshan
+     * @date 2026/3/8 16:14
+     **/
+    @PostMapping("/feign/sys/login/user/refreshUserDataScope")
+    void refreshUserDataScope(@RequestParam("userId") String userId,
+                              @RequestParam("dataScopeList") List<SaBaseLoginUser.DataScope> dataScopeList);
 
 }

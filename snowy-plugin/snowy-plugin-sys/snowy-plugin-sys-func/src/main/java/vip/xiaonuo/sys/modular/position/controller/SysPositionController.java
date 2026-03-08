@@ -12,7 +12,7 @@
  */
 package vip.xiaonuo.sys.modular.position.controller;
 
-import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import vip.xiaonuo.common.annotation.CommonLog;
 import vip.xiaonuo.common.pojo.CommonResult;
+import vip.xiaonuo.sys.modular.org.param.SysOrgSelectorTreeParam;
 import vip.xiaonuo.sys.modular.position.entity.SysPosition;
 import vip.xiaonuo.sys.modular.position.param.*;
 import vip.xiaonuo.sys.modular.position.service.SysPositionService;
@@ -124,16 +125,16 @@ public class SysPositionController {
     /* ====职位部分所需要用到的选择器==== */
 
     /**
-     * 获取组织树选择器
+     * 获取组织树选择器（懒加载）
      *
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
     @ApiOperationSupport(order = 6)
-    @Operation(summary = "获取组织树选择器")
+    @Operation(summary = "获取组织树选择器（懒加载）")
     @GetMapping("/sys/position/orgTreeSelector")
-    public CommonResult<List<Tree<String>>> orgTreeSelector() {
-        return CommonResult.data(sysPositionService.orgTreeSelector());
+    public CommonResult<List<JSONObject>> orgTreeSelector(SysOrgSelectorTreeParam sysOrgSelectorTreeParam) {
+        return CommonResult.data(sysPositionService.orgTreeSelector(sysOrgSelectorTreeParam));
     }
 
     /**

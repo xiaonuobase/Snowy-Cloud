@@ -12,7 +12,7 @@
  */
 package vip.xiaonuo.sys.modular.org.controller;
 
-import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
@@ -65,16 +65,16 @@ public class SysOrgController {
     }
 
     /**
-     * 获取组织树
+     * 获取组织树（懒加载）
      *
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
     @ApiOperationSupport(order = 2)
-    @Operation(summary = "获取组织树")
+    @Operation(summary = "获取组织树（懒加载）")
     @GetMapping("/sys/org/tree")
-    public CommonResult<List<Tree<String>>> tree() {
-        return CommonResult.data(sysOrgService.tree());
+    public CommonResult<List<JSONObject>> tree(SysOrgSelectorTreeParam sysOrgSelectorTreeParam) {
+        return CommonResult.data(sysOrgService.orgTreeSelector(sysOrgSelectorTreeParam));
     }
 
     /**
@@ -154,16 +154,16 @@ public class SysOrgController {
     /* ====组织部分所需要用到的选择器==== */
 
     /**
-     * 获取组织树选择器
+     * 获取组织树选择器（懒加载）
      *
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
     @ApiOperationSupport(order = 8)
-    @Operation(summary = "获取组织树选择器")
+    @Operation(summary = "获取组织树选择器（懒加载）")
     @GetMapping("/sys/org/orgTreeSelector")
-    public CommonResult<List<Tree<String>>> orgTreeSelector() {
-        return CommonResult.data(sysOrgService.orgTreeSelector());
+    public CommonResult<List<JSONObject>> orgTreeSelector(SysOrgSelectorTreeParam sysOrgSelectorTreeParam) {
+        return CommonResult.data(sysOrgService.orgTreeSelector(sysOrgSelectorTreeParam));
     }
 
     /**

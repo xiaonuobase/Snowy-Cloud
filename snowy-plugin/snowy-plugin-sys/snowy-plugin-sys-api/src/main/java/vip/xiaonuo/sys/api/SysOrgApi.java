@@ -12,7 +12,6 @@
  */
 package vip.xiaonuo.sys.api;
 
-import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -43,12 +42,12 @@ public interface SysOrgApi {
     String getSupervisorIdByOrgId(String orgId);
 
     /**
-     * 获取组织树选择器
+     * 获取组织树选择器（懒加载）
      *
      * @author xuyuxiang
      * @date 2022/7/22 14:46
      **/
-    List<Tree<String>> orgTreeSelector();
+    List<JSONObject> orgTreeSelector(String parentId);
 
     /**
      * 获取组织列表选择器
@@ -73,4 +72,12 @@ public interface SysOrgApi {
      * @date 2025/01/10 14:45
      **/
     List<JSONObject> getOrgListByIdListWithoutException(List<String> orgIdList);
+
+    /**
+     * 清除组织缓存
+     *
+     * @author yubaoshan
+     * @date 2026/2/12
+     **/
+    void clearOrgCache();
 }

@@ -1,17 +1,13 @@
 package vip.xiaonuo.sys.api.context;
 
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.sys.api.SysOrgApi;
 import vip.xiaonuo.sys.feign.SysOrgFeign;
-
 import java.util.List;
 
 /**
@@ -52,29 +48,25 @@ public class SysOrgApiContextBean implements SysOrgApi {
     }
 
     /**
+     * 获取组织树选择器（懒加载）
+     *
+     * @author xuyuxiang
+     * @date 2026/3/8 14:46
+     **/
+    @Override
+    public List<JSONObject> orgTreeSelector(String parentId) {
+        return this.sysOrgFeign.orgTreeSelector(parentId);
+    }
+
+    /**
      * 获取组织树选择器
      *
      * @author xuyuxiang
      * @date 2022/7/22 14:46
      **/
     @Override
-    public List<Tree<String>> orgTreeSelector() {
-        List<Tree<String>> orgTreeSelectorList = this.sysOrgFeign.orgTreeSelector();
-        return orgTreeSelectorList;
-    }
-
-    /**
-     * 获取组织列表选择器
-     *
-     * @param parentId
-     * @author xuyuxiang
-     * @date 2022/7/22 14:45
-     */
-    @Override
     public Page<JSONObject> orgListSelector(String parentId) {
-        long current = CommonPageRequest.defaultPage().getCurrent();
-        long size = CommonPageRequest.defaultPage().getSize();
-        String feignResp = this.sysOrgFeign.orgListSelector(Convert.toInt(current), Convert.toInt(size), parentId);
+        String feignResp = this.sysOrgFeign.orgListSelector(parentId);
         Page<JSONObject> resp = (Page<JSONObject>) JSONUtil.toBean(feignResp,Page.class);
         return resp;
     }
@@ -101,5 +93,10 @@ public class SysOrgApiContextBean implements SysOrgApi {
     @Override
     public List<JSONObject> getOrgListByIdListWithoutException(List<String> orgIdList) {
         return this.sysOrgFeign.getOrgListByIdListWithoutException(orgIdList);
+    }
+
+    @Override
+    public void clearOrgCache() {
+        // this.sysOrgFeign.clearOrgCache();
     }
 }

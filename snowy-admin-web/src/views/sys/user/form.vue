@@ -45,46 +45,49 @@
 					<a-row :gutter="16">
 						<a-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 							<a-form-item label="选择组织：" name="orgId">
-								<a-tree-select
-									v-model:value="formData.orgId"
-									class="xn-wd"
-									:dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-									placeholder="请选择组织"
-									allow-clear
-									tree-default-expand-all
-									:tree-data="treeData"
-									:tree-default-expanded-keys="treeDefaultExpandedKeys"
-									:field-names="{
-										children: 'children',
-										label: 'name',
-										value: 'id'
-									}"
-									@change="selePositionData(formData.orgId, 0)"
-								/>
+								<a-spin :spinning="treeLoading">
+									<a-tree-select
+										v-model:value="formData.orgId"
+										class="xn-wd"
+										:dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+										placeholder="请选择组织"
+										allow-clear
+										tree-line
+										:tree-data="treeData"
+										v-model:treeExpandedKeys="treeDefaultExpandedKeys"
+										:field-names="treeFieldNames"
+										:load-data="isFullTree ? undefined : onLoadData"
+										@change="selePositionData(formData.orgId, 0)"
+									/>
+								</a-spin>
 							</a-form-item>
 						</a-col>
 						<a-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 							<a-form-item label="选择职位：" name="positionId">
-								<xn-page-select
-									ref="xnPositionPageSelectRef"
-									v-model:value="formData.positionId"
-									placeholder="请选择职位"
-									allow-clear
-									:page-function="selectApiFunction.positionSelector"
-									:echo-function="selectApiFunction.echoPosition"
-								/>
+								<a-spin :spinning="treeLoading">
+									<xn-page-select
+										ref="xnPositionPageSelectRef"
+										v-model:value="formData.positionId"
+										placeholder="请选择职位"
+										allow-clear
+										:page-function="selectApiFunction.positionSelector"
+										:echo-function="selectApiFunction.echoPosition"
+									/>
+								</a-spin>
 							</a-form-item>
 						</a-col>
 						<a-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 							<a-form-item label="选择主管：" name="directorId">
-								<xn-page-select
-									ref="xnUserPageSelectRef"
-									v-model:value="formData.directorId"
-									placeholder="请选择主管"
-									allow-clear
-									:page-function="selectApiFunction.userSelector"
-									:echo-function="selectApiFunction.echoUser"
-								/>
+								<a-spin :spinning="treeLoading">
+									<xn-page-select
+										ref="xnUserPageSelectRef"
+										v-model:value="formData.directorId"
+										placeholder="请选择主管"
+										allow-clear
+										:page-function="selectApiFunction.userSelector"
+										:echo-function="selectApiFunction.echoUser"
+									/>
+								</a-spin>
 							</a-form-item>
 						</a-col>
 					</a-row>
@@ -125,18 +128,21 @@
 										:name="['positionJson', index, 'orgId']"
 										:rules="{ required: true, message: '请选择组织' }"
 									>
-										<a-tree-select
-											v-model:value="positionInfo.orgId"
-											class="xn-wd"
-											:dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-											placeholder="请选择组织"
-											allow-clear
-											tree-default-expand-all
-											:tree-data="treeData"
-											:tree-default-expanded-keys="treeDefaultExpandedKeys"
-											:field-names="treeFieldNames"
-											@select="childOrgSelect(positionInfo, 0, index)"
-										/>
+										<a-spin :spinning="treeLoading">
+											<a-tree-select
+												v-model:value="positionInfo.orgId"
+												class="xn-wd"
+												:dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+												placeholder="请选择组织"
+												allow-clear
+												tree-line
+												:tree-data="treeData"
+												v-model:treeExpandedKeys="childTreeExpandedKeys[index]"
+												:field-names="treeFieldNames"
+												:load-data="isFullTree ? undefined : onLoadData"
+												@change="childOrgSelect(positionInfo, 0, index)"
+											/>
+										</a-spin>
 									</a-form-item>
 								</a-col>
 								<a-col :xs="24" :sm="24" :md="7" :lg="7" :xl="7">
@@ -144,26 +150,30 @@
 										:name="['positionJson', index, 'positionId']"
 										:rules="{ required: true, message: '请选择职位' }"
 									>
-										<xn-page-select
-											ref="xnChildPositionPageSelectRef"
-											v-model:value="positionInfo.positionId"
-											placeholder="请选择职位"
-											allow-clear
-											:page-function="selectApiFunction.childPositionSelector"
-											:echo-function="selectApiFunction.echoPosition"
-										/>
+										<a-spin :spinning="treeLoading">
+											<xn-page-select
+												ref="xnChildPositionPageSelectRef"
+												v-model:value="positionInfo.positionId"
+												placeholder="请选择职位"
+												allow-clear
+												:page-function="selectApiFunction.childPositionSelector"
+												:echo-function="selectApiFunction.echoPosition"
+											/>
+										</a-spin>
 									</a-form-item>
 								</a-col>
 								<a-col :xs="24" :sm="24" :md="7" :lg="7" :xl="7">
 									<a-form-item :name="['positionJson', index, 'directorId']">
-										<xn-page-select
-											ref="xnChildUserPageSelectRef"
-											v-model:value="positionInfo.directorId"
-											placeholder="请选择主管"
-											allow-clear
-											:page-function="selectApiFunction.childUserSelector"
-											:echo-function="selectApiFunction.echoUser"
-										/>
+										<a-spin :spinning="treeLoading">
+											<xn-page-select
+												ref="xnChildUserPageSelectRef"
+												v-model:value="positionInfo.directorId"
+												placeholder="请选择主管"
+												allow-clear
+												:page-function="selectApiFunction.childUserSelector"
+												:echo-function="selectApiFunction.echoUser"
+											/>
+										</a-spin>
 									</a-form-item>
 								</a-col>
 								<a-col :xs="24" :sm="24" :md="3" :lg="3" :xl="3">
@@ -310,8 +320,10 @@
 	const activeTabsKey = ref('1')
 	const emit = defineEmits({ successful: null })
 	const formLoading = ref(false)
+	const treeLoading = ref(false)
 	const treeData = ref([])
 	const treeDefaultExpandedKeys = ref([])
+	const childTreeExpandedKeys = ref([])
 	// 分页select组件dom定义
 	const xnPositionPageSelectRef = ref()
 	const xnUserPageSelectRef = ref()
@@ -319,8 +331,39 @@
 	const xnChildUserPageSelectRef = ref()
 	// 表单数据
 	const formData = ref({})
-	const treeFieldNames = { children: 'children', title: 'name', key: 'id' }
+	const treeFieldNames = { children: 'children', label: 'name', key: 'id', value: 'id' }
 
+	// 是否加载了全量树（有orgId时加载全量树以便展开到选中节点，否则懒加载）
+	const isFullTree = ref(false)
+	// 加载全量树（用于需要展开到指定节点的场景）
+	const loadFullTree = () => {
+		return userApi.userOrgTreeSelector({ searchKey: '' }).then((res) => {
+			if (res !== null) {
+				treeData.value = res
+				// 只有一个根节点时才自动展开
+				if (treeData.value.length === 1) {
+					treeDefaultExpandedKeys.value.push(treeData.value[0].id)
+				}
+			}
+		})
+	}
+	// 加载懒加载树（无需展开到指定节点时使用）
+	const loadLazyTree = () => {
+		return userApi.userOrgTreeSelector().then((res) => {
+			if (res !== null) {
+				treeData.value = res.map((item) => {
+					return {
+						...item,
+						isLeaf: item.isLeaf === undefined ? false : item.isLeaf
+					}
+				})
+				// 只有一个根节点时才自动展开
+				if (treeData.value.length === 1) {
+					treeDefaultExpandedKeys.value.push(treeData.value[0].id)
+				}
+			}
+		})
+	}
 	// 打开抽屉
 	const onOpen = (record, orgId) => {
 		visible.value = true
@@ -335,36 +378,102 @@
 				selePositionData(orgId)
 			})
 		}
-		if (record) {
-			convertFormData(record)
-		}
 		nextTick(() => {
-			// 机构选择器数据
-			userApi.userOrgTreeSelector().then((res) => {
-				if (res !== null) {
-					treeData.value = res
-					// 默认展开2级
-					treeData.value.forEach((item) => {
-						// 因为0的顶级
-						if (item.parentId === '0') {
-							treeDefaultExpandedKeys.value.push(item.id)
-							// 取到下级ID
-							if (item.children) {
-								item.children.forEach((items) => {
-									treeDefaultExpandedKeys.value.push(items.id)
-								})
-							}
+			if (record) {
+				// 编辑模式：加载全量树 + 详情，展开到选中节点
+				isFullTree.value = true
+				treeLoading.value = true
+				const treePromise = loadFullTree()
+				const detailPromise = convertFormData(record)
+				Promise.all([treePromise, detailPromise])
+					.then(() => {
+						expandToSelectedOrgs()
+					})
+					.finally(() => {
+						treeLoading.value = false
+					})
+			} else if (orgId) {
+				// 新增模式且有orgId：加载全量树，展开到orgId节点
+				isFullTree.value = true
+				treeLoading.value = true
+				loadFullTree()
+					.then(() => {
+						expandToSelectedOrgs()
+					})
+					.finally(() => {
+						treeLoading.value = false
+					})
+			} else {
+				// 新增模式无orgId：懒加载树
+				isFullTree.value = false
+				loadLazyTree()
+			}
+		})
+	}
+	// 懒加载子节点
+	const onLoadData = (treeNode) => {
+		return new Promise((resolve) => {
+			if (treeNode.dataRef.children) {
+				resolve()
+				return
+			}
+			userApi
+				.userOrgTreeSelector({
+					parentId: treeNode.dataRef.id
+				})
+				.then((res) => {
+					treeNode.dataRef.children = res.map((item) => {
+						return {
+							...item,
+							isLeaf: item.isLeaf === undefined ? false : item.isLeaf
 						}
 					})
-				}
-			})
+					treeData.value = [...treeData.value]
+					resolve()
+				})
 		})
 	}
 	// 关闭抽屉
 	const onClose = () => {
 		treeData.value = []
 		treeDefaultExpandedKeys.value = []
+		childTreeExpandedKeys.value = []
 		visible.value = false
+	}
+	// 在全量树中查找目标节点的所有祖先ID（用于展开树到选中节点）
+	const collectAncestorKeys = (nodes, targetId, path = []) => {
+		if (!nodes) return null
+		for (const node of nodes) {
+			if (node.id === targetId) return path
+			if (node.children) {
+				const found = collectAncestorKeys(node.children, targetId, [...path, node.id])
+				if (found) return found
+			}
+		}
+		return null
+	}
+	// 展开树到所有选中的机构节点
+	const expandToSelectedOrgs = () => {
+		// 主选择组织：只展开主orgId的祖先
+		if (formData.value.orgId) {
+			const ancestors = collectAncestorKeys(treeData.value, formData.value.orgId)
+			if (ancestors) {
+				ancestors.forEach((id) => {
+					if (!treeDefaultExpandedKeys.value.includes(id)) {
+						treeDefaultExpandedKeys.value.push(id)
+					}
+				})
+			}
+		}
+		// 任职信息：每行独立展开
+		if (formData.value.positionJson) {
+			formData.value.positionJson.forEach((item, index) => {
+				if (item.orgId) {
+					const ancestors = collectAncestorKeys(treeData.value, item.orgId)
+					childTreeExpandedKeys.value[index] = ancestors ? [...ancestors] : []
+				}
+			})
+		}
 	}
 	// 回显数据
 	const convertFormData = (record) => {
@@ -372,7 +481,7 @@
 			id: record.id
 		}
 		// 查询详情
-		userApi.userDetail(param).then((data) => {
+		return userApi.userDetail(param).then((data) => {
 			if (data.positionJson) {
 				// 替换表单中的格式与后端查到的
 				data.positionJson = JSON.parse(data.positionJson)
@@ -460,10 +569,12 @@
 			positionId: undefined,
 			directorId: undefined
 		})
+		childTreeExpandedKeys.value.push([])
 	}
 	// 删减行
 	const delDomains = (index) => {
 		formData.value.positionJson.splice(index, 1)
+		childTreeExpandedKeys.value.splice(index, 1)
 	}
 
 	// 子表行内选择机构

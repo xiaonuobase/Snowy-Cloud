@@ -266,4 +266,9 @@ public class SysLoginUserApiContextBean implements SaBaseLoginUserApi {
     public void doRegister(String account, String password) {
         this.sysLoginUserFeign.doRegister(account, password);
     }
+
+    @Override
+    public void refreshUserDataScope(String userId, List<SaBaseLoginUser.DataScope> dataScopeList) {
+        this.sysLoginUserFeign.refreshUserDataScope(userId, dataScopeList);
+    }
 }

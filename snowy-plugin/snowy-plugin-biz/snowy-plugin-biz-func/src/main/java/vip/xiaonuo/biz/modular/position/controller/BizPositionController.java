@@ -13,7 +13,7 @@
 package vip.xiaonuo.biz.modular.position.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
@@ -31,6 +31,7 @@ import vip.xiaonuo.biz.modular.position.param.*;
 import vip.xiaonuo.biz.modular.position.service.BizPositionService;
 import vip.xiaonuo.common.annotation.CommonLog;
 import vip.xiaonuo.common.pojo.CommonResult;
+import vip.xiaonuo.biz.modular.org.param.BizOrgSelectorTreeParam;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -130,17 +131,17 @@ public class BizPositionController {
     /* ====岗位部分所需要用到的选择器==== */
 
     /**
-     * 获取组织树选择器
+     * 获取组织树选择器（懒加载）
      *
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
     @ApiOperationSupport(order = 6)
-    @Operation(summary = "获取组织树选择器")
+    @Operation(summary = "获取组织树选择器（懒加载）")
     @SaCheckPermission("/biz/position/orgTreeSelector")
     @GetMapping("/biz/position/orgTreeSelector")
-    public CommonResult<List<Tree<String>>> orgTreeSelector() {
-        return CommonResult.data(bizPositionService.orgTreeSelector());
+    public CommonResult<List<JSONObject>> orgTreeSelector(BizOrgSelectorTreeParam bizOrgSelectorTreeParam) {
+        return CommonResult.data(bizPositionService.orgTreeSelector(bizOrgSelectorTreeParam));
     }
 
     /**

@@ -22,7 +22,7 @@ export default {
 	orgPage(data) {
 		return request('page', data, 'get')
 	},
-	// 获取组织树
+	// 获取组织树（懒加载）
 	orgTree(data) {
 		return request('tree', data, 'get')
 	},
@@ -38,7 +38,7 @@ export default {
 	orgDetail(data) {
 		return request('detail', data, 'get')
 	},
-	// 获取组织树选择器
+	// 获取组织树选择器（懒加载）
 	orgOrgTreeSelector(data) {
 		return request('orgTreeSelector', data, 'get')
 	},

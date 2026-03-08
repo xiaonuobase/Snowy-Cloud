@@ -26,7 +26,7 @@ export default {
 	orgList(data) {
 		return request('list', data, 'get')
 	},
-	// 获取机构树
+	// 获取机构树（懒加载）
 	orgTree(data) {
 		return request('tree', data, 'get')
 	},
@@ -42,7 +42,7 @@ export default {
 	orgDetail(data) {
 		return request('detail', data, 'get')
 	},
-	// 获取机构树选择器
+	// 获取机构树选择器（懒加载）
 	orgTreeSelector(data) {
 		return request('orgTreeSelector', data, 'get')
 	},
