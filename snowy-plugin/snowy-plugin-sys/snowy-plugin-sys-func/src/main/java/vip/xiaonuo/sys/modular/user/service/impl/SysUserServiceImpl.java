@@ -66,6 +66,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.auth.core.pojo.SysLoginUser;
+import vip.xiaonuo.auth.api.SaBaseLoginUserApi;
 import vip.xiaonuo.auth.core.util.StpLoginUserUtil;
 import vip.xiaonuo.common.cache.CommonCacheOperator;
 import vip.xiaonuo.common.enums.CommonGenderEnum;
@@ -260,6 +261,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Resource
     private SysUserPasswordService sysUserPasswordService;
+
+    @Resource(name = "loginUserApi")
+    private SaBaseLoginUserApi loginUserApi;
 
     @Override
     public SysLoginUser getUserById(String id) {
@@ -1341,6 +1345,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void grantRole(SysUserGrantRoleParam sysUserGrantRoleParam) {
         sysRelationService.saveRelationBatchWithClear(sysUserGrantRoleParam.getId(), sysUserGrantRoleParam.getRoleIdList(),
                 SysRelationCategoryEnum.SYS_USER_HAS_ROLE.getValue());
+        // 刷新该用户的权限缓存
+        loginUserApi.refreshOnlineUserPermission(sysUserGrantRoleParam.getId());
     }
 
     @Override
@@ -1379,6 +1385,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         List<String> extJsonList = sysUserGrantResourceParam.getGrantInfoList().stream()
                 .map(JSONUtil::toJsonStr).collect(Collectors.toList());
         sysRelationService.saveRelationBatchWithClear(sysUserGrantResourceParam.getId(), menuIdList, SysRelationCategoryEnum.SYS_USER_HAS_RESOURCE.getValue(), extJsonList);
+        // 刷新该用户的权限缓存
+        loginUserApi.refreshOnlineUserPermission(sysUserGrantResourceParam.getId());
     }
 
     @Override
@@ -1400,6 +1408,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .map(JSONUtil::toJsonStr).collect(Collectors.toList());
         sysRelationService.saveRelationBatchWithClear(id, apiUrlList, SysRelationCategoryEnum.SYS_USER_HAS_PERMISSION.getValue(),
                 extJsonList);
+        // 刷新该用户的权限缓存
+        loginUserApi.refreshOnlineUserPermission(id);
     }
 
     @Override

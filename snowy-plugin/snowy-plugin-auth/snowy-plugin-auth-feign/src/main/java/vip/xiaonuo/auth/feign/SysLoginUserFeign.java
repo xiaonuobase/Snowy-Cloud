@@ -215,4 +215,13 @@ public interface SysLoginUserFeign {
     void refreshUserDataScope(@RequestParam("userId") String userId,
                               @RequestParam("dataScopeList") List<SaBaseLoginUser.DataScope> dataScopeList);
 
+    /**
+     * 刷新用户数据范围预计算表
+     *
+     * @author yubaoshan
+     * @date 2026/3/8 16:14
+     **/
+    @PostMapping("/feign/sys/login/user/refreshOnlineUserPermission")
+    void refreshOnlineUserPermission(@RequestParam("userId") String userId);
+
 }

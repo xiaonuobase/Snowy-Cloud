@@ -60,6 +60,7 @@ import vip.xiaonuo.sys.modular.role.mapper.SysRoleMapper;
 import vip.xiaonuo.sys.modular.role.param.*;
 import vip.xiaonuo.sys.modular.role.result.*;
 import vip.xiaonuo.sys.modular.role.service.SysRoleService;
+import vip.xiaonuo.auth.api.SaBaseLoginUserApi;
 import vip.xiaonuo.sys.modular.user.entity.SysUser;
 import vip.xiaonuo.sys.modular.user.enums.SysUserStatusEnum;
 import vip.xiaonuo.sys.modular.user.service.SysUserService;
@@ -96,6 +97,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Resource
     private CommonCacheOperator commonCacheOperator;
+
+    @Resource(name = "loginUserApi")
+    private SaBaseLoginUserApi loginUserApi;
 
     @Override
     public Page<SysRole> page(SysRolePageParam sysRolePageParam) {
@@ -315,6 +319,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .map(JSONUtil::toJsonStr).collect(Collectors.toList());
         sysRelationService.saveRelationBatchWithClear(id, apiUrlList, SysRelationCategoryEnum.SYS_ROLE_HAS_PERMISSION.getValue(),
                 extJsonList);
+        // 刷新拥有该角色的所有在线用户的权限缓存
+        List<String> userIdList = sysRelationService.getRelationObjectIdListByTargetIdAndCategory(
+                id, SysRelationCategoryEnum.SYS_USER_HAS_ROLE.getValue());
+        userIdList.forEach(loginUserApi::refreshOnlineUserPermission);
     }
 
     @Override
@@ -327,7 +335,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public void grantUser(SysRoleGrantUserParam sysRoleGrantUserParam) {
         String id = sysRoleGrantUserParam.getId();
         List<String> grantInfoList = sysRoleGrantUserParam.getGrantInfoList();
+        // 记录变更前拥有该角色的用户（用于后续刷新被移除用户的权限）
+        Set<String> affectedUserIds = new HashSet<>();
         if(sysRoleGrantUserParam.getRemoveFirst()) {
+            affectedUserIds.addAll(sysRelationService.getRelationObjectIdListByTargetIdAndCategory(
+                    id, SysRelationCategoryEnum.SYS_USER_HAS_ROLE.getValue()));
             sysRelationService.remove(new LambdaQueryWrapper<SysRelation>().eq(SysRelation::getTargetId, id)
                     .eq(SysRelation::getCategory, SysRelationCategoryEnum.SYS_USER_HAS_ROLE.getValue()));
         }
@@ -338,6 +350,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             sysRelation.setCategory(SysRelationCategoryEnum.SYS_USER_HAS_ROLE.getValue());
             return sysRelation;
         }).collect(Collectors.toList()));
+        // 合并新增用户，刷新所有受影响用户的权限缓存
+        affectedUserIds.addAll(grantInfoList);
+        affectedUserIds.forEach(loginUserApi::refreshOnlineUserPermission);
     }
 
     @Override
