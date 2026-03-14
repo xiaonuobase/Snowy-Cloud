@@ -54,8 +54,8 @@ public class SysOrgApiContextBean implements SysOrgApi {
      * @date 2026/3/8 14:46
      **/
     @Override
-    public List<JSONObject> orgTreeSelector(String parentId) {
-        return this.sysOrgFeign.orgTreeSelector(parentId);
+    public List<JSONObject> orgTreeSelector(String parentId, String searchKey) {
+        return this.sysOrgFeign.orgTreeSelector(parentId, searchKey);
     }
 
     /**
@@ -65,8 +65,8 @@ public class SysOrgApiContextBean implements SysOrgApi {
      * @date 2022/7/22 14:46
      **/
     @Override
-    public Page<JSONObject> orgListSelector(String parentId) {
-        String feignResp = this.sysOrgFeign.orgListSelector(parentId);
+    public Page<JSONObject> orgListSelector(String parentId, String searchKey) {
+        String feignResp = this.sysOrgFeign.orgListSelector(parentId, searchKey);
         Page<JSONObject> resp = (Page<JSONObject>) JSONUtil.toBean(feignResp,Page.class);
         return resp;
     }

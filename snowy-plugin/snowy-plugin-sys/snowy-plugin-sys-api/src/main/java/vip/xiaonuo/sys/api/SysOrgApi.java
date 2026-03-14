@@ -47,7 +47,7 @@ public interface SysOrgApi {
      * @author xuyuxiang
      * @date 2022/7/22 14:46
      **/
-    List<JSONObject> orgTreeSelector(String parentId);
+    List<JSONObject> orgTreeSelector(String parentId, String searchKey);
 
     /**
      * 获取组织列表选择器
@@ -55,7 +55,7 @@ public interface SysOrgApi {
      * @author xuyuxiang
      * @date 2022/7/22 14:45
      **/
-    Page<JSONObject> orgListSelector(String parentId);
+    Page<JSONObject> orgListSelector(String parentId, String searchKey);
 
     /**
      * 获取某组织的所有父级id集合

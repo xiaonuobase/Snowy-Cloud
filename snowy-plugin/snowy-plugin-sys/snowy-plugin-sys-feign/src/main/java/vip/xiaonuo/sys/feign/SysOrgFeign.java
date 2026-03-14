@@ -53,7 +53,8 @@ public interface SysOrgFeign {
      * @date 2022/7/22 14:46
      **/
     @RequestMapping("/feign/sys/org/orgTreeSelector")
-    List<JSONObject> orgTreeSelector(@RequestParam(value = "parentId",required = false) String parentId);
+    List<JSONObject> orgTreeSelector(@RequestParam(value = "parentId",required = false) String parentId,
+                                     @RequestParam(value = "searchKey",required = false) String searchKey);
 
     /**
      * 获取组织列表选择器
@@ -62,7 +63,8 @@ public interface SysOrgFeign {
      * @date 2022/7/22 14:45
      **/
     @RequestMapping("/feign/sys/org/orgListSelector")
-    String orgListSelector(@RequestParam(value = "parentId",required = false) String parentId);
+    String orgListSelector(@RequestParam(value = "parentId",required = false) String parentId,
+                           @RequestParam(value = "searchKey",required = false) String searchKey);
 
     /**
      * 根据机构id获取父id集合

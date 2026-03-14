@@ -31,7 +31,7 @@ public interface BizOrgApi {
      * @author yubaoshan
      * @date 2024/11/1 18:27:51
      **/
-    List<JSONObject> orgTreeSelector(String parentId);
+    List<JSONObject> orgTreeSelector(String parentId, String searchKey);
 
     /**
      * 获取组织列表选择器
@@ -39,5 +39,5 @@ public interface BizOrgApi {
      * @author yubaoshan
      * @date 2024/11/1 18:27:51
      **/
-    Page<JSONObject> orgListSelector(String parentId);
+    Page<JSONObject> orgListSelector(String parentId, String searchKey);
 }

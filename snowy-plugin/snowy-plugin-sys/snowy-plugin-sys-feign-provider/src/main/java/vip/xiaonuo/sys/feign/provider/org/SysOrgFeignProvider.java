@@ -70,8 +70,9 @@ public class SysOrgFeignProvider implements SysOrgFeign {
      **/
     @Override
     @RequestMapping("/feign/sys/org/orgTreeSelector")
-    public List<JSONObject> orgTreeSelector(@RequestParam(value = "parentId",required = false) String parentId) {
-        return sysOrgApi.orgTreeSelector(parentId);
+    public List<JSONObject> orgTreeSelector(@RequestParam(value = "parentId",required = false) String parentId,
+                                            @RequestParam(value = "searchKey",required = false) String searchKey) {
+        return sysOrgApi.orgTreeSelector(parentId, searchKey);
     }
 
     /**
@@ -82,8 +83,9 @@ public class SysOrgFeignProvider implements SysOrgFeign {
      **/
     @Override
     @RequestMapping("/feign/sys/org/orgListSelector")
-    public String orgListSelector(@RequestParam(value = "parentId",required = false) String parentId) {
-        return JSONUtil.toJsonStr(sysOrgApi.orgListSelector(parentId));
+    public String orgListSelector(@RequestParam(value = "parentId",required = false) String parentId,
+                                  @RequestParam(value = "searchKey",required = false) String searchKey) {
+        return JSONUtil.toJsonStr(sysOrgApi.orgListSelector(parentId, searchKey));
     }
 
     /**
