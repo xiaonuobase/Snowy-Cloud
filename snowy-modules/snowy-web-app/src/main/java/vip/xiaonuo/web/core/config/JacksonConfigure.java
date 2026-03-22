@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonStreamContext;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -128,6 +129,34 @@ public class JacksonConfigure {
                 }
             }
         });
+
+        JsonSerializer<Long> longSerializer = new JsonSerializer<>() {
+            @Override
+            public void serialize(Long value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+                //Long类型值过大到前端造成精度丢失，需转换成String
+                if (Math.abs(value) > 9007199254740991L) {
+                    gen.writeString(value.toString());
+                } else {
+                    gen.writeNumber(value);
+                }
+            }
+        };
+        // BigInteger序列化器：BIGINT UNSIGNED等列类型JDBC返回BigInteger，也需要处理精度丢失
+        JsonSerializer<java.math.BigInteger> bigIntSerializer = new JsonSerializer<>() {
+            @Override
+            public void serialize(java.math.BigInteger value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+                if (value.abs().compareTo(java.math.BigInteger.valueOf(9007199254740991L)) > 0) {
+                    gen.writeString(value.toString());
+                } else {
+                    gen.writeNumber(value);
+                }
+            }
+        };
+        objectMapper.registerModule(new SimpleModule() {{
+            addSerializer(Long.class, longSerializer);
+            addSerializer(Long.TYPE, longSerializer);
+            addSerializer(java.math.BigInteger.class, bigIntSerializer);
+        }});
 
         return objectMapper;
     }
