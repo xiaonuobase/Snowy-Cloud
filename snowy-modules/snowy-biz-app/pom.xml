@@ -133,6 +133,12 @@
             <artifactId>snowy-plugin-auth-api</artifactId>
         </dependency>
 
+        <!-- 登录鉴权插件api接口context（提供loginUserApi的Feign代理实现） -->
+        <dependency>
+            <groupId>vip.xiaonuo</groupId>
+            <artifactId>snowy-plugin-auth-api-context</artifactId>
+        </dependency>
+
         <!-- 业务功能插件 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>

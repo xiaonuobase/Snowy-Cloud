@@ -123,4 +123,17 @@ public class SysOrgFeignProvider implements SysOrgFeign {
     public void clearOrgCache() {
         sysOrgApi.clearOrgCache();
     }
+
+    /**
+     * 根据组织id获取其及所有下级组织id列表
+     *
+     * @author yubaoshan
+     * @date 2026/4/5 14:25
+     */
+    @Override
+    @RequestMapping("/feign/sys/org/getChildOrgIdListById")
+    public List<String> getChildOrgIdListById(@RequestParam(value = "orgId",required = false) String orgId) {
+        return sysOrgApi.getChildOrgIdListById(orgId);
+    }
+
 }

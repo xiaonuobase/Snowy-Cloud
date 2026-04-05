@@ -105,4 +105,16 @@ public class SysOrgApiContextBean implements SysOrgApi {
     public void clearOrgCache() {
         this.sysOrgFeign.clearOrgCache();
     }
+
+    /**
+     * 根据组织id获取其及所有下级组织id列表
+     *
+     * @param orgId
+     * @author yubaoshan
+     * @date 2026/4/5 14:25
+     */
+    @Override
+    public List<String> getChildOrgIdListById(String orgId) {
+        return this.sysOrgFeign.getChildOrgIdListById(orgId);
+    }
 }

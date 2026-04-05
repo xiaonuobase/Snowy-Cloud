@@ -49,7 +49,7 @@
         <commons.pool2.version>2.12.0</commons.pool2.version>
         <druid.version>1.2.21</druid.version>
         <dynamic.datasource.version>4.3.1</dynamic.datasource.version>
-        <easy.trans.version>3.0.0</easy.trans.version>
+        <easy.trans.version>3.1.4</easy.trans.version>
         <easyexcel.version>3.3.3</easyexcel.version>
         <json.flattener.version>0.16.4</json.flattener.version>
         <zxing.version>3.5.3</zxing.version>
@@ -414,14 +414,14 @@
 
             <!-- easy-trans -->
             <dependency>
-                <groupId>com.fhs-opensource</groupId>
+                <groupId>org.dromara</groupId>
                 <artifactId>easy-trans-spring-boot-starter</artifactId>
                 <version>${easy.trans.version}</version>
             </dependency>
 
             <!-- easy-trans-mybatis-plus-extend -->
             <dependency>
-                <groupId>com.fhs-opensource</groupId>
+                <groupId>org.dromara</groupId>
                 <artifactId>easy-trans-mybatis-plus-extend</artifactId>
                 <version>${easy.trans.version}</version>
             </dependency>

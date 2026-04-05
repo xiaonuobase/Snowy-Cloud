@@ -80,4 +80,12 @@ public interface SysOrgApi {
      * @date 2026/2/12
      **/
     void clearOrgCache();
+
+    /**
+     * 根据组织id获取其及所有下级组织id列表
+     *
+     * @author yubaoshan
+     * @date 2026/3/23 14:00
+     **/
+    List<String> getChildOrgIdListById(String orgId);
 }

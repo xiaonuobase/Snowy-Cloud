@@ -43,13 +43,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fhs.trans.service.impl.TransService;
+import org.dromara.trans.service.impl.TransService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.xiaonuo.auth.api.SaBaseLoginUserApi;
 import vip.xiaonuo.auth.core.util.StpLoginUserUtil;
 import vip.xiaonuo.biz.core.enums.BizBuildInEnum;
 import vip.xiaonuo.biz.core.enums.BizDataTypeEnum;
@@ -114,6 +115,9 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
 
     @Resource
     private BizPositionService bizPositionService;
+
+    @Resource(name = "loginUserApi")
+    private SaBaseLoginUserApi loginUserApi;
 
     @Override
     public Page<BizUser> page(BizUserPageParam bizUserPageParam) {
@@ -218,6 +222,8 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
         this.updateById(bizUser);
         // 发布更新事件
         CommonDataChangeEventCenter.doUpdateWithData(BizDataTypeEnum.USER.getValue(), JSONUtil.createArray().put(bizUser));
+        // 刷新该用户的在线缓存信息
+        loginUserApi.refreshOnlineUserPermission(bizUserEditParam.getId());
     }
 
     private void checkParam(BizUserEditParam bizUserEditParam) {

@@ -92,4 +92,13 @@ public interface SysOrgFeign {
      **/
     @RequestMapping("/feign/sys/org/clearOrgCache")
     void clearOrgCache();
+
+    /**
+     * 根据组织id获取其及所有下级组织id列表
+     *
+     * @author yubaoshan
+     * @date 2026/4/5 14:25
+     **/
+    @RequestMapping("/feign/sys/org/getChildOrgIdListById")
+    List<String> getChildOrgIdListById(@RequestParam(value = "orgId",required = false) String orgId);
 }

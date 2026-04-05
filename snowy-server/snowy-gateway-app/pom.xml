@@ -24,11 +24,11 @@
             <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
-                    <groupId>com.fhs-opensource</groupId>
+                    <groupId>org.dromara</groupId>
                     <artifactId>easy-trans-spring-boot-starter</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>com.fhs-opensource</groupId>
+                    <groupId>org.dromara</groupId>
                     <artifactId>easy-trans-mybatis-plus-extend</artifactId>
                 </exclusion>
             </exclusions>
