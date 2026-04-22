@@ -22,7 +22,8 @@ public interface AuthInnerFeign {
      * @date 2021/10/15 13:12
      **/
     @PostMapping("/feign/auth/b/inner/doLogin")
-    CommonResult<String> doLogin(@RequestParam("username") String username,@RequestParam("password") String password);
+    CommonResult<String> doLogin(@RequestParam("username") String username,
+                                 @RequestParam("password") String password);
 
     /**
      * B端账号密码内部环境登出
