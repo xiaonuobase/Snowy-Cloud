@@ -42,7 +42,6 @@ import java.util.List;
  * @date 2022/6/21 14:58
  **/
 @Tag(name = "业务字典控制器")
-@ApiSupport(author = "SNOWY_TEAM", order = 4)
 @RestController
 @Validated
 public class BizDictController {
@@ -56,7 +55,6 @@ public class BizDictController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 1)
     @Operation(summary = "获取业务字典分页")
     @SaCheckPermission("/biz/dict/page")
     @GetMapping("/biz/dict/page")
@@ -70,7 +68,6 @@ public class BizDictController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 2)
     @Operation(summary = "获取业务字典树")
     @SaCheckPermission("/biz/dict/tree")
     @GetMapping("/biz/dict/tree")
@@ -84,7 +81,6 @@ public class BizDictController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 3)
     @Operation(summary = "获取所有字典树")
     @GetMapping("/biz/dict/treeAll")
     public CommonResult<List<Tree<String>>> treeAll() {
@@ -97,7 +93,6 @@ public class BizDictController {
      * @author xuyuxiang
      * @date 2022/4/24 20:47
      */
-    @ApiOperationSupport(order = 4)
     @Operation(summary = "编辑业务字典")
     @CommonLog("编辑业务字典")
     @SaCheckPermission("/biz/dict/edit")

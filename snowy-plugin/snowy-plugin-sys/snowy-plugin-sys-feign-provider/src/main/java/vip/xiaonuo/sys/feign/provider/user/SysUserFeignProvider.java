@@ -111,7 +111,8 @@ public class SysUserFeignProvider implements SysUserFeign {
      */
     @Override
     @RequestMapping("/feign/sys/user/grantRole")
-    public void grantRole(@RequestParam(value = "userId",required = false) String userId, @RequestParam(value = "roleIdList",required = false) List<String> roleIdList) {
+    public void grantRole(@RequestParam(value = "userId",required = false) String userId,
+                          @RequestParam(value = "roleIdList",required = false) List<String> roleIdList) {
         sysUserApi.grantRole(userId, roleIdList);
     }
 
@@ -124,7 +125,8 @@ public class SysUserFeignProvider implements SysUserFeign {
      */
     @Override
     @RequestMapping("/feign/sys/user/getUserIdListByOrgIdList")
-    public String getUserIdListByOrgIdList(@RequestParam(value = "orgIdList",required = false) String initiator, @RequestParam(value = "orgIdList",required = false) List<String> orgIdList) {
+    public String getUserIdListByOrgIdList(@RequestParam(value = "orgIdList",required = false) String initiator,
+                                           @RequestParam(value = "orgIdList",required = false) List<String> orgIdList) {
         return JSONUtil.toJsonStr(sysUserApi.getUserIdListByOrgIdList(initiator, orgIdList));
     }
 
@@ -137,7 +139,8 @@ public class SysUserFeignProvider implements SysUserFeign {
      */
     @Override
     @RequestMapping("/feign/sys/user/getUserIdListByPositionIdList")
-    public String getUserIdListByPositionIdList(@RequestParam(value = "orgIdList",required = false) String initiator, @RequestParam(value = "positionIdList",required = false) List<String> positionIdList) {
+    public String getUserIdListByPositionIdList(@RequestParam(value = "orgIdList",required = false) String initiator,
+                                                @RequestParam(value = "positionIdList",required = false) List<String> positionIdList) {
         return JSONUtil.toJsonStr(sysUserApi.getUserIdListByPositionIdList(initiator, positionIdList));
     }
 
@@ -179,7 +182,10 @@ public class SysUserFeignProvider implements SysUserFeign {
      */
     @Override
     @RequestMapping("/feign/sys/user/userSelector")
-    public String userSelector(@RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size,@RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "searchKey",required = false) String searchKey) {
+    public String userSelector(@RequestParam(value = "current",required = false) Integer current,
+                               @RequestParam(value = "size",required = false) Integer size,
+                               @RequestParam(value = "orgId",required = false) String orgId,
+                               @RequestParam(value = "searchKey",required = false) String searchKey) {
         return JSONUtil.toJsonStr(sysUserApi.userSelector(orgId, searchKey));
     }
 

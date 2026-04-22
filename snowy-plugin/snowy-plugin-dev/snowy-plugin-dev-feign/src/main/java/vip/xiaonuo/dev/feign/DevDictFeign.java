@@ -33,5 +33,6 @@ public interface DevDictFeign {
      * @date 2022/11/12 11:11
      **/
     @RequestMapping("/feign/dev/dict/getDictLabel")
-    String getDictLabel(@RequestParam("typeCode") String typeCode, @RequestParam("value") String value);
+    String getDictLabel(@RequestParam("typeCode") String typeCode,
+                        @RequestParam("value") String value);
 }

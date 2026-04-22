@@ -1,11 +1,13 @@
 package vip.xiaonuo.sys.api.context;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.sys.api.SysPositionApi;
 import vip.xiaonuo.sys.feign.SysPositionFeign;
 
@@ -39,14 +41,14 @@ public class SysPositionApiContextBean implements SysPositionApi {
      *
      * @param orgId
      * @param searchKey
-     * @param current
-     * @param size
      * @author xuyuxiang
      * @date 2022/7/22 14:47
      */
     @Override
-    public Page<JSONObject> positionSelector(String orgId, String searchKey, Integer current, Integer size) {
-        String feignResp = this.sysPositionFeign.positionSelector(current, size, orgId, searchKey);
+    public Page<JSONObject> positionSelector(String orgId, String searchKey) {
+        long current = CommonPageRequest.defaultPage().getCurrent();
+        long size = CommonPageRequest.defaultPage().getSize();
+        String feignResp = this.sysPositionFeign.positionSelector(Convert.toInt(current), Convert.toInt(size), orgId, searchKey);
         Page<JSONObject> resp = (Page<JSONObject>) JSONUtil.toBean(feignResp,Page.class);
         return resp;
     }

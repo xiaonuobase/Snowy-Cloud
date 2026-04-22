@@ -43,7 +43,6 @@ import java.util.List;
  * @date 2022/6/21 14:57
  **/
 @Tag(name = "站内信控制器")
-@ApiSupport(author = "SNOWY_TEAM", order = 6)
 @RestController
 @Validated
 public class DevMessageController {
@@ -57,7 +56,6 @@ public class DevMessageController {
      * @author xuyuxiang
      * @date 2022/4/24 20:47
      */
-    @ApiOperationSupport(order = 1)
     @Operation(summary = "发送站内信")
     @CommonLog("发送站内信")
     @PostMapping("/dev/message/send")
@@ -72,7 +70,6 @@ public class DevMessageController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 2)
     @Operation(summary = "获取站内信分页")
     @GetMapping("/dev/message/page")
     public CommonResult<Page<DevMessage>> page(DevMessagePageParam devMessagePageParam) {
@@ -85,7 +82,6 @@ public class DevMessageController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 3)
     @Operation(summary = "删除站内信")
     @CommonLog("删除站内信")
     @PostMapping("/dev/message/delete")
@@ -101,7 +97,6 @@ public class DevMessageController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 4)
     @Operation(summary = "获取站内信详情")
     @GetMapping("/dev/message/detail")
     public CommonResult<DevMessageResult> detail(@Valid DevMessageIdParam devMessageIdParam) {

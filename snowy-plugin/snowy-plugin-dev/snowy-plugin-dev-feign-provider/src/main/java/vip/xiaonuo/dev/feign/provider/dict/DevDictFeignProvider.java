@@ -41,7 +41,8 @@ public class DevDictFeignProvider implements DevDictFeign {
      **/
     @Override
     @RequestMapping("/feign/dev/dict/getDictLabel")
-    public String getDictLabel(@RequestParam("typeCode") String typeCode, @RequestParam("value") String value) {
+    public String getDictLabel(@RequestParam("typeCode") String typeCode,
+                               @RequestParam("value") String value) {
         return devDictApi.getDictLabel(typeCode, value);
     }
 }

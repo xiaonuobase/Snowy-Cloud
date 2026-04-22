@@ -41,7 +41,6 @@ import java.util.List;
  * @date  2023/01/28 22:42
  */
 @Tag(name = "移动端菜单控制器")
-@ApiSupport(author = "SNOWY_TEAM", order = 1)
 @RestController
 @Validated
 public class MobileMenuController {
@@ -55,7 +54,6 @@ public class MobileMenuController {
      * @author yubaoshan
      * @date  2023/01/28 22:42
      */
-    @ApiOperationSupport(order = 1)
     @Operation(summary = "获取移动端菜单tree")
     @GetMapping("/mobile/menu/tree")
     public CommonResult<List<Tree<String>>> tree(MobileMenuTreeParam mobileMenuTreeParam) {
@@ -68,7 +66,6 @@ public class MobileMenuController {
      * @author yubaoshan
      * @date  2023/01/28 22:42
      */
-    @ApiOperationSupport(order = 2)
     @Operation(summary = "添加移动端菜单")
     @CommonLog("添加移动端菜单")
     @PostMapping("/mobile/menu/add")
@@ -83,7 +80,6 @@ public class MobileMenuController {
      * @author yubaoshan
      * @date  2023/01/28 22:42
      */
-    @ApiOperationSupport(order = 3)
     @Operation(summary = "编辑移动端菜单")
     @CommonLog("编辑移动端菜单")
     @PostMapping("/mobile/menu/edit")
@@ -98,7 +94,6 @@ public class MobileMenuController {
      * @author xuyuxiang
      * @date 2022/4/24 20:47
      */
-    @ApiOperationSupport(order = 5)
     @Operation(summary = "更改移动端菜单所属模块")
     @CommonLog("更改移动端菜单所属模块")
     @PostMapping("/mobile/menu/changeModule")
@@ -113,7 +108,6 @@ public class MobileMenuController {
      * @author yubaoshan
      * @date  2023/01/28 22:42
      */
-    @ApiOperationSupport(order = 4)
     @Operation(summary = "删除移动端菜单")
     @CommonLog("删除移动端菜单")
     @PostMapping("/mobile/menu/delete")
@@ -129,7 +123,6 @@ public class MobileMenuController {
      * @author yubaoshan
      * @date  2023/01/28 22:42
      */
-    @ApiOperationSupport(order = 5)
     @Operation(summary = "获取移动端菜单详情")
     @GetMapping("/mobile/menu/detail")
     public CommonResult<MobileMenu> detail(@Valid MobileMenuIdParam mobileMenuIdParam) {
@@ -144,7 +137,6 @@ public class MobileMenuController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 6)
     @Operation(summary = "获取模块选择器")
     @GetMapping("/mobile/menu/moduleSelector")
     public CommonResult<List<MobileModule>> moduleSelector(MobileMenuSelectorModuleParam mobileMenuSelectorModuleParam) {
@@ -157,7 +149,6 @@ public class MobileMenuController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 7)
     @Operation(summary = "获取菜单树选择器")
     @GetMapping("/mobile/menu/menuTreeSelector")
     public CommonResult<List<Tree<String>>> menuTreeSelector(MobileMenuSelectorMenuParam mobileMenuSelectorMenuParam) {

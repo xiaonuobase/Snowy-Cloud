@@ -32,7 +32,8 @@ public class AuthInnerFeignProvider implements AuthInnerFeign {
      */
     @Override
     @PostMapping("/feign/auth/b/inner/doLogin")
-    public CommonResult<String> doLogin(@RequestParam("username") String username, @RequestParam("password") String password) {
+    public CommonResult<String> doLogin(@RequestParam("username") String username,
+                                        @RequestParam("password") String password) {
         return authInnerApi.doLogin(username, password);
     }
 

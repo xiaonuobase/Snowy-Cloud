@@ -38,4 +38,11 @@ public interface DevApi {
      **/
     JSONObject getToolDataCount();
 
+    /**
+     * 获取系统运行信息（Java版本、OS、运行时长、服务器IP）
+     *
+     * @author yubaoshan
+     * @date 2026/4/21
+     **/
+    JSONObject getSysRunInfo();
 }

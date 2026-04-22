@@ -55,7 +55,7 @@ public class JobLogController {
 
 		// filter group
 		List<XxlJobGroup> jobGroupList = JobInfoController.filterJobGroupByRole(request, jobGroupList_all);
-		if (jobGroupList==null || jobGroupList.size()==0) {
+		if (jobGroupList==null || jobGroupList.isEmpty()) {
 			throw new XxlJobException(I18nUtil.getString("jobgroup_empty"));
 		}
 

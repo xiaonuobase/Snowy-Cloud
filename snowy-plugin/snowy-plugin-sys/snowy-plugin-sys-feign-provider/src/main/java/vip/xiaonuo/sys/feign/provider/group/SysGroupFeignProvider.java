@@ -49,7 +49,8 @@ public class SysGroupFeignProvider implements SysGroupFeign {
      */
     @Override
     @RequestMapping("/feign/sys/group/grantUser")
-    public void grantUser(@RequestParam(value = "groupId", required = false) String groupId, @RequestParam(value = "userIdList", required = false) List<String> userIdList) {
+    public void grantUser(@RequestParam(value = "groupId", required = false) String groupId,
+                          @RequestParam(value = "userIdList", required = false) List<String> userIdList) {
         sysGroupApi.grantUser(groupId, userIdList);
     }
 

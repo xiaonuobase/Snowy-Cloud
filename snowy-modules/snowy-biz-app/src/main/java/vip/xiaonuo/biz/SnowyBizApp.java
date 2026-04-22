@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.biz;
 
+import com.github.xiaoymin.knife4j.spring.configuration.Knife4jAutoConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -32,7 +33,7 @@ import vip.xiaonuo.common.runner.AppStartupListener;
 @RestController
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = "vip.xiaonuo")
-@SpringBootApplication(scanBasePackages = {"vip.xiaonuo"})
+@SpringBootApplication(scanBasePackages = {"vip.xiaonuo"}, exclude = {Knife4jAutoConfiguration.class})
 public class SnowyBizApp {
 
     /* 解决druid 日志报错：discard long time none received connection:xxx */

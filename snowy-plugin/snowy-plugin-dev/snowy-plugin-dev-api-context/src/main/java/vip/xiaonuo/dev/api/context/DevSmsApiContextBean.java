@@ -65,19 +65,4 @@ public class DevSmsApiContextBean implements DevSmsApi {
     public void sendSmsTencent(String phoneNumbers, String signName, String templateCode, String templateParam) {
         this.devSmsFeign.sendSmsTencent(phoneNumbers, signName, templateCode, templateParam);
     }
-
-    /**
-     * 发送短信
-     *
-     * @param phoneNumbers 手机号码，支持对多个手机号码发送短信，手机号码之间以半角逗号（,）分隔。
-     *                     上限为1000个手机号码。批量调用相对于单条调用及时性稍有延迟。
-     * @param signName     短信服务控制台配置且审核通过的短信签名
-     * @param message      短信内容，发送时编写好的整条短信内容，不带签名【】
-     * @author yubaoshan
-     * @date 2024/5/20 12:00
-     **/
-    @Override
-    public void sendSmsXiaonuo(String phoneNumbers, String signName, String message) {
-        this.devSmsFeign.sendSmsXiaonuo(phoneNumbers, signName, message);
-    }
 }

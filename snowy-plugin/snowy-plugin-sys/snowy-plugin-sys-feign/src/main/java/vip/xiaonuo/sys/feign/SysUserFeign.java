@@ -80,7 +80,8 @@ public interface SysUserFeign {
      * @date 2022/8/1 18:28
      */
     @RequestMapping("/feign/sys/user/grantRole")
-    void grantRole(@RequestParam(value = "userId",required = false) String userId, @RequestParam(value = "roleIdList",required = false) List<String> roleIdList);
+    void grantRole(@RequestParam(value = "userId",required = false) String userId,
+                   @RequestParam(value = "roleIdList",required = false) List<String> roleIdList);
 
     /**
      * 根据组织id集合获取组织下用户id集合
@@ -89,7 +90,8 @@ public interface SysUserFeign {
      * @date 2022/6/6 11:40
      **/
     @RequestMapping("/feign/sys/user/getUserIdListByOrgIdList")
-    String getUserIdListByOrgIdList(@RequestParam(value = "initiator",required = false) String initiator, @RequestParam(value = "orgIdList",required = false) List<String> orgIdList);
+    String getUserIdListByOrgIdList(@RequestParam(value = "initiator",required = false) String initiator,
+                                    @RequestParam(value = "orgIdList",required = false) List<String> orgIdList);
 
     /**
      * 根据职位id集合获取职位下用户id集合
@@ -98,7 +100,8 @@ public interface SysUserFeign {
      * @date 2022/6/6 11:44
      **/
     @RequestMapping("/feign/sys/user/getUserIdListByPositionIdList")
-    String getUserIdListByPositionIdList(@RequestParam(value = "initiator",required = false) String initiator, @RequestParam(value = "positionIdList",required = false) List<String> positionIdList);
+    String getUserIdListByPositionIdList(@RequestParam(value = "initiator",required = false) String initiator,
+                                         @RequestParam(value = "positionIdList",required = false) List<String> positionIdList);
 
     /**
      * 根据用户id和组织id和职位id和主管层级获取上级主管id
@@ -107,7 +110,10 @@ public interface SysUserFeign {
      * @date 2022/6/6 14:50
      **/
     @RequestMapping("/feign/sys/user/getSupervisorIdBySupervisorLevel")
-    String getSupervisorIdBySupervisorLevel(@RequestParam(value = "initiator",required = false) String initiator, @RequestParam(value = "userIdList",required = false) List<String> userIdList, @RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "supervisorLevel",required = false) String supervisorLevel);
+    String getSupervisorIdBySupervisorLevel(@RequestParam(value = "initiator",required = false) String initiator,
+                                            @RequestParam(value = "userIdList",required = false) List<String> userIdList,
+                                            @RequestParam(value = "orgId",required = false) String orgId,
+                                            @RequestParam(value = "supervisorLevel",required = false) String supervisorLevel);
 
     /**
      * 根据用户id和组织id和职位id和终点主管层级获取上级主管id集合
@@ -116,7 +122,9 @@ public interface SysUserFeign {
      * @date 2022/6/6 14:50
      **/
     @RequestMapping("/feign/sys/user/getMulSupervisorIdListByEndLevel")
-    List<String> getMulSupervisorIdListByEndLevel(@RequestParam(value = "userId",required = false) String userId, @RequestParam(value = "orgId",required = false) String orgId, @RequestParam(value = "endLevel",required = false) String endLevel);
+    List<String> getMulSupervisorIdListByEndLevel(@RequestParam(value = "userId",required = false) String userId,
+                                                  @RequestParam(value = "orgId",required = false) String orgId,
+                                                  @RequestParam(value = "endLevel",required = false) String endLevel);
 
     /**
      * 获取用户选择器
@@ -125,7 +133,10 @@ public interface SysUserFeign {
      * @date 2022/4/24 20:08
      */
     @RequestMapping("/feign/sys/user/userSelector")
-    String userSelector(@RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size,@RequestParam("orgId") String orgId, @RequestParam("searchKey") String searchKey);
+    String userSelector(@RequestParam(value = "current",required = false) Integer current,
+                        @RequestParam(value = "size",required = false) Integer size,
+                        @RequestParam("orgId") String orgId,
+                        @RequestParam("searchKey") String searchKey);
 
     /**
      * 获取用户列表（排除当前用户）

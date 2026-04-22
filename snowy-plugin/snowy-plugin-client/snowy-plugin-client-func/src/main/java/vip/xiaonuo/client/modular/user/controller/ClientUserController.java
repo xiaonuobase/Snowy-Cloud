@@ -44,7 +44,6 @@ import java.util.List;
  * @date 2022/4/22 9:34
  **/
 @Tag(name = "C端用户控制器")
-@ApiSupport(author = "SNOWY_TEAM", order = 1)
 @RestController
 @Validated
 public class ClientUserController {
@@ -58,7 +57,6 @@ public class ClientUserController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 1)
     @Operation(summary = "获取用户分页")
     @GetMapping("/client/user/page")
     public CommonResult<Page<ClientUser>> page(ClientUserPageParam clientUserPageParam) {
@@ -71,7 +69,6 @@ public class ClientUserController {
      * @author xuyuxiang
      * @date 2022/4/24 20:47
      */
-    @ApiOperationSupport(order = 2)
     @Operation(summary = "添加用户")
     @CommonLog("添加用户")
     @PostMapping("/client/user/add")
@@ -86,7 +83,6 @@ public class ClientUserController {
      * @author xuyuxiang
      * @date 2022/4/24 20:47
      */
-    @ApiOperationSupport(order = 3)
     @Operation(summary = "编辑用户")
     @CommonLog("编辑用户")
     @PostMapping("/client/user/edit")
@@ -101,7 +97,6 @@ public class ClientUserController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 4)
     @Operation(summary = "删除用户")
     @CommonLog("删除用户")
     @PostMapping("/client/user/delete")
@@ -117,7 +112,6 @@ public class ClientUserController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 5)
     @Operation(summary = "获取用户详情")
     @GetMapping("/client/user/detail")
     public CommonResult<ClientUser> detail(@Valid ClientUserIdParam clientUserIdParam) {

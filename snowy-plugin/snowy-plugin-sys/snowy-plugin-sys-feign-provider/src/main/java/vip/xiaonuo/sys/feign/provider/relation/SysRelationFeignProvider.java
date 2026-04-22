@@ -45,7 +45,8 @@ public class SysRelationFeignProvider implements SysRelationFeign {
      */
     @Override
     @RequestMapping("/feign/sys/relation/getUserIdListByRoleIdList")
-    public List<String> getUserIdListByRoleIdList(@RequestParam("initiator") String initiator, @RequestParam("roleIdList") List<String> roleIdList) {
+    public List<String> getUserIdListByRoleIdList(@RequestParam("initiator") String initiator,
+                                                  @RequestParam("roleIdList") List<String> roleIdList) {
         return sysRelationApi.getUserIdListByRoleIdList(initiator, roleIdList);
     }
 
@@ -59,7 +60,8 @@ public class SysRelationFeignProvider implements SysRelationFeign {
      */
     @Override
     @RequestMapping("/feign/sys/relation/getUserIdListByGroupIdList")
-    public List<String> getUserIdListByGroupIdList(@RequestParam("initiator") String initiator, @RequestParam("groupIdList") List<String> groupIdList) {
+    public List<String> getUserIdListByGroupIdList(@RequestParam("initiator") String initiator,
+                                                   @RequestParam("groupIdList") List<String> groupIdList) {
         return sysRelationApi.getUserIdListByGroupIdList(initiator, groupIdList);
     }
 
@@ -71,7 +73,8 @@ public class SysRelationFeignProvider implements SysRelationFeign {
      **/
     @Override
     @RequestMapping("/feign/sys/relation/getGroupIdListByUserIdList")
-    public List<String> getGroupIdListByUserIdList(@RequestParam("initiator") String initiator, @RequestParam("userIdList") List<String> userIdList) {
+    public List<String> getGroupIdListByUserIdList(@RequestParam("initiator") String initiator,
+                                                   @RequestParam("userIdList") List<String> userIdList) {
         return sysRelationApi.getGroupIdListByUserIdList(initiator, userIdList);
     }
 

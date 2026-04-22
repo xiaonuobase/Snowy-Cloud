@@ -136,4 +136,16 @@ public class SysOrgFeignProvider implements SysOrgFeign {
         return sysOrgApi.getChildOrgIdListById(orgId);
     }
 
+    /**
+     * 根据orgId列表获取祖先路径节点（用于懒加载树回显）
+     *
+     * @author xuyuxiang
+     * @date 2026/4/22
+     **/
+    @Override
+    @RequestMapping("/feign/sys/org/getAncestorNodes")
+    public List<JSONObject> getAncestorNodes(@RequestParam(value = "orgIdList",required = false) List<String> orgIdList) {
+        return sysOrgApi.getAncestorNodes(orgIdList);
+    }
+
 }

@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.biz.modular.org.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.collection.CollectionUtil;
@@ -23,7 +24,6 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -45,12 +45,12 @@ import vip.xiaonuo.biz.modular.position.service.BizPositionService;
 import vip.xiaonuo.biz.modular.user.entity.BizUser;
 import vip.xiaonuo.biz.modular.user.service.BizUserService;
 import vip.xiaonuo.common.cache.CommonCacheOperator;
-import vip.xiaonuo.common.util.CommonServletUtil;
-import vip.xiaonuo.common.util.CommonSqlUtil;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.listener.CommonDataChangeEventCenter;
 import vip.xiaonuo.common.page.CommonPageRequest;
+import vip.xiaonuo.common.util.CommonServletUtil;
+import vip.xiaonuo.common.util.CommonSqlUtil;
 import vip.xiaonuo.sys.api.SysOrgApi;
 import vip.xiaonuo.sys.api.SysRoleApi;
 
@@ -709,15 +709,30 @@ public class BizOrgServiceImpl extends ServiceImpl<BizOrgMapper, BizOrg> impleme
             return CollectionUtil.newArrayList();
         }
         List<BizOrg> allOrgList = this.getAllOrgList();
-        Set<String> neededIdSet = new LinkedHashSet<>();
+        // 收集所有需要的节点（已选节点 + 所有祖先），用LinkedHashSet去重保序
+        Set<String> ancestorIdSet = new LinkedHashSet<>();
         for (String orgId : orgIdList) {
             List<BizOrg> ancestorList = this.getParentListById(allOrgList, orgId, true);
             for (BizOrg org : ancestorList) {
-                neededIdSet.add(org.getId());
+                ancestorIdSet.add(org.getId());
             }
         }
-        if (ObjectUtil.isEmpty(neededIdSet)) {
+        if (ObjectUtil.isEmpty(ancestorIdSet)) {
             return CollectionUtil.newArrayList();
+        }
+        // 收集祖先链上每个节点的parentId，用于补充同级兄弟节点
+        Set<String> ancestorParentIds = new HashSet<>();
+        for (BizOrg org : allOrgList) {
+            if (ancestorIdSet.contains(org.getId())) {
+                ancestorParentIds.add(org.getParentId());
+            }
+        }
+        // 最终需要的节点 = 祖先节点 + 每层祖先的兄弟节点（同parentId的节点）
+        Set<String> neededIdSet = new LinkedHashSet<>(ancestorIdSet);
+        for (BizOrg org : allOrgList) {
+            if (ancestorParentIds.contains(org.getParentId())) {
+                neededIdSet.add(org.getId());
+            }
         }
         List<BizOrg> resultOrgList = allOrgList.stream()
                 .filter(org -> neededIdSet.contains(org.getId()))

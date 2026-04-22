@@ -6,7 +6,6 @@
 					v-model:value="treeSearchKey"
 					placeholder="搜索机构"
 					allow-clear
-					size="small"
 					style="margin-bottom: 8px; flex-shrink: 0"
 					@search="onTreeSearch"
 				/>
@@ -16,6 +15,7 @@
 						<a-tree
 							v-model:expandedKeys="defaultExpandedKeys"
 							v-model:loadedKeys="treeLoadedKeys"
+							v-model:selectedKeys="selectedTreeKeys"
 							:show-line="{ showLeafIcon: false }"
 							:tree-data="treeData"
 							:field-names="treeFieldNames"
@@ -109,7 +109,7 @@
 				</template>
 				<template #bodyCell="{ column, record }">
 					<template v-if="column.dataIndex === 'category'">
-						{{ $TOOL.dictTypeData('ORG_CATEGORY', record.category) }}
+						<a-tag :color="$TOOL.dictTypeColor('ORG_CATEGORY', record.category)">{{ $TOOL.dictTypeData('ORG_CATEGORY', record.category) }}</a-tag>
 					</template>
 					<template v-if="column.dataIndex === 'action'">
 						<a @click="formRef.onOpen(record)" v-if="hasPerm('bizOrgEdit')">编辑</a>
@@ -220,6 +220,8 @@
 	const treeSearchKey = ref('')
 	const searchMode = ref(false)
 	const treeLoadedKeys = ref([])
+
+	const selectedTreeKeys = ref([])
 	// 收集树所有节点key，用于搜索时全部展开
 	const collectTreeKeys = (nodes) => {
 		const keys = []
@@ -290,7 +292,6 @@
 	// 刷新树数据（增删改后调用，使用全量树接口保留展开状态）
 	const refreshTreeData = () => {
 		treeLoading.value = true
-		treeData.value = []
 		bizOrgApi
 			.orgTree({ searchKey: '' })
 			.then((res) => {

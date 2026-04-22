@@ -117,4 +117,15 @@ public class SysOrgApiContextBean implements SysOrgApi {
     public List<String> getChildOrgIdListById(String orgId) {
         return this.sysOrgFeign.getChildOrgIdListById(orgId);
     }
+
+    /**
+     * 根据orgId列表获取祖先路径节点（用于懒加载树回显）
+     *
+     * @author xuyuxiang
+     * @date 2026/4/22
+     **/
+    @Override
+    public List<JSONObject> getAncestorNodes(List<String> orgIdList) {
+        return this.sysOrgFeign.getAncestorNodes(orgIdList);
+    }
 }

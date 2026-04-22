@@ -32,7 +32,8 @@ public interface SysGroupFeign {
      * @date 2022/12/25 01:03
      **/
     @RequestMapping("/feign/sys/group/grantUser")
-    void grantUser(@RequestParam(value = "groupId",required = false) String groupId, @RequestParam(value = "userIdList",required = false) List<String> userIdList);
+    void grantUser(@RequestParam(value = "groupId",required = false) String groupId,
+                   @RequestParam(value = "userIdList",required = false) List<String> userIdList);
 
     /**
      * 获取用户组选择器
@@ -41,5 +42,7 @@ public interface SysGroupFeign {
      * @date 2025/1/12 02:36
      */
     @RequestMapping("/feign/sys/group/groupSelector")
-    String groupSelector(@RequestParam(value = "searchKey",required = false) String searchKey, @RequestParam(value = "current",required = false) Integer current, @RequestParam(value = "size",required = false) Integer size);
+    String groupSelector(@RequestParam(value = "searchKey",required = false) String searchKey,
+                         @RequestParam(value = "current",required = false) Integer current,
+                         @RequestParam(value = "size",required = false) Integer size);
 }

@@ -108,34 +108,36 @@ service.interceptors.response.use(
 			//   });
 			// }
 		} else {
-			// 统一成功提示
-			const functionName = response.config.url.split('/').pop()
-			const apiNameArray = [
-				'add',
-				'edit',
-				'delete',
-				'update',
-				'grant',
-				'reset',
-				'stop',
-				'pass',
-				'disable',
-				'enable',
-				'revoke',
-				'suspend',
-				'active',
-				'turn',
-				'adjust',
-				'reject',
-				'saveDraft',
-				'setDefault'
-			]
-			apiNameArray.forEach((apiName) => {
-				// 上面去掉接口路径后，方法内包含内置的进行统一提示成功
-				if (functionName.includes(apiName)) {
-					message.success(data.msg)
-				}
-			})
+			// 统一成功提示（支持 skipSuccessMessage 跳过）
+			if (!response.config.skipSuccessMessage) {
+				const functionName = response.config.url.split('/').pop()
+				const apiNameArray = [
+					'add',
+					'edit',
+					'delete',
+					'update',
+					'grant',
+					'reset',
+					'stop',
+					'pass',
+					'disable',
+					'enable',
+					'revoke',
+					'suspend',
+					'active',
+					'turn',
+					'adjust',
+					'reject',
+					'saveDraft',
+					'setDefault'
+				]
+				apiNameArray.forEach((apiName) => {
+					// 上面去掉接口路径后，方法内包含内置的进行统一提示成功
+					if (functionName.includes(apiName)) {
+						message.success(data.msg)
+					}
+				})
+			}
 		}
 		return Promise.resolve(data.data)
 	},

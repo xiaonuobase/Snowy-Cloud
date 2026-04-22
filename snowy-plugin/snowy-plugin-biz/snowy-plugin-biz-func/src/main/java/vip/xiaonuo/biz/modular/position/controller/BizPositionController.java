@@ -26,13 +26,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import vip.xiaonuo.biz.modular.org.param.BizOrgSelectorTreeParam;
+import vip.xiaonuo.biz.modular.org.service.BizOrgService;
 import vip.xiaonuo.biz.modular.position.entity.BizPosition;
 import vip.xiaonuo.biz.modular.position.param.*;
 import vip.xiaonuo.biz.modular.position.service.BizPositionService;
 import vip.xiaonuo.common.annotation.CommonLog;
 import vip.xiaonuo.common.pojo.CommonResult;
-import vip.xiaonuo.biz.modular.org.param.BizOrgSelectorTreeParam;
-import vip.xiaonuo.biz.modular.org.service.BizOrgService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -44,7 +44,6 @@ import java.util.List;
  * @date 2022/4/25 20:40
  */
 @Tag(name = "岗位控制器")
-@ApiSupport(author = "SNOWY_TEAM", order = 2)
 @RestController
 @Validated
 public class BizPositionController {
@@ -61,7 +60,6 @@ public class BizPositionController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 1)
     @Operation(summary = "获取岗位分页")
     @SaCheckPermission("/biz/position/page")
     @GetMapping("/biz/position/page")
@@ -75,7 +73,6 @@ public class BizPositionController {
      * @author xuyuxiang
      * @date 2022/4/24 20:47
      */
-    @ApiOperationSupport(order = 2)
     @Operation(summary = "添加岗位")
     @CommonLog("添加岗位")
     @SaCheckPermission("/biz/position/add")
@@ -91,7 +88,6 @@ public class BizPositionController {
      * @author xuyuxiang
      * @date 2022/4/24 20:47
      */
-    @ApiOperationSupport(order = 3)
     @Operation(summary = "编辑岗位")
     @CommonLog("编辑岗位")
     @SaCheckPermission("/biz/position/edit")
@@ -107,7 +103,6 @@ public class BizPositionController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 4)
     @Operation(summary = "删除岗位")
     @CommonLog("删除岗位")
     @SaCheckPermission("/biz/position/delete")
@@ -124,7 +119,6 @@ public class BizPositionController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 5)
     @Operation(summary = "获取岗位详情")
     @SaCheckPermission("/biz/position/detail")
     @GetMapping("/biz/position/detail")
@@ -140,7 +134,6 @@ public class BizPositionController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 6)
     @Operation(summary = "获取组织树选择器（懒加载）")
     @SaCheckPermission("/biz/position/orgTreeSelector")
     @GetMapping("/biz/position/orgTreeSelector")
@@ -154,7 +147,6 @@ public class BizPositionController {
      * @author xuyuxiang
      * @date 2022/4/24 20:00
      */
-    @ApiOperationSupport(order = 7)
     @Operation(summary = "获取岗位选择器")
     @SaCheckPermission("/biz/position/positionSelector")
     @GetMapping("/biz/position/positionSelector")
@@ -168,7 +160,6 @@ public class BizPositionController {
      * @author yubaoshan
      * @date 2026/3/23
      */
-    @ApiOperationSupport(order = 8)
     @Operation(summary = "根据orgId列表获取祖先路径节点")
     @PostMapping("/biz/position/getAncestorNodes")
     public CommonResult<List<JSONObject>> getAncestorNodes(@RequestBody List<String> orgIdList) {

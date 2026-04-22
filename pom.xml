@@ -35,9 +35,9 @@
         <spring.boot.admin-version>3.4.7</spring.boot.admin-version>
         <springfox.version>3.0.0</springfox.version>
         <nacos.client.version>2.2.1</nacos.client.version>
-        <knife4j.bak.version>4.6.0</knife4j.bak.version>
 
         <!-- 锁定依赖版本号 -->
+        <awssdk.version>2.20.0</awssdk.version>
         <ali.oss.version>3.15.1</ali.oss.version>
         <aliyun.sdk.dm.version>3.3.1</aliyun.sdk.dm.version>
         <aliyun.sdk.ecs.version>3.1.0</aliyun.sdk.ecs.version>
@@ -591,6 +591,13 @@
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
+            </dependency>
+
+            <!--rustfs文件sdk (兼容S3协议)-->
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>s3</artifactId>
+                <version>${awssdk.version}</version>
             </dependency>
 
             <!--java邮件sdk-->
