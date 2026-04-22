@@ -18,7 +18,6 @@ import cn.hutool.json.JSONObject;
 import org.springframework.stereotype.Component;
 import vip.xiaonuo.auth.core.pojo.SaBaseLoginUser;
 import vip.xiaonuo.auth.core.util.StpLoginUserUtil;
-import vip.xiaonuo.common.cache.CommonCacheOperator;
 import vip.xiaonuo.common.enums.SysDataTypeEnum;
 import vip.xiaonuo.common.listener.CommonDataChangeListener;
 

@@ -12,7 +12,6 @@ import vip.xiaonuo.auth.core.pojo.SaBaseClientLoginUser;
 import vip.xiaonuo.auth.core.pojo.SaBaseLoginUser;
 import vip.xiaonuo.auth.core.pojo.SysLoginUser;
 import vip.xiaonuo.auth.feign.ClientLoginUserFeign;
-import vip.xiaonuo.auth.feign.SysLoginUserFeign;
 
 import java.util.List;
 import java.util.Objects;

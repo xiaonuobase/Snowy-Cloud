@@ -15,8 +15,6 @@ package vip.xiaonuo.mobile.feign;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.json.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.common.consts.FeignConstant;

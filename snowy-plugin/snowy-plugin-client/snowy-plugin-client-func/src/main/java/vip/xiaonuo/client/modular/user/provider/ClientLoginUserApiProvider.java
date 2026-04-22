@@ -19,10 +19,10 @@ import cn.hutool.json.JSONUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import vip.xiaonuo.auth.api.SaBaseLoginUserApi;
+import vip.xiaonuo.auth.core.pojo.ClientLoginUser;
 import vip.xiaonuo.auth.core.pojo.SaBaseClientLoginUser;
 import vip.xiaonuo.auth.core.pojo.SaBaseLoginUser;
 import vip.xiaonuo.client.modular.user.entity.ClientUser;
-import vip.xiaonuo.auth.core.pojo.ClientLoginUser;
 import vip.xiaonuo.client.modular.user.service.ClientUserService;
 
 import java.util.List;

@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import vip.xiaonuo.sys.api.SysOrgApi;
 import vip.xiaonuo.sys.feign.SysOrgFeign;
+
 import java.util.List;
 
 /**

@@ -15,12 +15,11 @@ package vip.xiaonuo.web.core.interceptor;
 import cn.hutool.core.util.StrUtil;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import jakarta.servlet.http.HttpServletRequest;
 import vip.xiaonuo.common.consts.AppConstant;
 import vip.xiaonuo.common.util.CommonTraceIdUtil;
 

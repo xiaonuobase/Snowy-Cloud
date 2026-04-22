@@ -14,7 +14,6 @@ package vip.xiaonuo.auth.modular.login.listener;
 
 import cn.dev33.satoken.listener.SaTokenListener;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
-import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
