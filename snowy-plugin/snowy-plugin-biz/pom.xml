@@ -19,6 +19,15 @@
         <!-- 业务功能插件api接口 -->
         <module>snowy-plugin-biz-api</module>
 
+        <!-- 业务功能插件api接口context -->
+        <module>snowy-plugin-biz-api-context</module>
+
+        <!-- 业务功能插件feign接口 -->
+        <module>snowy-plugin-biz-feign</module>
+
+        <!-- 业务功能插件feign接口实现 -->
+        <module>snowy-plugin-biz-feign-provider</module>
+
         <!-- 业务功能插件func实现 -->
         <module>snowy-plugin-biz-func</module>
     </modules>

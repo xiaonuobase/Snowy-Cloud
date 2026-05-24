@@ -176,6 +176,27 @@
                 <version>${snowy.version}</version>
             </dependency>
 
+            <!-- snowy-plugin-biz-api-context -->
+            <dependency>
+                <groupId>vip.xiaonuo</groupId>
+                <artifactId>snowy-plugin-biz-api-context</artifactId>
+                <version>${snowy.version}</version>
+            </dependency>
+
+            <!-- snowy-plugin-biz-feign -->
+            <dependency>
+                <groupId>vip.xiaonuo</groupId>
+                <artifactId>snowy-plugin-biz-feign</artifactId>
+                <version>${snowy.version}</version>
+            </dependency>
+
+            <!-- snowy-plugin-biz-feign-provider -->
+            <dependency>
+                <groupId>vip.xiaonuo</groupId>
+                <artifactId>snowy-plugin-biz-feign-provider</artifactId>
+                <version>${snowy.version}</version>
+            </dependency>
+
             <!-- snowy-plugin-biz-func -->
             <dependency>
                 <groupId>vip.xiaonuo</groupId>
