@@ -359,6 +359,42 @@ public class ClientLoginUserFeignProvider implements ClientLoginUserFeign {
     }
 
     /**
+     * 使用账号、密码和名称创建B端用户
+     *
+     * @author yubaoshan
+     * @date 2026/6/25
+     **/
+    @Override
+    public SysLoginUser createUserWithAccount(String account, String password, String name) {
+        SysLoginUser sysLoginUser = null;
+
+        SaBaseLoginUser baseLoginUser = this.loginUserApi.createUserWithAccount(account, password, name);
+        if(Objects.nonNull(baseLoginUser)){
+            sysLoginUser = (SysLoginUser) baseLoginUser;
+        }
+
+        return sysLoginUser;
+    }
+
+    /**
+     * 使用账号、密码和名称创建C端用户
+     *
+     * @author yubaoshan
+     * @date 2026/6/26
+     **/
+    @Override
+    public ClientLoginUser createClientUserWithAccount(String account, String password, String name) {
+        ClientLoginUser clientLoginUser = null;
+
+        SaBaseClientLoginUser baseClientLoginUser = this.loginUserApi.createClientUserWithAccount(account, password, name);
+        if(Objects.nonNull(baseClientLoginUser)){
+            clientLoginUser = (ClientLoginUser) baseClientLoginUser;
+        }
+
+        return clientLoginUser;
+    }
+
+    /**
      * 执行注册
      *
      * @param account

@@ -255,6 +255,28 @@ public class SysLoginUserApiContextBean implements SaBaseLoginUserApi {
     }
 
     /**
+     * 使用账号、密码和名称创建B端用户
+     *
+     * @author yubaoshan
+     * @date 2026/6/25
+     **/
+    @Override
+    public SaBaseLoginUser createUserWithAccount(String account, String password, String name) {
+        return this.sysLoginUserFeign.createUserWithAccount(account, password, name);
+    }
+
+    /**
+     * 使用账号、密码和名称创建C端用户
+     *
+     * @author yubaoshan
+     * @date 2026/6/26
+     **/
+    @Override
+    public SaBaseClientLoginUser createClientUserWithAccount(String account, String password, String name) {
+        return this.sysLoginUserFeign.createClientUserWithAccount(account, password, name);
+    }
+
+    /**
      * 执行注册
      *
      * @param account

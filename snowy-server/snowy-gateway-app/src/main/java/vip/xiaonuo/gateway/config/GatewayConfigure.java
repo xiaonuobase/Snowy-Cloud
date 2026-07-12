@@ -297,27 +297,6 @@ public class GatewayConfigure {
 //        return WebClient.builder();
 //    }
 
-    /**
-     * RedisTemplate序列化
-     *
-     * @author xuyuxiang
-     * @date 2022/6/21 17:01
-     **/
-    @Primary
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
-        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-        redisTemplate.setKeySerializer(stringRedisSerializer);
-        redisTemplate.setHashKeySerializer(stringRedisSerializer);
-        Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
-        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
-        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
-        redisTemplate.afterPropertiesSet();
-        return redisTemplate;
-    }
-
     @Primary
     @Bean("stpLogic")
     public StpLogic getStpLogic(SaTokenConfig saTokenConfig) {

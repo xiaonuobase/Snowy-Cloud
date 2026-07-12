@@ -17,17 +17,16 @@
 
     <properties>
         <resource.delimiter>@</resource.delimiter>
-<!--        <spring.boot.version>2.5.12</spring.boot.version>-->
         <curator.version>4.0.1</curator.version>
         <sentinel.version>1.8.7</sentinel.version>
 
         <java.version>1.8</java.version>
-        <spring-boot-dependencies.version>2.7.18</spring-boot-dependencies.version>
-        <spring.boot.admin-version>2.7.15</spring.boot.admin-version>
-        <spring.cloud-version>2021.0.1</spring.cloud-version>
-        <spring.cloud.bootstrap-version>3.1.8</spring.cloud.bootstrap-version>
-        <spring.cloud.alibaba-version>2021.0.1.0</spring.cloud.alibaba-version>
-        <logback.version>1.2.13</logback.version>
+        <spring-boot.version>2.7.18</spring-boot.version>
+        <spring-boot-admin.version>2.7.15</spring-boot-admin.version>
+        <spring-cloud.version>2021.0.1</spring-cloud.version>
+        <spring-cloud-bootstrap.version>3.1.8</spring-cloud-bootstrap.version>
+        <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
+        <logback.classic.version>1.2.13</logback.classic.version>
     </properties>
 
     <dependencies>
@@ -85,7 +84,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot-dependencies.version}</version>
+            <version>${spring-boot.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>spring-context</artifactId>
@@ -96,12 +95,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
-            <version>${spring-boot-dependencies.version}</version>
+            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>${spring-boot-dependencies.version}</version>
+            <version>${spring-boot.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -109,7 +108,7 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
-            <version>${spring.cloud.bootstrap-version}</version>
+            <version>${spring-cloud-bootstrap.version}</version>
         </dependency>
 
         <!-- cloud context -->
@@ -122,14 +121,14 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-            <version>${spring.cloud.alibaba-version}</version>
+            <version>${spring-cloud-alibaba.version}</version>
         </dependency>
 
         <!-- nacos 注册中心客户端 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-            <version>${spring.cloud.alibaba-version}</version>
+            <version>${spring-cloud-alibaba.version}</version>
         </dependency>
 
         <!-- 暴露各种指标 -->
@@ -142,13 +141,13 @@
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
-            <version>${spring.boot.admin-version}</version>
+            <version>${spring-boot-admin.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
-            <version>${spring-boot-dependencies.version}</version>
+            <version>${spring-boot.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>spring-context</artifactId>
@@ -270,13 +269,13 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
+            <version>${logback.classic.version}</version>
         </dependency>
 
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>${logback.version}</version>
+            <version>${logback.classic.version}</version>
         </dependency>
     </dependencies>
 
@@ -286,7 +285,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot-dependencies.version}</version>
+                <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -294,7 +293,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring.cloud-version}</version>
+                <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -302,7 +301,7 @@
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${spring.cloud.alibaba-version}</version>
+                <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -330,7 +329,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot-dependencies.version}</version>
+                <version>${spring-boot.version}</version>
                 <configuration>
                     <includeSystemScope>true</includeSystemScope>
                     <mainClass>com.alibaba.csp.sentinel.dashboard.SnowySentinelApp</mainClass>

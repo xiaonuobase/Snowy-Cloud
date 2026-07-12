@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import vip.xiaonuo.auth.api.AuthApi;
 import vip.xiaonuo.auth.feign.AuthFeign;
 
+import java.util.List;
+
 /**
  * AuthFeignProvider
  *
@@ -210,5 +212,16 @@ public class AuthFeignProvider implements AuthFeign {
     @Override
     public String doLoginByEmailForC(String email, String device) {
         return this.authApi.doLoginByEmailForC(email, device);
+    }
+
+    /**
+     * 根据用户id删除三方用户
+     *
+     * @author xuyuxiang
+     * @date 2022/7/9 14:58
+     */
+    @Override
+    public void removeThirdUserByUserIdList(List<String> userIdLis) {
+        this.authApi.removeThirdUserByUserIdList(userIdLis);
     }
 }

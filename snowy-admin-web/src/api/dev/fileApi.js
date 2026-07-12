@@ -42,6 +42,10 @@ export default {
 	fileUploadMinioReturnId(data) {
 		return request('uploadMinioReturnId', data)
 	},
+	// FTP文件上传，返回文件id
+	fileUploadFtpReturnId(data) {
+		return request('uploadFtpReturnId', data)
+	},
 	// 本地文件上传，返回文件Url
 	fileUploadLocalReturnUrl(data) {
 		return request('uploadLocalReturnUrl', data)
@@ -58,6 +62,10 @@ export default {
 	fileUploadMinioReturnUrl(data) {
 		return request('uploadMinioReturnUrl', data)
 	},
+	// FTP文件上传，返回文件Url
+	fileUploadFtpReturnUrl(data) {
+		return request('uploadFtpReturnUrl', data)
+	},
 	// 获取文件分页列表
 	filePage(data) {
 		return request('page', data, 'get')
@@ -69,6 +77,12 @@ export default {
 	// 下载文件，这里要带上blob类型
 	fileDownload(data) {
 		return request('download', data, 'get', {
+			responseType: 'blob'
+		})
+	},
+	// 授权下载文件，这里要带上blob类型
+	fileAuthDownload(data) {
+		return request('authDownload', data, 'get', {
 			responseType: 'blob'
 		})
 	},

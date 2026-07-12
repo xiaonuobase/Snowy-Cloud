@@ -122,6 +122,7 @@ import vip.xiaonuo.sys.modular.user.result.*;
 import vip.xiaonuo.sys.modular.user.service.SysUserExtService;
 import vip.xiaonuo.sys.modular.user.service.SysUserPasswordService;
 import vip.xiaonuo.sys.modular.user.service.SysUserService;
+import vip.xiaonuo.auth.api.AuthApi;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
@@ -263,6 +264,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Resource
     private SysUserPasswordService sysUserPasswordService;
+
+    @Resource
+    private AuthApi authApi;
 
     @Resource(name = "loginUserApi")
     private SaBaseLoginUserApi loginUserApi;
@@ -468,8 +472,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             // 删除扩展信息
             sysUserExtService.remove(new LambdaQueryWrapper<SysUserExt>().in(SysUserExt::getUserId, sysUserIdList));
 
+            // 删除三方用户信息
+            authApi.removeThirdUserByUserIdList(sysUserIdList);
+
             // 发布删除事件
             CommonDataChangeEventCenter.doDeleteWithDataIdList(SysDataTypeEnum.USER.getValue(), sysUserIdList);
+
+            // 强制下线
+            sysUserIdList.forEach(StpUtil::kickout);
         }
     }
 
@@ -482,6 +492,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void disableUser(SysUserIdParam sysUserIdParam) {
         this.update(new LambdaUpdateWrapper<SysUser>().eq(SysUser::getId,
                 sysUserIdParam.getId()).set(SysUser::getUserStatus, SysUserStatusEnum.DISABLED.getValue()));
+
+        // 强制下线
+        StpUtil.kickout(sysUserIdParam.getId());
     }
 
     @Override
@@ -1112,7 +1125,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public String updateAvatar(MultipartFile file) {
         SysUser sysUser = this.queryEntity(StpUtil.getLoginIdAsString());
         try {
-            String suffix = Objects.requireNonNull(FileUtil.getSuffix(file.getOriginalFilename())).toLowerCase();
+            // 验证文件后缀（只允许图片格式）
+            String suffix = FileUtil.getSuffix(file.getOriginalFilename());
+            if (StrUtil.isEmpty(suffix)) {
+                throw new CommonException("文件必须有后缀名");
+            }
+            suffix = suffix.toLowerCase();
+            List<String> allowedExt = Arrays.asList("jpg", "jpeg", "png", "gif", "bmp", "webp");
+            if (!allowedExt.contains(suffix)) {
+                throw new CommonException("头像仅支持图片格式：jpg、jpeg、png、gif、bmp、webp");
+            }
+
             BufferedImage image = ImgUtil.toImage(file.getBytes());
             String base64;
             if(image.getWidth() <= 200 && image.getHeight() <= 200) {
@@ -1704,7 +1727,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                                 .equals(phone) && !tempSysUser.getId().equals(finalExistUserId));
                         if(repeatPhone) {
                             // 更新用户手机号重复则使用原手机号
-                            sysUser.setPhone(sysUser.getPhone());
+                            sysUserImportParam.setPhone(sysUser.getPhone());
                         }
                     }
                 }
@@ -1723,8 +1746,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                                 .isNotEmpty(tempSysUser.getEmail()) && tempSysUser.getEmail()
                                 .equals(email) && !tempSysUser.getId().equals(finalExistUserId));
                         if(repeatEmail) {
-                            // 更新用户手机号重复则使用原邮箱
-                            sysUser.setEmail(sysUser.getEmail());
+                            // 更新用户手机号重复则使用原邮箱 并置空
+                            sysUserImportParam.setEmail(sysUser.getEmail());
                         }
                     }
                 }
@@ -2286,10 +2309,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public SysUser createUserWithAccount(String account, String password) {
+    public SysUser createUserWithAccount(String account, String password, String name) {
         SysUserAddParam sysUserAddParam = new SysUserAddParam();
         sysUserAddParam.setAccount(account);
-        sysUserAddParam.setName(account);
+        sysUserAddParam.setName(StrUtil.isBlank(name) ? account : name);
         sysUserAddParam.setPassword(password);
         sysUserAddParam.setOrgId(this.getDefaultNewUserOrgId());
         sysUserAddParam.setPositionId(this.getDefaultNewUserPositionId());
@@ -2449,7 +2472,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 校验密码
         SysPasswordUtil.validNewPassword(password);
         // 根据账号密码创建用户
-        this.createUserWithAccount(account, password);
+        this.createUserWithAccount(account, password, null);
     }
 
     @Override

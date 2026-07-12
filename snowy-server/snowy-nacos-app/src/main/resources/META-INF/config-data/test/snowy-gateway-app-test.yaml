@@ -61,12 +61,7 @@ spring:
       port: 6379
       password:
       timeout: 10s
-      lettuce:
-        pool:
-          max-active: 200
-          max-wait: -1ms
-          max-idle: 10
-          min-idle: 0
+
 
   boot:
     admin:
@@ -172,17 +167,11 @@ sa-token:
 
   # sa-token alone-redis configuration
   alone-redis:
-    database: 2
+    database: 1
     host: ${spring.data.redis.host}
     port: ${spring.data.redis.port}
     password: ${spring.data.redis.password}
     timeout: ${spring.data.redis.timeout}
-    lettuce:
-      pool:
-        max-active: ${spring.data.redis.lettuce.pool.max-active}
-        max-wait: ${spring.data.redis.lettuce.pool.max-wait}
-        max-idle: ${spring.data.redis.lettuce.pool.max-idle}
-        min-idle: ${spring.data.redis.lettuce.pool.min-idle}
 
   # sso configuration
   sso-client:

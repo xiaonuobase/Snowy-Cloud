@@ -14,6 +14,8 @@ package vip.xiaonuo.auth.api;
 
 import cn.hutool.json.JSONObject;
 
+import java.util.List;
+
 /**
  * 认证鉴权API
  *
@@ -141,4 +143,12 @@ public interface AuthApi {
      * @date 2024/7/18 17:35
      */
     String doLoginByEmailForC(String email, String device);
+
+    /**
+     * 根据用户id删除三方用户
+     *
+     * @author xuyuxiang
+     * @date 2022/7/9 14:58
+     */
+    void removeThirdUserByUserIdList(List<String> userIdList);
 }

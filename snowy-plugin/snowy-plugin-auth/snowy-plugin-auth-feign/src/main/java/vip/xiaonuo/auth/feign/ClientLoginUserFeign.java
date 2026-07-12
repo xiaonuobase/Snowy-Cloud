@@ -16,6 +16,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.auth.core.pojo.ClientLoginUser;
+import vip.xiaonuo.auth.core.pojo.SaBaseClientLoginUser;
+import vip.xiaonuo.auth.core.pojo.SaBaseLoginUser;
 import vip.xiaonuo.auth.core.pojo.SysLoginUser;
 import vip.xiaonuo.common.consts.FeignConstant;
 
@@ -195,6 +197,27 @@ public interface ClientLoginUserFeign {
     ClientLoginUser createClientUserWithEmail(@RequestParam("email") String email);
 
     /**
+     * 使用账号、密码和名称创建B端用户
+     *
+     * @author yubaoshan
+     * @date 2026/6/25
+     **/
+    @PostMapping("/feign/client/login/user/createUserWithAccount")
+    SysLoginUser createUserWithAccount(@RequestParam("account") String account,
+                                       @RequestParam("password") String password,
+                                       @RequestParam("name") String name);
+
+    /**
+     * 密码和名称创建C端用户
+     *
+     * @author yubaoshan
+     * @date 2026/6/25
+     **/
+    @PostMapping("/feign/client/login/user/createClientUserWithAccount")
+    ClientLoginUser createClientUserWithAccount(@RequestParam("account") String account,
+                                       @RequestParam("password") String password,
+                                       @RequestParam("name") String name);
+    /**
      * 执行注册
      *
      * @author xuyuxiang
@@ -203,5 +226,4 @@ public interface ClientLoginUserFeign {
     @PostMapping("/feign/client/login/user/doRegister")
     void doRegister(@RequestParam("account") String account,
                     @RequestParam("password") String password);
-
 }

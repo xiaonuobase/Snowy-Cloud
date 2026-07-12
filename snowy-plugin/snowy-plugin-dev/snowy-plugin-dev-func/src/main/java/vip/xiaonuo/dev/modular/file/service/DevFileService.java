@@ -17,6 +17,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.dev.modular.file.entity.DevFile;
+import vip.xiaonuo.dev.modular.file.param.DevFileDownloadParam;
 import vip.xiaonuo.dev.modular.file.param.DevFileIdParam;
 import vip.xiaonuo.dev.modular.file.param.DevFileListParam;
 import vip.xiaonuo.dev.modular.file.param.DevFilePageParam;
@@ -42,12 +43,28 @@ public interface DevFileService extends IService<DevFile> {
     String uploadReturnId(String engine, MultipartFile file);
 
     /**
+     * MultipartFile文件上传，返回文件id（带后缀校验）
+     *
+     * @author xuyuxiang
+     * @date 2025/6/26 15:53
+     **/
+    String uploadReturnIdWithValidation(String engine, MultipartFile file, List<String> allowedExtensions);
+
+    /**
      * MultipartFile文件上传，返回文件Url
      *
      * @author xuyuxiang
      * @date 2022/4/22 15:53
      **/
     String uploadReturnUrl(String engine, MultipartFile file);
+
+    /**
+     * MultipartFile文件上传，返回文件Url（带后缀校验）
+     *
+     * @author xuyuxiang
+     * @date 2025/6/26 15:53
+     **/
+    String uploadReturnUrlWithValidation(String engine, MultipartFile file, List<String> allowedExtensions);
 
     /**
      * 文件分页列表接口
@@ -71,7 +88,7 @@ public interface DevFileService extends IService<DevFile> {
      * @author xuyuxiang
      * @date 2022/6/21 15:44
      **/
-    void download(DevFileIdParam devFileIdParam, HttpServletResponse response) throws IOException;
+    void download(DevFileDownloadParam devFileDownloadParam, HttpServletResponse response) throws IOException;
 
 
     /**

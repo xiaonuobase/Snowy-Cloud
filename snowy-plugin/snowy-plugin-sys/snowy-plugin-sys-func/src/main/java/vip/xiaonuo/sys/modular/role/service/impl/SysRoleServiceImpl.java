@@ -275,6 +275,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .map(JSONUtil::toJsonStr).collect(Collectors.toList());
         sysRelationService.saveRelationBatchWithClear(id, menuIdList, SysRelationCategoryEnum.SYS_ROLE_HAS_RESOURCE.getValue(),
                 extJsonList);
+
+        // 刷新拥有该角色的所有在线用户的权限缓存
+        this.refreshRoleLoginUserCache(id);
     }
 
     @Override
@@ -296,6 +299,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .map(JSONUtil::toJsonStr).collect(Collectors.toList());
         sysRelationService.saveRelationBatchWithClear(id, menuIdList, SysRelationCategoryEnum.SYS_ROLE_HAS_MOBILE_MENU.getValue(),
                 extJsonList);
+
+        // 刷新拥有该角色的所有在线用户的权限缓存
+        this.refreshRoleLoginUserCache(id);
     }
 
     @Override
@@ -310,16 +316,36 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public void grantPermission(SysRoleGrantPermissionParam sysRoleGrantPermissionParam) {
+        this.grantPermission(sysRoleGrantPermissionParam, true);
+    }
+
+    @Override
+    public void grantPermissionWithAppend(SysRoleGrantPermissionParam sysRoleGrantPermissionParam) {
+        this.grantPermission(sysRoleGrantPermissionParam, false);
+    }
+
+    /**
+     * 给角色授权权限
+     *
+     * @author xuyuxiang
+     * @date 2022/4/29 10:12
+     **/
+    public void grantPermission(SysRoleGrantPermissionParam sysRoleGrantPermissionParam, boolean clear) {
         String id = sysRoleGrantPermissionParam.getId();
         List<String> apiUrlList = sysRoleGrantPermissionParam.getGrantInfoList().stream()
                 .map(SysRoleGrantPermissionParam.SysRoleGrantPermission::getApiUrl).collect(Collectors.toList());
         List<String> extJsonList = sysRoleGrantPermissionParam.getGrantInfoList().stream()
                 .map(JSONUtil::toJsonStr).collect(Collectors.toList());
-        sysRelationService.saveRelationBatchWithClear(id, apiUrlList, SysRelationCategoryEnum.SYS_ROLE_HAS_PERMISSION.getValue(),
+        sysRelationService.saveRelationBatchWithAppend(id, apiUrlList, SysRelationCategoryEnum.SYS_ROLE_HAS_PERMISSION.getValue(),
                 extJsonList);
         // 刷新拥有该角色的所有在线用户的权限缓存
+        this.refreshRoleLoginUserCache(id);
+    }
+
+    @Override
+    public void refreshRoleLoginUserCache(String roleId) {
         List<String> userIdList = sysRelationService.getRelationObjectIdListByTargetIdAndCategory(
-                id, SysRelationCategoryEnum.SYS_USER_HAS_ROLE.getValue());
+                roleId, SysRelationCategoryEnum.SYS_USER_HAS_ROLE.getValue());
         userIdList.forEach(loginUserApi::refreshOnlineUserPermission);
     }
 

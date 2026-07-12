@@ -40,22 +40,10 @@
             <artifactId>sa-token-reactor-spring-boot3-starter</artifactId>
         </dependency>
 
-        <!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） -->
+        <!-- sa-token 整合 redisson -->
         <dependency>
             <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-redis-jackson</artifactId>
-        </dependency>
-
-        <!-- Sa-Token插件：权限缓存与业务缓存分离 -->
-        <dependency>
-            <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-alone-redis</artifactId>
-            <version>${sa.token.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
+            <artifactId>sa-token-redisson</artifactId>
         </dependency>
 
         <!-- snowy-auth -->

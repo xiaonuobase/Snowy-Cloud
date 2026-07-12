@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.client.modular.user.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.core.bean.BeanUtil;
@@ -37,10 +38,12 @@ import org.dromara.trans.service.impl.TransService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import vip.xiaonuo.auth.core.enums.ClientUserStatusEnum;
+import vip.xiaonuo.auth.api.AuthApi;
+import vip.xiaonuo.auth.api.SaBaseLoginUserApi;
 import vip.xiaonuo.auth.core.pojo.ClientLoginUser;
+import vip.xiaonuo.auth.core.pojo.SaBaseClientLoginUser;
+import vip.xiaonuo.auth.core.util.StpClientLoginUserUtil;
 import vip.xiaonuo.auth.core.util.StpClientUtil;
-import vip.xiaonuo.auth.core.util.StpLoginUserUtil;
 import vip.xiaonuo.client.core.enums.ClientYesOrNoEnum;
 import vip.xiaonuo.client.core.util.ClientEmailFormatUtl;
 import vip.xiaonuo.client.core.util.ClientPasswordUtl;
@@ -48,6 +51,7 @@ import vip.xiaonuo.client.modular.user.entity.ClientUser;
 import vip.xiaonuo.client.modular.user.entity.ClientUserExt;
 import vip.xiaonuo.client.modular.user.enums.ClientUpdatePasswordValidTypeEnum;
 import vip.xiaonuo.client.modular.user.enums.ClientUserSourceFromTypeEnum;
+import vip.xiaonuo.client.modular.user.enums.ClientUserStatusEnum;
 import vip.xiaonuo.client.modular.user.mapper.ClientUserMapper;
 import vip.xiaonuo.client.modular.user.param.*;
 import vip.xiaonuo.client.modular.user.result.ClientUserPicValidCodeResult;
@@ -68,6 +72,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * C端用户Service接口实现类
@@ -152,6 +157,12 @@ public class ClientUserServiceImpl extends ServiceImpl<ClientUserMapper, ClientU
 
     @Resource
     private ClientUserPasswordService clientUserPasswordService;
+
+    @Resource
+    private AuthApi authApi;
+
+    @Resource(name = "clientLoginUserApi")
+    private SaBaseLoginUserApi loginUserApi;
 
     @Override
     public ClientLoginUser getUserById(String id) {
@@ -266,6 +277,9 @@ public class ClientUserServiceImpl extends ServiceImpl<ClientUserMapper, ClientU
         checkParam(clientUserEditParam);
         BeanUtil.copyProperties(clientUserEditParam, clientUser);
         this.updateById(clientUser);
+
+        // 刷新该用户的在线缓存信息
+        loginUserApi.refreshOnlineUserPermission(clientUserEditParam.getId());
     }
 
     private void checkParam(ClientUserEditParam clientUserEditParam) {
@@ -299,7 +313,20 @@ public class ClientUserServiceImpl extends ServiceImpl<ClientUserMapper, ClientU
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(List<ClientUserIdParam> clientUserIdParamList) {
-        this.removeByIds(CollStreamUtil.toList(clientUserIdParamList, ClientUserIdParam::getId));
+        List<String> clientUserIdList = CollStreamUtil.toList(clientUserIdParamList, ClientUserIdParam::getId);
+        if(ObjectUtil.isNotEmpty(clientUserIdList)) {
+            // 执行删除
+            this.removeByIds(clientUserIdList);
+
+            // 删除扩展信息
+            clientUserExtService.remove(new LambdaQueryWrapper<ClientUserExt>().in(ClientUserExt::getUserId, clientUserIdList));
+
+            // 删除三方用户信息
+            authApi.removeThirdUserByUserIdList(clientUserIdList);
+
+            // 强制下线
+            clientUserIdList.forEach(StpClientUtil::kickout);
+        }
     }
 
     @Override
@@ -312,6 +339,9 @@ public class ClientUserServiceImpl extends ServiceImpl<ClientUserMapper, ClientU
         ClientUser clientUser = this.queryEntity(clientUserIdParam.getId());
         clientUser.setUserStatus(ClientUserStatusEnum.DISABLED.getValue());
         this.updateById(clientUser);
+
+        // 强制下线
+        StpClientUtil.kickout(clientUserIdParam.getId());
     }
 
     @Override
@@ -338,7 +368,7 @@ public class ClientUserServiceImpl extends ServiceImpl<ClientUserMapper, ClientU
 
     @Override
     public void updateUserInfo(ClientUserUpdateInfoParam clientUserUpdateInfoParam) {
-        String id = StpLoginUserUtil.getLoginUser().getId();
+        String id = StpClientLoginUserUtil.getClientLoginUser().getId();
         if (!StrUtil.equals(id,clientUserUpdateInfoParam.getId())){
             throw new CommonException("被修改用户与当前登录用户不匹配");
         }
@@ -358,6 +388,20 @@ public class ClientUserServiceImpl extends ServiceImpl<ClientUserMapper, ClientU
         }
         // 更新指定字段
         this.update(lambdaUpdateWrapper);
+        refreshLoginUserCacheField(u -> {
+            if (ObjectUtil.isNotEmpty(clientUserUpdateInfoParam.getName())) {
+                u.setName(clientUserUpdateInfoParam.getName());
+            }
+            if (ObjectUtil.isNotEmpty(clientUserUpdateInfoParam.getNickname())) {
+                u.setNickname(clientUserUpdateInfoParam.getNickname());
+            }
+            if (ObjectUtil.isNotEmpty(clientUserUpdateInfoParam.getGender())) {
+                u.setGender(clientUserUpdateInfoParam.getGender());
+            }
+            if (ObjectUtil.isNotEmpty(clientUserUpdateInfoParam.getBirthday())) {
+                u.setBirthday(clientUserUpdateInfoParam.getBirthday());
+            }
+        });
     }
 
     @Override
@@ -812,6 +856,7 @@ public class ClientUserServiceImpl extends ServiceImpl<ClientUserMapper, ClientU
         // 修改手机号
         this.update(new LambdaUpdateWrapper<ClientUser>().eq(ClientUser::getId, StpClientUtil.getLoginIdAsString())
                 .set(ClientUser::getPhone, CommonCryptogramUtil.doSm4CbcEncrypt(phone)));
+        refreshLoginUserCacheField(u -> u.setPhone(phone));
     }
 
     @Override
@@ -915,6 +960,7 @@ public class ClientUserServiceImpl extends ServiceImpl<ClientUserMapper, ClientU
         // 修改邮箱
         this.update(new LambdaUpdateWrapper<ClientUser>().eq(ClientUser::getId, StpClientUtil.getLoginIdAsString())
                 .set(ClientUser::getEmail, email));
+        refreshLoginUserCacheField(u -> u.setEmail(email));
     }
 
     @Override
@@ -931,6 +977,7 @@ public class ClientUserServiceImpl extends ServiceImpl<ClientUserMapper, ClientU
             }
             this.update(new LambdaUpdateWrapper<ClientUser>().eq(ClientUser::getId,
                     clientUser.getId()).set(ClientUser::getAvatar, base64));
+            refreshLoginUserCacheField(u -> u.setAvatar(base64));
             return base64;
         } catch (IOException e) {
             log.error(">>> 头像修改失败：", e);
@@ -946,10 +993,21 @@ public class ClientUserServiceImpl extends ServiceImpl<ClientUserMapper, ClientU
             clientUserSignatureStr = StrUtil.split(clientUserSignatureStr, StrUtil.COMMA).get(1);
         }
         String base64 = ImgUtil.toBase64DataUri(ImgUtil.scale(ImgUtil.toImage(clientUserSignatureStr),
-                100, 50, null), ImgUtil.IMAGE_TYPE_PNG);
+                200, 100, null), ImgUtil.IMAGE_TYPE_PNG);
         // 更新指定字段
         this.update(new LambdaUpdateWrapper<ClientUser>().eq(ClientUser::getId, clientUser.getId())
                 .set(ClientUser::getSignature, base64));
+    }
+
+    /**
+     * 刷新 TokenSession 中缓存的当前登录用户字段，避免 DB 已更新但 getLoginUser 返回旧值
+     */
+    private void refreshLoginUserCacheField(Consumer<SaBaseClientLoginUser> mutator) {
+        SaBaseClientLoginUser cached = StpClientLoginUserUtil.getClientLoginUser();
+        if (cached != null) {
+            mutator.accept(cached);
+            StpUtil.getTokenSession().set("loginUser", cached);
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -1010,10 +1068,10 @@ public class ClientUserServiceImpl extends ServiceImpl<ClientUserMapper, ClientU
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ClientUser createUserWithAccount(String account, String password) {
+    public ClientUser createUserWithAccount(String account, String password, String name) {
         ClientUserAddParam clientUserAddParam = new ClientUserAddParam();
         clientUserAddParam.setAccount(account);
-        clientUserAddParam.setName(account);
+        clientUserAddParam.setName(StrUtil.isBlank(name) ? account : name);
         clientUserAddParam.setPassword(password);
         clientUserAddParam.setGender(CommonGenderEnum.UNKNOWN.getValue());
         // 保存用户
@@ -1120,7 +1178,7 @@ public class ClientUserServiceImpl extends ServiceImpl<ClientUserMapper, ClientU
         // 校验密码
         ClientPasswordUtl.validNewPassword(password);
         // 根据账号密码创建用户
-        this.createUserWithAccount(account, password);
+        this.createUserWithAccount(account, password, null);
     }
 
     @Override

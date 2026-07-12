@@ -101,6 +101,7 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
     private static final List<JSONObject> GEN_FRONT_FILE_LIST = CollectionUtil.newArrayList(
             JSONUtil.createObj().set("name", "Api.js.btl").set("path", "api"),
             JSONUtil.createObj().set("name", "form.vue.btl").set("path",  "views"),
+            JSONUtil.createObj().set("name", "detail.vue.btl").set("path",  "views"),
             JSONUtil.createObj().set("name", "index.vue.btl").set("path",  "views"),
             JSONUtil.createObj().set("name", "importModel.vue.btl").set("path",  "views"));
 
@@ -155,6 +156,8 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
             JSONUtil.createObj().set("name", "Api.js.btl").set("path", "api"),
             JSONUtil.createObj().set("name", "form.vue.btl").set("path", "views"),
             JSONUtil.createObj().set("name", "subForm.vue.btl").set("path", "views"),
+            JSONUtil.createObj().set("name", "detail.vue.btl").set("path", "views"),
+            JSONUtil.createObj().set("name", "subDetail.vue.btl").set("path", "views"),
             JSONUtil.createObj().set("name", "index.vue.btl").set("path", "views"),
             JSONUtil.createObj().set("name", "importModel.vue.btl").set("path", "views"),
             JSONUtil.createObj().set("name", "subImportModel.vue.btl").set("path", "views"));
@@ -164,6 +167,7 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
             JSONUtil.createObj().set("name", "Api.js.btl").set("path", "api"),
             JSONUtil.createObj().set("name", "form.vue.btl").set("path", "views"),
             JSONUtil.createObj().set("name", "treeForm.vue.btl").set("path", "views"),
+            JSONUtil.createObj().set("name", "detail.vue.btl").set("path", "views"),
             JSONUtil.createObj().set("name", "index.vue.btl").set("path", "views"),
             JSONUtil.createObj().set("name", "importModel.vue.btl").set("path", "views"));
 
@@ -341,6 +345,7 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
             addParam.setWhetherRetract(GenYesNoEnum.N.getValue());
             addParam.setWhetherRequired(GenYesNoEnum.N.getValue());
             addParam.setWhetherUnique(GenYesNoEnum.N.getValue());
+            addParam.setWhetherDetail(GenYesNoEnum.Y.getValue());
             addParam.setQueryWhether(GenYesNoEnum.N.getValue());
             addParam.setSortCode(i);
             GenConfig genConfig = BeanUtil.toBean(addParam, GenConfig.class);
@@ -393,6 +398,7 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
             subAddParam.setWhetherRetract(GenYesNoEnum.N.getValue());
             subAddParam.setWhetherRequired(GenYesNoEnum.N.getValue());
             subAddParam.setWhetherUnique(GenYesNoEnum.N.getValue());
+            subAddParam.setWhetherDetail(GenYesNoEnum.Y.getValue());
             subAddParam.setQueryWhether(GenYesNoEnum.N.getValue());
             subAddParam.setSortCode(j);
             GenConfig subGenConfig = BeanUtil.toBean(subAddParam, GenConfig.class);
@@ -572,6 +578,9 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
             // 授权菜单
             sysRoleApi.grantForGenMenuAndButton(menuId);
 
+            // 授权权限
+            sysRoleApi.grantForGenPermission(genModuleName, genBasic.getBusName(), genBasic.getGenType());
+
             //前端代码移动到前端
             FileUtil.moveContent(FileUtil.file(tempFolder + File.separator + "frontend"), FileUtil.file(genProjectFrontendPath), true);
 
@@ -722,8 +731,9 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
                     if("SubEntity.java.btl".equalsIgnoreCase(fileTemplateName)) {
                         actualSuffix = ".java";
                     }
-                    genBasicCodeBackendResult.setCodeFileName(genBasic.getSubClassName() + actualSuffix);
-                    genBasicCodeBackendResult.setCodeFileWithPathName(genBackendBasicPath + fileTemplatePath + File.separator + genBasic.getSubClassName() + actualSuffix);
+                    String subClassName = genBasic.getSubClassName();
+                    genBasicCodeBackendResult.setCodeFileName(subClassName + actualSuffix);
+                    genBasicCodeBackendResult.setCodeFileWithPathName(genBackendBasicPath + fileTemplatePath + File.separator + subClassName + actualSuffix);
                     genBasicCodeBackendResult.setCodeFileContent(templateBackend.render());
                     genBasicCodeBackendResultList.add(genBasicCodeBackendResult);
                 });
@@ -851,12 +861,15 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
         bindingJsonObject.set("treeAddButtonId", IdWorker.getIdStr());
         bindingJsonObject.set("treeEditButtonId", IdWorker.getIdStr());
         bindingJsonObject.set("treeDeleteButtonId", IdWorker.getIdStr());
+        bindingJsonObject.set("treeDetailButtonId", IdWorker.getIdStr());
         // 添加按钮ID
         bindingJsonObject.set("addButtonId", IdWorker.getIdStr());
         // 编辑按钮ID
         bindingJsonObject.set("editButtonId", IdWorker.getIdStr());
         // 删除按钮ID
         bindingJsonObject.set("deleteButtonId", IdWorker.getIdStr());
+        // 详情按钮ID
+        bindingJsonObject.set("detailButtonId", IdWorker.getIdStr());
         // 批量删除按钮ID
         bindingJsonObject.set("batchDeleteButtonId", IdWorker.getIdStr());
         // 导入按钮ID
@@ -867,6 +880,8 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
         bindingJsonObject.set("subAddButtonId", IdWorker.getIdStr());
         bindingJsonObject.set("subEditButtonId", IdWorker.getIdStr());
         bindingJsonObject.set("subDeleteButtonId", IdWorker.getIdStr());
+        bindingJsonObject.set("subDetailButtonId", IdWorker.getIdStr());
+        bindingJsonObject.set("subBatchDeleteButtonId", IdWorker.getIdStr());
         // 子表导入按钮ID（主子表类型使用）
         bindingJsonObject.set("subImportButtonId", IdWorker.getIdStr());
         // 子表导出按钮ID（主子表类型使用）
@@ -929,6 +944,8 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
                     configItem.set("whetherRetract", genConfig.getWhetherRetract().equalsIgnoreCase(GenYesNoEnum.Y.getValue()));
                     // 增改
                     configItem.set("whetherAddUpdate", genConfig.getWhetherAddUpdate().equalsIgnoreCase(GenYesNoEnum.Y.getValue()));
+                    // 详情显示
+                    configItem.set("whetherDetail", genConfig.getWhetherDetail().equalsIgnoreCase(GenYesNoEnum.Y.getValue()));
                     // 作用类型
                     configItem.set("effectType", genConfig.getEffectType());
                     // 字典值
@@ -1020,8 +1037,9 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
             bindingJsonObject.set("subForeignKey", genBasic.getSubForeignKey());
             bindingJsonObject.set("subForeignKeyCamelCase", StrUtil.toCamelCase(genBasic.getSubForeignKey().toLowerCase()));
             bindingJsonObject.set("subForeignKeyFirstUpper", StrUtil.upperFirst(StrUtil.toCamelCase(genBasic.getSubForeignKey().toLowerCase())));
-            bindingJsonObject.set("subClassName", genBasic.getSubClassName());
-            bindingJsonObject.set("subClassNameFirstLower", StrUtil.lowerFirst(genBasic.getSubClassName()));
+            String subClassName = genBasic.getSubClassName();
+            bindingJsonObject.set("subClassName", subClassName);
+            bindingJsonObject.set("subClassNameFirstLower", StrUtil.lowerFirst(subClassName));
             bindingJsonObject.set("subFunctionName", genBasic.getSubFunctionName());
             bindingJsonObject.set("subBusName", genBasic.getSubBusName());
             // 子表主键Java类型（默认String）
@@ -1081,6 +1099,7 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
                         subConfigItem.set("whetherTable", genConfig.getWhetherTable().equalsIgnoreCase(GenYesNoEnum.Y.getValue()));
                         subConfigItem.set("whetherRetract", genConfig.getWhetherRetract().equalsIgnoreCase(GenYesNoEnum.Y.getValue()));
                         subConfigItem.set("whetherAddUpdate", genConfig.getWhetherAddUpdate().equalsIgnoreCase(GenYesNoEnum.Y.getValue()));
+                        subConfigItem.set("whetherDetail", genConfig.getWhetherDetail().equalsIgnoreCase(GenYesNoEnum.Y.getValue()));
                         subConfigItem.set("effectType", genConfig.getEffectType());
                         subConfigItem.set("dictTypeCode", genConfig.getDictTypeCode());
                         subConfigItem.set("fieldJavaType", genConfig.getFieldJavaType());

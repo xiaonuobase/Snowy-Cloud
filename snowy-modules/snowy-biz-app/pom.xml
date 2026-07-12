@@ -66,48 +66,26 @@
 
         <!-- 达梦数据库 -->
         <!--<dependency>
-            <groupId>DmJdbcDriver18</groupId>
+            <groupId>com.dameng</groupId>
             <artifactId>DmJdbcDriver18</artifactId>
-            <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/resources/lib/DmJdbcDriver18.jar</systemPath>
         </dependency>-->
 
         <!-- 人大金仓数据库 -->
         <!--<dependency>
-            <groupId>kingbase8-8.6.0</groupId>
-            <artifactId>kingbase8-8.6.0</artifactId>
-            <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/resources/lib/kingbase8-8.6.0.jar</systemPath>
+            <groupId>cn.com.kingbase</groupId>
+            <artifactId>kingbase8</artifactId>
         </dependency>-->
 
         <!-- sa-token -->
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-spring-boot3-starter</artifactId>
-            <version>${sa.token.version}</version>
         </dependency>
 
-        <!-- sa-token 整合 redis （使用jackson序列化方式） -->
+        <!-- sa-token 整合 redisson -->
         <dependency>
             <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-redis-jackson</artifactId>
-            <version>${sa.token.version}</version>
-        </dependency>
-
-        <!-- Sa-Token插件：权限缓存与业务缓存分离 -->
-        <dependency>
-            <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-alone-redis</artifactId>
-            <version>${sa.token.version}</version>
-        </dependency>
-
-        <!-- Sa-Token 插件：整合SSO -->
-        <dependency>
-            <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-sso</artifactId>
-            <version>${sa.token.version}</version>
+            <artifactId>sa-token-redisson</artifactId>
         </dependency>
 
         <!-- snowy-common -->
@@ -299,7 +277,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.boot-version}</version>
+                <version>${spring-boot.version}</version>
                 <configuration>
                     <includeSystemScope>true</includeSystemScope>
                 </configuration>

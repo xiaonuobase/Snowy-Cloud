@@ -86,6 +86,20 @@ public class SysRoleFeignProvider implements SysRoleFeign {
     }
 
     /**
+     * 代码生成权限授权
+     *
+     * @author xuyuxiang
+     * @date 2022/11/1 15:58
+     **/
+    @Override
+    @RequestMapping("/feign/sys/role/grantForGenPermission")
+    public void grantForGenPermission(@RequestParam(value = "moduleName",required = false) String moduleName,
+                                      @RequestParam(value = "busName",required = false) String busName,
+                                      @RequestParam(value = "genType",required = false) String genType) {
+        sysRoleApi.grantForGenPermission(moduleName, busName, genType);
+    }
+
+    /**
      * 获取资源授权树
      *
      * @author xuyuxiang

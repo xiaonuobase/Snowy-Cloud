@@ -13,6 +13,7 @@
 package vip.xiaonuo.dev.modular.file.service.impl;
 
 import cn.hutool.core.collection.CollStreamUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.img.ImgUtil;
@@ -22,6 +23,9 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.digest.HMac;
+import cn.hutool.crypto.digest.HmacAlgorithm;
 import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -43,6 +47,7 @@ import vip.xiaonuo.common.util.CommonResponseUtil;
 import vip.xiaonuo.dev.modular.file.entity.DevFile;
 import vip.xiaonuo.dev.modular.file.enums.DevFileEngineTypeEnum;
 import vip.xiaonuo.dev.modular.file.mapper.DevFileMapper;
+import vip.xiaonuo.dev.modular.file.param.DevFileDownloadParam;
 import vip.xiaonuo.dev.modular.file.param.DevFileIdParam;
 import vip.xiaonuo.dev.modular.file.param.DevFileListParam;
 import vip.xiaonuo.dev.modular.file.param.DevFilePageParam;
@@ -69,13 +74,28 @@ public class DevFileServiceImpl extends ServiceImpl<DevFileMapper, DevFile> impl
     @Resource
     private CommonProperties commonProperties;
 
+    /** 文件下载签名密钥 */
+    private static final String FILE_DOWNLOAD_SIGN_SECRET = "snowy_file_download_secret_key_2025";
+
     @Override
     public String uploadReturnId(String engine, MultipartFile file) {
         return this.storageFile(engine, file, true,  true);
     }
 
     @Override
+    public String uploadReturnIdWithValidation(String engine, MultipartFile file, List<String> allowedExtensions) {
+        validateFileExtension(file, allowedExtensions);
+        return this.storageFile(engine, file, true, true);
+    }
+
+    @Override
     public String uploadReturnUrl(String engine, MultipartFile file) {
+        return this.storageFile(engine, file, false, false);
+    }
+
+    @Override
+    public String uploadReturnUrlWithValidation(String engine, MultipartFile file, List<String> allowedExtensions) {
+        validateFileExtension(file, allowedExtensions);
         return this.storageFile(engine, file, false, false);
     }
 
@@ -104,25 +124,15 @@ public class DevFileServiceImpl extends ServiceImpl<DevFileMapper, DevFile> impl
     }
 
     @Override
-    public void download(DevFileIdParam devFileIdParam, HttpServletResponse response) throws IOException {
+    public void download(DevFileDownloadParam devFileDownloadParam, HttpServletResponse response) throws IOException {
+        // 验证签名
+        if (!verifyDownloadSign(devFileDownloadParam.getId(), devFileDownloadParam.getSign())) {
+            CommonResponseUtil.renderError(response, "下载链接无效，请使用正确的下载地址");
+            return;
+        }
+        DevFileIdParam devFileIdParam = new DevFileIdParam();
+        devFileIdParam.setId(devFileDownloadParam.getId());
         unifiedDownload(devFileIdParam, response, false);
-//        DevFile devFile;
-//        try {
-//            devFile = this.queryEntity(devFileIdParam.getId());
-//        } catch (Exception e) {
-//            CommonResponseUtil.renderError(response, e.getMessage());
-//            return;
-//        }
-//        if(!devFile.getEngine().equals(DevFileEngineTypeEnum.LOCAL.getValue())) {
-//            CommonResponseUtil.renderError(response, "非本地文件不支持此方式下载，id值为：" + devFile.getId());
-//            return;
-//        }
-//        File file = FileUtil.file(devFile.getStoragePath());
-//        if(!FileUtil.exist(file)) {
-//            CommonResponseUtil.renderError(response, "找不到存储的文件，id值为：" + devFile.getId());
-//            return;
-//        }
-//        CommonDownloadUtil.download(devFile.getName(), IoUtil.readBytes(FileUtil.getInputStream(file)), response);
     }
 
     @Override
@@ -150,6 +160,8 @@ public class DevFileServiceImpl extends ServiceImpl<DevFileMapper, DevFile> impl
                 return;
             }
             CommonDownloadUtil.download(devFile.getName(), IoUtil.readBytes(FileUtil.getInputStream(file)), response);
+        } else if(devFile.getEngine().equals(DevFileEngineTypeEnum.FTP.getValue())) {
+            CommonDownloadUtil.download(devFile.getName(), DevFileFtpUtil.getFileBytes(devFile.getBucket(), devFile.getFileKey()), response);
         } else {
             String storagePath = devFile.getStoragePath();
             CommonDownloadUtil.download(devFile.getName(), HttpUtil.downloadBytes(storagePath), response);
@@ -183,6 +195,8 @@ public class DevFileServiceImpl extends ServiceImpl<DevFileMapper, DevFile> impl
                 DevFileMinIoUtil.deleteFile(bucketName, fileKey);
             } else if (DevFileEngineTypeEnum.RUSTFS.getValue().equals(engine)) {
                 DevFileRustFsUtil.deleteFile(bucketName, fileKey);
+            } else if (DevFileEngineTypeEnum.FTP.getValue().equals(engine)) {
+                DevFileFtpUtil.deleteFile(bucketName, fileKey);
             } else {
                 log.error("未知存储引擎：{}", engine);
             }
@@ -243,6 +257,11 @@ public class DevFileServiceImpl extends ServiceImpl<DevFileMapper, DevFile> impl
             // 使用RUSTFS默认配置的bucketName
             bucketName = DevFileRustFsUtil.getDefaultBucketName();
             storageUrl = DevFileRustFsUtil.storageFileWithReturnUrl(bucketName, fileKey, file);
+        } else if(engine.equals(DevFileEngineTypeEnum.FTP.getValue())) {
+
+            // 使用FTP默认配置的bucketName
+            bucketName = DevFileFtpUtil.getDefaultBucketName();
+            storageUrl = DevFileFtpUtil.storageFileWithReturnUrl(bucketName, fileKey, file);
         } else {
             throw new CommonException("不支持的文件引擎：{}", engine);
         }
@@ -287,7 +306,9 @@ public class DevFileServiceImpl extends ServiceImpl<DevFileMapper, DevFile> impl
         if (BooleanUtil.isTrue(isDownloadAuth)){
             downloadUrl= apiUrl + "/dev/file/authDownload?id=" + fileId + "&token=";
         }else {
-            downloadUrl= apiUrl + "/dev/file/download?id=" + fileId;
+            // 公开文件使用带签名的 download 接口
+            String sign = generateDownloadSign(fileId);
+            downloadUrl= apiUrl + "/dev/file/download?id=" + fileId + "&sign=" + sign;
         }
         devFile.setDownloadPath(downloadUrl);
 
@@ -387,5 +408,68 @@ public class DevFileServiceImpl extends ServiceImpl<DevFileMapper, DevFile> impl
                 || ImgUtil.IMAGE_TYPE_BMP.equals(fileSuffix)
                 || ImgUtil.IMAGE_TYPE_PNG.equals(fileSuffix)
                 || ImgUtil.IMAGE_TYPE_PSD.equals(fileSuffix);
+    }
+
+    /**
+     * 生成文件下载签名
+     *
+     * @param fileId 文件ID
+     * @return 签名字符串
+     */
+    private String generateDownloadSign(String fileId) {
+        HMac hmac = SecureUtil.hmac(HmacAlgorithm.HmacSHA256, FILE_DOWNLOAD_SIGN_SECRET);
+        String sign = hmac.digestHex(fileId);
+        return cn.hutool.core.codec.Base64.encode(sign);
+    }
+
+    /**
+     * 验证文件下载签名
+     *
+     * @param fileId 文件ID
+     * @param sign 签名字符串
+     * @return 是否有效
+     */
+    public boolean verifyDownloadSign(String fileId, String sign) {
+        if (StrUtil.isEmpty(sign)) {
+            return false;
+        }
+        try {
+            String decoded = cn.hutool.core.codec.Base64.decodeStr(sign);
+            HMac hmac = SecureUtil.hmac(HmacAlgorithm.HmacSHA256, FILE_DOWNLOAD_SIGN_SECRET);
+            String expectedSign = hmac.digestHex(fileId);
+            return expectedSign.equals(decoded);
+        } catch (Exception e) {
+            log.error("验证文件下载签名异常，fileId: {}", fileId, e);
+            return false;
+        }
+    }
+
+    /**
+     * 验证文件后缀名
+     *
+     * @param file 上传的文件
+     * @param allowedExtensions 允许的后缀列表（不含点号，如：jpg, png）
+     */
+    private void validateFileExtension(MultipartFile file, List<String> allowedExtensions) {
+        if (file == null || file.isEmpty()) {
+            throw new CommonException("上传文件不能为空");
+        }
+
+        String originalFileName = file.getOriginalFilename();
+        if (StrUtil.isEmpty(originalFileName)) {
+            throw new CommonException("文件名不能为空");
+        }
+
+        // 获取文件后缀（小写）
+        String fileSuffix = FileUtil.getSuffix(originalFileName).toLowerCase();
+        if (StrUtil.isEmpty(fileSuffix)) {
+            throw new CommonException("文件必须有后缀名");
+        }
+
+        // 校验后缀是否在白名单中
+        if (CollUtil.isEmpty(allowedExtensions) || !allowedExtensions.contains(fileSuffix)) {
+            throw new CommonException("不允许上传该文件类型，仅支持：{}",
+                CollUtil.isEmpty(allowedExtensions) ? "无" : String.join("、", allowedExtensions));
+        }
     }
 }

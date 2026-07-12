@@ -52,16 +52,10 @@
             <artifactId>sa-token-spring-boot3-starter</artifactId>
         </dependency>
 
-        <!-- sa-token 整合 redis （使用jackson序列化方式） -->
+        <!-- sa-token 整合 redisson -->
         <dependency>
             <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-redis-jackson</artifactId>
-        </dependency>
-
-        <!-- Sa-Token插件：权限缓存与业务缓存分离 -->
-        <dependency>
-            <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-alone-redis</artifactId>
+            <artifactId>sa-token-redisson</artifactId>
         </dependency>
 
         <!-- Sa-Token 插件：整合SSO -->
@@ -70,10 +64,86 @@
             <artifactId>sa-token-sso</artifactId>
         </dependency>
 
+        <!-- Sa-Token 插件：整合 Forest 请求工具 -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-forest</artifactId>
+        </dependency>
+
         <!-- JustAuth 第三方登录 -->
         <dependency>
             <groupId>me.zhyd.oauth</groupId>
             <artifactId>JustAuth</artifactId>
+        </dependency>
+
+        <!-- sa-token-oauth2-->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-oauth2</artifactId>
+        </dependency>
+
+        <!-- sa-token-jwt 签发 OIDC id_token 令牌 -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-jwt</artifactId>
+        </dependency>
+
+        <!-- opensaml -->
+        <dependency>
+            <groupId>org.opensaml</groupId>
+            <artifactId>opensaml-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.opensaml</groupId>
+            <artifactId>opensaml-saml-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.opensaml</groupId>
+            <artifactId>opensaml-saml-impl</artifactId>
+        </dependency>
+
+        <!--cas-->
+        <dependency>
+            <groupId>org.apereo.cas.client</groupId>
+            <artifactId>cas-client-core</artifactId>
+        </dependency>
+
+        <!--jwt-->
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+        </dependency>
+
+        <!-- 钉钉 -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>alibaba-dingtalk-service-sdk</artifactId>
+        </dependency>
+
+        <!-- 钉钉事件订阅 -->
+        <dependency>
+            <groupId>com.dingtalk.open</groupId>
+            <artifactId>app-stream-client</artifactId>
+        </dependency>
+
+        <!-- 企业微信 -->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-cp</artifactId>
+        </dependency>
+
+        <!-- 飞书 -->
+        <dependency>
+            <groupId>com.larksuite.oapi</groupId>
+            <artifactId>oapi-sdk</artifactId>
+        </dependency>
+
+        <!-- WeLink -->
+        <dependency>
+            <groupId>com.huawei.welink.sdk</groupId>
+            <artifactId>welink-sdk-java</artifactId>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/resources/lib/welink-sdk-java-${welink-sdk.version}.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

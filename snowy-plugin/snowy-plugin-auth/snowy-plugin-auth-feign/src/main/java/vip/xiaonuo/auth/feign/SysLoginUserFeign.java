@@ -196,6 +196,28 @@ public interface SysLoginUserFeign {
     ClientLoginUser createClientUserWithEmail(@RequestParam("email") String email);
 
     /**
+     * 使用账号、密码和名称创建B端用户
+     *
+     * @author yubaoshan
+     * @date 2026/6/25
+     **/
+    @PostMapping("/feign/sys/login/user/createUserWithAccount")
+    SysLoginUser createUserWithAccount(@RequestParam("account") String account,
+                                       @RequestParam("password") String password,
+                                       @RequestParam("name") String name);
+
+    /**
+     * 密码和名称创建C端用户
+     *
+     * @author yubaoshan
+     * @date 2026/6/25
+     **/
+    @PostMapping("/feign/sys/login/user/createClientUserWithAccount")
+    ClientLoginUser createClientUserWithAccount(@RequestParam("account") String account,
+                                                @RequestParam("password") String password,
+                                                @RequestParam("name") String name);
+
+    /**
      * 执行注册
      *
      * @author xuyuxiang

@@ -82,6 +82,17 @@ public class SysRoleApiContextBean implements SysRoleApi {
     }
 
     /**
+     * 代码生成权限授权
+     *
+     * @author xuyuxiang
+     * @date 2022/11/1 15:58
+     **/
+    @Override
+    public void grantForGenPermission(String moduleName, String busName, String genType) {
+        sysRoleFeign.grantForGenPermission(moduleName, busName, genType);
+    }
+
+    /**
      * 获取资源授权树
      *
      * @author xuyuxiang

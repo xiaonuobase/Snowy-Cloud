@@ -129,6 +129,14 @@ public interface SysRoleService extends IService<SysRole> {
     void grantPermission(SysRoleGrantPermissionParam sysRoleGrantPermissionParam);
 
     /**
+     * 给角色授权权限（追加方式）
+     *
+     * @author xuyuxiang
+     * @date 2022/4/29 10:12
+     **/
+    void grantPermissionWithAppend(SysRoleGrantPermissionParam sysRoleGrantPermissionParam);
+
+    /**
      * 获取角色下的用户
      *
      * @author xuyuxiang
@@ -143,6 +151,14 @@ public interface SysRoleService extends IService<SysRole> {
      * @date 2022/4/29 10:12
      **/
     void grantUser(SysRoleGrantUserParam sysRoleGrantUserParam);
+
+    /**
+     * 刷新拥有该角色的所有在线用户的权限缓存
+     *
+     * @author xuyuxiang
+     * @date 2022/4/29 10:12
+     **/
+    void refreshRoleLoginUserCache(String roleId);
 
     /* ====角色部分所需要用到的选择器==== */
 

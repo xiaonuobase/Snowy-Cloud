@@ -27,6 +27,7 @@ import vip.xiaonuo.common.pojo.CommonResult;
 import vip.xiaonuo.dev.api.DevConfigApi;
 import vip.xiaonuo.dev.modular.file.entity.DevFile;
 import vip.xiaonuo.dev.modular.file.enums.DevFileEngineTypeEnum;
+import vip.xiaonuo.dev.modular.file.param.DevFileDownloadParam;
 import vip.xiaonuo.dev.modular.file.param.DevFileIdParam;
 import vip.xiaonuo.dev.modular.file.param.DevFileListParam;
 import vip.xiaonuo.dev.modular.file.param.DevFilePageParam;
@@ -35,6 +36,7 @@ import vip.xiaonuo.dev.modular.file.service.DevFileService;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -81,6 +83,66 @@ public class DevFileController {
     @PostMapping("/dev/file/uploadDynamicReturnUrl")
     public CommonResult<String> uploadDynamicReturnUrl(@RequestPart("file") MultipartFile file) {
         return CommonResult.data(devFileService.uploadReturnUrl(devConfigApi.getValueByKey(SNOWY_SYS_DEFAULT_FILE_ENGINE_KEY), file));
+    }
+
+    /**
+     * 动态上传图片文件返回id（仅允许图片格式）
+     *
+     * @author xuyuxiang
+     * @date 2025/6/26 14:01
+     **/
+    @Operation(summary = "动态上传图片文件返回id")
+    @CommonLog("动态上传图片文件返回id")
+    @PostMapping("/dev/file/uploadImageDynamicReturnId")
+    public CommonResult<String> uploadImageDynamicReturnId(@RequestPart("file") MultipartFile file) {
+        List<String> allowedExt = Arrays.asList("jpg", "jpeg", "png", "gif", "bmp", "webp");
+        return CommonResult.data(devFileService.uploadReturnIdWithValidation(
+                devConfigApi.getValueByKey(SNOWY_SYS_DEFAULT_FILE_ENGINE_KEY), file, allowedExt));
+    }
+
+    /**
+     * 动态上传图片文件返回url（仅允许图片格式）
+     *
+     * @author xuyuxiang
+     * @date 2025/6/26 14:01
+     **/
+    @Operation(summary = "动态上传图片文件返回url")
+    @CommonLog("动态上传图片文件返回url")
+    @PostMapping("/dev/file/uploadImageDynamicReturnUrl")
+    public CommonResult<String> uploadImageDynamicReturnUrl(@RequestPart("file") MultipartFile file) {
+        List<String> allowedExt = Arrays.asList("jpg", "jpeg", "png", "gif", "bmp", "webp");
+        return CommonResult.data(devFileService.uploadReturnUrlWithValidation(
+                devConfigApi.getValueByKey(SNOWY_SYS_DEFAULT_FILE_ENGINE_KEY), file, allowedExt));
+    }
+
+    /**
+     * 动态上传文档文件返回id（仅允许文档格式）
+     *
+     * @author xuyuxiang
+     * @date 2025/6/26 14:01
+     **/
+    @Operation(summary = "动态上传文档文件返回id")
+    @CommonLog("动态上传文档文件返回id")
+    @PostMapping("/dev/file/uploadDocumentDynamicReturnId")
+    public CommonResult<String> uploadDocumentDynamicReturnId(@RequestPart("file") MultipartFile file) {
+        List<String> allowedExt = Arrays.asList("pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt");
+        return CommonResult.data(devFileService.uploadReturnIdWithValidation(
+                devConfigApi.getValueByKey(SNOWY_SYS_DEFAULT_FILE_ENGINE_KEY), file, allowedExt));
+    }
+
+    /**
+     * 动态上传文档文件返回url（仅允许文档格式）
+     *
+     * @author xuyuxiang
+     * @date 2025/6/26 14:01
+     **/
+    @Operation(summary = "动态上传文档文件返回url")
+    @CommonLog("动态上传文档文件返回url")
+    @PostMapping("/dev/file/uploadDocumentDynamicReturnUrl")
+    public CommonResult<String> uploadDocumentDynamicReturnUrl(@RequestPart("file") MultipartFile file) {
+        List<String> allowedExt = Arrays.asList("pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt");
+        return CommonResult.data(devFileService.uploadReturnUrlWithValidation(
+                devConfigApi.getValueByKey(SNOWY_SYS_DEFAULT_FILE_ENGINE_KEY), file, allowedExt));
     }
 
     /**
@@ -188,6 +250,32 @@ public class DevFileController {
     }
 
     /**
+     * FTP文件上传，返回文件id
+     *
+     * @author lilang
+     * @date 2026/06/30
+     **/
+    @Operation(summary = "上传FTP文件返回id")
+    @CommonLog("上传FTP文件返回id")
+    @PostMapping("/dev/file/uploadFtpReturnId")
+    public CommonResult<String> uploadFtpReturnId(@RequestPart("file") MultipartFile file) {
+        return CommonResult.data(devFileService.uploadReturnId(DevFileEngineTypeEnum.FTP.getValue(), file));
+    }
+
+    /**
+     * FTP文件上传，返回文件Url
+     *
+     * @author lilang
+     * @date 2026/06/30
+     **/
+    @Operation(summary = "上传FTP文件返回url")
+    @CommonLog("上传FTP文件返回url")
+    @PostMapping("/dev/file/uploadFtpReturnUrl")
+    public CommonResult<String> uploadFtpReturnUrl(@RequestPart("file") MultipartFile file) {
+        return CommonResult.data(devFileService.uploadReturnUrl(DevFileEngineTypeEnum.FTP.getValue(), file));
+    }
+
+    /**
      * 获取文件分页列表
      *
      * @author xuyuxiang
@@ -220,8 +308,8 @@ public class DevFileController {
     @Operation(summary = "下载文件")
     @CommonLog("下载文件")
     @GetMapping(value = "/dev/file/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public void download(@Valid DevFileIdParam devFileIdParam, HttpServletResponse response) throws IOException {
-        devFileService.download(devFileIdParam, response);
+    public void download(@Valid DevFileDownloadParam devFileDownloadParam, HttpServletResponse response) throws IOException {
+        devFileService.download(devFileDownloadParam, response);
     }
 
     /**

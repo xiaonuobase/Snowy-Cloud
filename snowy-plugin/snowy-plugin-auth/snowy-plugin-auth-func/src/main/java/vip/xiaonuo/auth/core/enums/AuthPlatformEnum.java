@@ -1,0 +1,111 @@
+/*
+ * Copyright [2022] [https://www.xiaonuo.vip]
+ *
+ * Snowy采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意以下几点：
+ *
+ * 1.请不要删除和修改根目录下的LICENSE文件。
+ * 2.请不要删除和修改Snowy源码头部的版权声明。
+ * 3.本项目代码可免费商业使用，商业使用请保留源码和相关描述文件的项目出处，作者声明等。
+ * 4.分发源码时候，请注明软件出处 https://www.xiaonuo.vip
+ * 5.不可二次分发开源参与同类竞品，如有想法可联系团队xiaonuobase@qq.com商议合作。
+ * 6.若您的项目无法满足以上几点，需要更多功能代码，获取Snowy商业授权许可，请在官网购买授权，地址为 https://www.xiaonuo.vip
+ */
+package vip.xiaonuo.auth.core.enums;
+
+import lombok.Getter;
+import vip.xiaonuo.common.exception.CommonException;
+
+/**
+ * 第三方登录平台枚举
+ *
+ * @author xuyuxiang
+ * @date 2021/10/11 14:02
+ **/
+@Getter
+public enum AuthPlatformEnum {
+
+    /** OAUTH */
+    OAUTH("OAUTH", "OAUTH"),
+
+    /** OIDC */
+    OIDC("OIDC", "OIDC"),
+
+    /** JWT */
+    JWT("JWT", "JWT"),
+
+    /** CAS */
+    CAS("CAS", "CAS"),
+
+    /** SAML */
+    SAML("SAML", "SAML"),
+
+   // =======以下为OIDC协议的具体实现======= //
+
+    /** IAM */
+    IAM("IAM", "IAM"),
+
+    /** 钉钉 */
+    DINGTALK("DINGTALK", "钉钉"),
+
+    /** 企业微信 */
+    WORKWECHAT("WORKWECHAT", "企业微信"),
+
+    /** 飞书 */
+    FEISHU("FEISHU", "飞书"),
+
+    /** WeLink */
+    WELINK("WELINK", "WeLink"),
+
+    /** 云之家 */
+    YUNZHIJIA("YUNZHIJIA", "云之家"),
+
+    /** QQ */
+    QQ("QQ", "QQ"),
+
+    /** 微信 */
+    WECHAT("WECHAT", "微信"),
+
+    /** 微信小程序 */
+    WECHAT_MINI("WECHAT_MINI", "微信小程序"),
+
+    /** 微博 */
+    WEIBO("WEIBO", "微博"),
+
+    /** 抖音 */
+    DOUYIN("DOUYIN", "抖音"),
+
+    /** 支付宝 */
+    ALIPAY("ALIPAY", "支付宝");
+
+    private final String value;
+
+    private final String description;
+
+    AuthPlatformEnum(String value, String description) {
+        this.value = value;
+        this.description = description;
+    }
+
+    public static void validate(String value) {
+        boolean flag = OAUTH.getValue().equals(value) ||
+                OIDC.getValue().equals(value) ||
+                JWT.getValue().equals(value) ||
+                CAS.getValue().equals(value) ||
+                SAML.getValue().equals(value) ||
+                IAM.getValue().equals(value) ||
+                DINGTALK.getValue().equals(value) ||
+                WORKWECHAT.getValue().equals(value) ||
+                FEISHU.getValue().equals(value) ||
+                WELINK.getValue().equals(value) ||
+                YUNZHIJIA.getValue().equals(value) ||
+                QQ.getValue().equals(value) ||
+                WECHAT.getValue().equals(value) ||
+                WECHAT_MINI.getValue().equals(value) ||
+                WEIBO.getValue().equals(value) ||
+                DOUYIN.getValue().equals(value) ||
+                ALIPAY.getValue().equals(value);
+        if(!flag) {
+            throw new CommonException("不支持的认证源平台：{}", value);
+        }
+    }
+}

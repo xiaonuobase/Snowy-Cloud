@@ -69,6 +69,7 @@ import vip.xiaonuo.biz.modular.user.result.BizUserExportResult;
 import vip.xiaonuo.biz.modular.user.result.BizUserRoleResult;
 import vip.xiaonuo.biz.modular.user.service.BizUserExtService;
 import vip.xiaonuo.biz.modular.user.service.BizUserService;
+import vip.xiaonuo.auth.api.AuthApi;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.excel.CommonExcelCustomMergeStrategy;
 import vip.xiaonuo.common.exception.CommonException;
@@ -115,6 +116,9 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
 
     @Resource
     private BizPositionService bizPositionService;
+
+    @Resource
+    private AuthApi authApi;
 
     @Resource(name = "loginUserApi")
     private SaBaseLoginUserApi loginUserApi;
@@ -318,8 +322,14 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
             // 删除扩展信息
             bizUserExtService.remove(new LambdaQueryWrapper<BizUserExt>().in(BizUserExt::getUserId, bizUserIdList));
 
+            // 删除三方用户信息
+            authApi.removeThirdUserByUserIdList(bizUserIdList);
+
             // 发布删除事件
             CommonDataChangeEventCenter.doDeleteWithDataIdList(BizDataTypeEnum.USER.getValue(), bizUserIdList);
+
+            // 强制下线
+            bizUserIdList.forEach(StpUtil::kickout);
         }
     }
 
@@ -345,6 +355,8 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
         }
         this.update(new LambdaUpdateWrapper<BizUser>().eq(BizUser::getId,
                 bizUserIdParam.getId()).set(BizUser::getUserStatus, BizUserStatusEnum.DISABLED.getValue()));
+        // 强制下线
+        StpUtil.kickout(bizUserIdParam.getId());
     }
 
     @Transactional(rollbackFor = Exception.class)

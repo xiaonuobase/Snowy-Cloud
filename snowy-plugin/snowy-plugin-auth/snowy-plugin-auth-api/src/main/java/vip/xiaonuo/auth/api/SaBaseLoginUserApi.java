@@ -171,6 +171,22 @@ public interface SaBaseLoginUserApi {
     SaBaseClientLoginUser createClientUserWithEmail(String email);
 
     /**
+     * 使用账号、密码和名称创建B端用户
+     *
+     * @author yubaoshan
+     * @date 2026/6/25
+     **/
+    SaBaseLoginUser createUserWithAccount(String account, String password, String name);
+
+    /**
+     * 使用账号、密码和名称创建C端用户
+     *
+     * @author yubaoshan
+     * @date 2026/6/26
+     **/
+    SaBaseClientLoginUser createClientUserWithAccount(String account, String password, String name);
+
+    /**
      * 执行注册
      *
      * @author xuyuxiang

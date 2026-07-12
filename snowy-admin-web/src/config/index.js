@@ -66,6 +66,9 @@ const DEFAULT_CONFIG = {
 	// 圆角风格
 	SNOWY_ROUNDED_CORNER_STYLE_OPEN: false,
 
+	// 灰色模式
+	SNOWY_GRAY_MODE_OPEN: false,
+
 	// 语言
 	LANG: 'zh-cn',
 
@@ -103,7 +106,7 @@ const DEFAULT_CONFIG = {
 		// 是否开启B端验证码
 		SNOWY_SYS_DEFAULT_CAPTCHA_OPEN_FLAG_FOR_B: 'false',
 		// 默认重置密码
-		SNOWY_SYS_DEFAULT_PASSWORD: '123456'
+		SNOWY_SYS_DEFAULT_PASSWORD: 'Snowy@2026!'
 	}
 }
 

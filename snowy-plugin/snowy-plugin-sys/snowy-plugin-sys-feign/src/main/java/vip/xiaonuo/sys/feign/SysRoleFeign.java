@@ -63,6 +63,17 @@ public interface SysRoleFeign {
     void grantForGenMenuAndButton(@RequestParam(value = "menuId",required = false) String menuId);
 
     /**
+     * 代码生成权限授权
+     *
+     * @author dongxiayu
+     * @date 2022/11/1 15:58
+     **/
+    @RequestMapping("/feign/sys/role/grantForGenPermission")
+    void grantForGenPermission(@RequestParam(value = "moduleName",required = false) String moduleName,
+                               @RequestParam(value = "busName",required = false) String busName,
+                               @RequestParam(value = "genType",required = false) String genType);
+
+    /**
      * 获取资源授权树
      *
      * @author xuyuxiang

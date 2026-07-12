@@ -3,8 +3,11 @@ package vip.xiaonuo.auth.feign;
 import cn.hutool.json.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.common.consts.FeignConstant;
+
+import java.util.List;
 
 /**
  * AuthFeign
@@ -165,4 +168,13 @@ public interface AuthFeign {
     @PostMapping("/feign/auth/doLoginByEmailForC")
     String doLoginByEmailForC(@RequestParam("email") String email,
                               @RequestParam("device") String device);
+
+    /**
+     * 根据用户id删除三方用户
+     *
+     * @author yubaoshan
+     * @date 2024/7/18 17:35
+     */
+    @PostMapping("/feign/auth/removeThirdUserByUserIdList")
+    void removeThirdUserByUserIdList(@RequestBody List<String> userIdLis);
 }

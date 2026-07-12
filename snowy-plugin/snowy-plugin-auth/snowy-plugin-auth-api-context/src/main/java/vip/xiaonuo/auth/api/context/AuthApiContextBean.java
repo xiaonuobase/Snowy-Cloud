@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import vip.xiaonuo.auth.api.AuthApi;
 import vip.xiaonuo.auth.feign.AuthFeign;
 
+import java.util.List;
+
 /**
  *
  * AuthApi上下文Bean
@@ -211,5 +213,16 @@ public class AuthApiContextBean implements AuthApi {
     @Override
     public String doLoginByEmailForC(String email, String device) {
         return this.authFeign.doLoginByEmailForC(email, device);
+    }
+
+    /**
+     * 根据用户id删除三方用户
+     *
+     * @author xuyuxiang
+     * @date 2022/7/9 14:58
+     */
+    @Override
+    public void removeThirdUserByUserIdList(List<String> userIdList) {
+        this.authFeign.removeThirdUserByUserIdList(userIdList);
     }
 }

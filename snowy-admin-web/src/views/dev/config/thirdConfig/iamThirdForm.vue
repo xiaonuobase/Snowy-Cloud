@@ -65,11 +65,14 @@
 					</a-form-item>
 				</a-col>
 				<a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-					<a-form-item
-						label="重定向URL："
-						name="SNOWY_THIRD_IAM_REDIRECT_URL"
-						v-if="formData.SNOWY_THIRD_IAM_ALLOW_LOGIN_FLAG"
-					>
+					<a-form-item name="SNOWY_THIRD_IAM_REDIRECT_URL" v-if="formData.SNOWY_THIRD_IAM_ALLOW_LOGIN_FLAG">
+						<template #label>
+							<a-tooltip>
+								<template #title> 请填写{前端地址}/callback/IAM，如http://localhost:81/callback/IAM </template>
+								<question-circle-outlined />
+							</a-tooltip>
+							重定向地址：
+						</template>
 						<a-input v-model:value="formData.SNOWY_THIRD_IAM_REDIRECT_URL" placeholder="请输入重定向URL" />
 					</a-form-item>
 				</a-col>
@@ -86,7 +89,7 @@
 	</a-spin>
 </template>
 
-<script setup name="giteeThirdForm">
+<script setup name="iamThirdForm">
 	import { cloneDeep } from 'lodash-es'
 	import { required } from '@/utils/formRules'
 	import { message } from 'ant-design-vue'

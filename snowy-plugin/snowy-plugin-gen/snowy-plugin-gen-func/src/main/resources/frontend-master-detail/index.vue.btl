@@ -97,7 +97,7 @@
 			:row-selection="options.rowSelection"
 			:scroll="{ x: 'max-content' }"
 			:expandedRowKeys="expandedRowKeys"
-			@expand="onExpand"
+			@onExpand="onExpand"
 		>
 			<template #operator>
 				<a-space>
@@ -118,6 +118,7 @@
 						buttonName="批量删除"
 						icon="DeleteOutlined"
 						buttonDanger
+						:id-key="'${dbTableKeyCamelCase}'"
 						:selectedRowKeys="selectedRowKeys"
 						@batchCallBack="deleteBatch${className}"
 					/>
@@ -128,7 +129,7 @@
 				<% if(!configList[i].needTableId && configList[i].whetherTable) { %>
 				<% if (configList[i].effectType == 'select' || configList[i].effectType == 'radio') { %>
 				<template v-if="column.dataIndex === '${configList[i].fieldNameCamelCase}'">
-					{{ $TOOL.dictTypeData('${configList[i].dictTypeCode}', record.${configList[i].fieldNameCamelCase}) }}
+					<a-tag :color="$TOOL.dictTypeColor('${configList[i].dictTypeCode}', record.${configList[i].fieldNameCamelCase})">{{ $TOOL.dictTypeData('${configList[i].dictTypeCode}', record.${configList[i].fieldNameCamelCase}) }}</a-tag>
 				</template>
 				<% } else if (configList[i].effectType == 'checkbox') { %>
 				<template v-if="column.dataIndex === '${configList[i].fieldNameCamelCase}'">
@@ -157,6 +158,8 @@
 				<% } %>
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
+						<a @click="detailRef.onOpen(record)" v-if="hasPerm('${classNameFirstLower}Detail')">详情</a>
+						<a-divider type="vertical" v-if="hasPerm(['${classNameFirstLower}Detail', '${classNameFirstLower}Edit'], 'and')" />
 						<a @click="formRef.onOpen(record)" v-if="hasPerm('${classNameFirstLower}Edit')">编辑</a>
 						<a-divider type="vertical" v-if="hasPerm(['${classNameFirstLower}Edit', '${classNameFirstLower}Delete'], 'and')" />
 						<a-popconfirm title="确定要删除吗？" @confirm="delete${className}(record)">
@@ -182,6 +185,16 @@
 								<template #icon><export-outlined /></template>
 								导出
 							</a-button>
+							<xn-batch-button
+								v-if="hasPerm('${classNameFirstLower}SubDelete')"
+								buttonName="批量删除"
+								icon="DeleteOutlined"
+								buttonDanger
+								size="small"
+								:id-key="'${subDbTableKeyCamelCase}'"
+								:selectedRowKeys="subSelectedRowKeysMap[record.${dbTableKeyCamelCase}] || []"
+								@batchCallBack="(params) => deleteSubBatch${subClassName}(params, record.${dbTableKeyCamelCase})"
+							/>
 						</a-space>
 					</div>
 					<a-table
@@ -189,6 +202,7 @@
 						:data-source="subDataMap[record.${dbTableKeyCamelCase}] || []"
 						:loading="subLoadingMap[record.${dbTableKeyCamelCase}]"
 						:row-key="(subRecord) => subRecord.${subDbTableKeyCamelCase}"
+						:row-selection="{ selectedRowKeys: subSelectedRowKeysMap[record.${dbTableKeyCamelCase}] || [], onChange: (keys) => onSubSelectChange(keys, record.${dbTableKeyCamelCase}) }"
 						:pagination="false"
 						size="small"
 						bordered
@@ -198,7 +212,7 @@
 							<% if(!subConfigList[i].needTableId && subConfigList[i].whetherTable) { %>
 							<% if (subConfigList[i].effectType == 'select' || subConfigList[i].effectType == 'radio') { %>
 							<template v-if="column.dataIndex === '${subConfigList[i].fieldNameCamelCase}'">
-								{{ $TOOL.dictTypeData('${subConfigList[i].dictTypeCode}', subRecord.${subConfigList[i].fieldNameCamelCase}) }}
+								<a-tag :color="$TOOL.dictTypeColor('${subConfigList[i].dictTypeCode}', subRecord.${subConfigList[i].fieldNameCamelCase})">{{ $TOOL.dictTypeData('${subConfigList[i].dictTypeCode}', subRecord.${subConfigList[i].fieldNameCamelCase}) }}</a-tag>
 							</template>
 							<% } else if (subConfigList[i].effectType == 'checkbox') { %>
 							<template v-if="column.dataIndex === '${subConfigList[i].fieldNameCamelCase}'">
@@ -223,6 +237,8 @@
 							<% } %>
 							<template v-if="column.dataIndex === 'action'">
 								<a-space>
+									<a @click="subDetailRef.onOpen(subRecord)" v-if="hasPerm('${classNameFirstLower}SubDetail')">详情</a>
+									<a-divider type="vertical" v-if="hasPerm(['${classNameFirstLower}SubDetail', '${classNameFirstLower}SubEdit'], 'and')" />
 									<a @click="subFormRef.onOpen(subRecord, record.${dbTableKeyCamelCase})" v-if="hasPerm('${classNameFirstLower}SubEdit')">编辑</a>
 									<a-divider type="vertical" v-if="hasPerm(['${classNameFirstLower}SubEdit', '${classNameFirstLower}SubDelete'], 'and')" />
 									<a-popconfirm title="确定要删除吗？" @confirm="deleteSub${subClassName}(subRecord, record.${dbTableKeyCamelCase})">
@@ -237,7 +253,9 @@
 		</s-table>
 	</xn-panel>
 	<Form ref="formRef" @successful="tableRef.refresh()" />
+	<Detail ref="detailRef" />
 	<SubForm ref="subFormRef" @successful="onSubFormSuccess" />
+	<SubDetail ref="subDetailRef" />
 	<ImportModel ref="importModelRef" />
 	<SubImportModel ref="subImportModelRef" @successful="onSubFormSuccess" />
 </template>
@@ -260,7 +278,9 @@
 	<% } %>
 	import { cloneDeep } from 'lodash-es'
 	import Form from './form.vue'
+	import Detail from './detail.vue'
 	import SubForm from './subForm.vue'
+	import SubDetail from './subDetail.vue'
 	import ImportModel from './importModel.vue'
 	import SubImportModel from './subImportModel.vue'
 	import downloadUtil from '@/utils/downloadUtil'
@@ -274,7 +294,9 @@
 	<% } %>
 	const tableRef = ref()
 	const formRef = ref()
+	const detailRef = ref()
 	const subFormRef = ref()
+	const subDetailRef = ref()
 	const importModelRef = ref()
 	const subImportModelRef = ref()
 	<% if(hasUserSelector || hasOrgSelector || hasPositionSelector || hasGroupSelector) { %>
@@ -301,7 +323,7 @@
 	<% } %>
 	<% } %>
 	]
-	if (hasPerm(['${classNameFirstLower}Edit', '${classNameFirstLower}Delete'])) {
+	if (hasPerm(['${classNameFirstLower}Edit', '${classNameFirstLower}Delete', '${classNameFirstLower}Detail'])) {
 		columns.push({
 			title: '操作',
 			dataIndex: 'action',
@@ -323,12 +345,11 @@
 	<% } %>
 	<% } %>
 	]
-	if (hasPerm(['${classNameFirstLower}SubEdit', '${classNameFirstLower}SubDelete'])) {
+	if (hasPerm(['${classNameFirstLower}SubEdit', '${classNameFirstLower}SubDelete', '${classNameFirstLower}SubDetail'])) {
 		subColumns.push({
 			title: '操作',
 			dataIndex: 'action',
-			align: 'center',
-			width: 150
+			align: 'center'
 		})
 	}
 	const selectedRowKeys = ref([])
@@ -508,7 +529,7 @@
 		if (selectedRowKeys.value.length > 0) {
 			const params = selectedRowKeys.value.map((m) => {
 				return {
-					id: m
+					${dbTableKeyCamelCase}: m
 				}
 			})
 			${classNameFirstLower}Api.${classNameFirstLower}Export(params).then((res) => {
@@ -523,6 +544,7 @@
 	// 子表数据管理
 	const subDataMap = ref({})
 	const subLoadingMap = ref({})
+	const subSelectedRowKeysMap = ref({})
 	const expandedRowKeys = ref([])
 	// 展开行时加载子表数据
 	const onExpand = (expanded, record) => {
@@ -532,6 +554,10 @@
 		} else {
 			expandedRowKeys.value = expandedRowKeys.value.filter(key => key !== record.${dbTableKeyCamelCase})
 		}
+	}
+	// 子表选择项变更
+	const onSubSelectChange = (keys, masterKey) => {
+		subSelectedRowKeysMap.value[masterKey] = keys
 	}
 	// 加载子表数据
 	const loadSubData = (masterKey) => {
@@ -553,6 +579,13 @@
 			}
 		]
 		${classNameFirstLower}Api.${subClassNameFirstLower}Delete(params).then(() => {
+			loadSubData(masterKey)
+		})
+	}
+	// 批量删除子表记录
+	const deleteSubBatch${subClassName} = (params, masterKey) => {
+		${classNameFirstLower}Api.${subClassNameFirstLower}Delete(params).then(() => {
+			subSelectedRowKeysMap.value[masterKey] = []
 			loadSubData(masterKey)
 		})
 	}
