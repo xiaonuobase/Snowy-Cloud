@@ -12,12 +12,15 @@
  */
 package vip.xiaonuo.dev.feign;
 
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.common.consts.FeignConstant;
+
+import java.util.List;
 
 /**
  * 文件API接口 Feign
@@ -152,4 +155,22 @@ public interface DevFileFeign {
      **/
     @PostMapping("/feign/dev/file/deleteAbsoluteById")
     void deleteAbsoluteById(@RequestParam(value = "id",required = false) String id);
+
+    /**
+     * 根据文件id物理删除文件
+     *
+     * @author xuyuxiang
+     * @date 2022/8/4 10:36
+     **/
+    @PostMapping("/feign/dev/file/getFileListByIds")
+    JSONArray getFileListByIds(@RequestParam(value = "ids") List<String> ids);
+
+    /**
+     * 根据配置的存储类型，返回不同的URL
+     *
+     * @author yubaoshan
+     * @date 2025/8/6 21:18
+     **/
+    @PostMapping("/feign/dev/file/storageFileWithReturnUrlOss")
+    String storageFileWithReturnUrlOss(@RequestParam(value = "file") MultipartFile file);
 }
