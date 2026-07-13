@@ -21,7 +21,6 @@
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-common</artifactId>
-            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.dromara</groupId>
@@ -50,7 +49,6 @@
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-auth-api</artifactId>
-            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>spring-boot-starter-web</artifactId>

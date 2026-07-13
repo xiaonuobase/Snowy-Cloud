@@ -351,6 +351,13 @@
                 <version>${snowy.version}</version>
             </dependency>
 
+            <!-- snowy-plugin-mocker-token-api -->
+            <dependency>
+                <groupId>vip.xiaonuo</groupId>
+                <artifactId>snowy-plugin-mocker-token-api</artifactId>
+                <version>${snowy.version}</version>
+            </dependency>
+
             <!-- snowy-plugin-mocker-token-func -->
             <dependency>
                 <groupId>vip.xiaonuo</groupId>

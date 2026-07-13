@@ -76,7 +76,6 @@
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-common</artifactId>
-            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.github.xiaoymin</groupId>
@@ -106,28 +105,24 @@
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-auth-func</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- C端功能插件 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-client-func</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- 开发工具插件 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-dev-func</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- snowy-plugin-dev-feign，向外暴露feign接口 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-dev-feign</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- snowy-plugin-dev-feign-provider，向外暴露feign接口实现 -->
@@ -140,14 +135,12 @@
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-gen-func</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- 移动端管理插件 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-mobile-func</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- snowy-plugin-mobile-feign，向外暴露feign接口 -->
@@ -166,14 +159,12 @@
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-sys-func</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- snowy-plugin-sys-feign，向外暴露feign接口 -->
         <dependency>
             <groupId>vip.xiaonuo</groupId>
             <artifactId>snowy-plugin-sys-feign</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- snowy-plugin-sys-feign-provider，向外暴露feign接口实现 -->

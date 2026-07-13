@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -16,11 +16,10 @@
   <description>模拟器插件-token-func实现</description>
 
   <dependencies>
-
-    <!-- 每个插件接口都要引入common -->
+    <!-- 每个插件都要引入自己的对外接口 -->
     <dependency>
       <groupId>vip.xiaonuo</groupId>
-      <artifactId>snowy-common</artifactId>
+      <artifactId>snowy-plugin-mocker-token-api</artifactId>
     </dependency>
 
     <!-- openfeign -->

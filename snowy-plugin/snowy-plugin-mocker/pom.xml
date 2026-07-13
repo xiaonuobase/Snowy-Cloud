@@ -17,7 +17,10 @@
 
   <modules>
 
-    <!-- token-mocker-func -->
+    <!-- 模拟器插件api接口 -->
+    <module>snowy-plugin-mocker-token-api</module>
+
+    <!-- 模拟器插件func实现 -->
     <module>snowy-plugin-mocker-token-func</module>
 
   </modules>
