@@ -217,7 +217,7 @@ sa-token:
 
 # sa-token alone-redis configuration
   alone-redis:
-    database: 1
+    database: ${spring.data.redis.database}
     host: ${spring.data.redis.host}
     port: ${spring.data.redis.port}
     password: ${spring.data.redis.password}
