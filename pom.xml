@@ -54,7 +54,7 @@
         <javax.mail.version>1.5.4</javax.mail.version>
         <jettison.version>1.5.4</jettison.version>
         <json-flattener.version>0.16.4</json-flattener.version>
-        <junit.version>5.10.1</junit.version>
+        <junit-jupiter-api.version>5.10.1</junit-jupiter-api.version>
         <justauth.version>1.16.7</justauth.version>
         <kingbase.connector.java.version>8.6.0</kingbase.connector.java.version>
         <knife4j.version>4.5.0</knife4j.version>
@@ -868,7 +868,7 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
-                <version>${junit.version}</version>
+                <version>${junit-jupiter-api.version}</version>
                 <scope>test</scope>
             </dependency>
 
