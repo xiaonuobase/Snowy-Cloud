@@ -68,7 +68,7 @@ public interface DevFileFeign {
      * @author xuyuxiang
      * @date 2022/6/22 17:44
      **/
-    @PostMapping("/feign/dev/file/storageFileWithReturnUrlLocal")
+    @PostMapping("/feign/dev/file/storageFileWithReturnIdLocal")
     String storageFileWithReturnIdLocal(@RequestParam(value = "file",required = false) MultipartFile file);
 
     /* =========阿里云文件========= */
