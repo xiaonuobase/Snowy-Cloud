@@ -12,7 +12,7 @@ spring:
         url: http://localhost:9001
         instance:
           # 默认使用的是主机名注册，改为使用ip注册
-          prefer-ip: true
+          service-host-type: ip
   cloud:
     loadbalancer:
       ribbon:
@@ -95,7 +95,7 @@ mybatis:
 ### xxl-job, access token
 xxl:
   job:
-    accessToken:
+    accessToken: 123456
     ### xxl-job, i18n (default is zh_CN, and you can choose "zh_CN", "zh_TC" and "en")
     i18n: zh_CN
     ## xxl-job, triggerpool max size

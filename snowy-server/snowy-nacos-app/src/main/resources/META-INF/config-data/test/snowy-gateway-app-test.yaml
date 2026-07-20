@@ -62,14 +62,13 @@ spring:
       password:
       timeout: 10s
 
-
   boot:
     admin:
       client:
         url: http://localhost:9001
         instance:
           # 默认使用的是主机名注册，改为使用ip注册
-          prefer-ip: true
+          service-host-type: ip
   cloud:
     loadbalancer:
       ribbon:

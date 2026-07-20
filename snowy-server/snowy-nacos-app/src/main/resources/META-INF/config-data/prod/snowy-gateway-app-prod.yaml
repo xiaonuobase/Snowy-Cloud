@@ -62,14 +62,13 @@ spring:
       password:
       timeout: 10s
 
-
   boot:
     admin:
       client:
         url: http://localhost:9001
         instance:
           # 默认使用的是主机名注册，改为使用ip注册
-          prefer-ip: true
+          service-host-type: ip
   cloud:
     loadbalancer:
       ribbon:
@@ -172,6 +171,14 @@ sa-token:
     port: ${spring.data.redis.port}
     password: ${spring.data.redis.password}
     timeout: ${spring.data.redis.timeout}
+
+  # sso configuration
+  sso-client:
+    client:
+    auth-url:
+    signout-url:
+    push-url:
+    secret-key:
 
 # knife4j 文档聚合
 knife4j:

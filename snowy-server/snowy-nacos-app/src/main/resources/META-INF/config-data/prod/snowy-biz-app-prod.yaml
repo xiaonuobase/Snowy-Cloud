@@ -39,7 +39,7 @@ spring:
         url: http://localhost:9001
         instance:
           # 默认使用的是主机名注册，改为使用ip注册
-          prefer-ip: true
+          service-host-type: ip
 
   #########################################
   # cloud configuration
@@ -122,9 +122,9 @@ spring:
       # druid global configuration
       public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMWiTVtdXFVrgFHDDKELZM0SywkWY3KjugN90eY5Sogon1j8Y0ClPF7nx3FuE7pAeBKiv7ChIS0vvx/59WUpKmUCAwEAAQ==
       druid:
-        initial-size: 5
-        max-active: 20
-        min-idle: 5
+        initial-size: 10
+        max-active: 80
+        min-idle: 10
         max-wait: 60000
         pool-prepared-statements: true
         max-pool-prepared-statement-per-connection-size: 20
@@ -221,6 +221,14 @@ sa-token:
     port: ${spring.data.redis.port}
     password: ${spring.data.redis.password}
     timeout: ${spring.data.redis.timeout}
+
+  # sso configuration
+  sso-client:
+    client:
+    auth-url:
+    signout-url:
+    push-url:
+    secret-key:
 
 #########################################
 # knife4j configuration
