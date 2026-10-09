@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.sys.modular.user.controller;
 
+import cn.dev33.satoken.annotation.SaCheckSafe;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.json.JSONObject;
@@ -49,6 +50,62 @@ public class SysUserCenterController {
 
     @Resource
     private SysUserService sysUserService;
+
+    /**
+     * 锁定屏幕
+     *
+     * @author xuyuxiang
+     * @date 2026/8/6 10:20
+     **/
+    @Operation(summary = "锁定屏幕")
+    @CommonLog("锁定屏幕")
+    @PostMapping("/sys/userCenter/lock")
+    public CommonResult<String> lock() {
+        sysUserService.lock();
+        return CommonResult.ok("锁定成功");
+    }
+
+    /**
+     * 解锁屏幕
+     *
+     * @author xuyuxiang
+     * @date 2022/4/22 15:53
+     **/
+    @Operation(summary = "解锁屏幕")
+    @CommonLog("解锁屏幕")
+    @PostMapping("/sys/userCenter/unlock")
+    public CommonResult<String> unlock(@RequestBody @Valid SysUserUnlockParam sysUserUnlockParam) {
+        sysUserService.unlock(sysUserUnlockParam);
+        return CommonResult.ok("解锁成功");
+    }
+
+    /**
+     * 修改自动锁屏时长
+     *
+     * @author xuyuxiang
+     * @date 2026/8/6 10:20
+     **/
+    @Operation(summary = "修改自动锁屏时长")
+    @CommonLog("修改自动锁屏时长")
+    @PostMapping("/sys/userCenter/updateAutoLockTime")
+    public CommonResult<String> updateAutoLockTime(@RequestBody @Valid SysUserUpdateAutoLockTimeParam sysUserUpdateAutoLockTimeParam) {
+        sysUserService.updateAutoLockTime(sysUserUpdateAutoLockTimeParam);
+        return CommonResult.ok("设置成功");
+    }
+
+    /**
+     * 开启二级认证
+     *
+     * @author xuyuxiang
+     * @date 2022/4/22 15:53
+     **/
+    @Operation(summary = "开启二级认证")
+    @CommonLog("开启二级认证")
+    @PostMapping("/sys/userCenter/openSafe")
+    public CommonResult<String> openSafe(@RequestBody @Valid SysUserOpenSafeParam sysUserOpenSafeParam) {
+        sysUserService.openSafe(sysUserOpenSafeParam);
+        return CommonResult.ok("二级认证成功");
+    }
 
     /**
      * 获取图片验证码
@@ -264,6 +321,7 @@ public class SysUserCenterController {
      **/
     @Operation(summary = "修改用户头像")
     @CommonLog("修改用户头像")
+    @SaCheckSafe
     @PostMapping("/sys/userCenter/updateAvatar")
     public CommonResult<String> updateAvatar(@RequestPart("file") MultipartFile file) {
         return CommonResult.data(sysUserService.updateAvatar(file));

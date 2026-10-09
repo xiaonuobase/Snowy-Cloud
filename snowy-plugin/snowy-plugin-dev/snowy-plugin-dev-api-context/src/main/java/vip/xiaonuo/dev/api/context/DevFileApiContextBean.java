@@ -76,12 +76,12 @@ public class DevFileApiContextBean implements DevFileApi {
 
     @Override
     public String storageFileWithReturnUrlFtp(MultipartFile file) {
-        return "";
+        return this.devFileFeign.storageFileWithReturnUrlFtp(file);
     }
 
     @Override
     public String storageFileWithReturnIdFtp(MultipartFile file) {
-        return "";
+        return this.devFileFeign.storageFileWithReturnIdFtp(file);
     }
 
     @Override
@@ -102,5 +102,10 @@ public class DevFileApiContextBean implements DevFileApi {
     @Override
     public String storageFileWithReturnUrlOss(MultipartFile file) {
         return this.devFileFeign.storageFileWithReturnUrlOss(file);
+    }
+
+    @Override
+    public byte[] getFileBytes(String engine, String bucket, String fileKey) {
+        return this.devFileFeign.getFileBytes(engine, bucket, fileKey);
     }
 }

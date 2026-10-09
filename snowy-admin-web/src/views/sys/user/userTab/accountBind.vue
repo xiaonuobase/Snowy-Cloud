@@ -14,10 +14,20 @@
 						<mail-outlined v-if="item.type === 'email'" class="bind-icon" :style="{ color: '#fcab43' }" />
 						<mobile-outlined v-if="item.type === 'phone'" class="bind-icon" :style="{ color: '#43a0fc' }" />
 						<usb-outlined v-if="item.type === 'otp'" class="bind-icon" :style="{ color: '#1AAD19' }" />
+						<safety-certificate-outlined v-if="item.type === 'lock'" class="bind-icon" :style="{ color: '#ff4d4f' }" />
 					</template>
 				</a-list-item-meta>
 				<template #actions>
-					<a @click="bindCommon(item)">{{ item.value ? (item.type === 'otp' ? '解绑' : '修改') : '去绑定' }}</a>
+					<a-input-number
+						v-if="item.type === 'lock'"
+						v-model:value="autoLockTime"
+						:min="0"
+						:max="AUTO_LOCK_TIME_MAX"
+						:precision="0"
+						style="width: 120px"
+						@change="handleLockTimeChange"
+					/>
+					<a v-else @click="bindCommon(item)">{{ item.value ? (item.type === 'otp' ? '解绑' : '修改') : '去绑定' }}</a>
 				</template>
 			</a-list-item>
 		</template>
@@ -40,6 +50,7 @@
 	import MobileOutlined from '@ant-design/icons-vue/MobileOutlined'
 	import VerifiedOutlined from '@ant-design/icons-vue/VerifiedOutlined'
 	import UsbOutlined from '@ant-design/icons-vue/UsbOutlined'
+	import SafetyCertificateOutlined from '@ant-design/icons-vue/SafetyCertificateOutlined'
 	import { globalStore } from '@/store'
 	import userCenterApi from '@/api/sys/userCenterApi'
 
@@ -48,6 +59,40 @@
 	const bindEmailRef = ref()
 	const bindOtpRef = ref()
 	const store = globalStore()
+	// 自动锁屏时长上限（分钟），与后端 SysUserServiceImpl 的校验保持一致
+	const AUTO_LOCK_TIME_MAX = 720
+	// 输入防抖时长（毫秒），避免连续输入或连点步进按钮时频繁提交
+	const SAVE_DEBOUNCE_INTERVAL = 500
+	const autoLockTime = ref(store.autoLockTime)
+	let saveTimer = null
+
+	// 用户信息刷新后同步输入框，保证展示的始终是服务端的值
+	watch(
+		() => store.autoLockTime,
+		(value) => {
+			autoLockTime.value = value
+		}
+	)
+
+	const handleLockTimeChange = (value) => {
+		if (saveTimer) {
+			clearTimeout(saveTimer)
+		}
+		saveTimer = setTimeout(() => {
+			const lockTime = Number(value) || 0
+			// 接口名含 update，request.js 会统一弹成功提示，此处不再重复提示
+			userCenterApi.userUpdateAutoLockTime({ autoLockTime: lockTime }).then(() => {
+				store.setAutoLockTime(lockTime)
+			})
+		}, SAVE_DEBOUNCE_INTERVAL)
+	}
+
+	onUnmounted(() => {
+		if (saveTimer) {
+			clearTimeout(saveTimer)
+		}
+	})
+
 	const userInfo = computed(() => {
 		if (store.userInfo) {
 			return store.userInfo
@@ -76,7 +121,8 @@
 			type: 'phone',
 			bindStatus: userInfo && userInfo.value.phone
 		},
-		{ title: '动态口令', description: '未绑定动态口令', value: '', type: 'otp', bindStatus: 0 }
+		{ title: '动态口令', description: '未绑定动态口令', value: '', type: 'otp', bindStatus: 0 },
+		{ title: '自动锁屏', description: '无操作自动锁屏时间（分钟），0为不开启', value: '', type: 'lock', bindStatus: 1 }
 	])
 	const bindCommon = (item) => {
 		let key = item.type

@@ -1,5 +1,9 @@
 <template>
 	<div class="user-bar">
+		<!-- 锁屏 -->
+		<div v-if="!isMobile" class="panel-item hidden-sm-and-down" title="锁屏" @click="lockScreen">
+			<lock-outlined />
+		</div>
 		<!-- 搜索面板 -->
 		<panel-search v-if="!isMobile" />
 		<div v-if="!isMobile" class="screen panel-item hidden-sm-and-down" @click="fullscreen">
@@ -67,6 +71,7 @@
 	import DevUserMessage from './message.vue'
 	import PanelSearch from './panel-search/index.vue'
 	import { globalStore, viewTagsStore, keepAliveStore } from '@/store'
+	import { doLockScreen } from '@/hooks/useAutoLock'
 	import { useI18n } from 'vue-i18n'
 	const { locale } = useI18n()
 
@@ -123,10 +128,8 @@
 						.logout(param)
 						.then(() => {
 							// 清理掉个人的一些信息
-							tool.data.remove('TOKEN')
-							tool.data.remove('USER_INFO')
-							tool.data.remove('MENU')
-							tool.data.remove('PERMISSIONS')
+							tool.clearLoginCache()
+							store.setIsLocked(false)
 							// 清理标签与缓存，避免同一标签页内换号后残留
 							viewTagsStore().clearViewTags()
 							keepAliveStore().clearKeepLive()
@@ -163,6 +166,10 @@
 		if (screenFull.isEnabled) {
 			screenFull.toggle(element)
 		}
+	}
+	// 锁屏，本地立即遮蔽的同时通知服务端锁定会话
+	const lockScreen = () => {
+		doLockScreen()
 	}
 </script>
 

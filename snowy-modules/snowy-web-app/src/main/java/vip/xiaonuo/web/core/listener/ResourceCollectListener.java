@@ -95,23 +95,9 @@ public class ResourceCollectListener implements CommandLineRunner {
                             }
                         }));
 
-        //2.汇总添加到缓存
-        Object permissionResourceObject = commonCacheOperator.get(CacheConstant.PERMISSION_RESOURCE_CACHE_KEY);
-        List<String> permissionResource = null;
-        if (Objects.isNull(permissionResourceObject)) {
-            permissionResource = CollUtil.newArrayList();
-        } else {
-            permissionResource = Convert.toList(String.class, permissionResourceObject);
-        }
+        //2.直接覆盖缓存（启动扫描是全量清单，不应与历史合并）
         if (CollUtil.isNotEmpty(permissionResult)) {
-            for (String permission : permissionResult) {
-                if (!permissionResource.contains(permission)) {
-                    permissionResource.add(permission);
-                }
-            }
-
-            // 刷新缓存
-            commonCacheOperator.put(CacheConstant.PERMISSION_RESOURCE_CACHE_KEY, permissionResource);
+            commonCacheOperator.put(CacheConstant.PERMISSION_RESOURCE_CACHE_KEY, permissionResult);
         }
 
         // 3.汇总添加Permission Method Map数据到缓存
@@ -126,22 +112,8 @@ public class ResourceCollectListener implements CommandLineRunner {
      * @param permissionMethodMap map of key {@link String},value {@link String}
      */
     private void refreshPermissionMethodMapDataToCache(Map<String, String> permissionMethodMap) {
-        Object permissionMethodMapObject = commonCacheOperator.get(CacheConstant.PERMISSION_RESOURCE_METHOD_CACHE_KEY);
-        Map<String, String> permissionMethodMapFromCache = null;
-        if (Objects.isNull(permissionMethodMapObject)) {
-            permissionMethodMapFromCache = MapUtil.newHashMap();
-        } else {
-            permissionMethodMapFromCache = Convert.toMap(String.class, String.class, permissionMethodMapObject);
-        }
         if (CollUtil.isNotEmpty(permissionMethodMap)) {
-            for (Map.Entry<String, String> permissionMethodEntry : permissionMethodMap.entrySet()) {
-                String permissionKey = permissionMethodEntry.getKey();
-                String permissionMethod = permissionMethodEntry.getValue();
-                permissionMethodMapFromCache.put(permissionKey, permissionMethod);
-            }
-
-            // 刷新缓存
-            commonCacheOperator.put(CacheConstant.PERMISSION_RESOURCE_METHOD_CACHE_KEY, permissionMethodMapFromCache);
+            commonCacheOperator.put(CacheConstant.PERMISSION_RESOURCE_METHOD_CACHE_KEY, permissionMethodMap);
         }
     }
 

@@ -87,6 +87,16 @@ public class DevFileFeignProvider implements DevFileFeign {
     }
 
     @Override
+    public String storageFileWithReturnUrlFtp(MultipartFile file) {
+        return devFileApi.storageFileWithReturnUrlFtp(file);
+    }
+
+    @Override
+    public String storageFileWithReturnIdFtp(MultipartFile file) {
+        return devFileApi.storageFileWithReturnIdFtp(file);
+    }
+
+    @Override
     public JSONObject getFileInfoById(String id) {
         return devFileApi.getFileInfoById(id);
     }
@@ -104,5 +114,10 @@ public class DevFileFeignProvider implements DevFileFeign {
     @Override
     public String storageFileWithReturnUrlOss(MultipartFile file) {
         return devFileApi.storageFileWithReturnUrlOss(file);
+    }
+
+    @Override
+    public byte[] getFileBytes(String engine, String bucket, String fileKey) {
+        return devFileApi.getFileBytes(engine, bucket, fileKey);
     }
 }

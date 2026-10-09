@@ -508,8 +508,10 @@ public class AuthServiceImpl implements AuthService {
         if(SaClientTypeEnum.B.getValue().equals(type)) {
             SaBaseLoginUser saBaseLoginUser = loginUserApi.getUserByAccount(account);
             if(ObjectUtil.isEmpty(saBaseLoginUser)) {
-                // 提示账号错误
-                throw new CommonException(AuthExceptionEnum.ACCOUNT_ERROR.getValue());
+                // 相同提示文案、相同剩余次数、相同锁定计数，使攻击者无法据此判断账号是否存在
+                handleRemainingTimes(account, AuthExceptionEnum.PWD_ERROR.getValue(), type);
+                // 兜底：handleRemainingTimes 极端情况下未抛异常时，仍统一报错，避免后续空指针
+                throw new CommonException(AuthExceptionEnum.PWD_ERROR.getValue());
             }
             if (!saBaseLoginUser.getPassword().equals(passwordHash)) {
                 // 密码错误，处理剩余次数提示信息
@@ -520,8 +522,10 @@ public class AuthServiceImpl implements AuthService {
         } else {
             SaBaseClientLoginUser saBaseClientLoginUser = clientLoginUserApi.getClientUserByAccount(account);
             if(ObjectUtil.isEmpty(saBaseClientLoginUser)) {
-                // 提示账号错误
-                throw new CommonException(AuthExceptionEnum.ACCOUNT_ERROR.getValue());
+                // 相同提示文案、相同剩余次数、相同锁定计数，使攻击者无法据此判断账号是否存在
+                handleRemainingTimes(account, AuthExceptionEnum.PWD_ERROR.getValue(), type);
+                // 兜底：handleRemainingTimes 极端情况下未抛异常时，仍统一报错，避免后续空指针
+                throw new CommonException(AuthExceptionEnum.PWD_ERROR.getValue());
             }
             if (!saBaseClientLoginUser.getPassword().equals(passwordHash)) {
                 // 密码错误，处理剩余次数提示信息
@@ -1210,11 +1214,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String doLoginByThirdToken(AuthThirdTokenLoginParam authThirdTokenLoginParam) {
-        // 校验是否配置了第三方用户信息接口地址（配置了即开启）
-        String userInfoUrl = authThirdClientProperties.getUserInfoUrl();
-        if(ObjectUtil.isEmpty(userInfoUrl)) {
-            throw new CommonException("未配置第三方用户信息接口地址，无法使用Token交换登录");
-        }
+        // 根据provider选择服务端预先配置的第三方，避免客户端直接传URL造成SSRF风险
+        String userInfoUrl = resolveThirdUserInfoUrl(authThirdTokenLoginParam.getProvider());
         // 用accessToken调用第三方用户信息接口
         JSONObject thirdUserInfo = requestThirdUserInfo(userInfoUrl, authThirdTokenLoginParam.getAccessToken());
         // 从第三方返回中解析用户信息（固定字段：account、email、phone）
@@ -1225,6 +1226,28 @@ public class AuthServiceImpl implements AuthService {
         SaBaseLoginUser saBaseLoginUser = matchLocalUser(thirdAccount, thirdEmail, thirdPhone);
         // 执行B端登录
         return execLoginB(saBaseLoginUser, AuthDeviceTypeEnum.PC.getValue());
+    }
+
+    /**
+     * 获取第三方用户信息接口地址。
+     * 优先使用请求中的provider；未传时使用default-provider；最后兼容旧版单地址配置。
+     */
+    private String resolveThirdUserInfoUrl(String requestedProvider) {
+        if(Boolean.FALSE.equals(authThirdClientProperties.getEnabled())) {
+            throw new CommonException("第三方Token交换登录未开启");
+        }
+        String provider = StrUtil.blankToDefault(requestedProvider, authThirdClientProperties.getDefaultProvider());
+        if(StrUtil.isNotBlank(provider)) {
+            AuthThirdClientProperties.Provider providerConfig = authThirdClientProperties.getProviders().get(provider);
+            if(ObjectUtil.isEmpty(providerConfig) || StrUtil.isBlank(providerConfig.getUserInfoUrl())) {
+                throw new CommonException("未配置第三方系统：{}", provider);
+            }
+            return providerConfig.getUserInfoUrl();
+        }
+        if(StrUtil.isNotBlank(authThirdClientProperties.getUserInfoUrl())) {
+            return authThirdClientProperties.getUserInfoUrl();
+        }
+        throw new CommonException("未指定第三方系统，且未配置默认第三方系统");
     }
 
     /**

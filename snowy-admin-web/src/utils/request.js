@@ -11,13 +11,22 @@
 // 统一的请求发送
 import axios from 'axios'
 import qs from 'qs'
-import { Modal, message } from 'ant-design-vue'
+import { message } from 'ant-design-vue'
 import sysConfig from '@/config/index'
 import tool from '@/utils/tool'
 import { convertUrl } from './apiAdaptive'
+// 认证类业务码的具体处理（重登弹窗、二级认证、锁屏）都在这里，本文件只负责识别与分发
+import {
+	RELOGIN_CODES,
+	SAFE_AUTH_CODE,
+	LOCKED_CODE,
+	UNLOCK_FAIL_LIMIT_CODE,
+	handleRelogin,
+	handleUnlockFailLimit,
+	handleLocked,
+	handleSafeAuth
+} from '@/utils/codeHandler'
 
-// 以下这些code需要重新登录
-const reloadCodes = [401, 1011007, 1011008]
 const errorCodeMap = {
 	400: '发出的请求有错误，服务器没有进行新建或修改数据的操作。',
 	401: '用户没有权限（令牌、用户名、密码错误）。',
@@ -25,14 +34,13 @@ const errorCodeMap = {
 	404: '发出的请求针对的是不存在的记录，服务器没有进行操作。',
 	406: '请求的格式不可得。',
 	410: '请求的资源被永久删除，且不会再得到的。',
+	4011: '二级认证校验失败，请重新认证。',
 	422: '当创建一个对象时，发生一个验证错误。',
 	500: '服务器发生错误，请检查服务器。',
 	502: '网关错误。',
 	503: '服务不可用，服务器暂时过载或维护。',
 	504: '网关超时。'
 }
-// 定义一个重新登录弹出窗的变量
-const loginBack = ref(false)
 // 判断是否为直连模式（仅生产环境 + API_URL 配置了完整后端地址时生效）
 const isDirectMode = !import.meta.env.DEV && sysConfig.API_URL && /^https?:\/\//.test(sysConfig.API_URL)
 // 创建 axios 实例
@@ -60,24 +68,6 @@ service.interceptors.request.use(
 	}
 )
 
-// 保持重新登录Modal的唯一性
-const error = () => {
-	loginBack.value = true
-	Modal.error({
-		title: '提示：',
-		okText: '重新登录',
-		content: '登录已失效， 请重新登录',
-		onOk: () => {
-			loginBack.value = false
-			tool.data.remove('TOKEN')
-			tool.data.remove('USER_INFO')
-			tool.data.remove('MENU')
-			tool.data.remove('PERMISSIONS')
-			window.location.reload()
-		}
-	})
-}
-
 // HTTP response 拦截器
 service.interceptors.response.use(
 	(response) => {
@@ -92,23 +82,24 @@ service.interceptors.response.use(
 		}
 		const data = response.data
 		const code = data.code
-		if (reloadCodes.includes(code)) {
-			if (!loginBack.value) {
-				error()
-			}
-			return
+		if (RELOGIN_CODES.includes(code)) {
+			return handleRelogin()
+		}
+		if (code === UNLOCK_FAIL_LIMIT_CODE) {
+			return handleUnlockFailLimit(data)
+		}
+		if (code === SAFE_AUTH_CODE) {
+			return handleSafeAuth(service, response.config, data.data)
+		}
+		if (code === LOCKED_CODE) {
+			return handleLocked(data)
 		}
 		if (code !== 200) {
-			const customErrorMessage = response.config.customErrorMessage
-			message.error(customErrorMessage || data.msg)
+			if (!response.config.skipErrorMessage) {
+				const customErrorMessage = response.config.customErrorMessage
+				message.error(customErrorMessage || data.msg)
+			}
 			return Promise.reject(data)
-			// 自定义错误提示，覆盖后端返回的message
-			// 使用示例：
-			// export function customerList (data) {
-			//   return request('list', data, 'get', {
-			//     customErrorMessage: '自定义错误消息提示'
-			//   });
-			// }
 		} else {
 			// 统一成功提示（支持 skipSuccessMessage 跳过）
 			if (!response.config.skipSuccessMessage) {

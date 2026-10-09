@@ -134,6 +134,26 @@ public interface DevFileFeign {
      * @author xuyuxiang
      * @date 2022/6/22 17:44
      **/
+    @PostMapping("/feign/dev/file/storageFileWithReturnUrlFtp")
+    String storageFileWithReturnUrlFtp(@RequestParam(value = "file",required = false) MultipartFile file);
+
+    /**
+     * 上传文件返回Id
+     *
+     * @param file 文件
+     * @author xuyuxiang
+     * @date 2022/6/22 17:44
+     **/
+    @PostMapping("/feign/dev/file/storageFileWithReturnIdFtp")
+    String storageFileWithReturnIdFtp(@RequestParam(value = "file",required = false) MultipartFile file);
+
+    /**
+     * 上传文件返回Id
+     *
+     * @param file 文件
+     * @author xuyuxiang
+     * @date 2022/6/22 17:44
+     **/
     @PostMapping("/feign/dev/file/storageFileWithReturnIdMinio")
     String storageFileWithReturnIdMinio(@RequestParam(value = "file",required = false) MultipartFile file);
 
@@ -173,4 +193,14 @@ public interface DevFileFeign {
      **/
     @PostMapping("/feign/dev/file/storageFileWithReturnUrlOss")
     String storageFileWithReturnUrlOss(@RequestParam(value = "file") MultipartFile file);
+
+    /**
+     * 根据配置的存储类型，返回不同的URL
+     *
+     * @author yubaoshan
+     * @date 2025/8/6 21:18
+     **/
+    @PostMapping("/feign/dev/file/getFileBytes")
+    byte[] getFileBytes(@RequestParam(value = "engine") String engine,
+                                       @RequestParam(value = "bucket") String bucket, @RequestParam(value = "fileKey") String fileKey);
 }

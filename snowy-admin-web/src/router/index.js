@@ -84,16 +84,20 @@ router.beforeEach(async (to, from, next) => {
 
 	// ========== iframe嵌入免登：检测URL中的第三方accessToken ==========
 	const thirdAccessToken = to.query.accessToken
+	const thirdProvider = to.query.provider
 	if (thirdAccessToken && !tool.data.get('TOKEN')) {
-		// 调用第三方Token交换登录接口
-		loginApi
-			.doLoginByThirdToken({
-				accessToken: thirdAccessToken
+		// 先结束当前导航；afterLogin 会在登录完成后重新导航到目标页面
+		next(false)
+		try {
+			const loginToken = await loginApi.doLoginByThirdToken({
+				accessToken: thirdAccessToken,
+				provider: thirdProvider
 			})
-			.then(async (loginToken) => {
-				// 复用登录后流程，传入目标路径
-				await afterLogin(loginToken, to.path)
-			})
+			// 复用登录后流程，传入目标路径
+			await afterLogin(loginToken, to.path)
+		} catch (error) {
+			console.error('第三方Token登录失败:', error)
+		}
 		return false
 	}
 	// 如果已有TOKEN且URL带accessToken，直接放行（避免重复登录）
@@ -101,6 +105,7 @@ router.beforeEach(async (to, from, next) => {
 		// 去掉URL中的accessToken参数，保持路由干净
 		const query = { ...to.query }
 		delete query.accessToken
+		delete query.provider
 		next({ path: to.path, query, replace: true })
 		return false
 	}
@@ -162,7 +167,8 @@ router.beforeEach(async (to, from, next) => {
 			tool.data.set('LAST_VIEWS_PATH', to.fullPath)
 			// 验证menu或则用户信息是否存在，不存在那么就是被删除或者退出或者清理缓存了
 			if (!tool.data.get('MENU') || !tool.data.get('USER_INFO')) {
-				tool.data.remove('TOKEN')
+				tool.clearLoginCache()
+				store.setIsLocked(false)
 				next({
 					path: '/login'
 				})
@@ -171,6 +177,8 @@ router.beforeEach(async (to, from, next) => {
 		}
 	}
 	if (!token) {
+		// 无登录态时一定不该处于锁屏，避免登录页被残留的锁屏遮罩盖住
+		store.setIsLocked(false)
 		next({
 			path: '/login'
 		})

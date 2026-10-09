@@ -123,7 +123,7 @@ public class DevSmsAliyunUtil {
                 String data = Convert.toStr(smsResponse.getData());
                 if(JSONUtil.isTypeJSON(data)) {
                     JSONObject responseData = JSONUtil.parseObj(smsResponse.getData());
-                    throw new CommonException(responseData.getStr("resInfo"));
+                    throw new CommonException(responseData.getStr("Message"));
                 } else {
                     throw new CommonException(data);
                 }
