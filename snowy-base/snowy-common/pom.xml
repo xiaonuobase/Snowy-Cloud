@@ -83,6 +83,12 @@
             <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
         </dependency>
 
+        <!-- mybatis-plus-jsqlparser（3.5.9+ 分页拦截器必须） -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
+        </dependency>
+
         <!-- easy-trans -->
         <dependency>
             <groupId>org.dromara</groupId>

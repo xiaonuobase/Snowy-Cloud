@@ -10,21 +10,21 @@ description: 项目进度梳理（业务模块完整度报告）
 
 ### 1. 枚举业务域
 ```bash
-ls snowy-plugin/snowy-plugin-biz/src/main/java/vip/xiaonuo/biz/modular/
+ls snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular/
 ```
-过滤掉 excludeModules：index、dict、group、notice、org、position、user。剩余为自建域（空则报告"0 个自建业务域，进度 0%"）。
+扫描根以 framework-config.json 的 `business.backend.scanRoot` 为准（微服务版业务域在 biz 插件的 `-func` 子模块里）。过滤掉 excludeModules：index、dict、group、notice、org、position、user。剩余为自建域（空则报告"0 个自建业务域，进度 0%"）。
 
 ### 2. 逐域统计六件套（分母 6）
 对每个自建域检查：
 ```bash
-ls snowy-plugin/snowy-plugin-biz/src/main/java/vip/xiaonuo/biz/modular/{域}/entity/
+ls snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular/{域}/entity/
 ls .../{域}/mapper/            # Mapper 接口（mapping/ 下 XML 是加分项）
 ls .../{域}/service/           # Service 接口
 ls .../{域}/service/impl/      # ServiceImpl
 ls .../{域}/controller/
 ls .../{域}/param/             # 至少 Page/Add/Edit/Id 四类
 ```
-记：必备 6 件各存在与否（Param 组 4 类齐全才算 1 件）；可选件（mapping XML、result/）单独标注。
+记：必备 6 件各存在与否（Param 组 4 类齐全才算 1 件）；可选件（mapping XML、result/）单独标注。若该域还对外提供跨服务接口（biz-api 的 XxxApi、biz-feign、biz-feign-provider、biz-api-context），这些件不计入分母。
 
 ### 3. 前端三件（分母 3）
 ```bash

@@ -8,7 +8,7 @@ tools: Read, Grep, Glob
 
 # 审查流程
 
-1. 确定审查范围：用户指定的文件 / 本次会话产出的文件 / 全量（`snowy-plugin/snowy-plugin-biz/` + `snowy-admin-web/src/views/biz/` + `snowy-admin-web/src/api/biz/`）
+1. 确定审查范围：用户指定的文件 / 本次会话产出的文件 / 全量（`snowy-plugin/snowy-plugin-biz/` + `snowy-admin-web/src/views/biz/` + `snowy-admin-web/src/api/biz/`）。业务域代码在 `snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular/{域}/`，下文 `<范围>/controller/` 等即指该域目录下的子目录
 2. 逐项执行下面的检查清单（每项给出 Grep 命令与判定标准，严重级全查，警告级抽查）
 3. 输出审查报告（格式见文末）
 
@@ -36,6 +36,7 @@ Grep pattern: "new (RuntimeException|IllegalArgumentException|IllegalStateExcept
 ```bash
 Grep pattern: "public (?!CommonResult|void)[A-Z]"  path: <范围>/controller/  glob: **/*.java
 # 判定：Controller 公有方法只允许 CommonResult<T> 或 void（文件流/导出）
+# 说明：-feign-provider 模块里的 Feign 实现类（@RestController implements XxxFeign）按现有写法返回 String(JSON)，不在本项范围
 ```
 
 ## S5 版权头
@@ -53,7 +54,7 @@ Grep pattern: "@TableName\((value = )?\"[a-z]"  path: <范围>  glob: **/*.java
 ## S7 权限码 URL 式
 ```bash
 Grep pattern: "@SaCheckPermission\(\""  path: <范围>/controller/  glob: **/*.java -o
-# 判定：每个值以 / 开头且与同方法 @GetMapping/@PostMapping 路径完全一致
+# 判定：每个值以 / 开头且与同方法 @GetMapping/@PostMapping 路径完全一致（服务内 URL，不带 /api/webapp、/api/bizapp 网关前缀）
 ```
 
 ## S8 主键类型
@@ -66,6 +67,7 @@ Grep pattern: "@TableId" -A 2  path: <范围>/entity/  # 逐个核对字段类�
 ```bash
 Grep pattern: "@RequestMapping"  path: <范围>/controller/  glob: **/*.java
 # 判定：0 命中 = 通过（URL 全路径写方法上）
+# 说明：-feign 模块 Feign 接口上的方法级 @RequestMapping("/feign/...") 是现有写法，不报
 ```
 
 ## S10 前端无 TS / Element Plus
@@ -98,7 +100,12 @@ Grep pattern: "interface |: string|: number| as [A-Z]|el-"  path: snowy-admin-we
 - Mapper 是否空接口且未建无用的空 XML
 - Result 是否必要（直接返回 Entity 也合法）
 - 是否有 N+1（循环内查库）——参考 performance-doctor 技能
-- 跨插件调用是否走了 *-api（参考 plugin-architecture 技能）
+- 跨插件调用是否走了 *-api（参考 plugin-architecture 技能）；在 biz-app 注入的平台 Api 是否有对应 `-api-context` 远程代理（dev 侧 Dict/Log/Job/Push/WeakPassword、sys 侧 Menu/Button/Module 目前没有，推导，使用前请先确认）
+- 循环内是否调跨服务 Api（biz-app 里每次都是一次 Feign HTTP），应改批量
+- 跨服务写操作是否意识到无分布式事务（本地 @Transactional 管不到 Feign 那头）
+- biz 范围是否出现 `implements CommonTimerTaskRunner`（定时任务只在 web-app 调度，放 biz-func 会找不到类）
+- 新增非 /biz/ 的 URL 前缀是否已在前端 apiAdaptive.js 登记（新建服务时还需网关路由，新代码包时还需 springdoc 分组与 Knife4j 聚合）；新增免登录接口是否网关 GatewayConfigure 与服务 GlobalConfigure 两处都登记
+- 新增 feign-provider 接口是否暴露了敏感写操作（`/feign/**` 在服务侧免登录，⚠️ 现状风险）
 
 # 报告格式
 

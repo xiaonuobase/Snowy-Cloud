@@ -3,8 +3,14 @@
     "description": "框架模块配置 - 这些模块是 Snowy 平台的一部分，不参与业务进度统计",
     "backend": {
       "modules": [
-        "snowy-common",
-        "snowy-web-app"
+        "snowy-base/snowy-common",
+        "snowy-modules/snowy-web-app",
+        "snowy-modules/snowy-biz-app",
+        "snowy-server/snowy-nacos-app",
+        "snowy-server/snowy-gateway-app",
+        "snowy-server/snowy-actuator-app",
+        "snowy-server/snowy-sentinel-app",
+        "snowy-server/snowy-xxl-job-app"
       ],
       "systemModules": [
         "snowy-plugin/snowy-plugin-sys",
@@ -12,18 +18,24 @@
         "snowy-plugin/snowy-plugin-dev",
         "snowy-plugin/snowy-plugin-gen",
         "snowy-plugin/snowy-plugin-client",
-        "snowy-plugin/snowy-plugin-mobile"
+        "snowy-plugin/snowy-plugin-mobile",
+        "snowy-plugin/snowy-plugin-mocker"
       ],
       "apiModules": [
-        "snowy-plugin-api/snowy-plugin-auth-api",
-        "snowy-plugin-api/snowy-plugin-biz-api",
-        "snowy-plugin-api/snowy-plugin-client-api",
-        "snowy-plugin-api/snowy-plugin-dev-api",
-        "snowy-plugin-api/snowy-plugin-gen-api",
-        "snowy-plugin-api/snowy-plugin-mobile-api",
-        "snowy-plugin-api/snowy-plugin-sys-api"
+        "snowy-plugin/snowy-plugin-auth/snowy-plugin-auth-api",
+        "snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-api",
+        "snowy-plugin/snowy-plugin-client/snowy-plugin-client-api",
+        "snowy-plugin/snowy-plugin-dev/snowy-plugin-dev-api",
+        "snowy-plugin/snowy-plugin-gen/snowy-plugin-gen-api",
+        "snowy-plugin/snowy-plugin-mobile/snowy-plugin-mobile-api",
+        "snowy-plugin/snowy-plugin-sys/snowy-plugin-sys-api"
       ],
-      "description": "snowy-common 为公共基础模块，snowy-web-app 为唯一启动模块（端口82），6 个系统插件为平台自带能力，*-api 为跨插件调用接口层"
+      "crossServiceModules": [
+        "snowy-plugin/snowy-plugin-{auth,biz,dev,mobile,sys}/snowy-plugin-*-feign",
+        "snowy-plugin/snowy-plugin-{auth,biz,dev,mobile,sys}/snowy-plugin-*-feign-provider",
+        "snowy-plugin/snowy-plugin-{auth,biz,dev,mobile,sys}/snowy-plugin-*-api-context"
+      ],
+      "description": "snowy-base/snowy-common 为公共基础模块；snowy-modules 下 snowy-web-app（9101，装平台插件实现）与 snowy-biz-app（9102，装 biz 实现）为启动应用；snowy-server 下为中间件（nacos 8848/gateway 9003/actuator 9001/sentinel 9002/xxl-job 9004）；7 个系统插件为平台自带能力；各插件的 -api 为跨插件接口层，-feign/-feign-provider/-api-context 为跨服务调用层（biz 插件的这三件属业务插件但出厂未装配）"
     },
     "frontend": {
       "root": "snowy-admin-web",
@@ -33,9 +45,11 @@
         "src/views/dev",
         "src/views/gen",
         "src/views/mobile",
+        "src/views/client",
         "src/views/index",
-        "src/views/login",
-        "src/views/front"
+        "src/views/front",
+        "src/views/exm",
+        "src/views/other"
       ],
       "businessPattern": "src/views/biz",
       "apiBusinessPattern": "src/api/biz",
@@ -77,8 +91,8 @@
   "business": {
     "description": "业务模块配置 - 需要统计进度的业务代码",
     "backend": {
-      "scanRoot": "snowy-plugin/snowy-plugin-biz/src/main/java/vip/xiaonuo/biz/modular",
-      "modulePattern": "snowy-plugin/snowy-plugin-biz/src/main/java/vip/xiaonuo/biz/modular/*",
+      "scanRoot": "snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular",
+      "modulePattern": "snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular/*",
       "excludeModules": [
         "index",
         "dict",
@@ -88,7 +102,7 @@
         "position",
         "user"
       ],
-      "defaultLocation": "新业务域默认建在 snowy-plugin-biz 的 biz/modular/{域名} 下（参考 notice 域结构）",
+      "defaultLocation": "新业务域默认建在 snowy-plugin-biz-func 的 biz/modular/{域名} 下（参考 notice 域结构），运行在 snowy-biz-app，URL 用 /biz/ 前缀（网关 /api/bizapp）",
       "description": "出厂自带的 7 个 biz 域（index/dict/group/notice/org/position/user）视为演示代码不计业务进度；用户新建的域才计入"
     }
   },
@@ -126,13 +140,32 @@
   },
   "environment": {
     "gitAvailable": "auto-detect（git rev-parse --is-inside-work-tree）",
-    "dbConfigLocation": "snowy-web-app/src/main/resources/application.properties（spring.datasource.dynamic.master 段）",
-    "dbScript": "snowy-web-app/src/main/resources/_sql/snowy_mysql.sql（33 张表初始化脚本）",
-    "backendPort": 82,
-    "frontendPort": 81,
-    "apiDoc": "http://localhost:82/doc.html（Knife4j，basic 认证 admin/123456）"
+    "dbConfigLocation": "Nacos 配置 snowy-web-app-dev.yaml / snowy-biz-app-dev.yaml 的 spring.datasource.dynamic.datasource.master 段（仓库源文件 snowy-server/snowy-nacos-app/src/main/resources/META-INF/config-data/dev/，运行时以 Nacos 控制台为准）",
+    "dbName": "snowy-cloud（业务库）；snowy-nacos-app-open（Nacos 库）；snowy-cloud-job（xxl-job 库，可选）",
+    "dbScript": "snowy-modules/snowy-web-app/src/main/resources/_sql/snowy_mysql.sql（33 张表初始化脚本，不含 CREATE DATABASE）",
+    "nacosDbScript": "snowy-server/snowy-nacos-app/src/main/resources/META-INF/nacos-db.sql（新装只导此文件；nacos-db-snowy-config-init.sql 仅用于刷新已有库的配置）",
+    "nacos": "http://localhost:8848/nacos（nacos/nacos；namespace snowy-cloud-dev，group dev，dataId {应用名}-dev.yaml）",
+    "gatewayPort": 9003,
+    "backendPorts": {
+      "snowy-web-app": 9101,
+      "snowy-biz-app": 9102
+    },
+    "middlewarePorts": {
+      "snowy-nacos-app": 8848,
+      "snowy-actuator-app": 9001,
+      "snowy-sentinel-app": 9002,
+      "snowy-gateway-app": 9003,
+      "snowy-xxl-job-app": 9004
+    },
+    "frontendPort": 9000,
+    "startupOrder": "最少：nacos → web-app、biz-app → gateway；README 全量：nacos → actuator → sentinel → gateway → xxl-job → web-app → biz-app",
+    "apiDoc": "http://localhost:9003/doc.html（网关聚合 Knife4j，basic 认证 snowyAdmin/Snowy@2026!）",
+    "gatewayPrefix": {
+      "/api/webapp": "snowy-web-app（/sys /auth /dev /gen /mobile /client）",
+      "/api/bizapp": "snowy-biz-app（/biz）"
+    }
   },
   "version": "1.0.0",
   "snowyVersion": "3.0.0",
-  "lastUpdated": "2026-08-18"
+  "lastUpdated": "2026-10-09"
 }

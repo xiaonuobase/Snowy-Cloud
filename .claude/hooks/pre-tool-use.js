@@ -96,14 +96,16 @@ if (toolName === 'Write') {
   const content = toolInput.content || '';
 
   // 敏感配置文件写入提醒（不阻止）
+  // 微服务版：服务配置在 Nacos（仓库源文件 snowy-nacos-app 的 META-INF/config-data/），本地 application.yml 含 Nacos 账号
   const sensitiveFiles = [
     'application.properties',
+    'application.yml',
     'application-docker.yml',
     'docker-compose.yml',
     'logback-spring.xml'
   ];
-  if (sensitiveFiles.some(f => filePath.endsWith(f))) {
-    warn('⚠️ 正在写入配置文件 ' + filePath.split('/').pop() + '：注意不要泄露数据库口令/密钥，不要提交生产环境配置');
+  if (sensitiveFiles.some(f => filePath.endsWith(f)) || filePath.includes('/META-INF/config-data/')) {
+    warn('⚠️ 正在写入配置文件 ' + filePath.split('/').pop() + '：注意不要泄露数据库口令/密钥，不要提交生产环境配置（Nacos 配置源文件改动后还需同步到 Nacos 才生效）');
   }
 
   // Java 版权头检查：Snowy 要求每个 .java 头部有 Apache 2.0 版权声明
@@ -114,7 +116,7 @@ if (toolName === 'Write') {
     }
   }
 
-  // 框架模块保护：修改平台底座时提醒
+  // 框架模块保护：修改平台底座时提醒（微服务版路径：snowy-base/snowy-common、snowy-modules/*、snowy-server/*）
   const frameworkPaths = [
     '/snowy-common/',
     '/snowy-plugin/snowy-plugin-sys/',
@@ -123,11 +125,13 @@ if (toolName === 'Write') {
     '/snowy-plugin/snowy-plugin-gen/',
     '/snowy-plugin/snowy-plugin-client/',
     '/snowy-plugin/snowy-plugin-mobile/',
-    '/snowy-plugin-api/',
-    '/snowy-web-app/'
+    '/snowy-plugin/snowy-plugin-mocker/',
+    '/snowy-web-app/',
+    '/snowy-biz-app/',
+    '/snowy-server/'
   ];
   if (frameworkPaths.some(p => filePath.includes(p))) {
-    warn('⚠️ 正在修改 Snowy 平台框架模块（' + filePath.split('/').slice(-2).join('/') + '）：业务二次开发应优先放在 snowy-plugin-biz，修改框架会影响升级兼容性');
+    warn('⚠️ 正在修改 Snowy 平台框架模块（' + filePath.split('/').slice(-2).join('/') + '）：业务二次开发应优先放在 snowy-plugin-biz（snowy-plugin-biz-func），修改框架会影响升级兼容性');
   }
 
   allow();

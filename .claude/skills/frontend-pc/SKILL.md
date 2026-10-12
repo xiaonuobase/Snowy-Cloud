@@ -1,6 +1,6 @@
 ---
 name: frontend-pc
-description: snowy-admin-web 前端开发规范：api js 封装约定、index.vue 列表页 + form.vue 弹窗表单三件套、s-table、Xn 组件速查、hasPerm 按钮权限、i18n、request.js 双端。触发场景：1) 写前端页面或 API 封装 2) 新业务模块的前端三件 3) 使用组件/权限/字典。触发词：前端、Vue、页面、api js、index.vue、form.vue、s-table、Xn组件、Ant Design Vue、AntdV、按钮权限、hasPerm、i18n、国际化、弹窗表单。
+description: snowy-admin-web 前端开发规范：api js 封装约定、index.vue 列表页 + form.vue 弹窗表单三件套、s-table、Xn 组件速查、hasPerm 按钮权限、i18n、request.js 双端、微服务网关前缀适配（apiAdaptive）。触发场景：1) 写前端页面或 API 封装 2) 新业务模块的前端三件 3) 使用组件/权限/字典 4) 新 URL 前缀经网关 404、前端请求走哪个服务。触发词：前端、Vue、页面、api js、index.vue、form.vue、s-table、Xn组件、Ant Design Vue、AntdV、按钮权限、hasPerm、i18n、国际化、弹窗表单、apiAdaptive、网关前缀、CLOUD_SERVER、跨服务、9000、9003。
 ---
 
 # snowy-admin-web 前端开发规范
@@ -10,7 +10,8 @@ description: snowy-admin-web 前端开发规范：api js 封装约定、index.vu
 - Vue 3.5（`<script setup>` 语法）+ Vite 6 + **Ant Design Vue 4.2.6** + Pinia + vue-i18n + TailwindCSS
 - **JavaScript，不是 TypeScript**——禁止 interface/type/as 等 TS 语法
 - 组件自动导入（unplugin）：a-xxx 组件、ref/computed 等 API **不需要 import**；自定义组件用 kebab-case 标签
-- 包管理 npm；目录 `snowy-admin-web/`
+- 包管理 npm；目录 `snowy-admin-web/`；本地端口 **9000**
+- **本仓库是微服务版**：`src/config/index.js` 的 `CLOUD_SERVER: true`，请求经 `src/utils/apiAdaptive.js` 加网关前缀后发往网关 9003（详见下文「微服务请求链路」）
 
 ## SFC 块顺序（硬性，不可颠倒）
 
@@ -38,7 +39,7 @@ description: snowy-admin-web 前端开发规范：api js 封装约定、index.vu
 
 ❌ 禁止把 `<script>` 写在 `<template>` 前面（Vue 官方 SFC 也支持，但本项目统一为 template 优先，混排会让文件之间没法快速对照）。
 
-> 存量：`views/plugin/front/` 下有 29 个文件是 script 前置写法，**不做批量回改**，新写与重构经过时按本规范来。
+> 存量：`layout/components/bindEmail.vue`、`layout/components/bindPhone.vue`、`views/auth/client/register/index.vue`、`views/auth/login/register.vue`、`views/sys/user/userTab/bindForm/bindEmail.vue`、`views/sys/user/userTab/bindForm/bindPhone.vue`、`views/front/index.vue` 共 7 个文件是 script 前置写法，**不做批量回改**，新写与重构经过时按本规范来。
 
 ## 三件套结构（一个业务域）
 
@@ -87,6 +88,7 @@ export default {
 - 第三参 method，默认 POST；GET 查询传 'get'
 - 文件名 `biz{Xxx}Api.js`；缩进用 **Tab**（项目 Prettier 配置）
 - 下载文件用 baseRequest 的第 4 参 `{ responseType: 'blob' }`
+- URL 只写后端 Controller 上的原始路径（`/biz/xxx/`），**不要手写 `/api/bizapp` 网关前缀**——baseRequest 内部会经 `convertUrl` 再拼一次，写了就成双前缀
 
 ## ② 列表页 index.vue 骨架
 
@@ -299,7 +301,7 @@ v-if="hasPerm(['bizXxxEdit', 'bizXxxDelete'], 'and')"    // 数组 + and/or（�
 
 驼峰码来自 SYS_RESOURCE 的 BUTTON 行，与后端 @SaCheckPermission 的 URL 式是**两套**（详见 security-auth 技能）。
 
-## 高频组件速查（src/components/，37 个）
+## 高频组件速查（src/components/，38 个目录）
 
 | 组件 | 用途 |
 |---|---|
@@ -318,16 +320,37 @@ v-if="hasPerm(['bizXxxEdit', 'bizXxxDelete'], 'and')"    // 数组 + and/or（�
 
 （多数组件目录带 README.md，用前可读）
 
+## 微服务请求链路（apiAdaptive + 网关，与单体版最大的不同）
+
+| 环节 | 实际行为（以代码为准） |
+|---|---|
+| 开关 | `src/config/index.js` 的 `CLOUD_SERVER: true`；为 false 时 `convertUrl` 原样返回（仅单体适用，本仓库不要改） |
+| 前缀映射 | `src/utils/apiAdaptive.js` 的 `PREFIX`：`/mobile/` `/sys/` `/auth/` `/client/` `/dev/` `/gen/` → `/api/webapp`；`/biz/` → `/api/bizapp`；另有 `bizCustomization` 数组（出厂只有 `/custom/` 占位）拼在 PREFIX 之后 |
+| 匹配规则 | `url.indexOf(label) > -1` **包含匹配**，按「PREFIX → bizCustomization」顺序**取第一个命中**；都不命中则原样返回 |
+| 普通请求 | `baseRequest` 内 `url = API_URL + convertUrl(url)` 拼成**绝对地址**（开发环境如 `http://localhost:9003/api/bizapp/biz/notice/page`），直接跨域请求网关（网关已开 globalcors），**不经过 vite 代理** |
+| 上传 / WebSocket | `XnUpload`、`layout/components/message.vue` 用 `getApiBaseUrl()`（开发环境返回 `/api`）+ `convertUrl(...)`，走 vite 代理：`/api` 前缀被去掉后转发到 `VITE_API_BASEURL`（网关 9003），WebSocket 代理已开 `ws: true` |
+| 环境变量 | `.env.development` / `.env.production`：`VITE_API_BASEURL = http://localhost:9003`、`VITE_PORT = 9000`（生产部署需把 `VITE_API_BASEURL` 改为真实网关地址） |
+| 网关转发 | `/api/webapp/**` → snowy-web-app、`/api/bizapp/**` → snowy-biz-app，均 `StripPrefix=2`；后端 Controller 与 `@SaCheckPermission` 仍写不带前缀的 `/biz/xxx/page` |
+
+**新业务模块的前缀登记**：
+
+- 沿用 `/biz/` 前缀（代码在 `snowy-plugin-biz-func`、运行在 biz-app）→ 已有映射，**无需改 apiAdaptive**
+- 新 URL 前缀（如新插件用 `/erp/`）→ 必须在前端 `apiAdaptive.js` 登记（在 `bizCustomization` 或 `PREFIX` 加 `{ label: '/erp/', value: '/api/bizapp' }`，value 填它所在服务的网关前缀），漏了经网关 404；只有新建服务（新的 `/api/xxxapp`）才需另加网关路由；新代码包另需该服务 springdoc 分组与网关 Knife4j 聚合（只影响接口文档）
+- ⚠️ 包含匹配陷阱：biz 业务域名**不要**取 `mobile`/`sys`/`auth`/`client`/`dev`/`gen`——如 `/biz/dev/page` 会先命中 `/dev/` 被发到 web-app 而 404
+- ⚠️ 现状：`XnUpload` 只对**默认**上传/下载地址做了 `convertUrl`；外部传入的 `uploadDynamicReturnUrlApi` / `uploadReturnIdApi` / `uploadIdDownloadUrl` 不会再加网关前缀。出厂 `views/biz/notice/form.vue`、`views/dev/slideshow/form.vue` 传的是裸路径 `/dev/file/uploadImageDynamicReturnUrl`（推导：经网关会 404，使用前请先确认）。新写时传入 `convertUrl('/dev/file/xxx')` 的结果
+
 ## 请求与工具
 
-- `src/utils/request.js`：`baseRequest`（B 端）；`src/utils/clientRequest.js`（C 端）；token 请求头名 `token`；code!==200 自动 message.error；add/edit/delete 成功自动提示
-- `src/utils/tool.js`：`tool.dictList('编码')` 取字典、`tool.dataToTree()` 树化等
+- `src/utils/request.js`：`baseRequest`（B 端，内部拼 `API_URL + convertUrl(url)`）、`getApiBaseUrl()`（上传/WebSocket 用）；`src/utils/clientRequest.js`（C 端封装）；token 请求头名 `token`；code!==200 自动 message.error；add/edit/delete 成功自动提示
+  - ⚠️ 现状：`clientRequest.js` 的 `clientBaseRequest` 不经 `convertUrl`（baseURL 固定 `/api`），且目前无任何文件引用；出厂 C 端页面（`views/auth/client/`、`views/front/`）实际用的是 `baseRequest`
+- `src/utils/apiAdaptive.js`：`convertUrl(url)` 网关前缀映射（见上节）
+- `src/utils/tool.js`：`tool.dictList('编码')` 取字典选项、`tool.dictLabel('编码', 值)` 翻译字典文本等
 - `src/utils/formRules.js`：`required('提示')` 校验工厂
 - 国密：`src/utils/smCrypto.js`（登录密码 SM2 加密）
 
 ## i18n
 
-页面文案 `$t('xxx.yyy')`，词条加 `src/locales/{zh-cn,en-us}/` 对应文件。**遵循现有 i18n 习惯**；纯业务管理页的动态数据（字典/菜单）不走 i18n。
+页面文案 `$t('xxx.yyy')`，词条加 `src/locales/lang/` 下的 `zh-cn.js`、`en.js`。**遵循现有 i18n 习惯**；纯业务管理页的动态数据（字典/菜单）不走 i18n。
 
 ## 常见错误正误对照
 
@@ -337,6 +360,8 @@ v-if="hasPerm(['bizXxxEdit', 'bizXxxDelete'], 'and')"    // 数组 + and/or（�
 | Element Plus（el-xxx）组件 | Ant Design Vue（a-xxx） |
 | `import { ref } from 'vue'` | 自动导入，不写 |
 | 自己 axios.get('/api/biz/xxx') | api js + baseRequest 封装 |
+| api js 里写 `/api/bizapp/biz/xxx/` | 只写 `/biz/xxx/`，网关前缀由 apiAdaptive 自动加 |
+| 新 URL 前缀只写后端不登记前端 | 在 apiAdaptive.js 登记；新建服务另加网关路由 |
 | `:data="tableData"` 数组 | s-table `:data="loadData"` 函数 |
 | 表单不用容器直接弹 a-modal | `xn-form-container` |
 | 忘 `defineExpose({ onOpen })` | 父组件打不开表单 |
@@ -347,7 +372,8 @@ v-if="hasPerm(['bizXxxEdit', 'bizXxxDelete'], 'and')"    // 数组 + and/or（�
 
 - [ ] 每个 .vue 块顺序为 template → script → style，script 带 name
 - [ ] 三件套齐全（api js / index.vue / form.vue）
-- [ ] api js 的 URL 前缀与后端一致（/biz/xxx/）
+- [ ] api js 的 URL 前缀与后端一致（/biz/xxx/），未手写网关前缀
+- [ ] 新 URL 前缀已在 apiAdaptive 登记（沿用 /biz/ 的不用）；biz 业务域名未与 mobile/sys/auth/client/dev/gen 撞名
 - [ ] s-table loadData 模式 + 时间范围拆分
 - [ ] 按钮权限 hasPerm 码与 SYS_RESOURCE BUTTON 行一致
 - [ ] 提交成功 emit('successful')
@@ -363,5 +389,9 @@ v-if="hasPerm(['bizXxxEdit', 'bizXxxDelete'], 'and')"    // 数组 + and/or（�
 | `snowy-admin-web/src/views/biz/notice/form.vue` | 表单范本（含上传/富文本/多选序列化） |
 | `snowy-admin-web/src/views/biz/notice/detail.vue` | 详情范本 |
 | `snowy-admin-web/src/utils/request.js` | 请求封装 |
+| `snowy-admin-web/src/utils/apiAdaptive.js` | 网关前缀映射（新前缀在此登记） |
+| `snowy-admin-web/src/config/index.js` | `CLOUD_SERVER`、`API_URL` 等全局配置 |
+| `snowy-admin-web/.env.development` | `VITE_API_BASEURL`（网关地址）、`VITE_PORT` |
+| `snowy-admin-web/vite.config.mjs` | `/api` 代理（上传/WebSocket 用） |
 | `snowy-admin-web/src/utils/tool.js` | 前端工具 |
 | `snowy-admin-web/src/components/` | 全部组件 |

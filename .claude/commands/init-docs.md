@@ -19,7 +19,7 @@ Read `.claude/templates/需求文档模板.md`、`项目状态模板.md`、`待�
 
 ### 3. 扫描现有业务填充初始数据
 
-- 业务域枚举（同 /progress 口径，排除出厂 7 演示域）
+- 业务域枚举（同 /progress 口径：扫描 `snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular/`，以 framework-config.json 的 business.backend.scanRoot 为准，排除出厂 7 演示域）
 - 每域六件套完整度
 - TODO/FIXME 扫描
 - git 提交（可用时取全部提交做"已完成"时间线；不可用跳过）
@@ -51,5 +51,5 @@ Read `.claude/templates/需求文档模板.md`、`项目状态模板.md`、`待�
 
 1. 不覆盖已有文档
 2. 进度数字必须有扫描依据，禁止拍脑袋
-3. 框架功能（用户管理等 29 项系统功能）不算项目进度
+3. 框架功能（framework-config.json 的 systemFeatures 所列用户管理等系统功能）与微服务基础设施（网关、Nacos、监控、Sentinel、xxl-job）不算项目进度
 4. 文档中文、表格化、带模板的 HTML 注释示例可保留（方便用户照着填）

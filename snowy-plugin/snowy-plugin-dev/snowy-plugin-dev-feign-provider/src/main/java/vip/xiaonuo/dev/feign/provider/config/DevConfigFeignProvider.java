@@ -12,8 +12,11 @@
  */
 package vip.xiaonuo.dev.feign.provider.config;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,5 +47,18 @@ public class DevConfigFeignProvider implements DevConfigFeign {
     @RequestMapping("/feign/dev/config/getValueByKey")
     public String getValueByKey(@RequestParam("key") String key) {
         return devConfigApi.getValueByKey(key);
+    }
+
+    /**
+     * 根据键设置值，键不存在时抛异常
+     *
+     * @author yubaoshan
+     * @date 2026/10/12 10:00
+     */
+    @Override
+    @RequestMapping("/feign/dev/config/setValueByKey")
+    public void setValueByKey(@RequestBody String param) {
+        JSONObject paramObj = JSONUtil.parseObj(param);
+        devConfigApi.setValueByKey(paramObj.getStr("key"), paramObj.getStr("value"));
     }
 }

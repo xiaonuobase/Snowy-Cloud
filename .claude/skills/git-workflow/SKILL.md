@@ -7,14 +7,15 @@ description: 本项目 Git 规范：提交四原则、conventional commit 中文
 
 ## 仓库现状
 
-- 本仓库由下载的源码 zip 初始化（`git init`，master 分支），**无远程仓库**
-- `.gitignore` 已覆盖 target/、node_modules/、.idea/、logs/、dist/ 等
+- 本仓库一般克隆自官方 Snowy-Cloud 仓库，`origin` 指向官方远程（以 `git remote -v` 为准），分支含 master、dev 等；当前开发分支以 `git branch --show-current` 为准
+- 上游官方提交使用"【底座】/【更新】"等前缀；本项目自己的二次开发提交按下方 Commit Message 规范
+- 根目录 `.gitignore` 覆盖 target/、.idea/、logs/、*.log 等；`snowy-admin-web/.gitignore` 覆盖 node_modules/、dist/、.env.local 等
 
 ## 提交四原则（硬性）
 
 1. **只提交本次任务相关的文件**——`git status` 逐个确认，禁止 `git add -A` 一把梭（可能带进无关改动）
-2. **不提交敏感与本地配置改动**——application.properties 的本地口令、.env 类文件（已忽略的除外也要留意）
-3. **默认只做本地 commit**——push 必须用户明确要求；当前无远程，配置远程后也遵守此条
+2. **不提交敏感与本地配置改动**——Nacos 配置源文件（`snowy-server/snowy-nacos-app/src/main/resources/META-INF/config-data/**/*.yaml`）与 `nacos-db*.sql` 里改成本机的数据库/Redis 口令、库号，`snowy-nacos-app` 的 `application.properties` 本地口令，各服务 `application.yml` 的 Nacos 账号，前端 .env 类文件（已忽略的除外也要留意）
+3. **默认只做本地 commit**——push 必须用户明确要求；`origin` 若指向官方远程，更不能随手 push
 4. **提交前过 /check 或 code-patterns 检查清单**——规范违规不提交
 
 ## Commit Message 规范
@@ -52,7 +53,7 @@ git tag v0.1-重构前
 - ❌ `git push --force` 到主分支
 - ❌ `git reset --hard` 丢弃未确认的改动（先问用户）
 - ❌ `git clean -fd`（会删未跟踪的新文件）
-- ❌ 提交 node_modules / target / 日志 / 本地口令配置
+- ❌ 提交 node_modules / target / 日志 / 本地口令配置（含 Nacos 配置里的本机口令）
 
 ## 与项目管理命令的联动
 

@@ -10,7 +10,7 @@ description: 基于已有数据库表快速生成 CRUD 代码
 
 ### 1. 获取表结构
 
-数据库连接从 `snowy-web-app/src/main/resources/application.properties` 的 dynamic master 段解析（禁止硬编码）：
+业务表在 **snowy-cloud** 库。数据库连接从 Nacos 配置源文件 `snowy-server/snowy-nacos-app/src/main/resources/META-INF/config-data/dev/snowy-biz-app-dev.yaml` 的 `spring.datasource.dynamic.datasource.master` 段解析（运行时以 Nacos 控制台里的同名配置为准；禁止硬编码）：
 
 ```bash
 mysql -h{host} -u{user} -p{pwd} {db} -e "SHOW CREATE TABLE {表名};"
@@ -29,11 +29,13 @@ mysql CLI 不可用 → 请用户提供表结构（DDL 粘贴或描述字段）�
 
 ### 3. 生成代码（模式 A 直写）
 
-**先 Read 范本** `snowy-plugin/snowy-plugin-biz/.../modular/notice/`，然后按 crud-development 技能生成：
+**先 Read 范本** `snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular/notice/`，然后按 crud-development 技能生成：
 - 类名：表名去前缀转驼峰 + Biz 前缀（BIZ_SUPPLIER → BizSupplier）
-- 落位：`snowy-plugin-biz/.../modular/{域名}/`
-- URL：`/biz/{域名}/{page|add|edit|delete|detail}`
+- 落位：`snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular/{域名}/`
+- URL：`/biz/{域名}/{page|add|edit|delete|detail}`（代码里不带网关前缀；经网关访问为 `/api/bizapp/biz/{域名}/...`）
 - 查询字段：varchar 的做 like 或 eq（问用户或按字段语义：名称类 like、类型/状态类 eq）
+- 域名不要取 sys/auth/client/dev/gen/mobile（前端 apiAdaptive.js 按包含匹配，会被误转到 `/api/webapp`）
+- 默认不做 feign 化；只有该表的能力需要被其他服务调用时，才按 crud-development 补 provider + feign 三件并装配
 
 ### 4. 前端三件 + 菜单 SQL
 
@@ -42,5 +44,5 @@ mysql CLI 不可用 → 请用户提供表结构（DDL 粘贴或描述字段）�
 ### 5. 输出清单与收尾
 
 - 生成文件列表（后端 + 前端）
-- 菜单/按钮 SQL（执行或落盘 docs/sql-pending/）
-- 提醒：重启 → 授权 → 刷新 → /check
+- 菜单/按钮 SQL（执行到 snowy-cloud 库，或落盘 docs/sql-pending/）
+- 提醒：重启 snowy-biz-app → 角色管理"授权资源"+"授权权限"（手写接口连超管角色也要授）→ 刷新 → 走网关自测（`http://localhost:9003/api/bizapp/biz/{域名}/page`，见 api-verify 技能）→ /check

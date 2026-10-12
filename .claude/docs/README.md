@@ -1,4 +1,4 @@
-# Snowy 二次开发文档中心
+# Snowy 微服务版二次开发文档中心
 
 > 阅读顺序：先读根目录 `CLAUDE.md`（项目宪法），再按需查本目录指南；按需知识（技能）在 `.claude/skills/`，由 hook 自动激活。
 
@@ -6,8 +6,8 @@
 
 | 文档 | 内容 | 什么时候看 |
 |---|---|---|
-| [框架说明](框架说明.md) | Maven 模块拓扑、插件机制、启动链路、B/C 双端模型、29 项平台功能清单 | 想了解"平台已经有什么、不用我开发什么" |
-| [后端开发指南](后端开发指南.md) | 六件套逐文件详解（以 BizNotice 为线）、跨插件调用 | 写后端代码前 |
+| [框架说明](框架说明.md) | 技术栈（含 Spring Cloud/Nacos/Gateway/OpenFeign/Sentinel/xxl-job）、Maven 模块与服务拓扑、插件五类子模块、跨服务调用、启动链路、B/C 双端模型、29 项平台功能清单 | 想了解"平台已经有什么、不用我开发什么、代码跑在哪个服务" |
+| [后端开发指南](后端开发指南.md) | 六件套逐文件详解（以 BizNotice 为线）、跨插件/跨服务调用 | 写后端代码前 |
 | [前端开发指南](前端开发指南.md) | snowy-admin-web：api js / index.vue / form.vue / 组件 / i18n | 写前端代码前 |
 | [数据库设计规范](数据库设计规范.md) | 大写表名、审计字段、建表模板、33 表清单、菜单 SQL | 建表/写 SQL 前 |
 | [工具类使用指南](工具类使用指南.md) | snowy-common 16 工具类 + Hutool 优先原则 | 找工具时 |
@@ -25,13 +25,16 @@
 
 | 项 | 规范 |
 |---|---|
-| 包名 | `vip.xiaonuo.*`（业务在 biz 插件） |
+| 包名 | `vip.xiaonuo.*`（业务在 `snowy-plugin-biz-func`，运行于 snowy-biz-app） |
 | 注入 | `@Resource`（禁 @Autowired / 构造器注入） |
 | ServiceImpl | `extends ServiceImpl<M, T> implements XxxService` |
 | 转换 | Hutool `BeanUtil`（禁 MapstructUtils） |
 | Lombok | `@Getter @Setter`（禁 @Data） |
 | 返回/异常 | `CommonResult<T>` / `CommonException`（中文消息） |
-| URL | `/{插件}/{域}/{动作}` 动词式，方法注解上，权限码=URL |
+| URL | `/{插件}/{域}/{动作}` 动词式，方法注解上，权限码=URL（服务内路径，不带网关前缀；前端经网关自动加 `/api/bizapp`、`/api/webapp`） |
+| 跨服务 | 业务代码只注入 `XxxApi`；跨服务按 api / provider / feign / feign-provider / api-context 五件套补齐 |
+| 白名单 | 网关 GatewayConfigure（带前缀）+ 服务 GlobalConfigure（不带前缀）两处都改 |
+| 配置 | 服务配置在 Nacos（如 `snowy-biz-app-dev.yaml`），本地 application.yml 只做 Nacos 接入 |
 | 表/主键 | 全大写 `BIZ_XXX` / String 雪花 |
 | 版权头 | 每个 .java 头部 12 行 Apache 2.0 声明，不可删 |
 | 注释 | 全中文，Javadoc 带 @author @date |
@@ -41,7 +44,7 @@
 1. 删版权头
 2. RuoYi 风格代码（@Autowired/MapstructUtils/@Data/RESTful URL/冒号权限码/Long 主键/小写表名）
 3. 业务代码写进 sys/auth/dev/gen 等 6 个平台插件
-4. 跨插件直接 import 对方实体
+4. 跨插件/跨服务直接 import 对方实体或依赖对方 -func 模块（跨服务走 *-api + Feign 五件套）
 5. 明文存储口令/敏感字段（必须国密）
 6. 写操作不加事务/操作日志
 7. 查询不带 checkSqlInjection

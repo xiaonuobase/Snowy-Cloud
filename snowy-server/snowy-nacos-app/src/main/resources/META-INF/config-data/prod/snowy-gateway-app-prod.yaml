@@ -186,8 +186,8 @@ knife4j:
   production: false
   basic:
     enable: true
-    username: admin
-    password: 123456
+    username: snowyAdmin
+    password: Snowy@2026!
   setting:
     enableOpenApi: false
     enableSwaggerModels: false

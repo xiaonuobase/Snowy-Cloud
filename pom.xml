@@ -18,7 +18,7 @@
 
     <properties>
         <aliyun-dm.version>1.0.6</aliyun-dm.version>
-        <aliyun-oss.version>3.15.1</aliyun-oss.version>
+        <aliyun-oss.version>3.17.4</aliyun-oss.version>
         <aliyun.sdk.dm.version>3.3.1</aliyun.sdk.dm.version>
         <aliyun.sdk.dysmsapi.version>2.0.24</aliyun.sdk.dysmsapi.version>
         <aliyun.sdk.ecs.version>3.1.0</aliyun.sdk.ecs.version>
@@ -29,7 +29,7 @@
         <checker.qual.version>3.31.0</checker.qual.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.compress.version>1.22</commons.compress.version>
-        <commons-net.version>3.10.0</commons-net.version>
+        <commons-net.version>3.11.1</commons-net.version>
         <commons.pool2.version>2.12.0</commons.pool2.version>
         <dingtalk-sdk.version>2.0.0</dingtalk-sdk.version>
         <dingtalk-stream.version>1.3.7</dingtalk-stream.version>
@@ -38,7 +38,7 @@
         <dynamic-datasource.version>4.3.1</dynamic-datasource.version>
         <easy-poi.version>4.4.0</easy-poi.version>
         <easy-trans.version>3.1.4</easy-trans.version>
-        <easyexcel.version>3.3.3</easyexcel.version>
+        <easyexcel.version>3.3.4</easyexcel.version>
         <fastjson.version>2.0.24</fastjson.version>
         <gson.version>2.8.9</gson.version>
         <guava.version>31.1-jre</guava.version>
@@ -60,32 +60,32 @@
         <knife4j.version>4.5.0</knife4j.version>
         <kotlin.version>1.5.32</kotlin.version>
         <lark-sdk.version>2.3.7</lark-sdk.version>
-        <logback.classic.version>1.5.18</logback.classic.version>
-        <lombok.version>1.18.30</lombok.version>
-        <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
-        <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
-        <minio.version>8.5.2</minio.version>
+        <logback.classic.version>1.5.34</logback.classic.version>
+        <lombok.version>1.18.48</lombok.version>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+        <minio.version>8.5.12</minio.version>
         <mssql.connector.java.version>12.4.2.jre11</mssql.connector.java.version>
-        <mybatis-plus.version>3.5.5</mybatis-plus.version>
+        <mybatis-plus.version>3.5.9</mybatis-plus.version>
         <mybatis-spring-boot-starter.version>2.3.0</mybatis-spring-boot-starter.version>
         <mybatis.version>3.5.15</mybatis.version>
         <mysql.connector.java.version>8.3.0</mysql.connector.java.version>
         <nacos.client.version>2.2.1</nacos.client.version>
-        <nashorn.version>15.4</nashorn.version>
+        <nashorn.version>15.6</nashorn.version>
         <netty.common.version>4.1.104.Final</netty.common.version>
         <netty.handler.version>4.1.104.Final</netty.handler.version>
-        <nimbus-jose-jwt.version>9.37.3</nimbus-jose-jwt.version>
+        <nimbus-jose-jwt.version>9.40</nimbus-jose-jwt.version>
         <opensaml.version>4.0.1</opensaml.version>
         <oracle.connector.java.version>19.21.0.0</oracle.connector.java.version>
         <oracle.nls.orai18n.version>23.3.0.23.09</oracle.nls.orai18n.version>
-        <oshi.version>6.4.11</oshi.version>
+        <oshi.version>6.6.5</oshi.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <postgres.connector.java.version>42.7.1</postgres.connector.java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <protobuf.java.version>3.21.12</protobuf.java.version>
         <qcloud-cos.version>5.6.199</qcloud-cos.version>
-        <redisson.version>3.45.0</redisson.version>
+        <redisson.version>3.46.0</redisson.version>
         <rustfs-s3.version>2.20.0</rustfs-s3.version>
         <sa-token.version>1.44.0</sa-token.version>
         <skipTests>true</skipTests>
@@ -94,12 +94,12 @@
         <snakeyaml.version>2.2</snakeyaml.version><!-- cloud使用2.0版本yaml存在冲突 -->
         <snowy.version>3.0.0</snowy.version>
         <spring-boot-admin.version>3.4.7</spring-boot-admin.version>
-        <spring-boot.version>3.5.9</spring-boot.version>
+        <spring-boot.version>3.5.16</spring-boot.version>
         <spring-cloud-alibaba.version>2023.0.3.3</spring-cloud-alibaba.version>
         <spring-cloud-bootstrap.version>4.1.2</spring-cloud-bootstrap.version>
         <spring-cloud.version>2025.0.0</spring-cloud.version>
-        <spring.context.version>6.2.15</spring.context.version>
-        <spring-framework.version>6.2.15</spring-framework.version>
+        <spring.context.version>6.2.19</spring.context.version>
+        <spring-framework.version>6.2.19</spring-framework.version>
         <spring.security.crypto.version>6.1.2</spring.security.crypto.version><!-- cloud使用6.0.2版本yaml存在冲突 -->
         <springfox.version>3.0.0</springfox.version>
         <tencentcloud-ses.version>3.1.944</tencentcloud-ses.version>
@@ -454,6 +454,13 @@
                 <version>${mybatis-plus.version}</version>
             </dependency>
 
+            <!-- mybatis-plus-jsqlparser（3.5.9+ 分页拦截器必须） -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-jsqlparser</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
             <!-- easy-trans -->
             <dependency>
                 <groupId>org.dromara</groupId>
@@ -472,6 +479,13 @@
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+
+            <!-- redisson 核心包（sa-token-redisson 会传递引入旧版本，在此统一） -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
                 <version>${redisson.version}</version>
             </dependency>
 

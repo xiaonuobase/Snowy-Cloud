@@ -141,11 +141,12 @@ public class GlobalExceptionUtil {
             // 通用业务异常，直接返回给前端
             log.error(">>> 通用业务异常：", e);
             commonResult = CommonResult.get(commonException.getCode(), commonException.getMsg(), null);
-        } else if (e instanceof FeignException) {
+        } else if (e instanceof FeignException feignException) {
 
-            // Feign异常，直接返回给前端
+            // Feign异常（远程业务异常已由FeignErrorDecoder还原为CommonException），详情只记日志，不把内部地址返回前端
             log.error(">>> Feign异常：", e);
-            commonResult = CommonResult.error(e.getMessage());
+            boolean unavailable = feignException.status() == HttpStatus.HTTP_UNAVAILABLE || feignException.status() == -1;
+            commonResult = CommonResult.error(unavailable ? "远程服务暂不可用，请稍后重试" : "远程服务调用失败");
         } else {
             // 未知异常打印详情
             log.error(">>> 服务器未知异常，请求地址：{}，具体信息：{}", CommonServletUtil.getRequest().getRequestURL(), e);

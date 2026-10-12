@@ -3,9 +3,9 @@
  * UserPromptSubmit Hook - 强制技能评估 (Snowy 版)
  * 功能: 开发场景下，将 Skills 激活率从约 25% 提升到 90% 以上
  *
- * 适配项目: Snowy v3.0.0 (前后端分离，插件化架构)
- * 后端包名: vip.xiaonuo.*
- * 前端工程: snowy-admin-web/ (Vue3 + Ant Design Vue，JS 非 TS)
+ * 适配项目: Snowy-Cloud v3.0.0 (Snowy 微服务版：前后端分离，插件化 + Spring Cloud 多服务)
+ * 后端包名: vip.xiaonuo.*（业务代码在 snowy-plugin-biz-func，运行于 snowy-biz-app）
+ * 前端工程: snowy-admin-web/ (Vue3 + Ant Design Vue，JS 非 TS，请求经网关 9003)
  */
 
 const fs = require('fs');
@@ -64,31 +64,31 @@ const instructions = `## 强制技能激活流程（必须执行）
 
 可用技能（前后端同仓库项目）：
 > 注意：snowy-admin-web/ 目录存在，CRUD/dev 类任务应同时生成前端三文件（api js + index.vue + form.vue）
-- crud-development: CRUD/业务模块/Entity/Service/Controller/Param 开发
-- api-development: API设计/接口规范/URL/CommonResult/异常处理
-- plugin-architecture: 插件/模块划分/跨插件调用/provider/新建插件
+- crud-development: CRUD/业务模块/Entity/Service/Controller/Param 开发/biz-func
+- api-development: API设计/接口规范/URL/CommonResult/异常处理/网关前缀/Knife4j分组
+- plugin-architecture: 插件/模块划分/跨插件调用/provider/新建插件/跨服务调用/Feign/api-context/新服务
 - code-generator: 代码生成/Beetl/gen/生成器/菜单SQL
 - database-ops: 数据库/SQL/建表/大写表名/菜单/字典数据
 - backend-annotations: 注解/@CommonLog/@SaCheckPermission/@Trans/@Validated
 - code-patterns: 编码规范/禁令/命名/来自RuoYi的惯性错误
 - common-toolkit: 工具类/CommonCacheOperator/CommonCryptogramUtil/Hutool
-- cache-redis: 缓存/Redis/Redisson/CommonCacheOperator
-- file-oss-management: 文件上传/OSS/云存储/MinIO/XnUpload
+- cache-redis: 缓存/Redis/Redisson/CommonCacheOperator/会话共享
+- file-oss-management: 文件上传/OSS/云存储/MinIO/XnUpload/跨服务上传
 - sms-mail: 短信/邮件/验证码/sms4j/SMTP
 - message-push: 站内信/消息推送/钉钉/企微/飞书/WebSocket
-- scheduled-jobs: 定时任务/Cron/DEV_JOB/TimerTaskRunner
+- scheduled-jobs: 定时任务/Cron/DEV_JOB/TimerTaskRunner/xxl-job/找不到对应的类
 - dict-config: 字典/DEV_DICT/BIZ_DICT/DictSelect/枚举/系统配置
-- security-auth: 鉴权/Sa-Token/登录/白名单/B端C端/数据范围/权限
+- security-auth: 鉴权/Sa-Token/登录/白名单/B端C端/数据范围/权限/网关鉴权/白名单两处
 - crypto-sm: 国密/SM2/SM3/SM4/加密/密码/敏感字段
-- frontend-pc: 前端/Vue/AntdV/api js/index.vue/form.vue/Xn组件
+- frontend-pc: 前端/Vue/AntdV/api js/index.vue/form.vue/Xn组件/apiAdaptive/网关前缀
 - client-mobile: C端/客户端/移动端/uni-app/mobile插件
-- bug-detective: Bug/报错/异常/不工作/排查
+- bug-detective: Bug/报错/异常/不工作/排查/网关404/服务未注册/Nacos
 - performance-doctor: 性能/慢查询/优化/N+1/缓存
-- project-navigator: 找文件/在哪/目录结构/导航
+- project-navigator: 找文件/在哪/目录结构/导航/服务端口/网关路由/Nacos配置在哪
 - git-workflow: Git/提交/commit/分支
-- env-setup: 环境搭建/首次启动/默认密码/出厂账号/导入数据库
-- api-verify: 接口测试/自测/登录拿token/curl验证/冒烟
-- platform-extension: 扩展/定制平台/监听/联动/复用平台能力/不改框架
+- env-setup: 环境搭建/首次启动/默认密码/出厂账号/导入数据库/Nacos/启动顺序/端口
+- api-verify: 接口测试/自测/登录拿token/curl验证/冒烟/经网关调用
+- platform-extension: 扩展/定制平台/监听/联动/复用平台能力/不改框架/跨服务联动
 - add-skill: 新增技能/创建skill
 
 ### 步骤 2 - 激活
@@ -105,7 +105,8 @@ const instructions = `## 强制技能激活流程（必须执行）
 1. 只有确实相关的技能才列入步骤 1，宁缺毋滥
 2. 技能激活后必须遵循技能内的规范（正误对照、检查清单）
 3. 涉及写 Java 代码时，牢记本项目规范与 RuoYi 系框架方向相反（详见 code-patterns 技能）
-4. Snowy 核心规范速记（写码前扫一眼）：包名 vip.xiaonuo.*｜@Resource 注入｜ServiceImpl 必须继承｜BeanUtil 转换｜@Getter @Setter｜CommonResult/CommonException｜URL 动词式写方法上且 @SaCheckPermission 值=URL｜String 主键｜表名全大写｜每个 .java 带 12 行版权头`;
+4. Snowy 核心规范速记（写码前扫一眼）：包名 vip.xiaonuo.*｜@Resource 注入｜ServiceImpl 必须继承｜BeanUtil 转换｜@Getter @Setter｜CommonResult/CommonException｜URL 动词式写方法上且 @SaCheckPermission 值=URL｜String 主键｜表名全大写｜每个 .java 带 12 行版权头
+5. 微服务版速记：业务代码在 snowy-plugin-biz-func（跑在 snowy-biz-app）｜业务只注入 XxxApi，跨服务走 api/provider/feign/feign-provider/api-context 五件套｜配置在 Nacos｜白名单改网关 + 服务两处｜不要套用单体版的 Application/82 端口/application.properties/snowy-plugin-api 路径`;
 
 process.stdout.write(instructions);
 process.exit(0);

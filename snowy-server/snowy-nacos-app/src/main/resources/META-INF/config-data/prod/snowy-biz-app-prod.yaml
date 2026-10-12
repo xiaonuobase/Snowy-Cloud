@@ -85,6 +85,8 @@ spring:
       #          username: SNOWY
       #          password: 12345678
       #      strict: true
+      #      druid:
+      #        validation-query: SELECT 1 FROM DUAL
 
       # mssql
       #  datasource:
@@ -128,21 +130,22 @@ spring:
         max-wait: 60000
         pool-prepared-statements: true
         max-pool-prepared-statement-per-connection-size: 20
-        validation-query-timeout: 2000
+        validation-query-timeout: 2
         test-on-borrow: false
         test-on-return: false
         test-while-idle: true
-        time-between-eviction-runs-millis: 6000
+        time-between-eviction-runs-millis: 60000
         min-evictable-idle-time-millis: 300000
+        keep-alive: true
         filters: stat
         break-after-acquire-failure: false
 
     # druid monitor configuration
     druid:
       stat-view-servlet:
-        enabled: true
-        login-username: admin
-        login-password: 123456
+        enabled: false
+        login-username: snowyAdmin
+        login-password: Snowy@2026!
 
   #########################################
   # jackson configuration
@@ -238,8 +241,8 @@ knife4j:
   production: false
   basic:
     enable: false
-    username: admin
-    password: 123456
+    username: snowyAdmin
+    password: Snowy@2026!
   setting:
     enableOpenApi: false
     enableSwaggerModels: false

@@ -11,15 +11,15 @@ description: 全量同步代码状态并生成综合报告
 ## 执行步骤
 
 ### 1. 代码全量扫描
-- 业务域枚举与完整度统计（同 /progress 第 1-3 步逻辑）
-- TODO/FIXME 扫描（biz 范围 + 前端 views/biz）
+- 业务域枚举与完整度统计（同 /progress 第 1-3 步逻辑；业务域在 `snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular/` 下，以 framework-config.json 的 business.backend.scanRoot 为准）
+- TODO/FIXME 扫描（biz 范围 `snowy-plugin/snowy-plugin-biz/` + 前端 views/biz）
 - 规范粗查（@Autowired / @Data / MapstructUtils / TS 残留）
 
 ### 2. git 分析（带降级）
 ```bash
 git rev-parse --is-inside-work-tree 2>/dev/null || echo NO_GIT
 ```
-- 可用：`git log --oneline -50` 分析最近提交（区分业务提交/工程配置提交）；`git log --format="%ad %s" --date=short -20` 得时间线
+- 可用：`git log --oneline -50` 分析最近提交（区分业务提交/工程配置提交/上游同步提交——上游官方提交以"【底座】""【更新】"等前缀开头）；`git log --format="%ad %s" --date=short -20` 得时间线
 - 不可用：降级为"文档时间线"——读 docs/项目状态.md 的最近更新记录 + `ls -lt` 业务域目录 mtime 推断活跃度
 
 ### 3. 读取现有文档

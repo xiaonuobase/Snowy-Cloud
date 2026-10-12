@@ -12,8 +12,9 @@ description: 下一步开发建议（优先级排序）
 存在 → 高/中/低优先级各区取头部条目。不存在 → 跳过并提示可 /init-docs。
 
 ### 2. 代码缺口（biz 范围）
-- 六件套不齐的域（/progress 口径）→ "补齐 X 件"
+- 六件套不齐的域（/progress 口径，业务域在 `snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular/` 下）→ "补齐 X 件"
 - 前端三件缺失 → "补前端"
+- 新业务 URL 前缀（非 /biz/）未在前端 apiAdaptive.js 登记 → "补网关前缀登记"（否则经网关 404；若是新建服务，还要补网关路由）
 ```bash
 Grep pattern: "FIXME:|TODO:"  path: snowy-plugin/snowy-plugin-biz/
 ```
@@ -56,4 +57,4 @@ git rev-parse --is-inside-work-tree 2>/dev/null && git log --oneline -15
 
 - 每条建议：具体动作 + 预计耗时 + 可直接执行的命令/指令
 - 最多 8 条，宁缺毋滥
-- 不主动建议改框架模块（sys/auth/dev/gen）
+- 不主动建议改框架模块（sys/auth/dev/gen/client/mobile/mocker 插件与 snowy-server 下的中间件应用）；为新业务前缀登记网关路由/白名单属于必要配置，不算改框架

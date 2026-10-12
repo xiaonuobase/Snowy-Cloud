@@ -14,6 +14,7 @@ package vip.xiaonuo.dev.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import vip.xiaonuo.common.consts.FeignConstant;
 
@@ -34,5 +35,14 @@ public interface DevConfigFeign {
      **/
     @PostMapping("/feign/dev/config/getValueByKey")
     String getValueByKey(@RequestParam("key") String key);
+
+    /**
+     * 根据键设置值，键不存在时抛异常
+     *
+     * @author yubaoshan
+     * @date 2026/10/12 10:00
+     **/
+    @PostMapping("/feign/dev/config/setValueByKey")
+    void setValueByKey(@RequestBody String param);
 
 }

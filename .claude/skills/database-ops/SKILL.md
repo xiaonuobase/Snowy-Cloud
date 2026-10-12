@@ -1,6 +1,6 @@
 ---
 name: database-ops
-description: Snowy 数据库设计规范：大写表名、BIZ_ 前缀、String 雪花主键、审计字段组、建表模板、菜单/按钮 SYS_RESOURCE SQL、SQL 脚本落点、多数据源。触发场景：1) 新功能设计建表 2) 写菜单/按钮资源 SQL 3) 查表结构或写查询 SQL 4) 配置数据源。触发词：数据库、建表、SQL、表设计、菜单SQL、SYS_RESOURCE、字典数据、主键、雪花、DELETE_FLAG、数据源、dynamic。
+description: Snowy 数据库设计规范：大写表名、BIZ_ 前缀、String 雪花主键、审计字段组、建表模板、菜单/按钮 SYS_RESOURCE SQL、SQL 脚本落点、多数据源。触发场景：1) 新功能设计建表 2) 写菜单/按钮资源 SQL 3) 查表结构或写查询 SQL 4) 配置数据源。触发词：数据库、建表、SQL、表设计、菜单SQL、SYS_RESOURCE、字典数据、主键、雪花、DELETE_FLAG、数据源、dynamic、snowy-cloud 库、Nacos 数据源、Nacos 库、xxl-job 库。
 ---
 
 # Snowy 数据库设计规范
@@ -65,7 +65,8 @@ INSERT INTO `SYS_RESOURCE` VALUES ('...', '菜单id雪花串', '删除供应商'
 
 - 按钮码固定集合：`{classNameFirstLower}Add / Edit / Delete / Detail / BatchDelete / Import / Export`（+ 业务动作码如 `UpdateStatus`）
 - 需要字典数据时：`INSERT INTO DEV_DICT`（系统字典）或 BIZ 字典管理界面维护
-- 执行后：重启后端 → 角色管理给角色授权 → 前端可见
+- 菜单 SQL 执行到 **snowy-cloud** 库（web-app、biz-app、网关共用这一个业务库）
+- 执行后：重启 snowy-biz-app（新接口代码在它里面）→ 角色管理给角色"授权资源"（菜单+按钮）与"授权权限"（接口 URL）→ 重新登录 → 前端可见
 
 ### 菜单挂载点速查（出厂种子的真实 ID，写 SQL 直接用）
 
@@ -79,18 +80,28 @@ INSERT INTO `SYS_RESOURCE` VALUES ('...', '菜单id雪花串', '删除供应商'
 
 系统模块（`1548901111999770525`）下的目录仅平台功能使用：组织架构 `1548901111999770726`、权限管控 `1548901111999771126`、基础工具 `1548901111999771626`、系统运维 `1548901111999772126`、在线开发 `1548901111999773250`。
 
-> 依据：`snowy_mysql.sql` 种子数据（全新导入即生效）。若库已被人工调整过，用 `SELECT ID, TITLE, CATEGORY, P_ID FROM SYS_RESOURCE` 核实后再用。前端菜单 component 路径 `biz/{域名}/index` 必须与 views 目录一致。
+> 依据：`snowy-modules/snowy-web-app/src/main/resources/_sql/snowy_mysql.sql` 种子数据（以上 ID 已在该文件中逐个核实；全新导入即生效）。若库已被人工调整过，用 `SELECT ID, TITLE, CATEGORY, PARENT_ID FROM SYS_RESOURCE` 核实后再用。前端菜单 component 路径 `biz/{域名}/index` 必须与 views 目录一致。
 
 ## 数据库连接与多数据源
 
-- 连接配置：`snowy-web-app/src/main/resources/application.properties` 的 `spring.datasource.dynamic.master` 段（**AI 需要连接串时从这里动态解析，禁止硬编码**）
-- 多数据源：dynamic-datasource，默认 master；pgSql/oracle/oracleLake/mssql/dm/kingbase 配置已注释预留，取消注释即可加库
-- Druid 监控页：`/druid`（账号见配置）
-- 初始化脚本：`snowy-web-app/src/main/resources/_sql/snowy_mysql.sql`（33 张表）；新增表的 DDL 也建议在 `_sql/` 下追加增量脚本文件
+- 库清单（同一个 MySQL 实例上三个库，用途互不相同）：
+
+| 库名 | 用途 | 建库/初始化 |
+|---|---|---|
+| `snowy-cloud` | **业务库**：web-app、biz-app、网关共用，33 张平台表 + 新增 BIZ_ 表都在这里 | 先手工建库（utf8mb4），再导入 `snowy-modules/snowy-web-app/src/main/resources/_sql/snowy_mysql.sql`（脚本**不含** CREATE DATABASE） |
+| `snowy-nacos-app-open` | Nacos 自身存储（配置中心数据） | 手工建库后导入 `snowy-server/snowy-nacos-app/src/main/resources/META-INF/nacos-db.sql`；库名以 `snowy-server/snowy-nacos-app/src/main/resources/application.properties` 的 `db.url.0` 为准（README 写 snowy-nacos-app，不一致） |
+| `snowy-cloud-job` | xxl-job 调度中心 | `snowy-server/snowy-xxl-job-app/src/main/resources/db/tables_xxl_job.sql`（脚本自带 CREATE DATABASE） |
+
+- ⚠️ 注意：`META-INF/nacos-db.sql` 已含全部 `config_info`（id 1~17、45，内容与 `config-data` 一致），新装只导它；`META-INF/nacos-db-snowy-config-init.sql` 是同 id 的同一批配置记录，仅用于刷新已有库，执行前需先删除同 id 记录，否则主键冲突
+- 连接配置**不在本地 application.yml**（本地只做 Nacos 接入）：web-app、biz-app 的数据源在 Nacos 配置 `snowy-web-app-dev.yaml` / `snowy-biz-app-dev.yaml` 的 `spring.datasource.dynamic.datasource.master` 段；仓库源文件在 `snowy-server/snowy-nacos-app/src/main/resources/META-INF/config-data/{dev,test,prod}/`，运行时以 Nacos 控制台（`http://localhost:8848/nacos`，命名空间 snowy-cloud-dev、分组 dev）里的同名配置为准（**AI 需要连接串时从这里动态解析，禁止硬编码**）
+- 网关也连业务库：`snowy-gateway-app-dev.yaml` 的 `spring.datasource`（非 dynamic）
+- 多数据源：dynamic-datasource，默认 master；oracle/mssql/dm/kingbase 配置已在上述 Nacos 配置里注释预留，取消注释即可加库
+- Druid 监控页：web-app 的 `/druid`（网关有 `/druid/**` → web-app 的路由；出厂默认关闭，需要时把 `snowy-web-app-dev.yaml` 的 `stat-view-servlet.enabled` 改为 true，账号同在该段）
+- 初始化脚本：`snowy-modules/snowy-web-app/src/main/resources/_sql/snowy_mysql.sql`（33 张表）；新增表的 DDL 也建议在同目录 `_sql/` 下追加增量脚本文件
 
 ## AI 执行 SQL 的方式（降级链）
 
-1. mysql CLI 可用 → 直接执行（从 application.properties 解析连接）
+1. mysql CLI 可用 → 直接执行到 snowy-cloud 库（从上述 Nacos 配置解析连接）
 2. CLI 不可用 → SQL 写入 `docs/sql-pending/{日期}-{功能}.sql`，明确提示用户手动执行
 3. ❌禁止在没有明确用户确认时执行 DROP/TRUNCATE/ALTER 之类破坏性语句
 
@@ -120,15 +131,15 @@ SELECT CONFIG_VALUE FROM DEV_CONFIG WHERE CONFIG_KEY = 'SNOWY_SYS_DEFAULT_PASSWO
 
 | 前缀 | 表 |
 |---|---|
-| SYS_ | SYS_USER、SYS_USER_EXT、SYS_ORG、SYS_POSITION、SYS_ROLE、SYS_RESOURCE、SYS_MODULE、SYSRelation 相关（SYS_USER_ROLE、SYS_ROLE_MENU 等）、SYS_USER_DATA_SCOPE(_MAP)、SYS_GROUP、SYS_GROUP_USER |
-| BIZ_ | BIZ_NOTICE |
-| DEV_ | DEV_CONFIG、DEV_DICT、DEV_EMAIL、DEV_FILE、DEV_JOB、DEV_LOG、DEV_MESSAGE、DEV_PUSH、DEV_SMS、DEV_SLIDESHOW、DEV_WEAK_PASSWORD |
-| GEN_ | GEN_BASIC、GEN_CONFIG |
-| CLIENT_ | CLIENT_USER |
-| MOBILE_ | MOBILE_RESOURCE、（移动端模块表） |
-| AUTH_ | AUTH_*（三方登录/关系相关） |
+| SYS_（12） | SYS_USER、SYS_USER_EXT、SYS_USER_PASSWORD、SYS_ORG、SYS_ORG_EXT、SYS_POSITION、SYS_ROLE、SYS_RESOURCE（模块/菜单/按钮都在这张表）、SYS_RELATION（用户-角色、角色-资源、角色-权限等关系统一存这里）、SYS_GROUP、SYS_USER_DATA_SCOPE、SYS_USER_DATA_SCOPE_MAP |
+| BIZ_（1） | BIZ_NOTICE |
+| DEV_（12） | DEV_CONFIG、DEV_DICT、DEV_EMAIL、DEV_FILE、DEV_JOB、DEV_LOG、DEV_MESSAGE、DEV_PUSH、DEV_RELATION、DEV_SLIDESHOW、DEV_SMS、DEV_WEAK_PASSWORD |
+| GEN_（2） | GEN_BASIC、GEN_CONFIG |
+| CLIENT_（4） | CLIENT_USER、CLIENT_USER_EXT、CLIENT_USER_PASSWORD、CLIENT_RELATION |
+| MOBILE_（1） | MOBILE_RESOURCE |
+| AUTH_（1） | AUTH_THIRD_USER |
 
-（准确清单以 `_sql/snowy_mysql.sql` 为准，可 grep `CREATE TABLE`）
+（准确清单以 `snowy-modules/snowy-web-app/src/main/resources/_sql/snowy_mysql.sql` 为准，可 grep `CREATE TABLE`；Nacos、xxl-job 的表在各自库里，不在此列）
 
 ## 检查清单
 
@@ -138,15 +149,18 @@ SELECT CONFIG_VALUE FROM DEV_CONFIG WHERE CONFIG_KEY = 'SNOWY_SYS_DEFAULT_PASSWO
 - [ ] 每字段中文 COMMENT
 - [ ] 树形表有 PARENT_ID；一对多有外键字段（varchar(20)）
 - [ ] 菜单/按钮 SQL 与代码 URL、前端 hasPerm 码一致
-- [ ] DDL 增量脚本落 `_sql/`
+- [ ] DDL、菜单 SQL 都执行在 snowy-cloud 库（不是 Nacos 库或 xxl-job 库）
+- [ ] DDL 增量脚本落 `snowy-modules/snowy-web-app/src/main/resources/_sql/`
 
 ## 参考实现
 
 | 文件 | 说明 |
 |---|---|
-| `snowy-web-app/src/main/resources/_sql/snowy_mysql.sql` | 全部建表语句（BIZ_NOTICE 是标准范本） |
-| `snowy-plugin/snowy-plugin-biz/src/main/java/vip/xiaonuo/biz/modular/notice/entity/BizNotice.java` | Entity 与表的映射范本 |
-| `snowy-common/src/main/java/vip/xiaonuo/common/pojo/CommonEntity.java` | 审计字段基类 |
-| `snowy-common/src/main/java/vip/xiaonuo/common/enums/CommonDeleteFlagEnum.java` | 逻辑删除枚举 |
-| `snowy-plugin/snowy-plugin-gen/src/main/resources/sqlend/Mysql.sql.btl` | 菜单/按钮 SQL 权威模板 |
-| `snowy-web-app/src/main/resources/application.properties` | 数据源配置 |
+| `snowy-modules/snowy-web-app/src/main/resources/_sql/snowy_mysql.sql` | 全部建表语句（BIZ_NOTICE 是标准范本） |
+| `snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular/notice/entity/BizNotice.java` | Entity 与表的映射范本 |
+| `snowy-base/snowy-common/src/main/java/vip/xiaonuo/common/pojo/CommonEntity.java` | 审计字段基类 |
+| `snowy-base/snowy-common/src/main/java/vip/xiaonuo/common/enums/CommonDeleteFlagEnum.java` | 逻辑删除枚举 |
+| `snowy-plugin/snowy-plugin-gen/snowy-plugin-gen-func/src/main/resources/sqlend/Mysql.sql.btl` | 菜单/按钮 SQL 权威模板 |
+| `snowy-server/snowy-nacos-app/src/main/resources/META-INF/config-data/dev/snowy-web-app-dev.yaml`、`snowy-biz-app-dev.yaml` | 业务库数据源配置（Nacos 配置源文件） |
+| `snowy-server/snowy-nacos-app/src/main/resources/application.properties` | Nacos 自身存储库连接（db.url.0） |
+| `snowy-server/snowy-xxl-job-app/src/main/resources/db/tables_xxl_job.sql` | xxl-job 库初始化脚本 |

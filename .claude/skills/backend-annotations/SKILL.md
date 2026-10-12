@@ -1,6 +1,6 @@
 ---
 name: backend-annotations
-description: Snowy 常用注解速查与正误用法：@CommonLog 操作日志、@CommonNoRepeat 防重、@CommonWrapper 返回包装、@SaCheckPermission、@Trans 字段翻译、@Validated/@Valid、MyBatis-Plus 注解。触发场景：1) 给接口加日志/防重/权限注解 2) 字段需要字典或关联表翻译 3) 不确定该用哪个注解或注解参数。触发词：注解、@CommonLog、@CommonNoRepeat、@SaCheckPermission、@Trans、Easy-Trans、翻译、字典翻译、@Validated、@TableName、@TableId、@TableLogic。注意：注解底层机制见对应技能（日志见 message-push 相关、权限见 security-auth、字典见 dict-config）。
+description: Snowy 常用注解速查与正误用法：@CommonLog 操作日志、@CommonNoRepeat 防重、@CommonWrapper 返回包装、@SaCheckPermission、@Trans 字段翻译、@Validated/@Valid、MyBatis-Plus 注解。触发场景：1) 给接口加日志/防重/权限注解 2) 字段需要字典或关联表翻译 3) 不确定该用哪个注解或注解参数。触发词：注解、@CommonLog、@CommonNoRepeat、@SaCheckPermission、@Trans、Easy-Trans、翻译、字典翻译、@Validated、@TableName、@TableId、@TableLogic、操作日志不落库、网关前缀。注意：注解底层机制见对应技能（日志见 message-push 相关、权限见 security-auth、字典见 dict-config）。
 ---
 
 # Snowy 常用注解速查
@@ -9,9 +9,9 @@ description: Snowy 常用注解速查与正误用法：@CommonLog 操作日志�
 
 | 注解 | 来源 | 用在哪 | 作用 |
 |---|---|---|---|
-| `@CommonLog("中文标题")` | snowy-common | Controller 写方法 | 操作日志落 DEV_LOG 表（AOP：DevLogAop） |
+| `@CommonLog("中文标题")` | snowy-common | Controller 写方法 | 操作日志落 DEV_LOG 表（AOP：DevLogAop，⚠️ 目前只在 web-app 生效，见下文） |
 | `@CommonNoRepeat(interval=5000)` | snowy-common | Controller 写方法 | 防重复提交（默认 5 秒内相同请求拦截） |
-| `@SaCheckPermission("/url")` | Sa-Token | Controller 方法 | 接口权限校验，**值 = 接口 URL** |
+| `@SaCheckPermission("/url")` | Sa-Token | Controller 方法 | 接口权限校验，**值 = 接口 URL（不带网关前缀）** |
 | `@SaCheckRole("xxx")` | Sa-Token | Controller 方法 | 角色校验（少用） |
 | `@Trans(type=...)` | Easy-Trans | Entity 字段 | 字典/关联表字段自动翻译 |
 | `@Validated` | Spring | Controller 类 | 开启方法级校验 |
@@ -35,8 +35,10 @@ public CommonResult<String> add(...) {...}
 ```
 
 - **所有写操作接口必须加**（add/edit/delete/业务动作）；查询接口不加
-- 日志由 `snowy-plugin-dev` 的 DevLogAop 切面落 DEV_LOG 表，可在 开发工具→日志 查看
+- 日志由 `snowy-plugin-dev-func` 的 DevLogAop 切面落 DEV_LOG 表，可在 开发工具→日志 查看
 - ❌ `@Log(title=..., businessType=...)` 是同类快速开发框架的写法，本项目没有
+
+> ⚠️ 现状：dev-func 只装配在 snowy-web-app，snowy-biz-app 类路径上没有 DevLogAop（全仓库只有这一个 `@CommonLog` 切面），所以 **biz 插件接口上的 @CommonLog 目前不会写 DEV_LOG**（推导，未实际运行验证）。规范上仍照常加（与出厂 BizNoticeController 一致），但不要指望在"开发工具→日志"里看到 biz 接口的操作日志。
 
 ## @CommonNoRepeat —— 防重复提交
 
@@ -49,16 +51,18 @@ public CommonResult<String> create(...) {...}
 ```
 
 - 用于不可重复的关键写操作（下单、支付、审批提交）
-- 实现：snowy-web-app 的 GlobalConfigure 内嵌 CommonNoRepeatAop（IP+URL+参数 指纹）
+- 实现：web-app 与 biz-app 各自的 GlobalConfigure 都内嵌了 CommonNoRepeatAop（IP+URL+参数 指纹），两个服务里都生效
 
 ## @SaCheckPermission —— 接口权限
 
 ```java
-@SaCheckPermission("/biz/supplier/page")    // ✅ 值 = 本接口 URL
-@SaCheckPermission("biz:supplier:page")     // ❌ 冒号式是同类框架的，校验必失败
+@SaCheckPermission("/biz/supplier/page")              // ✅ 值 = 本接口 URL（Controller 上写的路径）
+@SaCheckPermission("biz:supplier:page")               // ❌ 冒号式是同类框架的，校验必失败
+@SaCheckPermission("/api/bizapp/biz/supplier/page")   // ❌ 带了网关前缀，网关 StripPrefix=2 后服务收到的是 /biz/supplier/page，权限码对不上
 ```
 
 - 权限来源：角色-资源授权生成的数据范围 apiUrl 列表（详见 security-auth 技能）
+- 校验在服务内完成（biz-app 的 AuthConfigure 注册 SaInterceptor），权限从 Redis 里 Sa-Token 会话的 loginUser 读取，与单体一致
 - C 端接口用 `@SaClientCheckLogin` / `@SaClientCheckPermission`（auth-api 提供）
 
 ## @Trans —— 字段翻译（Easy-Trans）
@@ -112,7 +116,7 @@ public class BizSupplier extends CommonEntity {              // 继承即有 DEL
 ## 检查清单
 
 - [ ] 写接口有 @CommonLog（中文标题）+ 写 Service 方法有 @Transactional(rollbackFor = Exception.class)
-- [ ] @SaCheckPermission 值 = URL 全路径
+- [ ] @SaCheckPermission 值 = Controller 上的 URL 全路径（不带 /api/webapp、/api/bizapp 网关前缀）
 - [ ] 翻译字段 @Trans 的 ref 冗余字段有 @TableField(exist = false)
 - [ ] 校验消息中文、格式统一
 - [ ] 没有使用同类框架特有注解（@Log、@RateLimiter、@DataPermission、@ExcelProperty 换 EasyExcel 注解）
@@ -121,9 +125,11 @@ public class BizSupplier extends CommonEntity {              // 继承即有 DEL
 
 | 文件 | 说明 |
 |---|---|
-| `snowy-common/src/main/java/vip/xiaonuo/common/annotation/CommonLog.java` | 日志注解定义 |
-| `snowy-common/src/main/java/vip/xiaonuo/common/annotation/CommonNoRepeat.java` | 防重注解定义 |
-| `snowy-plugin/snowy-plugin-biz/src/main/java/vip/xiaonuo/biz/modular/notice/controller/BizNoticeController.java` | 注解组合使用范本 |
-| `snowy-plugin/snowy-plugin-biz/src/main/java/vip/xiaonuo/biz/modular/user/entity/BizUser.java` | @Trans 双类型 + SM4 TypeHandler 范本 |
-| `snowy-plugin/snowy-plugin-dev/src/main/java/vip/xiaonuo/dev/core/aop/DevLogAop.java` | 日志切面实现 |
-| `snowy-web-app/src/main/java/vip/xiaonuo/core/config/GlobalConfigure.java` | 防重/包装 AOP 注册 |
+| `snowy-base/snowy-common/src/main/java/vip/xiaonuo/common/annotation/CommonLog.java` | 日志注解定义 |
+| `snowy-base/snowy-common/src/main/java/vip/xiaonuo/common/annotation/CommonNoRepeat.java` | 防重注解定义 |
+| `snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular/notice/controller/BizNoticeController.java` | 注解组合使用范本 |
+| `snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular/user/entity/BizUser.java` | @Trans 双类型 + SM4 TypeHandler 范本 |
+| `snowy-plugin/snowy-plugin-dev/snowy-plugin-dev-func/src/main/java/vip/xiaonuo/dev/core/aop/DevLogAop.java` | 日志切面实现（仅随 dev-func 装在 web-app） |
+| `snowy-modules/snowy-web-app/src/main/java/vip/xiaonuo/web/core/config/GlobalConfigure.java` | web-app 防重/包装 AOP 注册 |
+| `snowy-modules/snowy-biz-app/src/main/java/vip/xiaonuo/biz/core/config/GlobalConfigure.java` | biz-app 防重/包装 AOP 注册 |
+| `snowy-modules/snowy-biz-app/src/main/java/vip/xiaonuo/biz/core/config/AuthConfigure.java` | biz-app 注解鉴权拦截器（SaInterceptor）与权限来源 |

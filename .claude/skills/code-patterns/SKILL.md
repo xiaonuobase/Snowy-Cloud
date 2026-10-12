@@ -1,6 +1,6 @@
 ---
 name: code-patterns
-description: Snowy 全量编码禁令速查表（含"来自同类快速开发框架的惯性错误"专栏）、命名规范、JSON/日期约定、Git 提交规范。触发场景：1) 写任何 Java/前端代码前的规范自查 2) 审查代码风格问题 3) 提交代码。触发词：编码规范、禁令、命名、代码风格、惯性错误、JSON、日期、Git 提交、commit。注意：本技能是速查表；分层结构见 crud-development，模块组织见 plugin-architecture。
+description: Snowy 全量编码禁令速查表（含"来自同类快速开发框架的惯性错误"专栏）、命名规范、JSON/日期约定、Git 提交规范。触发场景：1) 写任何 Java/前端代码前的规范自查 2) 审查代码风格问题 3) 提交代码。触发词：编码规范、禁令、命名、代码风格、惯性错误、JSON、日期、Git 提交、commit、微服务禁令、feign、跨服务、网关前缀。注意：本技能是速查表；分层结构见 crud-development，模块组织见 plugin-architecture。
 ---
 
 # Snowy 编码禁令速查表
@@ -35,7 +35,7 @@ AI 对主流 Java 脚手架先验极强，**以下每条都是反向的**，写�
 |---|---|---|
 | 包名 `com.*` / `org.*` | `vip.xiaonuo.*` | 包结构即模块边界 |
 | 删除/省略 12 行版权头 | 每个 .java 必带 | Apache 2.0 协议要求 |
-| `@Autowired` | `@Resource` | 项目统一风格（240+ 处 vs 2 处） |
+| `@Autowired` | `@Resource` | 项目统一风格（自有代码 250+ 处 vs 8 处）；平台 feign-provider / api-context 层用的 `@RequiredArgsConstructor` 构造器注入属历史写法，新代码不要模仿 |
 | `@Data` | `@Getter @Setter` | 避免相等性/构造器副作用 |
 | 裸 `new RuntimeException(...)` | `throw new CommonException(...)` | 统一异常处理链路 |
 | `Map<String,Object>` 作业务返回 | 类型化 Result/Entity + CommonResult | 类型安全 |
@@ -43,9 +43,24 @@ AI 对主流 Java 脚手架先验极强，**以下每条都是反向的**，写�
 | 写操作无 `@Transactional(rollbackFor = Exception.class)` | 加上 | rollbackFor 必须显式（默认不回滚受检异常） |
 | 手动赋值 create_user/create_time | 继承 CommonEntity 自动填充 | MetaObjectHandler 统一填 |
 | 查询手写 delete_flag 条件 | 逻辑删除自动过滤 | @TableLogic 已处理 |
-| 跨插件 import 对方 modular 类 | 走 *-api + provider | 模块解耦 |
+| 跨插件 import 对方 modular 类 | 注入对方 `{插件}-api` 里的 XxxApi（同服务由 provider 实现，跨服务由 api-context 远程代理） | 模块解耦；对方的 modular 类很可能根本不在本服务类路径上 |
 | 英文注释/异常消息 | 全中文 | 项目统一 |
 | System.out.println | hutool/Spring 日志 | 生产可控 |
+
+## 微服务特有禁令（单体版没有的坑）
+
+| 禁止 | 替代 | 依据 |
+|---|---|---|
+| biz-func 的 pom 依赖其他插件的 `-func`（在业务代码里直接调别的服务的实现类） | 只依赖对方 `-api`，注入 XxxApi | biz-func 的 pom 只依赖 biz/auth/sys/dev 四个 `-api`；sys/dev/auth 的 `-func` 只装在 web-app，biz-app 里没有 |
+| 业务代码绕开 Api 接口直接注入 `XxxFeign` | 注入 XxxApi，由 `{插件}-api-context` 的 ContextBean 代理调 Feign | 现有链路 BizUserServiceImpl → SysUserApi → SysUserApiContextBean → SysUserFeign，业务代码不碰 Feign |
+| 同一应用的 pom 同时装某插件的 `-func` 和 `-api-context` | 本地实现装 `-func`（被别的服务调再加 `-feign-provider`）；远程调用装 `-feign` + `-api-context` | Bean 冲突：sys-func 的 `SysLoginUserApiProvider` 是 `@Service("loginUserApi")`，auth-api-context 的 `SysLoginUserApiContextBean` 是 `@Component("loginUserApi")` |
+| 跨服务接口（XxxApi / Feign）返回 Entity | `JSONObject` / `List<JSONObject>` / `Page<JSONObject>` / 基本类型；Feign 层传 JSON 字符串 | 现有 `*Feign` 对象类返回值均为 String，由 ContextBean 用 JSONUtil 还原 |
+| Controller URL 或 `@SaCheckPermission` 写网关前缀 `/api/bizapp/...` | 只写 `/biz/xxx/page` | 网关 StripPrefix=2，服务收到的路径不带前缀 |
+| 免登录白名单只改一处 | 网关 GatewayConfigure（带前缀）+ 目标服务 GlobalConfigure（不带前缀）都改 | 网关 SaReactorFilter 与服务 SaServletFilter 两层都鉴权 |
+| 把 CommonTimerTaskRunner 实现类写在 biz-func 再去"任务调度"界面配置 | 先和用户确认方案：DEV_JOB 只能调度 web-app 类路径上的 Runner；跑在 biz-app 的定时需求暂无现成方案（xxl-job 只部署了调度中心 9004，业务服务未接执行器） | dev-func 只装在 web-app，DevJobListener 用 `Class.forName` 找类，biz-func 里的类会报"定时任务找不到对应的类" |
+| 指望本地 `@Transactional` 回滚另一个服务的写操作 | 跨服务写操作单独设计补偿/校验 | 未接 Seata、Feign 无 fallback（推导：远程写在另一个 JVM/连接里，不在本地事务内） |
+| 在 biz-app 里注入没有 ContextBean 的 Api（`DevDictApi`/`DevLogApi`/`DevJobApi`/`DevPushApi`/`DevWeakPasswordApi`/`SysMenuApi`/`SysButtonApi`/`SysModuleApi`） | 使用前先确认；确需使用要补对应 Feign + ContextBean（属平台改造） | dev-api-context、sys-api-context 里没有这些实现类（推导：启动会缺 Bean） |
+| 业务代码里写死 `http://localhost:9101` 之类的服务地址互调 | 走 Feign（`FeignConstant.WEB_APP` / `BIZ_APP` 服务名 + 负载均衡） | 服务名注册在 Nacos，端口/实例可变 |
 
 ## 命名规范表
 
@@ -107,7 +122,7 @@ AI 对主流 Java 脚手架先验极强，**以下每条都是反向的**，写�
 
 ## JSON / 日期约定
 
-- JSON：hutool `JSONUtil`（parseObj/toJsonStr）优先；跨插件传值一律 `JSONObject`
+- JSON：hutool `JSONUtil`（parseObj/toJsonStr）优先；跨插件/跨服务传值一律 `JSONObject`（Feign 层传 JSON 字符串，由 ContextBean 解析）
 - 日期：Entity 用 `Date` 或 String（现有代码以 String 居多，如 startCreateTime/endCreateTime 查询参数）；格式统一 `yyyy-MM-dd HH:mm:ss`
 - 对象复制：新增 `BeanUtil.toBean(param, Entity.class)`；编辑 `queryEntity(id)` 后 `BeanUtil.copyProperties(param, entity)`
 - 集合操作：hutool `CollStreamUtil.toList(list, Xxx::getId)`、`ObjectUtil.isNotEmpty/isAllNotEmpty` 判空
@@ -137,9 +152,9 @@ fix: 修复供应商分页排序字段未下划线转换的问题
 docs: 补充后端开发指南的跨插件调用章节
 ```
 
-- 只提交本次任务相关文件；**不提交** application.properties 的本地口令改动、node_modules、target
-- 默认只做本地 commit，明确要求才 push（当前仓库无远程）
-- 分支：master 单分支（个人项目）；大重构前打 tag
+- 只提交本次任务相关文件；**不提交** Nacos 配置源文件（`snowy-server/snowy-nacos-app/src/main/resources/META-INF/config-data/` 下的 yaml）与各应用 `application.yml` 里的本地口令改动、node_modules、target
+- 默认只做本地 commit，明确要求才 push
+- 分支与远程以仓库实际状态为准（`git branch -a` / `git remote -v`，详见 git-workflow 技能）；大重构前打 tag
 
 ## 避免过度工程
 
@@ -150,6 +165,7 @@ docs: 补充后端开发指南的跨插件调用章节
 ## 检查清单（提交前）
 
 - [ ] 17 条常见脚手架惯性错误全部规避
+- [ ] 微服务特有禁令全部规避（代码在 biz-func、只注入 XxxApi、URL 不带网关前缀、白名单两处）
 - [ ] 版权头齐全、注释中文；Javadoc 为「一行摘要 + @author + @date」四行式，无 @param/@return/`<p>`/补充段落
 - [ ] 命名符合前缀与后缀规范
 - [ ] 前端无 TS / Element Plus 残留
@@ -159,7 +175,10 @@ docs: 补充后端开发指南的跨插件调用章节
 
 | 文件 | 说明 |
 |---|---|
-| `snowy-plugin/snowy-plugin-biz/src/main/java/vip/xiaonuo/biz/modular/notice/` | 全部规范的活样本 |
-| `snowy-plugin/snowy-plugin-biz/src/main/java/vip/xiaonuo/biz/modular/user/entity/BizUser.java` | 复杂 Entity（@Trans/SM4） |
-| `snowy-plugin/snowy-plugin-sys/src/main/java/vip/xiaonuo/sys/modular/user/service/impl/SysUserServiceImpl.java` | 复杂业务写法 |
+| `snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular/notice/` | 全部规范的活样本 |
+| `snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular/user/entity/BizUser.java` | 复杂 Entity（@Trans/SM4） |
+| `snowy-plugin/snowy-plugin-sys/snowy-plugin-sys-func/src/main/java/vip/xiaonuo/sys/modular/user/service/impl/SysUserServiceImpl.java` | 复杂业务写法 |
+| `snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/src/main/java/vip/xiaonuo/biz/modular/user/service/impl/BizUserServiceImpl.java` | biz 里跨服务只注入 SysUserApi 的真实写法 |
+| `snowy-plugin/snowy-plugin-biz/snowy-plugin-biz-func/pom.xml` | biz-func 只依赖各插件 `-api` 的依据 |
+| `snowy-modules/snowy-biz-app/pom.xml`、`snowy-modules/snowy-web-app/pom.xml` | 两个应用的插件装配（func 与 feign+api-context 二选一） |
 | `CLAUDE.md` | 项目宪法（易错点警告节） |
