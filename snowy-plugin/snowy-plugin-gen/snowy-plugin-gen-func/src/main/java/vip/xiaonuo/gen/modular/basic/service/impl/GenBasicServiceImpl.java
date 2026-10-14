@@ -33,6 +33,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
@@ -80,6 +81,7 @@ import java.util.stream.Collectors;
  * @date 2022/10/25 22:33
  **/
 @Service
+@Slf4j
 public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> implements GenBasicService {
 
     private static final String DB_URL_KEY = "spring.datasource.dynamic.datasource.master.url";
@@ -465,7 +467,7 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
             }
             return tables;
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            log.error("获取数据库表失败", sqlException);
             throw new CommonException("获取数据库表失败");
         } finally {
             JdbcUtils.closeResultSet(rs);
@@ -515,7 +517,7 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
             }
             return columns;
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            log.error("获取数据库表字段失败，表名称：{}", genBasicTableColumnParam.getTableName(), sqlException);
             throw new CommonException("获取数据库表字段失败，表名称：{}", genBasicTableColumnParam.getTableName());
         } finally {
             JdbcUtils.closeResultSet(rs);
