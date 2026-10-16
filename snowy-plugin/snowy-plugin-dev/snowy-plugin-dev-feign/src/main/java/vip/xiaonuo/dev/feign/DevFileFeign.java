@@ -14,8 +14,10 @@ package vip.xiaonuo.dev.feign;
 
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
+import feign.Response;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.common.consts.FeignConstant;
@@ -203,4 +205,92 @@ public interface DevFileFeign {
     @PostMapping("/feign/dev/file/getFileBytes")
     byte[] getFileBytes(@RequestParam(value = "engine") String engine,
                                        @RequestParam(value = "bucket") String bucket, @RequestParam(value = "fileKey") String fileKey);
+
+    /* =========RUSTFS文件========= */
+
+    /**
+     * RUSTFS上传文件返回Url
+     *
+     * @author yubaoshan
+     * @date 2026/10/16 10:00
+     **/
+    @PostMapping("/feign/dev/file/storageFileWithReturnUrlRustfs")
+    String storageFileWithReturnUrlRustfs(@RequestParam(value = "file",required = false) MultipartFile file);
+
+    /**
+     * RUSTFS上传文件返回Id
+     *
+     * @author yubaoshan
+     * @date 2026/10/16 10:00
+     **/
+    @PostMapping("/feign/dev/file/storageFileWithReturnIdRustfs")
+    String storageFileWithReturnIdRustfs(@RequestParam(value = "file",required = false) MultipartFile file);
+
+    /**
+     * 根据存储引擎、桶名和文件键读取文件实际字节数，文件不存在返回null
+     *
+     * @author yubaoshan
+     * @date 2026/10/16 10:00
+     **/
+    @PostMapping("/feign/dev/file/getFileSize")
+    Long getFileSize(@RequestParam(value = "engine", required = false) String engine,
+                     @RequestParam(value = "bucket", required = false) String bucket,
+                     @RequestParam(value = "fileKey", required = false) String fileKey);
+
+    /**
+     * 根据存储引擎、桶名和文件键读取文件流（返回原始响应，由调用方边读边写，不整读进内存）
+     *
+     * @author yubaoshan
+     * @date 2026/10/16 10:00
+     **/
+    @PostMapping("/feign/dev/file/writeFileToStream")
+    Response writeFileToStream(@RequestParam(value = "engine", required = false) String engine,
+                               @RequestParam(value = "bucket", required = false) String bucket,
+                               @RequestParam(value = "fileKey", required = false) String fileKey);
+
+    /**
+     * 登记对象存储中已存在的对象为底座文件，返回文件id
+     *
+     * @author yubaoshan
+     * @date 2026/10/16 10:00
+     **/
+    @PostMapping("/feign/dev/file/registerExistingFileReturnId")
+    String registerExistingFileReturnId(@RequestParam(value = "engine", required = false) String engine,
+                                        @RequestParam(value = "bucket", required = false) String bucket,
+                                        @RequestParam(value = "objectKey", required = false) String objectKey,
+                                        @RequestParam(value = "fileName", required = false) String fileName,
+                                        @RequestParam(value = "sizeBytes", required = false) Long sizeBytes);
+
+    /**
+     * 按字节内容存储文件（Feign请求体只能整体发送），返回文件id
+     *
+     * @author yubaoshan
+     * @date 2026/10/16 10:00
+     **/
+    @PostMapping("/feign/dev/file/storageStreamReturnId")
+    String storageStreamReturnId(@RequestParam(value = "engine", required = false) String engine,
+                                 @RequestParam(value = "fileName", required = false) String fileName,
+                                 @RequestParam(value = "size", required = false) Long size,
+                                 @RequestBody(required = false) byte[] content);
+
+    /**
+     * 为没有缩略图的图片底座文件补生成缩略图
+     *
+     * @author yubaoshan
+     * @date 2026/10/16 10:00
+     **/
+    @PostMapping("/feign/dev/file/generateThumbnail")
+    void generateThumbnail(@RequestParam(value = "fileId", required = false) String fileId);
+
+    /**
+     * 按内容复用已有存储对象登记一条新的底座文件记录，返回文件id
+     *
+     * @author yubaoshan
+     * @date 2026/10/16 10:00
+     **/
+    @PostMapping("/feign/dev/file/registerSharedFileReturnId")
+    String registerSharedFileReturnId(@RequestParam(value = "sourceFileId", required = false) String sourceFileId,
+                                      @RequestParam(value = "targetEngine", required = false) String targetEngine,
+                                      @RequestParam(value = "fileName", required = false) String fileName,
+                                      @RequestParam(value = "sizeBytes", required = false) Long sizeBytes);
 }

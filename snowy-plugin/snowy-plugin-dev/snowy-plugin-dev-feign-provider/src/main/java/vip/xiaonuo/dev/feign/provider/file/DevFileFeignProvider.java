@@ -12,15 +12,23 @@
  */
 package vip.xiaonuo.dev.feign.provider.file;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
+import feign.Response;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import vip.xiaonuo.common.exception.CommonException;
+import vip.xiaonuo.common.util.CommonServletUtil;
 import vip.xiaonuo.dev.api.DevFileApi;
 import vip.xiaonuo.dev.feign.DevFileFeign;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -119,5 +127,54 @@ public class DevFileFeignProvider implements DevFileFeign {
     @Override
     public byte[] getFileBytes(String engine, String bucket, String fileKey) {
         return devFileApi.getFileBytes(engine, bucket, fileKey);
+    }
+
+    @Override
+    public String storageFileWithReturnUrlRustfs(MultipartFile file) {
+        return devFileApi.storageFileWithReturnUrlRustfs(file);
+    }
+
+    @Override
+    public String storageFileWithReturnIdRustfs(MultipartFile file) {
+        return devFileApi.storageFileWithReturnIdRustfs(file);
+    }
+
+    @Override
+    public Long getFileSize(String engine, String bucket, String fileKey) {
+        return devFileApi.getFileSize(engine, bucket, fileKey);
+    }
+
+    @Override
+    public Response writeFileToStream(String engine, String bucket, String fileKey) {
+        // 服务端直接把文件边读边写入响应体，返回null表示响应已自行输出
+        HttpServletResponse response = CommonServletUtil.getResponse();
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        try {
+            devFileApi.writeFileToStream(engine, bucket, fileKey, response.getOutputStream());
+        } catch (IOException e) {
+            throw new CommonException("输出文件流失败：{}", e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public String registerExistingFileReturnId(String engine, String bucket, String objectKey, String fileName, Long sizeBytes) {
+        return devFileApi.registerExistingFileReturnId(engine, bucket, objectKey, fileName, sizeBytes);
+    }
+
+    @Override
+    public String storageStreamReturnId(String engine, String fileName, Long size, byte[] content) {
+        byte[] bytes = ObjectUtil.isNull(content) ? new byte[0] : content;
+        return devFileApi.storageStreamReturnId(engine, new ByteArrayInputStream(bytes), fileName, size);
+    }
+
+    @Override
+    public void generateThumbnail(String fileId) {
+        devFileApi.generateThumbnail(fileId);
+    }
+
+    @Override
+    public String registerSharedFileReturnId(String sourceFileId, String targetEngine, String fileName, Long sizeBytes) {
+        return devFileApi.registerSharedFileReturnId(sourceFileId, targetEngine, fileName, sizeBytes);
     }
 }
