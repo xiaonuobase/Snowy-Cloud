@@ -497,10 +497,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public List<String> permissionTreeSelector() {
         List<String> permissionResult = CollectionUtil.newArrayList();
 
-        Object permissionResourceObject = commonCacheOperator.get(CacheConstant.PERMISSION_RESOURCE_CACHE_KEY);
-        if(Objects.nonNull(permissionResourceObject)){
-            permissionResult = Convert.toList(String.class,permissionResourceObject);
-        }
+        // 聚合各应用登记的接口清单（Redis Hash，field为应用名，新增应用无需改造此处）
+        commonCacheOperator.getMap(CacheConstant.PERMISSION_RESOURCE_CACHE_KEY).values().forEach(value -> {
+            if (Objects.nonNull(value)) {
+                permissionResult.addAll(Convert.toList(String.class, value));
+            }
+        });
 
         return CollectionUtil.sortByPinyin(permissionResult.stream().filter(api ->
                 !api.startsWith("/" + StrUtil.BRACKET_START)

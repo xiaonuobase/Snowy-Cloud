@@ -20,9 +20,9 @@ package vip.xiaonuo.common.consts;
 public class CacheConstant {
 
     /**
-     * 权限资源
+     * 权限资源（Redis Hash，field为应用名，value为该应用全量接口清单）
      */
-    public static final String PERMISSION_RESOURCE_CACHE_KEY = "permission-resource";
+    public static final String PERMISSION_RESOURCE_CACHE_KEY = "permission-resource:apps";
 
     /**
      * 权限资源Method

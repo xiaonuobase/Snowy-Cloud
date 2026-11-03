@@ -23,6 +23,7 @@ import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.log.Log;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
@@ -51,6 +52,9 @@ import java.util.Objects;
 public class ResourceCollectListener implements CommandLineRunner {
 
     private static final Log log = Log.get();
+
+    @Value("${spring.application.name:snowy-unknown-app}")
+    private String applicationName;
 
     @Resource
     private CommonCacheOperator commonCacheOperator;
@@ -95,10 +99,8 @@ public class ResourceCollectListener implements CommandLineRunner {
                             }
                         }));
 
-        //2.直接覆盖缓存（启动扫描是全量清单，不应与历史合并）
-        if (CollUtil.isNotEmpty(permissionResult)) {
-            commonCacheOperator.put(CacheConstant.PERMISSION_RESOURCE_CACHE_KEY, permissionResult);
-        }
+        //2.按应用维度整值覆盖登记到Redis Hash（field为应用名，各应用之间互不影响）
+        commonCacheOperator.putMap(CacheConstant.PERMISSION_RESOURCE_CACHE_KEY, applicationName, permissionResult);
 
         // 3.汇总添加Permission Method Map数据到缓存
         refreshPermissionMethodMapDataToCache(permissionMethodMap);

@@ -18,6 +18,7 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import org.redisson.api.RBucket;
 import org.redisson.api.RKeys;
+import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 import org.redisson.api.options.KeysScanOptions;
 import org.springframework.stereotype.Component;
@@ -59,6 +60,16 @@ public class CommonCacheOperator {
         ArrayList<String> keys = CollectionUtil.toList(key);
         List<String> withPrefixKeys = keys.stream().map(i -> CACHE_KEY_PREFIX + i).toList();
         redissonClient.getKeys().delete(withPrefixKeys.toArray(new String[0]));
+    }
+
+    public void putMap(String key, String mapKey, Object value) {
+        RMap<String, Object> map = redissonClient.getMap(CACHE_KEY_PREFIX + key);
+        map.put(mapKey, value);
+    }
+
+    public Map<String, Object> getMap(String key) {
+        RMap<String, Object> map = redissonClient.getMap(CACHE_KEY_PREFIX + key);
+        return map.readAllMap();
     }
 
     public Collection<String> getAllKeys() {
